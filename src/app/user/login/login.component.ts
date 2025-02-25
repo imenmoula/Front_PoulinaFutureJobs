@@ -1,6 +1,6 @@
 import { routes } from './../../app.routes';
 import { Router, RouterLink } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../shared/services/auth.service';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './login.component.html',
   styles: ``
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   form: any;
   isSubmitted: boolean = false;
 
@@ -26,6 +26,14 @@ private toastr:ToastrService) {
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+
+    if(this.service.isloggedIn())
+    
+      this.router.navigateByUrl('/dashboard');
+    
   }
 
   hasDisplayableError(controlName: string): boolean {
@@ -41,7 +49,7 @@ private toastr:ToastrService) {
       this.service.signin(this.form.value).subscribe(
         {
           next: (res: any) => {
-            localStorage.setItem('token', res.token);
+            this.service.saveToken(res.token);
             this.router.navigateByUrl('/dashboard');
           },
           error: err => {

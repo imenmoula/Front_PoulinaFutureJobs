@@ -14,4 +14,13 @@ export class AuthService {
   signin(formData:any){
     return this.http.post(this.baseURL+'/signin',formData);
   }
+  isloggedIn(){
+    return localStorage.getItem('TOKEN_KEY')!=null?true:false;
+  }
+saveToken(token:string){
+  localStorage.setItem('TOKEN_KEY',token);
+}
+  deleteToken(){
+    localStorage.removeItem('TOKEN_KEY');
+  }
 }
