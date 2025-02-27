@@ -9,7 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,FirstKeyPipe,RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, FirstKeyPipe, RouterLink],
   templateUrl: './registration.component.html',
   styles: []
 })
@@ -28,6 +28,7 @@ export class RegistrationComponent implements OnInit {
     if (this.service.isloggedIn()) {
       this.router.navigateByUrl('/dashboard');
     }
+    this.initializeForm();
   }
 
   private initializeForm(): void {
@@ -37,9 +38,9 @@ export class RegistrationComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.minLength(6),
-        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
+        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/),
       ]],
-      confirmPassword: ['']
+      confirmPassword: ['', Validators.required],
     }, { 
       validators: this.passwordMatchValidator 
     });
@@ -50,12 +51,13 @@ export class RegistrationComponent implements OnInit {
     return Object.keys(control.errors)[0];
   }
 
-  passwordMatchValidator: ValidatorFn = (control: AbstractControl): null => {
+  passwordMatchValidator: ValidatorFn = (control: AbstractControl): { [key: string]: boolean } | null => {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
 
     if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true });
+      confirmPassword?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
     } else if (confirmPassword) {
       const errors = confirmPassword.errors;
       if (errors) {
@@ -76,41 +78,40 @@ export class RegistrationComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.form.valid) {
-      this.service.createUser(this.form.value)
-        .subscribe({
-          next: (res: any) => {
-            if (res && res.succeeded) {
-              this.form.reset();
-              this.isSubmitted = false;
-              this.toastr.success('New user created!', 'Registration Successful');
-            } else {
-              this.toastr.error('Registration failed. Please try again.', 'Registration Failed');
-              console.error('Unexpected response:', res);
-            }
-          },
-          error: err => {
-            if (err.error.errors) {
-              err.error.errors.forEach((x: any) => {
-                switch (x.code) {
-                  case "DuplicateUserName":
-                    this.toastr.error('Username is already taken.', 'Registration Failed');
-                    break;
-                  case "DuplicateEmail":
-                    this.toastr.error('Email is already taken.', 'Registration Failed');
-                    break;
-                  default:
-                    this.toastr.error('Contact the developer', 'Registration Failed');
-                    console.log(x);
-                    break;
-                }
-              });
-            } else {
-              this.toastr.error('An unexpected error occurred. Please try again.', 'Registration Failed');
-              console.log('error:', err);
-            }
+      this.service.createUser(this.form.value).subscribe({
+        next: (res: any) => {
+          if (res && res.succeeded) {
+            this.form.reset();
+            this.isSubmitted = false;
+            this.toastr.success('New user created!', 'Registration Successful');
+            this.router.navigateByUrl('/dashboard');
+          } else {
+            this.toastr.error(res.message || 'Registration failed. Please try again.', 'Registration Failed');
+            console.error('Unexpected response:', res);
           }
-        });
+        },
+        error: err => {
+          if (err.error?.errors) {
+            err.error.errors.forEach((x: any) => {
+              switch (x.code) {
+                case 'DuplicateUserName':
+                  this.toastr.error('Username is already taken.', 'Registration Failed');
+                  break;
+                case 'DuplicateEmail':
+                  this.toastr.error('Email is already taken.', 'Registration Failed');
+                  break;
+                default:
+                  this.toastr.error(x.description || 'Contact the developer', 'Registration Failed');
+                  console.log(x);
+                  break;
+              }
+            });
+          } else {
+            this.toastr.error(err.message || 'An unexpected error occurred.', 'Registration Failed');
+            console.log('error:', err);
+          }
+        }
+      });
     }
   }
-  
 }
