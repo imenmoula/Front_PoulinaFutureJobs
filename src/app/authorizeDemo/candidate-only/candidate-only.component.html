@@ -1,1 +1,5 @@
-<p>candidate-only works!</p>
+<h1>Espace Candidat</h1>
+    <p>Bienvenue, {{ authService.getUserRole() }} !</p>
+    <div *ngIf="authService.hasRole('Candidate')">
+      <p>Contenu réservé aux candidats.</p>
+    </div>
