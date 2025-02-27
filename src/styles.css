@@ -8,3 +8,22 @@ body{
     margin: 0.3rem !important;
     margin-top: 0.1rem !important;
   }
+/* Succès en vert */
+.ngx-toastr.toast-success {
+    background-color: #28a745 !important; /* Vert (Bootstrap success) */
+    color: white !important;
+  }
+  
+  /* Erreur en rouge */
+  .ngx-toastr.toast-error {
+    background-color: #dc3545 !important; /* Rouge (Bootstrap danger) */
+    color: white !important;
+  }
+  
+  /* S'assurer que le texte reste lisible */
+  .ngx-toastr.toast-success .toast-title,
+  .ngx-toastr.toast-success .toast-message,
+  .ngx-toastr.toast-error .toast-title,
+  .ngx-toastr.toast-error .toast-message {
+    color: white !important;
+  }
