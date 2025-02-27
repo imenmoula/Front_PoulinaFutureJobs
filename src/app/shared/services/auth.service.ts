@@ -11,6 +11,10 @@ export class AuthService {
 
 
   createUser(formData:any){
+    /*formData.role="admin";
+    formData.poste="rh";
+    formData.filialeId="1";*/
+    
     return this.http.post(environment.apiBaseUrl+'/signup',formData);
   }
   signin(formData:any){
@@ -29,4 +33,8 @@ getToken(){
   deleteToken(){
     localStorage.removeItem('TOKEN_KEY');
   }
+
+  getClaims(){
+    return JSON.parse(window.atob(this.getToken()!.split('.')[1]))
+   }
 }

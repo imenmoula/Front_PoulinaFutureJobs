@@ -2,29 +2,31 @@ import { UserService } from './../shared/services/user.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
-
+import { claimReq } from '../shared/utils/claimReq-utils';
+import { HideIfClaimsNotMetDirective } from '../directives/hide-if-claims-not-met.directive';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [HideIfClaimsNotMetDirective],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
 export class DashboardComponent implements OnInit {
   constructor(private router: Router,
-              private autheService:AuthService,
-            private userService:UserService){ }
-fullName: string = ''
+    private autheService: AuthService,
+    private userService: UserService) { }
+    fullName: string = ''
+    claimReq = claimReq
 
-ngOnInit(): void {
-              this.userService.getUserProfile().subscribe({
-                next: (res: any) => this.fullName = res.fullName,
-                error: (err: any) => console.log('error while retrieving user profile:\n', err)
-              })
-}
-  onlogout() {
-    this.autheService.deleteToken();
-    this.router.navigateByUrl('/signin');
+  ngOnInit(): void {
+    this.userService.getUserProfile().subscribe({
+      next: (res: any) => this.fullName = res.fullName,
+      error: (err: any) => console.log('error while retrieving user profile:\n', err)
+    })
   }
+   onlogout() {
+     this.autheService.deleteToken();
+     this.router.navigateByUrl('/signin');
+   }
 
 }
