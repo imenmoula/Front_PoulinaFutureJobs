@@ -1,3 +1,5 @@
+// 
+
 import { Router, RouterLink } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -8,9 +10,22 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Remove ToastrModule.forRoot()
   templateUrl: './login.component.html',
-  styles: ``
+  styles: [`
+    .login-main {
+      position: relative;
+    }
+    .login-toastr {
+      position: absolute !important;
+      top: 10px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 90% !important;
+      max-width: 300px !important;
+      z-index: 9999 !important;
+    }
+  `],
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
@@ -20,17 +35,18 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private service: AuthService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService // Injected, no need for providers since it’s global
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
+    this.toastr.info('Login page loaded', 'Debug'); // Test Toastr on init
     if (this.service.isLoggedIn()) {
-      this.redirectBasedOnRoles(); // Rediriger selon les rôles au chargement
+      this.redirectBasedOnRoles();
     }
   }
 
@@ -45,7 +61,8 @@ export class LoginComponent implements OnInit {
       this.service.signin(this.form.value).subscribe({
         next: (res: any) => {
           this.service.saveToken(res.token);
-          this.redirectBasedOnRoles(); // Rediriger selon les rôles après connexion
+          this.toastr.success('Login successful!', 'Success');
+          this.redirectBasedOnRoles();
         },
         error: (err) => {
           if (err.status === 400) {
@@ -53,8 +70,10 @@ export class LoginComponent implements OnInit {
           } else {
             this.toastr.error(`Error during login: ${err.message}`, 'Login Error');
           }
-        }
+        },
       });
+    } else {
+      this.toastr.warning('Please fill in all required fields.', 'Form Invalid');
     }
   }
 
@@ -67,7 +86,7 @@ export class LoginComponent implements OnInit {
     } else if (roles.includes('Candidate')) {
       this.router.navigateByUrl('/candidate');
     } else {
-      this.router.navigateByUrl('/dashboard'); // Par défaut si aucun rôle spécifique
+      this.router.navigateByUrl('/dashboard');
     }
   }
 }

@@ -1,5 +1,10 @@
-/* styles.css */
-.toast-bottom-right {
-  bottom: 20px;
-  right: 20px;
+/* You can add global styles to this file, and also import other style filesstyles.css */
+.ngx-toastr {
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  margin: 10px auto !important;
 }
+
+

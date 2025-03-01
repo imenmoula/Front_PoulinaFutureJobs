@@ -1,70 +1,65 @@
- <div class="login-main"> 
-            <!-- Titre et sous-titre -->
-            
+<div class="login-main">
+  <form class="theme-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h4>S'inscrire</h4>
+    <p>
+      Déjà un compte ?
+      <a routerLink="/signin" class="text-decoration-none fw-medium d-inline-block">Se connecter</a>
+    </p>
 
-            <!-- Formulaire Angular -->
-            <form class="theme-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-        
-                <h4>S'inscrire</h4> 
-                <p>Déjà un compte ? 
-                  <a routerLink="/signin" class="text-decoration-none fw-medium d-inline-block">Se connecter</a>
-                </p>
-            
-              <!-- Nom complet -->
-              <div class="mb-3">
-                <input class="form-control bg-body-secondary" placeholder="Nom complet" formControlName="fullName">
-                <div class="error-feedback" *ngIf="hasDisplayableError('fullName')">
-                  Veuillez entrer votre nom complet.
-                </div>
-              </div>
+    <!-- Nom complet -->
+    <div class="mb-3">
+      <input class="form-control bg-body-secondary" placeholder="Nom complet" formControlName="fullName">
+      <div class="error-feedback" *ngIf="hasDisplayableError('fullName')">
+        Veuillez entrer votre nom complet.
+      </div>
+    </div>
 
-              <!-- Email -->
-              <div class="mb-3">
-                <input class="form-control bg-body-secondary" placeholder="Email" formControlName="email">
-                <div class="error-feedback" *ngIf="hasDisplayableError('email')">
-                  <div *ngIf="form.get('email')?.hasError('required')">
-                    Veuillez entrer votre adresse email.
-                  </div>
-                  <div *ngIf="form.get('email')?.hasError('email')">
-                    Veuillez entrer une adresse email valide.
-                  </div>
-                </div>
-              </div>
+    <!-- Email -->
+    <div class="mb-3">
+      <input class="form-control bg-body-secondary" placeholder="Email" formControlName="email">
+      <div class="error-feedback" *ngIf="hasDisplayableError('email')">
+        <div *ngIf="form.get('email')?.hasError('required')">
+          Veuillez entrer votre adresse email.
+        </div>
+        <div *ngIf="form.get('email')?.hasError('email')">
+          Veuillez entrer une adresse email valide.
+        </div>
+      </div>
+    </div>
 
-              <!-- Mot de passe -->
-              <div class="mb-3">
-                <div class="form-input position-relative">
-                  <input class="form-control bg-body-secondary" type="password" placeholder="Mot de passe" formControlName="password">
-                  <div class="show-hide"><span class="show"></span></div>
-                </div>
-                <div class="error-feedback" *ngIf="hasDisplayableError('password')">
-                  <ng-container [ngSwitch]="getFirstError(form.get('password'))">
-                    <div *ngSwitchCase="'required'">Veuillez entrer votre mot de passe.</div>
-                    <div *ngSwitchCase="'minlength'">Au moins 6 caractères requis.</div>
-                    <div *ngSwitchCase="'pattern'">Un ou plusieurs caractères spéciaux requis.</div>
-                  </ng-container>
-                </div>
-              </div>
+    <!-- Mot de passe -->
+    <div class="mb-3">
+      <div class="form-input position-relative">
+        <input class="form-control bg-body-secondary" type="password" placeholder="Mot de passe" formControlName="password">
+        <div class="show-hide"><span class="show"></span></div>
+      </div>
+      <div class="error-feedback" *ngIf="hasDisplayableError('password')">
+        <ng-container [ngSwitch]="getFirstError(form.get('password'))">
+          <div *ngSwitchCase="'required'">Veuillez entrer votre mot de passe.</div>
+          <div *ngSwitchCase="'minlength'">Au moins 6 caractères requis.</div>
+          <div *ngSwitchCase="'pattern'">Un ou plusieurs caractères spéciaux requis.</div>
+        </ng-container>
+      </div>
+    </div>
 
-              <!-- Confirmer le mot de passe -->
-              <div class="mb-3">
-                <input class="form-control bg-body-secondary" type="password" placeholder="Confirmer le mot de passe" formControlName="confirmPassword">
-                <div class="error-feedback" *ngIf="hasDisplayableError('confirmPassword')">
-                  <div *ngIf="form.get('confirmPassword')?.hasError('required')">
-                    Veuillez confirmer votre mot de passe.
-                  </div>
-                  <div *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
-                    Les mots de passe ne correspondent pas.
-                  </div>
-                </div>
-              </div>
+    <!-- Confirmer le mot de passe -->
+    <div class="mb-3">
+      <input class="form-control bg-body-secondary" type="password" placeholder="Confirmer le mot de passe" formControlName="confirmPassword">
+      <div class="error-feedback" *ngIf="hasDisplayableError('confirmPassword')">
+        <div *ngIf="form.get('confirmPassword')?.hasError('required')">
+          Veuillez confirmer votre mot de passe.
+        </div>
+        <div *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+          Les mots de passe ne correspondent pas.
+        </div>
+      </div>
+    </div>
 
-              <!-- Bouton d'inscription -->
-              <div class="mt-4">
-                <button type="submit" class="btn btn-primary btn-block w-100 mt-3">
-                  S'inscrire
-                </button>
-              </div>
-            </form>
-          </div>
-    
+    <!-- Bouton d'inscription -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary btn-block w-100 mt-3">
+        S'inscrire
+      </button>
+    </div>
+  </form>
+</div>
