@@ -47,7 +47,13 @@ import { jwtDecode } from 'jwt-decode'; // Importation nommée
 
 interface TokenPayload {
   'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'?: string | string[];
-  role?: string | string[];
+ 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'?: string;
+  FullName?: string; // Add FullName to match the backend claim
+  userId?: string;
+  email?: string;
+  poste?: string;
+  jti?: string;
+  exp?: number;
   [key: string]: any;
 }
 
@@ -103,6 +109,26 @@ export class AuthService {
     if (!claims) return [];
     const roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || claims['role'];
     return Array.isArray(roles) ? roles : roles ? [roles] : [];
+  }
+
+  // Add this new method to get the username
+  getUserFullName(): string {
+    const claims = this.getClaims();
+    if (!claims) return 'Utilisateur';
+    // Prefer FullName if available, fall back to the name claim
+    return claims.FullName || claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Utilisateur';
+  }
+
+
+
+  // Optional: For debugging
+  logClaims(): void {
+    const claims = this.getClaims();
+    if (claims) {
+      console.log('JWT Claims:', claims);
+    } else {
+      console.log('No claims available');
+    }
   }
 
   hasRole(role: string): boolean {

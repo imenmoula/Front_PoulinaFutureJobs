@@ -1,3 +1,4 @@
+<!-- your-component.component.html -->
 <h1>Espace Candidat</h1>
 <p>Bienvenue, {{ authService.getUserRoles()[0] || 'Utilisateur' }} !</p>
-<!-- <h1>Nom: {{authService.fullName}}</h1> -->
+<h1>Nom complet: {{ authService.getUserFullName() }} </h1>
