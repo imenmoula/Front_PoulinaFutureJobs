@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { UserService } from '../../shared/services/user.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-candidate-only',
@@ -10,5 +12,16 @@ import { AuthService } from '../../shared/services/auth.service';
   styles: ``
 })
 export class CandidateOnlyComponent {
-  constructor(public authService: AuthService) {}
+// fullName$!: Observable<string>;
+constructor(
+  public authService: AuthService,
+  private userService: UserService
+) {}
+
+// ngOnInit(): void {
+//   this.fullName$ = this.userService.getUserProfile().pipe(
+//     map((res: any) => res.fullName)
+//   );
+// }
 }
+

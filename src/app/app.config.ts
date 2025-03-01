@@ -6,7 +6,7 @@ import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { authInterceptor } from './shared/auth.interceptor';
+import { authInterceptor } from './shared/services/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes),

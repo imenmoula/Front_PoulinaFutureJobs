@@ -1,5 +1,3 @@
 <h1>Espace Candidat</h1>
-    <p>Bienvenue, {{ authService.getUserRole() }} !</p>
-    <div *ngIf="authService.hasRole('Candidate')">
-      <p>Contenu réservé aux candidats.</p>
-    </div>
+<p>Bienvenue, {{ authService.getUserRoles()[0] || 'Utilisateur' }} !</p>
+<!-- <h1>Nom: {{authService.fullName}}</h1> -->

@@ -25,7 +25,7 @@ export class RegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.service.isloggedIn()) {
+    if (this.service.isLoggedIn()) {
       this.router.navigateByUrl('/dashboard');
     }
     this.initializeForm();

@@ -1,2 +1,2 @@
 <p>admin-or-recruteur works!</p>
-    <p>Bienvenue, {{ authService.getUserRole() }} !</p>
+<p>Bienvenue, {{ authService.getUserRoles()[0] || 'Utilisateur' }} !</p>

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { RegistrationComponent } from './registration/registration.component';
-import { ChildrenOutletContexts, Router, RouterOutlet } from '@angular/router';
-import { trigger,style,transition,animate,query } from '@angular/animations';
+import { RouterOutlet, ChildrenOutletContexts } from '@angular/router';
+import { trigger, style, transition, animate, query } from '@angular/animations';
 
 @Component({
   selector: 'app-user',
-  imports: [RegistrationComponent,RouterOutlet],
   standalone: true,
+  imports: [RouterOutlet],
   templateUrl: './user.component.html',
   styles: ``,
   animations: [
@@ -21,7 +20,8 @@ import { trigger,style,transition,animate,query } from '@angular/animations';
   ]
 })
 export class UserComponent {
-  constructor(private context: ChildrenOutletContexts) { }
+  constructor(private context: ChildrenOutletContexts) {}
+
   getRouteUrl() {
     return this.context.getContext('primary')?.route?.url;
   }
