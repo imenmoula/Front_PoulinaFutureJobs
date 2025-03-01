@@ -50,13 +50,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",  // Add this to include all files in src/assets
+                "output": "assets"      // Output to /assets in the build
               }
             ],
             "styles": [
               "src/styles.css",
-                "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "src/assets/css/style.css"  // Add your template's CSS here
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/script.js"   // Add your template's JS here
+            ]
           },
           "configurations": {
             "production": {
@@ -115,13 +123,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",  // Add this for tests
+                "output": "assets"
               }
             ],
             "styles": [
               "src/styles.css",
-                "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "src/assets/css/style.css"  // Add for tests
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/script.js"   // Add for tests
+            ]
           }
         }
       }
