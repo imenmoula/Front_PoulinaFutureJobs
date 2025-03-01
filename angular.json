@@ -71,7 +71,7 @@
         "src/assets/css/responsive.css"
             ],
             "scripts": [
-              "src/assets/js/script.js"   // Add your template's JS here
+              "src/assets/js/script.js"  
             ]
           },
           "configurations": {
