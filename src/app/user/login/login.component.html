@@ -1,30 +1,43 @@
-<div class="mb-4">
-    <h2 class="text-success">
-      Sign in
-    </h2>
-    <div>Don't have an account?
-      <a routerLink="/signup" class="text-decoration-none fw-medium text-success d-inlin-block">Sign up</a>
-    </div>
-  </div>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <input class="form-control bg-body-secondary" placeholder="Email" formControlName="email">
-        <div class="error-feedback" *ngIf="hasDisplayableError('email') && form.controls['email'].hasError('required')">
 
-        Please enter your email address.
-      </div>
-    </div>
-    <div class="mb-3">
-      <input class="form-control bg-body-secondary" placeholder="Password" formControlName="password">
-        <div class="error-feedback" *ngIf="hasDisplayableError('password') && form.controls['password'].hasError('required')">
+          <div class="login-main">
+            <form class="theme-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <!-- Title and Subtitle -->
+              <h4>Connexion à Poulina Future Jobs</h4>
+              <p>Entrez votre email et mot de passe pour vous connecter</p>
 
-        Please enter your password.
-      </div>
-    </div>
-    <div class="mt-4">
-      <button type="submit" class="btn btn-success w-100 rounded-3">
-        Sign in
-      </button>
-    </div>
-  </form>
-  
+              <!-- Email Input -->
+              <div class="form-group">
+                <label class="col-form-label">Adresse Email</label>
+                <input class="form-control" type="email" placeholder="test@gmail.com" formControlName="email">
+                <div class="error-feedback" *ngIf="hasDisplayableError('email') && form.controls['email'].hasError('required')">
+                  Veuillez entrer votre adresse email.
+                </div>
+              </div>
+
+              <!-- Password Input -->
+              <div class="form-group">
+                <label class="col-form-label">Mot de passe</label>
+                <div class="form-input position-relative">
+                  <input class="form-control" type="password" placeholder="*********" formControlName="password">
+                  <div class="show-hide"><span class="show"></span></div>
+                </div>
+                <div class="error-feedback" *ngIf="hasDisplayableError('password') && form.controls['password'].hasError('required')">
+                  Veuillez entrer votre mot de passe.
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="form-group mb-0">
+                <button class="btn btn-primary btn-block w-100 mt-3" type="submit">
+                  Se connecter
+                </button>
+              </div>
+
+              <!-- Signup Link -->
+              <p class="mt-4 mb-0 text-center">
+                Pas de compte ? 
+                <a class="ms-2" routerLink="/signup">Créer un compte</a>
+              </p>
+            </form>
+          </div>
+      
