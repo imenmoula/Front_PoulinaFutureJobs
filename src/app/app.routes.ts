@@ -9,6 +9,7 @@ import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { RoleGuard } from './guards/role.guard';
 import { AuthGuard } from './guards/auth.guard'; // Vous devrez aussi le créer en standalone
+import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -39,5 +40,6 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'Admin' }
   },
-  { path: '**', redirectTo: '/signin' }
+  { path: '**', redirectTo: '/signin' },
+  { path: 'gestion-departements', component: GestionDepartementsComponent }
 ];

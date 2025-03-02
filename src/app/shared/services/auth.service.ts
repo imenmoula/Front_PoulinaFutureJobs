@@ -53,6 +53,8 @@ export class AuthService {
     localStorage.removeItem('TOKEN_KEY');
   }
 
+  
+
   getClaims(): TokenPayload | null {
     const token = this.getToken();
     if (!token) return null;
@@ -93,5 +95,11 @@ export class AuthService {
 
   hasRole(role: string): boolean {
     return this.getUserRoles().includes(role);
+  }
+
+
+  logout(): void {
+    console.log('User logged out');
+    // Ajoutez votre logique de déconnexion ici
   }
 }

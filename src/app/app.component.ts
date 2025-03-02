@@ -9,7 +9,8 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-root',
   imports: [RouterOutlet,UserComponent,RouterLink, CommonModule,FormsModule],
   standalone: true,
-  templateUrl: './app.component.html',
+   templateUrl: './app.component.html',
+
   styles: [],
 })
 export class AppComponent {
