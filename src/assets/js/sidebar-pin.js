@@ -2,13 +2,18 @@
 (function () {
   const pinTitle = document.querySelector(".pin-title");
   let pinIcon = document.querySelectorAll(".sidebar-list .fa-solid.fa-thumbtack");
-  function togglePinnedName() {
+
+function togglePinnedName() {
+    if (!pinTitle) {
+        console.error('pinTitle element not found');
+        return;
+    }
     if (document.getElementsByClassName("pined").length) {
-      if (!pinTitle.classList.contains("show")) pinTitle.classList.add("show");
+        if (!pinTitle.classList.contains("show")) pinTitle.classList.add("show");
     } else {
       pinTitle.classList.remove("show");
     }
-  }
+}
 
   pinIcon.forEach((item, index) => {
     var linkName = item.parentNode.querySelector("span").innerHTML;
@@ -41,6 +46,7 @@
         scrollTo(document.getElementsByClassName("simplebar-content-wrapper")[0], elem.parentNode.offsetTop - 30, 600);
       }
     });
+    
 
     function scrollTo(element, to, duration) {
       var start = element.scrollTop,
