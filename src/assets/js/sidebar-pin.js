@@ -5,7 +5,6 @@
 
 function togglePinnedName() {
     if (!pinTitle) {
-        console.error('pinTitle element not found');
         return;
     }
     if (document.getElementsByClassName("pined").length) {
