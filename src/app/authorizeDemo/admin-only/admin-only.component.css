@@ -1,0 +1,28 @@
+/* src/app/authorizeDemo/admin-only/admin-only.component.css */
+
+
+.sidebar-wrapper {
+  width: 0; /* Par défaut, cachée */
+  transition: width 0.3s ease;
+  overflow: hidden;
+  position: fixed;
+  height: 100%;
+  z-index: 1000;
+}
+
+.sidebar-wrapper.sidebar-open {
+  width: 250px; /* Largeur ouverte */
+}
+
+.page-body-wrapper {
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-wrapper.sidebar-open ~ .page-body {
+  margin-left: 250px; /* Déplace le contenu principal quand la barre est ouverte */
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

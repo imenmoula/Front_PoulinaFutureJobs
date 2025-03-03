@@ -129,7 +129,8 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FirstKeyPipe, RouterLink],
+  // imports: [ReactiveFormsModule, CommonModule, FirstKeyPipe, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink] ,
   templateUrl: './registration.component.html',
   styles: [],
 })

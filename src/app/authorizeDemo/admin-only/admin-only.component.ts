@@ -19,39 +19,33 @@ import { UserComponent } from './../../user/user.component';
 // admin-only.component.ts
 // src/app/authorizeDemo/admin-only/admin-only.component.ts
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Ajouté pour ngClass
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
-import { UserService } from '../../shared/services/user.service';
 
 declare global {
   interface Window {
-    feather: {
-      replace: () => void;
-    };
+    feather: { replace: () => void };
   }
 }
 
 @Component({
   selector: 'app-admin-only',
-  standalone: true, // Confirme que c’est standalone
-  imports: [CommonModule], // Ajouté pour ngClass
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './admin-only.component.html',
   styleUrls: ['./admin-only.component.css']
 })
 export class AdminOnlyComponent implements OnInit, AfterViewInit {
-  sidebarOpen = false;
+  sidebarOpen = false; // Par défaut, la barre latérale est fermée
   currentTime: string = '';
   currentYear: number = new Date().getFullYear();
 
-  constructor(public authService: AuthService,private userService: UserService, private router: Router) {}
-  
-  goToGestionDepartements() { // Nouvelle méthode
-    this.router.navigate(['/gestion-departements']);
-  }
+  constructor(public authService: AuthService, private router: Router) {}
+
   ngOnInit() {
-    this.updateTime();
-    setInterval(() => this.updateTime(), 1000);
+    this.currentTime = new Date().toLocaleTimeString();
   }
 
   ngAfterViewInit() {
@@ -61,7 +55,8 @@ export class AdminOnlyComponent implements OnInit, AfterViewInit {
   }
 
   toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
+    this.sidebarOpen = !this.sidebarOpen; // Inverse l'état de la barre latérale
+    console.log('Sidebar toggled:', this.sidebarOpen); // Pour déboguer
   }
 
   toggleFullScreen() {
@@ -77,20 +72,19 @@ export class AdminOnlyComponent implements OnInit, AfterViewInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/signup']);
   }
 
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
 
-logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  goToGestionDepartements() {
+    this.router.navigate(['/gestion-departements']);
   }
 
-  updateTime() {
-    const now = new Date();
-    this.currentTime = now.toLocaleTimeString();
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/signin']);
   }
 }

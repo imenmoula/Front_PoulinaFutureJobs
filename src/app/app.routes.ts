@@ -1,5 +1,6 @@
-
-import { Routes } from '@angular/router';
+// 
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
@@ -8,7 +9,7 @@ import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { RoleGuard } from './guards/role.guard';
-import { AuthGuard } from './guards/auth.guard'; // Vous devrez aussi le créer en standalone
+import { AuthGuard } from './guards/auth.guard';
 import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
 
 export const routes: Routes = [
@@ -40,6 +41,12 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'Admin' }
   },
-  { path: '**', redirectTo: '/signin' },
-  { path: 'gestion-departements', component: GestionDepartementsComponent }
+  { path: 'gestion-departements', component: GestionDepartementsComponent },
+  { path: '**', redirectTo: '/signin' }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

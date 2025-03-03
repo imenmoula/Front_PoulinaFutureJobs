@@ -99,7 +99,7 @@ export class AuthService {
 
 
   logout(): void {
-    console.log('User logged out');
-    // Ajoutez votre logique de déconnexion ici
+    localStorage.removeItem('token'); // Supprime le jeton si utilisé
+    console.log('Utilisateur déconnecté');
   }
 }

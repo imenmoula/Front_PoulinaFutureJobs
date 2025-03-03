@@ -6,5 +6,13 @@
   width: auto !important;
   margin: 10px auto !important;
 }
+/*dashboard admin */
+
+.sidebar-wrapper {
+  display: block !important;
+}
+.sidebar-main {
+  display: block !important;
+}
 
 
