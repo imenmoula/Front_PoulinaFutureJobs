@@ -26,8 +26,8 @@
 }
 
 .img-container img {
-  width:200px; /* Augmenter la taille */
-  height: 200px;
+  width:250px; /* Augmenter la taille */
+  height: 250px;
   border-radius: 50%; /* Rendre circulaire */
   object-fit: cover; /* Ajuster l’image */
   border: 3px solid #ddd; /* Bordure */

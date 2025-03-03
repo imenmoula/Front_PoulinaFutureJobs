@@ -57,25 +57,36 @@
           "output": "assets"
               }
             ],
-           "styles": [
-  "src/styles.css",
-  "src/assets/css/fontawesome.css",
-  "src/assets/css/vendors/feather-icon.css",
-  "src/assets/css/vendors/bootstrap.css",
-  "src/assets/css/style.css",
-  "src/assets/css/color-1.css",
-  "src/assets/css/responsive.css"
+           "styles": [  
+            "src/styles.css",
+            "src/assets/css/fontawesome.css",
+            "src/assets/css/vendors/icofont.css",
+            "src/assets/css/vendors/themify.css",
+            "src/assets/css/vendors/flag-icon.css",
+            "src/assets/css/vendors/feather-icon.css",
+            "src/assets/css/vendors/slick.css",
+            "src/assets/css/vendors/slick-theme.css",
+            "src/assets/css/vendors/slick-theme.css",
+          "src/assets/css/vendors/scrollbar.css",
+              "src/assets/css/vendors/animate.css",
+              "src/assets/css/vendors/jquery.dataTables.css",
+             "src/assets/css/vendors/select.bootstrap5.css",
+            "src/assets/css/vendors/bootstrap.css",
+            "src/assets/css/style.css",
+            "src/assets/css/color-1.css",
+            "src/assets/css/responsive.css"
 ],
           "scripts": [
-  "node_modules/jquery/dist/jquery.min.js",
+       "node_modules/jquery/dist/jquery.min.js",
   "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
   "node_modules/feather-icons/dist/feather.min.js",
+  "src/assets/js/icons/feather-icon/feather-icon.js",
   "src/assets/js/scrollbar/simplebar.min.js",
   "src/assets/js/scrollbar/custom.js",
   "src/assets/js/config.js",
-  "src/assets/js/sidebar-menu.js", 
-  "src/assets/js/clock.js",        
-  "src/assets/js/scripts.js"         
+  "src/assets/js/sidebar-menu.js",         
+  "src/assets/js/scripts.js",
+  "src/assets/js/theme-customizer/customizer.js"        
 ]
           },
           "configurations": {
@@ -143,9 +154,19 @@
               }
             ],
             "styles": [
-  "src/styles.css",
+              "src/styles.css",
   "src/assets/css/fontawesome.css",
+  "src/assets/css/vendors/icofont.css",
+  "src/assets/css/vendors/themify.css",
+  "src/assets/css/vendors/flag-icon.css",
   "src/assets/css/vendors/feather-icon.css",
+  "src/assets/css/vendors/slick.css",
+  "src/assets/css/vendors/slick-theme.css",
+  "src/assets/css/vendors/slick-theme.css",
+"src/assets/css/vendors/scrollbar.css",
+    "src/assets/css/vendors/animate.css",
+    "src/assets/css/vendors/jquery.dataTables.css",
+   "src/assets/css/vendors/select.bootstrap5.css",
   "src/assets/css/vendors/bootstrap.css",
   "src/assets/css/style.css",
   "src/assets/css/color-1.css",
@@ -155,12 +176,13 @@
   "node_modules/jquery/dist/jquery.min.js",
   "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
   "node_modules/feather-icons/dist/feather.min.js",
+  "src/assets/js/icons/feather-icon/feather-icon.js",
   "src/assets/js/scrollbar/simplebar.min.js",
   "src/assets/js/scrollbar/custom.js",
   "src/assets/js/config.js",
-  "src/assets/js/sidebar-menu.js",  
-  "src/assets/js/clock.js",        
-  "src/assets/js/scripts.js"         
+  "src/assets/js/sidebar-menu.js",         
+  "src/assets/js/scripts.js",
+  "src/assets/js/theme-customizer/customizer.js"         
 ]
           }
         }
