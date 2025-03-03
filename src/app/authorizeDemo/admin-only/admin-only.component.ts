@@ -18,6 +18,7 @@ import { UserComponent } from './../../user/user.component';
    // admin-only.component.ts
 // admin-only.component.ts
 // src/app/authorizeDemo/admin-only/admin-only.component.ts
+// src/app/authorizeDemo/admin-only/admin-only.component.ts
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -38,9 +39,14 @@ declare global {
   styleUrls: ['./admin-only.component.css']
 })
 export class AdminOnlyComponent implements OnInit, AfterViewInit {
-  sidebarOpen = false; // Par défaut, la barre latérale est fermée
+  sidebarOpen = false;
   currentTime: string = '';
   currentYear: number = new Date().getFullYear();
+  filialeMenuOpen = false;
+  departementMenuOpen = false;
+  utilisateurMenuOpen = false;
+  roleMenuOpen = false;
+  quizMenuOpen = false;
 
   constructor(public authService: AuthService, private router: Router) {}
 
@@ -55,8 +61,8 @@ export class AdminOnlyComponent implements OnInit, AfterViewInit {
   }
 
   toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen; // Inverse l'état de la barre latérale
-    console.log('Sidebar toggled:', this.sidebarOpen); // Pour déboguer
+    this.sidebarOpen = !this.sidebarOpen;
+    console.log('Sidebar toggled:', this.sidebarOpen);
   }
 
   toggleFullScreen() {
@@ -72,7 +78,7 @@ export class AdminOnlyComponent implements OnInit, AfterViewInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/profile']);
   }
 
   goToDashboard() {
@@ -83,8 +89,28 @@ export class AdminOnlyComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/gestion-departements']);
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/signin']);
+  onLogout() {
+    this.authService.deleteToken();
+    this.router.navigateByUrl('/signin');
+  }
+
+  toggleFilialeMenu() {
+    this.filialeMenuOpen = !this.filialeMenuOpen;
+  }
+
+  toggleDepartementMenu() {
+    this.departementMenuOpen = !this.departementMenuOpen;
+  }
+
+  toggleUtilisateurMenu() {
+    this.utilisateurMenuOpen = !this.utilisateurMenuOpen;
+  }
+
+  toggleRoleMenu() {
+    this.roleMenuOpen = !this.roleMenuOpen;
+  }
+
+  toggleQuizMenu() {
+    this.quizMenuOpen = !this.quizMenuOpen;
   }
 }

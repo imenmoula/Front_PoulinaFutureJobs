@@ -16,3 +16,25 @@
 }
 
 
+
+
+.img-container {
+  display: flex;
+  gap: 15px; /* Espacement entre les images */
+  justify-content: center; /* Centrer les images */
+  align-items: center;
+}
+
+.img-container img {
+  width:200px; /* Augmenter la taille */
+  height: 200px;
+  border-radius: 50%; /* Rendre circulaire */
+  object-fit: cover; /* Ajuster l’image */
+  border: 3px solid #ddd; /* Bordure */
+  transition: transform 0.3s ease-in-out; /* Effet au survol */
+}
+
+.img-container img:hover {
+  transform: scale(1.1); /* Effet zoom au survol */
+}
+

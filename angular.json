@@ -75,7 +75,7 @@
   "src/assets/js/config.js",
   "src/assets/js/sidebar-menu.js", 
   "src/assets/js/clock.js",        
-  "src/assets/js/script.js"         
+  "src/assets/js/scripts.js"         
 ]
           },
           "configurations": {
@@ -160,7 +160,7 @@
   "src/assets/js/config.js",
   "src/assets/js/sidebar-menu.js",  
   "src/assets/js/clock.js",        
-  "src/assets/js/script.js"         
+  "src/assets/js/scripts.js"         
 ]
           }
         }

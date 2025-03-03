@@ -5,7 +5,7 @@
     <div class="header-wrapper row m-0">
       <div class="header-logo-wrapper col-auto p-0">
         <div class="logo-wrapper">
-          <a routerLink="/"><img class="img-fluid for-light" src="assets/images/logo/logo.png" alt="Logo"></a>
+          <a routerLink="/"><img class="img-fluid for-light" src="src/assets/images/logo/poulina_logo.jpg" alt="Logo"></a>
         </div>
         <div class="toggle-sidebar" (click)="toggleSidebar()">
           <i class="fa-solid fa-bars"></i>
@@ -36,8 +36,8 @@
               </div>
             </div>
             <ul class="profile-dropdown onhover-show-div">
-              <li><a href="#" (click)="goToProfile()"><i data-feather="user"></i><span>Account</span></a></li>
-              <li><a href="#" (click)="logout()"><i data-feather="log-out"></i><span>Déconnexion</span></a></li>
+              <li><a href="#" (click)="goToProfile()"><i data-feather="user"></i><span>Profile</span></a></li>
+              <li><a href="#" (click)="onLogout()"><i data-feather="log-out"></i><span>Déconnexion</span></a></li>
             </ul>
           </li>
         </ul>
@@ -64,36 +64,30 @@
           <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
           <div id="sidebar-menu">
             <ul class="sidebar-links" id="simple-bar">
-              <!-- <li class="back-btn">
-                <a routerLink="/"><img class="img-fluid" src="assets/images/logo/logo-icon.png" alt=""></a>
-                <div class="mobile-back text-end" (click)="toggleSidebar()">
-                  <span>Back</span><i class="fa-solid fa-angle-right ps-2" aria-hidden="true"></i>
-                </div>
-              </li> -->
-             
               <li class="sidebar-main-title">
-                <div><h6 class="lan-1">General</h6></div>
+                <div><h6 class="lan-8">Dashboard ADMIN</h6></div>
               </li>
               <li class="sidebar-list">
                 <i class="fa-solid fa-thumbtack"></i>
-                <label class="badge badge-light-primary"></label>
-                <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                <a class="sidebar-link sidebar-title" href="javascript:void(0)" (click)="toggleFilialeMenu()">
                   <svg class="stroke-icon">
                     <use href="assets/svg/icon-sprite.svg#stroke-home"></use>
                   </svg>
                   <svg class="fill-icon">
                     <use href="assets/svg/icon-sprite.svg#fill-home"></use>
                   </svg>
-                  <span class="lan-3">Dashboard Admin</span>
+                  <span>Gestion des Filiale</span>
+                  <i class="fa-solid fa-angle-right sub-arrow" [ngClass]="{'rotate': filialeMenuOpen}"></i>
                 </a>
-                <ul class="sidebar-submenu">
-                  <li><a class="lan-4" routerLink="/">Default</a></li>
-                  <!-- Ajoutez d'autres sous-menus ici avec routerLink -->
+                <ul class="sidebar-submenu" [ngClass]="{'active': filialeMenuOpen}">
+                  <li><a routerLink="/filiale-list">Consulte liste Filiale</a></li>
+                  <li><a routerLink="/add-filiale">Ajouter filiale</a></li>
                 </ul>
               </li>
+
               <li class="sidebar-list">
                 <i class="fa-solid fa-thumbtack"></i>
-                <a class="sidebar-link sidebar-title link-nav" routerLink="/gestion-departements">
+                <a class="sidebar-link sidebar-title link-nav" routerLink="/gestion-departements" (click)="toggleDepartementMenu()">
                   <svg class="stroke-icon">
                     <use href="assets/svg/icon-sprite.svg#stroke-home"></use>
                   </svg>
@@ -101,25 +95,69 @@
                     <use href="assets/svg/icon-sprite.svg#fill-home"></use>
                   </svg>
                   <span>Gestion des départements</span>
+                  <i class="fa-solid fa-angle-right sub-arrow" [ngClass]="{'rotate': departementMenuOpen}"></i>
                 </a>
+                <ul class="sidebar-submenu" [ngClass]="{'active': departementMenuOpen}">
+                  <li><a routerLink="/departement-list">Consulte liste département</a></li>
+                  <li><a routerLink="/add-departement">Ajouter Departements</a></li>
+                </ul>
               </li>
-              <!-- Ajoutez d'autres sections comme dans le code Cuba original si nécessaire -->
-              <li class="sidebar-main-title">
-                <div><h6 class="lan-8">Applications</h6></div>
-              </li>
+
               <li class="sidebar-list">
                 <i class="fa-solid fa-thumbtack"></i>
-                <a class="sidebar-link sidebar-title link-nav" routerLink="/file-manager">
+                <a class="sidebar-link sidebar-title" href="javascript:void(0)" (click)="toggleUtilisateurMenu()">
                   <svg class="stroke-icon">
-                    <use href="assets/svg/icon-sprite.svg#stroke-file"></use>
+                    <use href="assets/svg/icon-sprite.svg#stroke-user"></use>
                   </svg>
                   <svg class="fill-icon">
-                    <use href="assets/svg/icon-sprite.svg#fill-file"></use>
+                    <use href="assets/svg/icon-sprite.svg#fill-user"></use>
                   </svg>
-                  <span>File manager</span>
+                  <span>Gestion des Utilisateurs</span>
+                  <i class="fa-solid fa-angle-right sub-arrow" [ngClass]="{'rotate': utilisateurMenuOpen}"></i>
                 </a>
+                <ul class="sidebar-submenu" [ngClass]="{'active': utilisateurMenuOpen}">
+                  <li><a routerLink="/candidate-list">Consulte liste Candidate</a></li>
+                  <li><a routerLink="/recruteur-list">Consulte Liste des Recruteurs</a></li>
+                </ul>
               </li>
-              <!-- Ajoutez plus d'éléments selon vos besoins -->
+
+              <li class="sidebar-list">
+                <i class="fa-solid fa-thumbtack"></i>
+                <a class="sidebar-link sidebar-title" href="javascript:void(0)" (click)="toggleRoleMenu()">
+                  <svg class="stroke-icon">
+                    <use href="assets/svg/icon-sprite.svg#stroke-role"></use>
+                  </svg>
+                  <svg class="fill-icon">
+                    <use href="assets/svg/icon-sprite.svg#fill-role"></use>
+                  </svg>
+                  <span>Gestion des Role</span>
+                  <i class="fa-solid fa-angle-right sub-arrow" [ngClass]="{'rotate': roleMenuOpen}"></i>
+                </a>
+                <ul class="sidebar-submenu" [ngClass]="{'active': roleMenuOpen}">
+                  <!-- Ajoutez les sous-menus pour les rôles ici si nécessaire -->
+                  <li><a routerLink="/role-list">Consulte liste des rôles</a></li>
+                  <li><a routerLink="/add-role">Ajouter rôle</a></li>
+                </ul>
+              </li>
+
+              <li class="sidebar-list">
+                <i class="fa-solid fa-thumbtack"></i>
+                <a class="sidebar-link sidebar-title" href="javascript:void(0)" (click)="toggleQuizMenu()">
+                  <svg class="stroke-icon">
+                    <use href="assets/svg/icon-sprite.svg#stroke-quiz"></use>
+                  </svg>
+                  <svg class="fill-icon">
+                    <use href="assets/svg/icon-sprite.svg#fill-quiz"></use>
+                  </svg>
+                  <span>Gestion des Quiz</span>
+                  <i class="fa-solid fa-angle-right sub-arrow" [ngClass]="{'rotate': quizMenuOpen}"></i>
+                </a>
+                <ul class="sidebar-submenu" [ngClass]="{'active': quizMenuOpen}">
+                  <!-- Ajoutez les sous-menus pour les quiz ici si nécessaire -->
+                  <li><a routerLink="/quiz-list">Consulte liste des quiz</a></li>
+                  <li><a routerLink="/add-quiz">Ajouter quiz</a></li>
+                </ul>
+              </li>
             </ul>
           </div>
           <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
@@ -153,10 +191,9 @@
                   <div class="flex-grow-1">
                     <div class="greeting-user">
                       <h2 class="f-w-600">Bienvenue, {{ authService.getUserFullName() }} !</h2>
-                      <p>Here’s what’s happening in your account today</p>
+                      <p>Bienvenue chez platforme poulina recrute future Jobs</p>
                       <div class="whatsnew-btn">
                         <a class="btn btn-outline-white" href="#" (click)="goToProfile()">View Profile</a>
-                        <button class="btn btn-primary" (click)="goToGestionDepartements()">Aller à Gestion des départements</button>
                       </div>
                     </div>
                   </div>
@@ -203,6 +240,5 @@
         </div>
       </div>
     </footer>
-
   </div>
 </div>
