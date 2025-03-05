@@ -1,14 +1,14 @@
-import { AuthService } from './../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-AuthService
+import { RouterLinkActive, RouterModule } from '@angular/router';
+import { AuthService } from './../../shared/services/auth.service';
+
 @Component({
   selector: 'app-content',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './content.component.html',
-  styles: ``
+  styleUrls: [''],
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
 export class ContentComponent implements OnInit {
   currentTime: string='';

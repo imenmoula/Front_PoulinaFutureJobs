@@ -1,19 +1,4 @@
 <div class="page-body">
-  <div class="container-fluid">
-    <div class="page-title">
-      <div class="row">
-        <div class="col-sm-6">
-          <h3>Default</h3>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a routerLink="/">Dashboard</a></li>
-            <li class="breadcrumb-item active">Default</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="container-fluid default-dashboard">
     <div class="row widget-grid">
       <div class="col-12">
@@ -25,7 +10,7 @@
                   <h2 class="f-w-600">Bienvenue, {{ authService.getUserFullName() }} !</h2>
                   <p>Bienvenue chez plateforme Poulina Recrute Future Jobs</p>
                   <div class="whatsnew-btn">
-                    <a class="btn btn-outline-white" href="#" (click)="goToProfile()">Voir Profil</a>
+                    <a class="btn btn-outline-white" href="#" (click)=" goToProfile()">Voir Profil</a>
                   </div>
                 </div>
               </div>

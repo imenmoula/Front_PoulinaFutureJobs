@@ -1,31 +1,43 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { UserComponent } from './user/user.component';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './shared/services/auth.service';
-import { FormsModule } from '@angular/forms';
-import feather from 'feather-icons';
+import * as feather from 'feather-icons';
+import * as bootstrap from 'bootstrap'; // Ajout de l'import de Bootstrap
+import { RouterModule } from '@angular/router';
+
 declare var $: any;
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,RouterLink, CommonModule,FormsModule],
   standalone: true,
-   templateUrl: './app.component.html',
-
-  styles: [],
+  imports: [RouterOutlet,RouterModule],
+  templateUrl: './app.component.html',
+  styleUrls: ['']
 })
-export class AppComponent implements AfterViewInit {
-  constructor(public authService: AuthService, public router: Router) {}
-  title = 'Front_PoulinaFutureJobs';
-  ngAfterViewInit() {
-    feather.replace(); // Remplace les balises <i data-feather="icon-name">
-  }
+export class AppComponent implements AfterViewInit, OnInit {
+  constructor(private router: Router) {}
+
   ngOnInit() {
-    $(document).ready(function () {
-      console.log("jQuery et Bootstrap sont bien chargés !");
-    });
-}
-}
+    feather.replace();
+  }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      $(document).ready(() => {
+        console.log("jQuery et Bootstrap sont bien chargés !");
+        if (typeof bootstrap !== 'undefined') {
+          const dropdowns = document.querySelectorAll('.dropdown-toggle');
+          dropdowns.forEach(el => new bootstrap.Dropdown(el));
+        }
+      });
+    }, 100); // Delay to ensure DOM is ready
+  }
+  navigateToFiliale() {
+    this.router.navigate(['/filiale']);
+  }
 
+  navigateToDepartement() {
+    this.router.navigate(['/departement']);
+  }
+  
+}

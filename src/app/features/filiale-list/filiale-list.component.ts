@@ -3,6 +3,7 @@ import { FilialeService } from '../../shared/services/filiale.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { Filiale } from '../../../Models/filiale.model';
 
 
 @Component({

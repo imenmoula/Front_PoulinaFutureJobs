@@ -42,6 +42,7 @@
             "outputPath": "dist/front-poulina-future-jobs",
             "index": "src/index.html",
             "browser": "src/main.ts",
+
             "polyfills": [
               "zone.js"
             ],

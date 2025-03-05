@@ -39,10 +39,13 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'Admin' }
   },
-  { path: 'gestion-departements', component: GestionDepartementsComponent },
   { path: '**', redirectTo: '/signin' },
-  { path: '', redirectTo: '/filiales', pathMatch: 'full' }, // Redirection par défaut];
+  { path: 'filiale', component: FilialeListComponent },
+  { path: 'departement', component: GestionDepartementsComponent },
+  { path: '', redirectTo: '/departement', pathMatch: 'full' }, 
+  { path: '**', redirectTo: '/departement' } // Redirection en cas d'erreur
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

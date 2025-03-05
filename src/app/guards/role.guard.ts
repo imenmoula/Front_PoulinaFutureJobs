@@ -1,8 +1,4 @@
-// import { CanActivateFn } from '@angular/router';
 
-// export const roleGuard: CanActivateFn = (route, state) => {
-//   return true;
-// };
 import { CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
@@ -20,3 +16,4 @@ export const RoleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   router.navigate(['/signin']);
   return false;
 };
+

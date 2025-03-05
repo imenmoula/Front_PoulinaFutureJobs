@@ -21,7 +21,7 @@
 }
 .sidebar-main {
   display: block !important;
-}
+} 
 
 
 
@@ -57,12 +57,12 @@
 
 
 
-.img-container {
+/* .img-container {
   display: flex;
-  gap: 15px; /* Espacement entre les images */
-  justify-content: center; /* Centrer les images */
+  gap: 15px; 
+  justify-content: center; 
   align-items: center;
-}
+} */
 
 .img-container img {
   width:250px; /* Augmenter la taille */

@@ -19,15 +19,15 @@
     <div class="sidebar">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" routerLink="/">Accueil</a>
+          <a class="nav-link" routerLink="/departement" routerLinkActive="active">Accueil</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" (click)="toggleMenu('gestion')">
             Gestion
           </a>
-          <ul class="collapse list-unstyled" [ngClass]="{'show': menuState['gestion']}">
-            <li><a class="nav-link" routerLink="/filiales">🔹 Filiale</a></li>
-            <li><a class="nav-link" href="#">🔹 Département</a></li>
+          <ul class="list-unstyled" [class.show]="menuState['gestion']">
+            <li><a class="nav-link" routerLink="/filiale" routerLinkActive="active">🔹 Filiale</a></li>
+              <li><a class="nav-link" routerLink="/departement" routerLinkActive="active">🔹 Département</a></li>
           </ul>
         </li>
       </ul>

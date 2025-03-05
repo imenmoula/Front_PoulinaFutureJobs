@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, ChildrenOutletContexts } from '@angular/router';
 import { trigger, style, transition, animate, query } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CommonModule, RouterOutlet], // CommonModule doit être en premier
   templateUrl: './user.component.html',
   styles: ``,
   animations: [
@@ -20,10 +21,15 @@ import { trigger, style, transition, animate, query } from '@angular/animations'
   ]
 })
 export class UserComponent {
+  showElement = true; 
+
   constructor(private context: ChildrenOutletContexts) {}
 
   getRouteUrl() {
     return this.context.getContext('primary')?.route?.url;
   }
-  
+  menuState: { [key: string]: boolean } = {};
+
+
+
 }
