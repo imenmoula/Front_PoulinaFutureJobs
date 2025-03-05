@@ -1,0 +1,67 @@
+<div class="container">
+    <h2>Manage Filiales</h2>
+  
+    <!-- Form for Create/Update -->
+    <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nom">Name</label>
+        <input type="text" id="nom" formControlName="nom" class="form-control" [class.is-invalid]="filialeForm.get('nom')?.invalid && filialeForm.get('nom')?.touched">
+        <div *ngIf="filialeForm.get('nom')?.invalid && filialeForm.get('nom')?.touched" class="invalid-feedback">
+          Name is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="adresse">Address</label>
+        <input type="text" id="adresse" formControlName="adresse" class="form-control" [class.is-invalid]="filialeForm.get('adresse')?.invalid && filialeForm.get('adresse')?.touched">
+        <div *ngIf="filialeForm.get('adresse')?.invalid && filialeForm.get('adresse')?.touched" class="invalid-feedback">
+          Address is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" class="form-control" [class.is-invalid]="filialeForm.get('description')?.invalid && filialeForm.get('description')?.touched"></textarea>
+        <div *ngIf="filialeForm.get('description')?.invalid && filialeForm.get('description')?.touched" class="invalid-feedback">
+          Description is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="photo">Photo URL</label>
+        <input type="text" id="photo" formControlName="photo" class="form-control">
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="filialeForm.invalid">
+        {{ isEditing ? 'Update' : 'Create' }} Filiale
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+    </form>
+  
+    <!-- List of Filiales -->
+    <h3>Filiales List</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Description</th>
+          <th>Photo</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let filiale of filiales">
+          <td>{{ filiale.nom }}</td>
+          <td>{{ filiale.adresse }}</td>
+          <td>{{ filiale.description }}</td>
+          <td><img [src]="filiale.photo" alt="{{ filiale.nom }}" style="max-width: 100px;"></td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="editFiliale(filiale)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteFiliale(filiale.idFiliale)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

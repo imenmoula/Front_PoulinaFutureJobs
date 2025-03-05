@@ -1,3 +1,4 @@
+import { AuthService } from './shared/services/auth.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +14,12 @@ import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.compon
 import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
+import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
+import { HeaderComponent } from './layoutBackend/header/header.component';
+import { SidebarComponent } from './layoutBackend/sidebar/sidebar.component';
+import { ContentComponent } from './layoutBackend/content/content.component';
+import { FooterComponent } from './layoutBackend/footer/footer.component';
+
 
 @NgModule({
   declarations: [
@@ -24,14 +31,19 @@ import { RoleGuard } from './guards/role.guard';
     RecruteurOnlyComponent,
     CandidateOnlyComponent,
     AdminOnlyComponent,
-    GestionDepartementsComponent
+    GestionDepartementsComponent,
+    LayoutBackendComponent,
+    HeaderComponent,
+    SidebarComponent,
+    ContentComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule, // Includes CommonModule for *ngIf, [ngClass]
     FormsModule,   // For [(ngModel)]
     AppRoutingModule
   ],
-  providers: [AuthGuard, RoleGuard], // Guards as providers
+  providers: [AuthService,AuthGuard, RoleGuard], // Guards as providers
   bootstrap: [AppComponent]
 })
 export class AppModule { }

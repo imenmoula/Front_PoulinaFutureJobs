@@ -1,0 +1,36 @@
+<div class="sidebar-wrapper" [ngClass]="{'sidebar-open': sidebarOpen}" data-sidebar-layout="stroke-svg">
+  <div>
+    <div class="logo-wrapper">
+      <a routerLink="/">
+        <img class="img-fluid" src="assets/images/logo/poulina_logo.jpg" alt="Logo" />
+      </a>
+      <div class="back-btn" (click)="toggleSidebar()">
+        <i class="fa-solid fa-angle-left"></i>
+      </div>
+      <div class="toggle-sidebar" (click)="toggleSidebar()">
+        <i class="status_toggle middle sidebar-toggle" data-feather="grid"></i>
+      </div>
+    </div>
+    <div class="logo-icon-wrapper">
+      <a routerLink="/">
+        <img class="img-fluid" src="assets/images/logo/logo-icon.png" alt="" />
+      </a>
+    </div>
+    <div class="sidebar">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/">Accueil</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" (click)="toggleMenu('gestion')">
+            Gestion
+          </a>
+          <ul class="collapse list-unstyled" [ngClass]="{'show': menuState['gestion']}">
+            <li><a class="nav-link" routerLink="/filiales">🔹 Filiale</a></li>
+            <li><a class="nav-link" href="#">🔹 Département</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

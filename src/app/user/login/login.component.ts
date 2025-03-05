@@ -85,8 +85,9 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/recruiter');
     } else if (roles.includes('Candidate')) {
       this.router.navigateByUrl('/candidate');
-    } else {
-      this.router.navigateByUrl('/dashboard');
+    } 
+    else {
+      this.router.navigateByUrl('/forbidden');
     }
   }
 }

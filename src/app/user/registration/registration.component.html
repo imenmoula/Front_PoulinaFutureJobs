@@ -5,7 +5,25 @@
       Déjà un compte ?
       <a routerLink="/signin" class="text-decoration-none fw-medium d-inline-block">Se connecter</a>
     </p>
+   
 
+
+    <!-- Nom complet -->
+    <div class="mb-3">
+      <input class="form-control bg-body-secondary" placeholder="Votre nom svp" formControlName="nom">
+      <div class="error-feedback" *ngIf="hasDisplayableError('nom')">
+        Veuillez entrer votre nom svp
+      </div>
+    </div>
+
+
+    <!-- Nom complet -->
+    <div class="mb-3">
+      <input class="form-control bg-body-secondary" placeholder="Votre prenom" formControlName="prenom">
+      <div class="error-feedback" *ngIf="hasDisplayableError('prenom')">
+        Veuillez entrer votre prenom .
+      </div>
+    </div>
     <!-- Nom complet -->
     <div class="mb-3">
       <input class="form-control bg-body-secondary" placeholder="Nom complet" formControlName="fullName">

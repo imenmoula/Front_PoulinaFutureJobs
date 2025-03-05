@@ -9,20 +9,20 @@
     // Setting and Layout Toggle
     
 
-    document.getElementById("cog-close").addEventListener("click", function () {
+   /* document.getElementById("cog-close").addEventListener("click", function () {
       var settingSidebar = document.querySelector(".setting-sidebar");
       settingSidebar.classList.remove("open");
-    });
+    });*/
 
-    document.getElementById("grip-click").addEventListener("click", function () {
+   /* document.getElementById("grip-click").addEventListener("click", function () {
       var settingSidebar = document.querySelector(".layout-sidebar");
       settingSidebar.classList.add("open");
-    });
+    });*/
 
-    document.getElementById("grip-close").addEventListener("click", function () {
+   /* document.getElementById("grip-close").addEventListener("click", function () {
       var settingSidebar = document.querySelector(".layout-sidebar");
       settingSidebar.classList.remove("open");
-    });
+    });*/
 
     function closeSidebarOnClickOutside(sidebarClass) {
       document.addEventListener("click", function (event) {
@@ -86,7 +86,7 @@
       location.reload(true);
     });
 
-    var primary = document.getElementById("ColorPicker1").value;
+    /*var primary = document.getElementById("ColorPicker1").value;
     document.getElementById("ColorPicker1").onchange = function () {
       primary = this.value;
       localStorage.setItem("primary", primary);
@@ -94,11 +94,11 @@
     };
 
     var secondary = document.getElementById("ColorPicker2").value;
-    document.getElementById("ColorPicker2").onchange = function () {
+   /* document.getElementById("ColorPicker2").onchange = function () {
       secondary = this.value;
       localStorage.setItem("secondary", secondary);
       document.documentElement.style.setProperty("--theme-secondary", secondary);
-    };
+    };*/
 
     $(".customizer-color.dark li").on("click", function () {
       $(".customizer-color.dark li").removeClass("active");

@@ -21,31 +21,68 @@
 //       })
 //     ) // Configuration de Toastr
 //   ]
-// }).catch(err => console.error(err));
+//  }).catch(err => console.error(err));
 
 
+
+
+
+
+// // import { bootstrapApplication } from '@angular/platform-browser';
+// // import { provideRouter } from '@angular/router';
+// // import { provideHttpClient } from '@angular/common/http';
+// // import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+// // import { importProvidersFrom } from '@angular/core';
+// // import { ToastrModule } from 'ngx-toastr';
+// // import { AppComponent } from './app/app.component';
+// // import { routes } from './app/app.routes';
+// // import feather from 'feather-icons';
+
+// // feather.replace();
+
+// // bootstrapApplication(AppComponent, {
+// //   providers: [
+// //     provideRouter(routes),
+// //     provideHttpClient(),
+// //     provideAnimations(),
+// //     BrowserAnimationsModule, // Nécessaire pour les animations de Toastr
+// //     ToastrModule.forRoot({ // Configuration globale de Toastr
+// //       positionClass: 'toast-top-center', // Position en haut au centre (vous pouvez aussi utiliser 'toast-top-right', 'toast-top-left', etc.)
+// //       timeOut: 5000, // Durée d'affichage en millisecondes (5 secondes)
+// //       closeButton: true, // Bouton de fermeture
+// //       progressBar: true, // Barre de progression
+// //     }),
+    
+// //   ],
+
+// // }).catch((err) => console.error(err));
 
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { importProvidersFrom } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import feather from 'feather-icons';
+import { importProvidersFrom } from '@angular/core';
+
+
+feather.replace(); // Initialiser Feather Icons
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideAnimations(),
+    provideAnimations(), 
     importProvidersFrom(
       ToastrModule.forRoot({
-        positionClass: 'toast-bottom-center', // Changed to bottom-right
-        preventDuplicates: true,
-        timeOut: 5000,
-        progressBar: true,
+        positionClass: 'toast-top-center', 
+        timeOut: 5000, 
+        closeButton: true, // Bouton de fermeture
+        progressBar: true, 
+        preventDuplicates: true, 
       })
     ),
   ],
-}).catch((err) => console.error(err));
+}).catch((err) => console.error('Bootstrap error:', err));

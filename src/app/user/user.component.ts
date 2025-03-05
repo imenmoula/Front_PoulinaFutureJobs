@@ -25,4 +25,5 @@ export class UserComponent {
   getRouteUrl() {
     return this.context.getContext('primary')?.route?.url;
   }
+  
 }

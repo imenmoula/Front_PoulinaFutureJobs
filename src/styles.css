@@ -1,3 +1,4 @@
+
 /* You can add global styles to this file, and also import other style filesstyles.css */
 .ngx-toastr {
   top: 0 !important;
@@ -5,6 +6,13 @@
   transform: translateX(-50%) !important;
   width: auto !important;
   margin: 10px auto !important;
+}
+
+.error-feedback {
+  font-size: 0.9rem;
+  color: crimson;
+  margin: 0.3rem !important;
+  margin-top: 0.1rem !important;
 }
 /*dashboard admin */
 
@@ -38,3 +46,91 @@
   transform: scale(1.1); /* Effet zoom au survol */
 }
 
+/* End dashboard admin */
+.sidebar-wrapper {
+  display: block !important;
+}
+.sidebar-main {
+  display: block !important;
+}
+
+
+
+
+.img-container {
+  display: flex;
+  gap: 15px; /* Espacement entre les images */
+  justify-content: center; /* Centrer les images */
+  align-items: center;
+}
+
+.img-container img {
+  width:250px; /* Augmenter la taille */
+  height: 250px;
+  border-radius: 50%; /* Rendre circulaire */
+  object-fit: cover; /* Ajuster l’image */
+  border: 3px solid #ddd; /* Bordure */
+  transition: transform 0.3s ease-in-out; /* Effet au survol */
+}
+
+.img-container img:hover {
+  transform: scale(1.1); /* Effet zoom au survol */
+}
+
+/* End dashboard admin */
+
+
+.sidebar-wrapper {
+  background:burlywood; /* Dégradé bleu */
+  color: cornflowerblue;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.sidebar .nav-link {
+  color: blue;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+.sidebar .nav-item .dropdown-toggle {
+  color: blue;
+}
+
+.sidebar .dropdown-menu {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .dropdown-menu .nav-link {
+  color: black;
+}
+
+.sidebar .dropdown-menu .nav-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+} 
+
+/* End dashboard admin */
+.container {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.btn {
+  margin-right: 10px;
+}
