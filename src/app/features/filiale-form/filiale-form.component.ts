@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { Filiale } from '../../../Models/filiale.model';
 
 
 @Component({
+  standalone: true, 
+  imports: [ReactiveFormsModule],
   selector: 'app-filiale-form',
   templateUrl: './filiale-form.component.html',
   styleUrls: ['']

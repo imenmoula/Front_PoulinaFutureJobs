@@ -4,17 +4,19 @@ import { FilialeService } from '../../shared/services/filiale.service';
 
 
 @Component({
+  standalone: true, // Si applicab
   selector: 'app-filials-list',
   templateUrl: './filials-list.component.html',
-  styleUrls: ['./filials-list.component.css']
+  styleUrls: ['./filiales-list.component.css']
 })
 export class FilialesListComponent implements OnInit {
   filiales: Filiale[] = [];
   isLoading = true; // Indicateur de chargement
   errorMessage: string | null = null; // Message d'erreur
 
-  constructor(private filialeService: FilialeService) {}
+  constructor(private filialeService: FilialeService) {
 
+  }
   ngOnInit(): void {
     this.loadFiliales();
   }
@@ -46,5 +48,9 @@ export class FilialesListComponent implements OnInit {
         }
       );
     }
+  }
+
+  get isAdmin(): boolean {
+    return localStorage.getItem('userRole') === 'Admin';
   }
 }

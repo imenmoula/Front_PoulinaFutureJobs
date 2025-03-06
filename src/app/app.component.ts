@@ -18,13 +18,14 @@ export class AppComponent implements AfterViewInit, OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
+
     feather.replace();
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       $(document).ready(() => {
-        console.log("jQuery et Bootstrap sont bien chargés !");
+        // console.log("jQuery et Bootstrap sont bien chargés !");
         if (typeof bootstrap !== 'undefined') {
           const dropdowns = document.querySelectorAll('.dropdown-toggle');
           dropdowns.forEach(el => new bootstrap.Dropdown(el));
@@ -32,6 +33,6 @@ export class AppComponent implements AfterViewInit, OnInit {
       });
     }, 100); // Delay to ensure DOM is ready
   }
- 
+  
   
 }

@@ -42,15 +42,15 @@ import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez cette ligne
     ContentComponent,
     FooterComponent,
     FilialesListComponent,
-    FilialeFormComponent
   ],
   imports: [
-    BrowserModule, // Includes CommonModule for *ngIf, [ngClass]
-    FormsModule,   // For [(ngModel)]
+    BrowserModule,
+    FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClienttModule
-  ],
+    ReactiveFormsModule, 
+    HttpClientModule
+],
+
   providers: [AuthService,RoleGuard,authGuard], // Guards as providers
   bootstrap: [AppComponent]
 })

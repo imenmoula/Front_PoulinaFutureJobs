@@ -1,5 +1,8 @@
 <div class="container">
   <h2>Liste des filiales</h2>
+  <p>isLoading: {{ isLoading }}</p>
+<p>errorMessage: {{ errorMessage }}</p>
+<p>Nombre de filiales: {{ filiales.length }}</p>
 
   <!-- Message de chargement -->
   <div *ngIf="isLoading" class="alert alert-info">
@@ -28,10 +31,11 @@
         <td>{{ filiale.nom }}</td>
         <td>{{ filiale.adresse }}</td>
         <td>{{ filiale.description }}</td>
-        <td>
-          <button class="btn btn-primary btn-sm" routerLink="/filiales/edit/{{ filiale.idFiliale }}">Éditer</button>
+        <td *ngIf="isAdmin">
+          <button class="btn btn-primary btn-sm" [routerLink]="'/filiales/edit/' + filiale.idFiliale">Éditer</button>
           <button class="btn btn-danger btn-sm" (click)="onDelete(filiale.idFiliale)">Supprimer</button>
         </td>
+        
       </tr>
     </tbody>
   </table>
