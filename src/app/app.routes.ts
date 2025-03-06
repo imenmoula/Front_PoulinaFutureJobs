@@ -8,8 +8,8 @@ import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { RoleGuard } from './guards/role.guard';
 import { AuthGuard } from './guards/auth.guard';
-import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
-import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
+import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
+import { FilialesListComponent } from './features/filiale-list/filiale-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -39,11 +39,10 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'Admin' }
   },
-  { path: '**', redirectTo: '/signin' },
-  { path: 'filiale', component: FilialeListComponent },
-  { path: 'departement', component: GestionDepartementsComponent },
-  { path: '', redirectTo: '/departement', pathMatch: 'full' }, 
-  { path: '**', redirectTo: '/departement' } // Redirection en cas d'erreur
+  { path: 'filiales', component: FilialesListComponent },
+  { path: 'filiales/add', component: FilialeFormComponent, data: { mode: 'add' } },
+  { path: 'filiales/edit/:id', component: FilialeFormComponent, data: { mode: 'edit' } },
+  { path: '', redirectTo: '/filiales', pathMatch: 'full' }
 ];
 
 @NgModule({

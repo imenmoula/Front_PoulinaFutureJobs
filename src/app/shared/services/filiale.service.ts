@@ -1,34 +1,38 @@
-import { HttpClient } from '@angular/common/http';
+// src/app/services/filiale.service.ts
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.development';
 import { Filiale } from '../../../Models/filiale.model';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilialeService {
-  private apiUrl = `${environment.apiBaseUrl}/Filiales`;
+  private apiUrl = `${environment.apiBaseUrl}/Filiales`; // Utilisez l'environnement ici
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer YOUR_JWT_TOKEN' })
+  };
 
   constructor(private http: HttpClient) {}
 
   getFiliales(): Observable<Filiale[]> {
-    return this.http.get<Filiale[]>(this.apiUrl);
+    return this.http.get<Filiale[]>(this.apiUrl, this.httpOptions);
   }
 
-  getFiliale(id: string): Observable<Filiale> {
-    return this.http.get<Filiale>(`${this.apiUrl}/${id}`);
+  addFiliale(filiale: Filiale): Observable<Filiale> {
+    return this.http.post<Filiale>(this.apiUrl, filiale, this.httpOptions);
   }
 
-  createFiliale(filiale: Filiale): Observable<Filiale> {
-    return this.http.post<Filiale>(this.apiUrl, filiale);
+  updateFiliale(id: string, filiale: Filiale): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.put(url, filiale, this.httpOptions);
   }
 
-  updateFiliale(id: string, filiale: Filiale): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, filiale);
-  }
-
-  deleteFiliale(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteFiliale(id: string): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete(url, this.httpOptions);
   }
 }

@@ -32,12 +32,6 @@ export class AppComponent implements AfterViewInit, OnInit {
       });
     }, 100); // Delay to ensure DOM is ready
   }
-  navigateToFiliale() {
-    this.router.navigate(['/filiale']);
-  }
-
-  navigateToDepartement() {
-    this.router.navigate(['/departement']);
-  }
+ 
   
 }

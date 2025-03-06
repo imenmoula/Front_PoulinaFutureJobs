@@ -1,101 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { FilialeService } from '../../shared/services/filiale.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
 import { Filiale } from '../../../Models/filiale.model';
+import { FilialeService } from '../../shared/services/filiale.service';
 
 
 @Component({
-  selector: 'app-filiale-list',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './filiale-list.component.html',
-  styles: ``
+  selector: 'app-filials-list',
+  templateUrl: './filials-list.component.html',
+  styleUrls: ['./filials-list.component.css']
 })
-export class FilialeListComponent implements OnInit {
+export class FilialesListComponent implements OnInit {
   filiales: Filiale[] = [];
-  filialeForm: FormGroup;
-  isEditing: boolean = false;
-  selectedFilialeId: string | null = null;
+  isLoading = true; // Indicateur de chargement
+  errorMessage: string | null = null; // Message d'erreur
 
-  constructor(
-    private filialeService: FilialeService,
-    private fb: FormBuilder,
-    private toastr: ToastrService
-  ) {
-    this.filialeForm = this.fb.group({
-      idFiliale: [''],
-      nom: ['', Validators.required],
-      adresse: ['', Validators.required],
-      description: ['', Validators.required],
-      photo: ['']
-    });
-  }
+  constructor(private filialeService: FilialeService) {}
 
   ngOnInit(): void {
     this.loadFiliales();
   }
 
   loadFiliales(): void {
-    this.filialeService.getFiliales().subscribe({
-      next: (data) => this.filiales = data,
-      error: (err) => this.toastr.error('Error loading filiales', 'Error')
-    });
-  }
+    this.isLoading = true; // Activer le loading
+    this.errorMessage = null; // Réinitialiser le message d'erreur
 
-  onSubmit(): void {
-    if (this.filialeForm.valid) {
-      const filiale: Filiale = this.filialeForm.value;
-      if (this.isEditing && this.selectedFilialeId) {
-        this.filialeService.updateFiliale(this.selectedFilialeId, filiale).subscribe({
-          next: () => {
-            this.toastr.success('Filiale updated successfully', 'Success');
-            this.loadFiliales();
-            this.resetForm();
-          },
-          error: (err) => this.toastr.error('Error updating filiale', 'Error')
-        });
-      } else {
-        this.filialeService.createFiliale(filiale).subscribe({
-          next: () => {
-            this.toastr.success('Filiale created successfully', 'Success');
-            this.loadFiliales();
-            this.resetForm();
-          },
-          error: (err) => this.toastr.error('Error creating filiale', 'Error')
-        });
+    this.filialeService.getFiliales().subscribe(
+      (data) => {
+        this.filiales = data;
+        this.isLoading = false; // Désactiver le loading après réussite
+      },
+      (error) => {
+        this.errorMessage = 'Une erreur est survenue lors du chargement des filiales.';
+        this.isLoading = false; // Désactiver le loading en cas d'erreur
       }
-    }
+    );
   }
 
-  editFiliale(filiale: Filiale): void {
-    this.isEditing = true;
-    this.selectedFilialeId = filiale.idFiliale;
-    this.filialeForm.patchValue(filiale);
-  }
-
-  deleteFiliale(id: string): void {
-    if (confirm('Are you sure you want to delete this filiale?')) {
-      this.filialeService.deleteFiliale(id).subscribe({
-        next: () => {
-          this.toastr.success('Filiale deleted successfully', 'Success');
-          this.loadFiliales();
+  onDelete(id: string): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
+      this.filialeService.deleteFiliale(id).subscribe(
+        () => {
+          this.loadFiliales(); // Rafraîchir la liste après suppression
         },
-        error: (err) => this.toastr.error('Error deleting filiale', 'Error')
-      });
+        (error) => {
+          this.errorMessage = 'Une erreur est survenue lors de la suppression de la filiale.';
+        }
+      );
     }
-  }
-
-  resetForm(): void {
-    this.filialeForm.reset({
-      idFiliale: '',
-      nom: '',
-      adresse: '',
-      description: '',
-      photo: ''
-    });
-    this.isEditing = false;
-    this.selectedFilialeId = null;
   }
 }

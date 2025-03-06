@@ -1,10 +1,9 @@
-import { Departement } from "./departement.model";
-
+// src/app/models/filiale.model.ts
 export interface Filiale {
-    idFiliale: string; // GUID, converti en string pour JSON
-    nom: string;
-    adresse: string;
-    description: string;
-    photo: string;
-    departements?: Departement[]; // Liste des départements (relation 1:N)
-  }
+  idFiliale: string; // GUID
+  nom: string;
+  adresse: string;
+  description: string;
+  photo?: string;
+  dateCreation: Date;
+}

@@ -1,7 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { AuthService } from './shared/services/auth.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Ajoutez cette ligne
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
@@ -18,8 +19,11 @@ import { HeaderComponent } from './layoutBackend/header/header.component';
 import { SidebarComponent } from './layoutBackend/sidebar/sidebar.component';
 import { ContentComponent } from './layoutBackend/content/content.component';
 import { FooterComponent } from './layoutBackend/footer/footer.component';
-import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
 import { RouterModule } from '@angular/router';
+import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
+import { FilialesListComponent } from './features/filiale-list/filiale-list.component';
+import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez cette ligne
+
 
 
 @NgModule({
@@ -37,12 +41,15 @@ import { RouterModule } from '@angular/router';
     SidebarComponent,
     ContentComponent,
     FooterComponent,
-    FilialeListComponent
+    FilialesListComponent,
+    FilialeFormComponent
   ],
   imports: [
     BrowserModule, // Includes CommonModule for *ngIf, [ngClass]
     FormsModule,   // For [(ngModel)]
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClienttModule
   ],
   providers: [AuthService,RoleGuard,authGuard], // Guards as providers
   bootstrap: [AppComponent]

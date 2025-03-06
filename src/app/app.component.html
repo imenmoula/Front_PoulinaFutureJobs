@@ -4,9 +4,9 @@
     <a routerLink="/candidate" *ngIf="authService.hasRole('Candidate')">Candidate</a>
     <button (click)="authService.deleteToken(); router.navigate(['/login'])">Déconnexion</button> 
   </nav> 
-  <router-outlet></router-outlet> -->
-  <button  (click)="navigateToFiliale()">à Filiale</button>
-    <button (click)="navigateToDepartement()">Aller à Département</button>
  
   
+ 
+  
+  <!-- Contenu principal -->
   <router-outlet></router-outlet>
