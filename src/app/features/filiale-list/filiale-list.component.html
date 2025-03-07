@@ -1,20 +1,8 @@
 <div class="container">
   <h2>Liste des filiales</h2>
-  <p>isLoading: {{ isLoading }}</p>
-<p>errorMessage: {{ errorMessage }}</p>
-<p>Nombre de filiales: {{ filiales.length }}</p>
+  <p *ngIf="isLoading">Chargement des filiales...</p>
+  <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
 
-  <!-- Message de chargement -->
-  <div *ngIf="isLoading" class="alert alert-info">
-    Chargement des filiales...
-  </div>
-
-  <!-- Message d'erreur -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Tableau des filiales -->
   <table *ngIf="!isLoading && !errorMessage" class="table table-striped">
     <thead>
       <tr>
@@ -22,7 +10,7 @@
         <th>Nom</th>
         <th>Adresse</th>
         <th>Description</th>
-        <th>Actions</th>
+        <th *ngIf="isAdmin">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -32,16 +20,12 @@
         <td>{{ filiale.adresse }}</td>
         <td>{{ filiale.description }}</td>
         <td *ngIf="isAdmin">
-          <button class="btn btn-primary btn-sm" [routerLink]="'/filiales/edit/' + filiale.idFiliale">Éditer</button>
+          <button class="btn btn-primary btn-sm" [routerLink]="'/admin/filiales/edit/' + filiale.idFiliale">Éditer</button>
           <button class="btn btn-danger btn-sm" (click)="onDelete(filiale.idFiliale)">Supprimer</button>
         </td>
-        
       </tr>
     </tbody>
   </table>
 
-  <!-- Message si aucune filiale n'est disponible -->
-  <div *ngIf="!isLoading && filiales.length === 0" class="alert alert-info">
-    Aucune filiale n'a été trouvée.
-  </div>
+  <p *ngIf="!isLoading && filiales.length === 0" class="alert alert-info">Aucune filiale n'a été trouvée.</p>
 </div>

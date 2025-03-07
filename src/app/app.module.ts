@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from './shared/services/auth.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // Ajoutez cette ligne
-import { AppRoutingModule } from './app-routing.module';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
@@ -12,19 +13,17 @@ import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
-import { AuthGuard, authGuard } from './guards/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { HeaderComponent } from './layoutBackend/header/header.component';
 import { SidebarComponent } from './layoutBackend/sidebar/sidebar.component';
 import { ContentComponent } from './layoutBackend/content/content.component';
 import { FooterComponent } from './layoutBackend/footer/footer.component';
-import { RouterModule } from '@angular/router';
 import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
-import { FilialesListComponent } from './features/filiale-list/filiale-list.component';
-import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez cette ligne
-
-
+import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
+import { AppRoutingModule } from './app.routes';
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -41,17 +40,19 @@ import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez cette ligne
     SidebarComponent,
     ContentComponent,
     FooterComponent,
-    FilialesListComponent,
+    FilialeFormComponent,
+    FilialeListComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    RouterModule,
     FormsModule,
-    AppRoutingModule,
-    ReactiveFormsModule, 
-    HttpClientModule
-],
-
-  providers: [AuthService,RoleGuard,authGuard], // Guards as providers
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule
+  ],
+  providers: [AuthService, RoleGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

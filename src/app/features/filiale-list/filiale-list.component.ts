@@ -1,38 +1,39 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Filiale } from '../../../Models/filiale.model';
 import { FilialeService } from '../../shared/services/filiale.service';
 
-
 @Component({
-  standalone: true, // Si applicab
-  selector: 'app-filials-list',
-  templateUrl: './filials-list.component.html',
-  styleUrls: ['./filiales-list.component.css']
+  selector: 'app-filiale-list',
+  templateUrl: './filiale-list.component.html',
+  styleUrls: [''],
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
-export class FilialesListComponent implements OnInit {
+export class FilialeListComponent implements OnInit {
   filiales: Filiale[] = [];
-  isLoading = true; // Indicateur de chargement
-  errorMessage: string | null = null; // Message d'erreur
+  isLoading = true;
+  errorMessage: string | null = null;
 
-  constructor(private filialeService: FilialeService) {
+  constructor(private filialeService: FilialeService) {}
 
-  }
   ngOnInit(): void {
     this.loadFiliales();
   }
 
   loadFiliales(): void {
-    this.isLoading = true; // Activer le loading
-    this.errorMessage = null; // Réinitialiser le message d'erreur
+    this.isLoading = true;
+    this.errorMessage = null;
 
     this.filialeService.getFiliales().subscribe(
       (data) => {
         this.filiales = data;
-        this.isLoading = false; // Désactiver le loading après réussite
+        this.isLoading = false;
       },
       (error) => {
         this.errorMessage = 'Une erreur est survenue lors du chargement des filiales.';
-        this.isLoading = false; // Désactiver le loading en cas d'erreur
+        this.isLoading = false;
       }
     );
   }
@@ -41,7 +42,7 @@ export class FilialesListComponent implements OnInit {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
       this.filialeService.deleteFiliale(id).subscribe(
         () => {
-          this.loadFiliales(); // Rafraîchir la liste après suppression
+          this.loadFiliales();
         },
         (error) => {
           this.errorMessage = 'Une erreur est survenue lors de la suppression de la filiale.';

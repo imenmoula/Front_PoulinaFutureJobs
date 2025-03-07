@@ -69,17 +69,9 @@ export class AuthService {
   getUserRoles(): string[] {
     const claims = this.getClaims();
     if (!claims) return [];
-  
-    // Vérifier si le rôle est bien présent
-    console.log("Données claims:", claims);
-  
-    // Extraire le rôle correctement selon ton JWT
-    const roleKey = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
-    const roles = claims[roleKey] || claims['role']; 
-  
+    const roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || claims['role'];
     return Array.isArray(roles) ? roles : roles ? [roles] : [];
   }
-  
 
   // Add this new method to get the username
   getUserFullName(): string {
@@ -102,11 +94,15 @@ export class AuthService {
   }
 
   hasRole(role: string): boolean {
-    const roles = this.getUserRoles();
-    console.log("Rôles de l'utilisateur:", roles); // Vérification console
-    return roles.includes(role);
+    return this.getUserRoles().includes(role);
   }
-  
+ // Add this new method to get the username
+
+isUserAdmin(): boolean {
+  const roles = this.getUserRoles();
+  return roles.includes('Admin');
+}
+
 
   logout(): void {
     localStorage.removeItem('token'); // Supprime le jeton si utilisé
