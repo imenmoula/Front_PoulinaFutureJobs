@@ -23,6 +23,7 @@ export const routes: Routes = [
       { path: 'signin', component: LoginComponent }
     ]
   },
+  { path: 'forbidden', component: ForbiddenComponent },
   {
     path: 'candidate',
     component: CandidateOnlyComponent,
@@ -40,16 +41,15 @@ export const routes: Routes = [
     component: AdminOnlyComponent,
     canActivate: [RoleGuard],
     data: { role: 'Admin' },
-  
+    children: [
+      { path: '', component: AdminOnlyComponent },
+      { path: 'filiales', component: FilialeListComponent },
+      { path: 'filiales/add', component: FilialeFormComponent },
+      { path: 'filiales/edit/:id', component: FilialeFormComponent },
+      { path: 'filiales/:id', component: FilialeDetailsComponent }
+    ]
   },
-  { path: '**', redirectTo: '/signin', pathMatch: 'full' },
-
-  { path: 'forbidden', component: ForbiddenComponent},
-  { path: '', component: AdminOnlyComponent },
-  { path: 'filiales', component: FilialeListComponent },
-  { path: 'filiales/add', component: FilialeFormComponent },
-  { path: 'filiales/edit/:id', component: FilialeFormComponent },
-  { path: 'filiales/:id', component: FilialeDetailsComponent }
+  { path: '**', redirectTo: '/signin', pathMatch: 'full' }
 ];
 
 @NgModule({
