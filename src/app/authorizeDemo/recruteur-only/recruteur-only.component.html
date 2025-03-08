@@ -1,2 +1,4 @@
 <h1>Espace Recruteur</h1>
 <p>Bienvenue, {{ authService.getUserRoles()[0] || 'Utilisateur' }} !</p>
+<button (click)="onLogout()">Déconnexion</button> 
+<app-layout-backend></app-layout-backend>

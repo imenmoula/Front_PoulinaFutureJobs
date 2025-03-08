@@ -10,11 +10,16 @@ import { Filiale } from '../../../Models/filiale.model';
   providedIn: 'root'
 })
 export class FilialeService {
-  private apiUrl = `${environment.apiBaseUrl}/Filiales`; // Utilisez l'environnement ici
+  private apiUrl = `${environment.apiBaseUrl}/Filiales`;
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer YOUR_JWT_TOKEN' })
-  };
+// Utilisez l'environnement ici
+httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}` // Récupération dynamique du token
+  })
+};
+
 
   constructor(private http: HttpClient) {}
 
@@ -42,8 +47,11 @@ export class FilialeService {
   uploadImage(id: string, formData: FormData): Observable<any> {
     const url = `${this.apiUrl}/${id}/uploadImage`;
     return this.http.post(url, formData, {
-        headers: new HttpHeaders({ 'Authorization': 'Bearer YOUR_JWT_TOKEN' })
-      });
-    }
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    });
+  }
+  
         
 }

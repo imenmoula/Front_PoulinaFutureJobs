@@ -32,4 +32,5 @@ export class SidebarComponent implements OnInit {
   get isAdmin(): boolean {
     return localStorage.getItem('userRole') === 'Admin'; // Vérifie si le rôle est "Admin"
   }
+
 }

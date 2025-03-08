@@ -10,6 +10,8 @@
         <th>Nom</th>
         <th>Adresse</th>
         <th>Description</th>
+        <th>Date de création</th>
+        <th>Photo</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -19,6 +21,11 @@
         <td>{{ filiale.nom }}</td>
         <td>{{ filiale.adresse }}</td>
         <td>{{ filiale.description }}</td>
+        <td>{{ filiale.dateCreation | date:'medium' }}</td>
+        <td>
+          <img *ngIf="filiale.photo" [src]="filiale.photo" alt="Photo de la filiale" />
+          <span *ngIf="!filiale.photo">Aucune photo disponible</span>
+        </td>
         <td>
           <button class="btn btn-primary btn-sm" routerLink="/filiales/edit/{{ filiale.idFiliale }}">Éditer</button>
           <button class="btn btn-danger btn-sm" (click)="onDelete(filiale.idFiliale)">Supprimer</button>
