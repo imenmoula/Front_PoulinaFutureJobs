@@ -11,9 +11,7 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
-import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
-import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { HeaderComponent } from './layoutBackend/header/header.component';
@@ -24,6 +22,7 @@ import { FilialeFormComponent } from './features/filiale-form/filiale-form.compo
 import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
 import { AppRoutingModule } from './app.routes';
 import { AuthService } from './shared/services/auth.service';
+import { authGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { AuthService } from './shared/services/auth.service';
     LoginComponent,
     RecruteurOnlyComponent,
     CandidateOnlyComponent,
-    AdminOnlyComponent,
     GestionDepartementsComponent,
     LayoutBackendComponent,
     HeaderComponent,
@@ -52,7 +50,7 @@ import { AuthService } from './shared/services/auth.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [AuthService, RoleGuard, AuthGuard],
+  providers: [AuthService, RoleGuard, authGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

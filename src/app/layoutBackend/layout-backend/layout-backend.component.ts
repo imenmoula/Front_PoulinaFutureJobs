@@ -14,9 +14,9 @@ import { AuthService } from '../../shared/services/auth.service';
   styles: ``
 })
 export class LayoutBackendComponent {
-  sidebarOpen = false;
+  sidebarOpen = false; // Propriété locale pour contrôler l'état de la sidebar
 
-  toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen; // Méthode pour basculer
   }
 }

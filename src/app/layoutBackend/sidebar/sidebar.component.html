@@ -21,13 +21,17 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/departement" routerLinkActive="active">Accueil</a>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" >
           <a class="nav-link dropdown-toggle" href="#" (click)="toggleMenu('gestion')">
             Gestion
           </a>
           <ul class="list-unstyled" [class.show]="menuState['gestion']">
-            <li><a class="nav-link" routerLink="admin/filiales" routerLinkActive="active">🔹 Filiale</a></li>
-              <li><a class="nav-link" routerLink="/departement" routerLinkActive="active">🔹 Département</a></li>
+            <li>
+              <a class="nav-link" routerLink="/filiales" routerLinkActive="active">🔹 Filiale</a>
+            </li>
+            <li>
+              <a class="nav-link" routerLink="/departement" routerLinkActive="active">🔹 Département</a>
+            </li>
           </ul>
         </li>
       </ul>

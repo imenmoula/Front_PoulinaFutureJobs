@@ -1,3 +1,4 @@
+import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
@@ -5,11 +6,12 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
-import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { RoleGuard } from './guards/role.guard';
-import { AuthGuard } from './guards/auth.guard';
 import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
 import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
+import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
+import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -38,15 +40,16 @@ export const routes: Routes = [
     component: AdminOnlyComponent,
     canActivate: [RoleGuard],
     data: { role: 'Admin' },
-    children: [
-      { path: 'filiales', component: FilialeListComponent },
-      { path: 'filiales/edit/:id', component: FilialeFormComponent },
-      { path: 'filiales/add', component: FilialeFormComponent },
-      { path: '', redirectTo: 'filiales', pathMatch: 'full' },
-      { path: '**', redirectTo: 'filiales' }
-    ]
+  
   },
-  { path: '**', redirectTo: 'signin' }
+  { path: '**', redirectTo: '/signin', pathMatch: 'full' },
+
+  { path: 'forbidden', component: ForbiddenComponent},
+  { path: '', component: AdminOnlyComponent },
+  { path: 'filiales', component: FilialeListComponent },
+  { path: 'filiales/add', component: FilialeFormComponent },
+  { path: 'filiales/edit/:id', component: FilialeFormComponent },
+  { path: 'filiales/:id', component: FilialeDetailsComponent }
 ];
 
 @NgModule({

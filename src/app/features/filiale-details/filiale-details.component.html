@@ -1,0 +1,29 @@
+<div class="details-container">
+    <h2>Détails de la Filiale</h2>
+  
+    <!-- Indicateur de chargement -->
+    <div *ngIf="isLoading" class="loading">Chargement des détails...</div>
+  
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage && !isLoading" class="error">{{ errorMessage }}</div>
+  
+    <!-- Détails de la filiale -->
+    <div *ngIf="filiale && !isLoading" class="details">
+      <p><strong>ID :</strong> {{ filiale.idFiliale }}</p>
+      <p><strong>Nom :</strong> {{ filiale.nom }}</p>
+      <p><strong>Adresse :</strong> {{ filiale.adresse }}</p>
+      <p><strong>Description :</strong> {{ filiale.description || 'Aucune description disponible' }}</p>
+      <p><strong>Date de création :</strong> {{ filiale.dateCreation | date:'medium' }}</p>
+      <p><strong>Photo :</strong></p>
+      <div *ngIf="filiale.photo" class="photo-preview">
+        <img [src]="filiale.photo" alt="Photo de la filiale" />
+      </div>
+      <div *ngIf="!filiale.photo">Aucune photo disponible</div>
+    </div>
+  
+    <!-- Boutons de navigation -->
+    <div class="actions">
+      <button routerLink="/admin/filiales">Retour à la liste</button>
+      <button *ngIf="isAdmin" [routerLink]="['/admin/filiales/edit', filiale?.idFiliale]">Modifier</button>
+    </div>
+  </div>

@@ -1,30 +1,35 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLinkActive, RouterModule } from '@angular/router';
-
+import { RouterModule } from '@angular/router';
+import * as feather from 'feather-icons';
 @Component({
   selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: [' '],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule],
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   @Input() sidebarOpen = false;
-  constructor(private router: Router) { }
+  menuState: { [key: string]: boolean } = { gestion: false };
 
-  menuState: Record<string, boolean> = {
-    gestion: false
-  };
+  constructor() {}
 
-  toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
-
+  ngOnInit(): void {
+    if (typeof feather !== 'undefined') {
+      feather.replace();
+    }
   }
 
-  toggleMenu(menu: keyof typeof this.menuState) {
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  toggleMenu(menu: string): void {
     this.menuState[menu] = !this.menuState[menu];
   }
- 
-}
 
+  get isAdmin(): boolean {
+    return localStorage.getItem('userRole') === 'Admin'; // Vérifie si le rôle est "Admin"
+  }
+}

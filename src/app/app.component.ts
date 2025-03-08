@@ -1,22 +1,24 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from './layoutBackend/sidebar/sidebar.component';
+import { AuthService } from './shared/services/auth.service';
 import * as feather from 'feather-icons';
 import * as bootstrap from 'bootstrap';
-import { AuthService } from './shared/services/auth.service';
 
 declare var $: any;
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, CommonModule],
+  imports: [ RouterModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['']
 })
-export class AppComponent implements AfterViewInit, OnInit {
-  constructor(public authService: AuthService, public router: Router) {}
-
+export class AppComponent  {
+  
+  constructor(public authService: AuthService
+    ) {}  
   ngOnInit() {
     feather.replace();
   }
@@ -32,8 +34,5 @@ export class AppComponent implements AfterViewInit, OnInit {
     }, 100); // Delay to ensure DOM is ready
   }
 
-  logout() {
-    this.authService.deleteToken();
-    this.router.navigate(['/signin']);
-  }
+  
 }

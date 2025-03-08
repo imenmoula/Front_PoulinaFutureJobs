@@ -10,7 +10,7 @@
         <th>Nom</th>
         <th>Adresse</th>
         <th>Description</th>
-        <th *ngIf="isAdmin">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -19,13 +19,15 @@
         <td>{{ filiale.nom }}</td>
         <td>{{ filiale.adresse }}</td>
         <td>{{ filiale.description }}</td>
-        <td *ngIf="isAdmin">
-          <button class="btn btn-primary btn-sm" [routerLink]="'/admin/filiales/edit/' + filiale.idFiliale">Éditer</button>
+        <td>
+          <button class="btn btn-primary btn-sm" routerLink="/filiales/edit/{{ filiale.idFiliale }}">Éditer</button>
           <button class="btn btn-danger btn-sm" (click)="onDelete(filiale.idFiliale)">Supprimer</button>
         </td>
       </tr>
     </tbody>
   </table>
-
   <p *ngIf="!isLoading && filiales.length === 0" class="alert alert-info">Aucune filiale n'a été trouvée.</p>
-</div>
+    Chargement des filiales...
+  </div>
+
+  

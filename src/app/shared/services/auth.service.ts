@@ -94,6 +94,7 @@ export class AuthService {
   }
 
   hasRole(role: string): boolean {
+   
     return this.getUserRoles().includes(role);
   }
  // Add this new method to get the username
@@ -108,4 +109,13 @@ isUserAdmin(): boolean {
     localStorage.removeItem('token'); // Supprime le jeton si utilisé
     console.log('Utilisateur déconnecté');
   }
+  //je veux afficher  role de l'utilisateur connecté
+  getRole(): string {
+    const claims = this.getClaims();
+    if (!claims) return '';
+    const role = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    console.log('User role:', role);
+    return Array.isArray(role) ? role.join(', ') : role || '';
+  }
+  
 }

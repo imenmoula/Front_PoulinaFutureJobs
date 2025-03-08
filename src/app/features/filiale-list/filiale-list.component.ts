@@ -7,13 +7,13 @@ import { FilialeService } from '../../shared/services/filiale.service';
 @Component({
   selector: 'app-filiale-list',
   templateUrl: './filiale-list.component.html',
-  styleUrls: [''],
+  styleUrls: ['./filiale-list.component.css'],
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
 export class FilialeListComponent implements OnInit {
   filiales: Filiale[] = [];
-  isLoading = true;
+  isLoading = false; // Initialisé à false, activé uniquement pendant le chargement
   errorMessage: string | null = null;
 
   constructor(private filialeService: FilialeService) {}
@@ -26,28 +26,30 @@ export class FilialeListComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.filialeService.getFiliales().subscribe(
-      (data) => {
+    this.filialeService.getFiliales().subscribe({
+      next: (data) => {
         this.filiales = data;
         this.isLoading = false;
       },
-      (error) => {
-        this.errorMessage = 'Une erreur est survenue lors du chargement des filiales.';
+      error: (err: any) => {
+        this.errorMessage = `Erreur lors du chargement des filiales : ${err.message || 'Erreur inconnue'}`;
         this.isLoading = false;
       }
-    );
+    });
   }
 
   onDelete(id: string): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
-      this.filialeService.deleteFiliale(id).subscribe(
-        () => {
-          this.loadFiliales();
+      this.filialeService.deleteFiliale(id).subscribe({
+        next: () => {
+          // Mise à jour locale au lieu de recharger toute la liste
+          this.filiales = this.filiales.filter(f => f.idFiliale !== id);
+          this.errorMessage = null;
         },
-        (error) => {
-          this.errorMessage = 'Une erreur est survenue lors de la suppression de la filiale.';
+        error: (err: any) => {
+          this.errorMessage = `Erreur lors de la suppression : ${err.message || 'Erreur inconnue'}`;
         }
-      );
+      });
     }
   }
 

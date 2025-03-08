@@ -1,9 +1,2 @@
-<nav *ngIf="authService.isLoggedIn()">
-    <!-- <a routerLink="/admin" *ngIf="authService.hasRole('Admin')">Admin</a> -->
-    <a routerLink="/recruteur" *ngIf="authService.hasRole('Recruteur')">Recruteur</a>
-    <a routerLink="/candidate" *ngIf="authService.hasRole('Candidate')">Candidate</a>
-    <button (click)="logout()">Déconnexion</button> 
-</nav> 
 
-<!-- Contenu principal -->
 <router-outlet></router-outlet>
