@@ -12,6 +12,7 @@ import { FilialeListComponent } from './features/filiale-list/filiale-list.compo
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { DepartmentListComponent } from './features/department-list/department-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -38,17 +39,21 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminOnlyComponent,
+    component:LayoutBackendComponent,
     canActivate: [RoleGuard],
     data: { role: 'Admin' },
     children: [
       { path: '', component: AdminOnlyComponent },
-      { path: 'filiales', component: FilialeListComponent },
-      { path: 'filiales/add', component: FilialeFormComponent },
-      { path: 'filiales/edit/:id', component: FilialeFormComponent },
-      { path: 'filiales/:id', component: FilialeDetailsComponent }
+     
     ]
   },
+  {path:'admin/departement',component:DepartmentListComponent},
+  { path: 'admin/filiales', component: FilialeListComponent }, // Add this
+  { path: 'admin/filiales/add', component: FilialeFormComponent },
+  { path: 'admin/filiales/edit/:id', component: FilialeFormComponent },
+  { path: 'admin/filiales/:id', component: FilialeDetailsComponent },
+
+
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }
 ];
 
