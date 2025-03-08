@@ -1,51 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
-import { FilialeService } from '../../shared/services/filiale.service';
 import { Filiale } from '../../../Models/filiale.model';
+import { FilialeService } from '../../shared/services/filiale.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-filiale-details',
+  selector: 'app-filiale-detail',
+  templateUrl: './filiale-detail.component.html',
+  styleUrls: ['./filiale-detail.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './filiale-details.component.html',
-  styleUrls: ['./filiale-details.component.css']
+  imports: [CommonModule, RouterModule]
 })
-export class FilialeDetailsComponent implements OnInit {
+export class FilialeDetailComponent implements OnInit {
   filiale: Filiale | null = null;
-  isLoading = true;
   errorMessage: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
-    private filialeService: FilialeService
+    public filialeService: FilialeService,
+    public route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.loadFilialeDetails(id);
+      this.loadFiliale(id);
     } else {
-      this.errorMessage = 'ID de filiale non fourni.';
-      this.isLoading = false;
+      this.errorMessage = 'ID de la filiale non trouvé dans l\'URL.';
     }
   }
-  loadFilialeDetails(id: string): void {
-    this.filialeService.getFilialeById(id).subscribe({
-      next: (filiale: Filiale) => {
-        this.filiale = filiale;
-        this.isLoading = false;
+
+  loadFiliale(id: string): void {
+    this.filialeService.getFiliale(id).subscribe({
+      next: (data) => {
+        this.filiale = data;
+        this.errorMessage = null; // Effacer l'erreur si les données sont récupérées correctement
       },
       error: (err) => {
-        this.errorMessage = `Erreur lors du chargement des détails : ${err.message}`;
-        this.isLoading = false;
+        this.errorMessage = `Erreur lors du chargement des détails de la filiale : ${err.message}`;
+        this.filiale = null; // Assurez-vous que les données de la filiale ne restent pas dans le cas d'une erreur
       }
     });
-  }
-
-  // Getter pour vérifier si l'utilisateur est admin
-  get isAdmin(): boolean {
-    return localStorage.getItem('userRole') === 'Admin';
   }
 }

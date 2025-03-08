@@ -1,14 +1,14 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { tap } from 'rxjs/operators';
-import { jwtDecode } from 'jwt-decode'; // Importation nommée
+import { jwtDecode } from 'jwt-decode';
 
 interface TokenPayload {
   'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'?: string | string[];
- 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'?: string;
-  FullName?: string; // Add FullName to match the backend claim
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'?: string;
+  FullName?: string;
   userId?: string;
   email?: string;
   poste?: string;
@@ -21,7 +21,14 @@ interface TokenPayload {
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
+
+  constructor(private http: HttpClient) {
+    const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.currentUserSubject = new BehaviorSubject<any>(storedUser);
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
   createUser(formData: any) {
     return this.http.post(environment.apiBaseUrl + '/signup', formData);
@@ -32,6 +39,9 @@ export class AuthService {
       tap((response: any) => {
         if (response.token) {
           this.saveToken(response.token);
+          const user = this.getClaims();
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
         }
       })
     );
@@ -51,9 +61,9 @@ export class AuthService {
 
   deleteToken() {
     localStorage.removeItem('TOKEN_KEY');
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
-
-  
 
   getClaims(): TokenPayload | null {
     const token = this.getToken();
@@ -73,49 +83,36 @@ export class AuthService {
     return Array.isArray(roles) ? roles : roles ? [roles] : [];
   }
 
-  // Add this new method to get the username
   getUserFullName(): string {
     const claims = this.getClaims();
-    if (!claims) return 'Utilisateur';
-    // Prefer FullName if available, fall back to the name claim
-    return claims.FullName || claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Utilisateur';
-  }
-
-
-
-  // Optional: For debugging
-  logClaims(): void {
-    const claims = this.getClaims();
-    if (claims) {
-      console.log('JWT Claims:', claims);
-    } else {
-      console.log('No claims available');
-    }
+    return claims?.FullName || claims?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Utilisateur';
   }
 
   hasRole(role: string): boolean {
-   
     return this.getUserRoles().includes(role);
   }
- // Add this new method to get the username
 
-isUserAdmin(): boolean {
-  const roles = this.getUserRoles();
-  return roles.includes('Admin');
-}
-
+  isAdmin(): boolean {
+    return this.hasRole('Admin');
+  }
 
   logout(): void {
-    localStorage.removeItem('token'); // Supprime le jeton si utilisé
+    this.deleteToken();
     console.log('Utilisateur déconnecté');
   }
-  //je veux afficher  role de l'utilisateur connecté
+
   getRole(): string {
-    const claims = this.getClaims();
-    if (!claims) return '';
-    const role = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-    console.log('User role:', role);
-    return Array.isArray(role) ? role.join(', ') : role || '';
+    const roles = this.getUserRoles();
+    return roles.length > 0 ? roles.join(', ') : 'Aucun rôle';
   }
-  
+
+  getCurrentUser(): any {
+    return this.currentUserSubject.value;
+  }
+
+  // For debugging
+  logClaims(): void {
+    const claims = this.getClaims();
+    console.log('JWT Claims:', claims || 'No claims available');
+  }
 }

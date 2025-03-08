@@ -1,3 +1,4 @@
+import { FilialeDetailComponent } from './features/filiale-details/filiale-details.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -7,10 +8,8 @@ import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { RoleGuard } from './guards/role.guard';
-import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
 import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
-import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
 
@@ -48,10 +47,11 @@ export const routes: Routes = [
     ]
   },
   {path:'admin/departement',component:DepartmentListComponent},
-  { path: 'admin/filiales', component: FilialeListComponent }, // Add this
-  { path: 'admin/filiales/add', component: FilialeFormComponent },
-  { path: 'admin/filiales/edit/:id', component: FilialeFormComponent },
-  { path: 'admin/filiales/:id', component: FilialeDetailsComponent },
+  { path: 'admin/filiales', component: FilialeListComponent }, 
+
+  // { path: 'admin/filiales/add', component: FilialeFormComponent },
+  // { path: 'admin/filiales/edit/:id', component: FilialeFormComponent },
+  { path: 'admin/filiales/:id', component: FilialeDetailComponent },
 
 
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }

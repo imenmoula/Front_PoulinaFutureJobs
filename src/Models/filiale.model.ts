@@ -4,6 +4,6 @@ export interface Filiale {
   nom: string;
   adresse: string;
   description: string;
-  photo?: string;
-  dateCreation: Date;
+  photo?: string|null;
+  dateCreation: Date|string;
 }
