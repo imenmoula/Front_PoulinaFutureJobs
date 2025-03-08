@@ -59,15 +59,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Filiale } from '../../../Models/filiale.model';
 import { FilialeService } from '../../shared/services/filiale.service';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
+import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 
 @Component({
   selector: 'app-filiale-list',
   templateUrl: './filiale-list.component.html',
   styleUrls: ['./filiale-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule],
 })
 export class FilialeListComponent implements OnInit {
+  sidebarOpen = false; // Propriété locale pour contrôler l'état de la sidebar
+
   filiales: any[] = []; 
   isLoading = false;
   errorMessage: string | null = null;
@@ -110,5 +114,9 @@ export class FilialeListComponent implements OnInit {
 
   isAdmin(): boolean {
     return true;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen; // Méthode pour basculer
   }
 }

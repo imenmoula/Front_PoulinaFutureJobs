@@ -12,5 +12,7 @@
     <p><strong>Description :</strong> {{ filiale.description }}</p>
     <p><strong>Date de création :</strong> {{ filiale.dateCreation | date:'medium' }}</p>
     <p><strong>Photo :</strong> {{ filiale.photo || 'Aucune photo' }}</p>
+    <button (click)="goBack()" class="btn btn-primary">Retour</button>
   </div>
 </div>
+

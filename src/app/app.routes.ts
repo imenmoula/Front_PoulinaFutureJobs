@@ -14,6 +14,7 @@ import { FilialeListComponent } from './features/filiale-list/filiale-list.compo
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
+import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -53,13 +54,19 @@ export const routes: Routes = [
     component: FilialeListComponent
  }, 
 
-  // { path: 'admin/filiales/add', component: FilialeFormComponent },
   // { path: 'admin/filiales/edit/:id', component: FilialeFormComponent },
   {
     path: 'admin/filiales/:id', 
     component: FilialeDetailsComponent
   
    },
+   {
+    path: 'admin/filiales/edit/:id', 
+    component: FilialeFormComponent,
+  
+   },
+     { path: 'admin/filiales/add', component: FilialeFormComponent },
+
 
 
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }

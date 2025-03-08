@@ -5,6 +5,8 @@ import { Filiale } from '../../../Models/filiale.model';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
+import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 
 @Component({
   selector: 'app-filiale-detail',
@@ -66,5 +68,8 @@ export class FilialeDetailsComponent implements OnInit {
         this.filiale = null;
       }
     });
+  }
+  goBack(): void {
+    this.router.navigate(['/filiales']);
   }
 }
