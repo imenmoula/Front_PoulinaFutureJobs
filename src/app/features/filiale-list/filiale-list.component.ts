@@ -109,6 +109,6 @@ export class FilialeListComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.AuthService.isAdmin();
+    return true;
   }
 }

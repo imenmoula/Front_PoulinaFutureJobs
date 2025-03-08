@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
@@ -22,7 +20,8 @@ import { FilialeFormComponent } from './features/filiale-form/filiale-form.compo
 import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
 import { AppRoutingModule } from './app.routes';
 import { AuthService } from './shared/services/auth.service';
-import { authGuard } from './guards/auth.guard';
+import { AuthGuard } from './guards/auth.guard'; // Renamed to camelCase for consistency
+import { AuthInterceptor } from './shared/services/auth.interceptor'; // Adjust path if necessary
 
 @NgModule({
   declarations: [
@@ -38,19 +37,25 @@ import { authGuard } from './guards/auth.guard';
     SidebarComponent,
     ContentComponent,
     FooterComponent,
-    FilialeFormComponent,
-    FilialeListComponent
+    // Remove FilialeFormComponent and FilialeListComponent if they are standalone
   ],
   imports: [
     BrowserModule,
-    CommonModule,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [AuthService, RoleGuard, authGuard],
+  providers: [
+    AuthService,
+    RoleGuard,
+    AuthGuard, // Use camelCase for consistency
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

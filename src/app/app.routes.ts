@@ -1,3 +1,5 @@
+import { Filiale } from './../Models/filiale.model';
+import { AuthGuard } from './guards/auth.guard';
 import { FilialeDetailComponent } from './features/filiale-details/filiale-details.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { NgModule } from '@angular/core';
@@ -47,11 +49,17 @@ export const routes: Routes = [
     ]
   },
   {path:'admin/departement',component:DepartmentListComponent},
-  { path: 'admin/filiales', component: FilialeListComponent }, 
+  { path: 'admin/filiales', 
+    component: FilialeListComponent
+ }, 
 
   // { path: 'admin/filiales/add', component: FilialeFormComponent },
   // { path: 'admin/filiales/edit/:id', component: FilialeFormComponent },
-  { path: 'admin/filiales/:id', component: FilialeDetailComponent },
+  {
+    path: 'admin/filiales/:id', 
+    component: FilialeDetailComponent
+  
+   },
 
 
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }

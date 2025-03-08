@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 interface TokenPayload {
   'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'?: string | string[];
@@ -14,6 +15,7 @@ interface TokenPayload {
   poste?: string;
   jti?: string;
   exp?: number;
+  iat?: number;
   [key: string]: any;
 }
 
@@ -21,61 +23,84 @@ interface TokenPayload {
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<any>;
+  private currentUserSubject: BehaviorSubject<TokenPayload | null>;
+  public currentUser: Observable<TokenPayload | null>;
+  private tokenKey = 'TOKEN_KEY'; // Consistent key name
 
-  constructor(private http: HttpClient) {
-    const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    this.currentUserSubject = new BehaviorSubject<any>(storedUser);
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
+    const storedUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    this.currentUserSubject = new BehaviorSubject<TokenPayload | null>(storedUser);
     this.currentUser = this.currentUserSubject.asObservable();
+
+    // Check token validity on initialization
+    if (this.isTokenExpired()) {
+      this.logout();
+    }
   }
 
-  createUser(formData: any) {
-    return this.http.post(environment.apiBaseUrl + '/signup', formData);
+  // User creation (signup)
+  createUser(formData: any): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/signup`, formData);
   }
 
-  signin(formData: any) {
-    return this.http.post(environment.apiBaseUrl + '/signin', formData).pipe(
+  // Sign in with token handling
+  signin(formData: any): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/signin`, formData).pipe(
       tap((response: any) => {
         if (response.token) {
           this.saveToken(response.token);
           const user = this.getClaims();
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
+          if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+          } else {
+            throw new Error('Invalid token received');
+          }
         }
       })
     );
   }
 
+  // Check if user is logged in
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    return !!token && !this.isTokenExpired();
   }
 
-  saveToken(token: string) {
-    localStorage.setItem('TOKEN_KEY', token);
+  // Save token to localStorage
+    saveToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
   }
 
+  // Get token from localStorage
   getToken(): string | null {
-    return localStorage.getItem('TOKEN_KEY');
+    return localStorage.getItem(this.tokenKey);
   }
 
-  deleteToken() {
-    localStorage.removeItem('TOKEN_KEY');
+  // Remove token and user data
+  deleteToken(): void {
+    localStorage.removeItem(this.tokenKey);
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
 
+  // Decode JWT token and return claims
   getClaims(): TokenPayload | null {
     const token = this.getToken();
     if (!token) return null;
     try {
       return jwtDecode<TokenPayload>(token);
     } catch (error) {
-      console.error('Erreur lors du décodage du token', error);
+      console.error('Error decoding token:', error);
+      this.logout(); // Logout on invalid token
       return null;
     }
   }
 
+  // Get user roles from token claims
   getUserRoles(): string[] {
     const claims = this.getClaims();
     if (!claims) return [];
@@ -83,31 +108,53 @@ export class AuthService {
     return Array.isArray(roles) ? roles : roles ? [roles] : [];
   }
 
+  // Get user's full name
   getUserFullName(): string {
     const claims = this.getClaims();
     return claims?.FullName || claims?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Utilisateur';
   }
 
+  // Get user ID
+  getUserId(): string | null {
+    const claims = this.getClaims();
+    return claims?.userId || null;
+  }
+
+  // Check if user has a specific role
   hasRole(role: string): boolean {
     return this.getUserRoles().includes(role);
   }
 
+  // Check if user is an admin
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }
 
-  logout(): void {
+  // Logout user and redirect to login
+  logout(redirect: boolean = true): void {
     this.deleteToken();
+    if (redirect) {
+      this.router.navigate(['/login']);
+    }
     console.log('Utilisateur déconnecté');
   }
 
+  // Get user's roles as a string
   getRole(): string {
     const roles = this.getUserRoles();
     return roles.length > 0 ? roles.join(', ') : 'Aucun rôle';
   }
 
-  getCurrentUser(): any {
+  // Get current user data
+  getCurrentUser(): TokenPayload | null {
     return this.currentUserSubject.value;
+  }
+
+  // Check if token is expired
+  isTokenExpired(): boolean {
+    const claims = this.getClaims();
+    if (!claims || !claims.exp) return true;
+    return claims.exp * 1000 < Date.now(); // Convert seconds to milliseconds
   }
 
   // For debugging
