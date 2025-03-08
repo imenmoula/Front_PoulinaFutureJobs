@@ -3,6 +3,7 @@
   <p *ngIf="isLoading">Chargement des filiales...</p>
   <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
 
+  
   <table *ngIf="!isLoading && !errorMessage" class="table table-striped">
     <thead>
       <tr>

@@ -24,16 +24,24 @@
       settingSidebar.classList.remove("open");
     });*/
 
-    function closeSidebarOnClickOutside(sidebarClass) {
+    /*function closeSidebarOnClickOutside(sidebarClass) {
       document.addEventListener("click", function (event) {
         var setting_sidebar = document.querySelector(sidebarClass);
+    
+        // Vérifier si l'élément existe avant d'accéder à classList
+        if (!setting_sidebar) {
+          console.warn("L'élément avec la classe", sidebarClass, "n'existe pas.");
+          return;
+        }
+    
         if (!event.target.closest("#cog-click") && !event.target.closest("#grip-click")) {
           setting_sidebar.classList.remove("open");
         }
       });
     }
+    
     closeSidebarOnClickOutside(".setting-sidebar");
-    closeSidebarOnClickOutside(".layout-sidebar");
+    closeSidebarOnClickOutside(".layout-sidebar");*/
 
     const defaultLayout = "dubai";
     const urlParams = new URLSearchParams(window.location.search);

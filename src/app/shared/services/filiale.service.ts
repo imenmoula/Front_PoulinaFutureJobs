@@ -10,7 +10,7 @@ import { Filiale } from '../../../Models/filiale.model';
   providedIn: 'root'
 })
 export class FilialeService {
-  private apiUrl = `${environment.apiBaseUrl}/Filiales`;
+  public apiUrl = `${environment.apiBaseUrl}/Filiales`;
 
 // Utilisez l'environnement ici
 httpOptions = {
@@ -21,7 +21,7 @@ httpOptions = {
 };
 
 
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   getFiliales(): Observable<Filiale[]> {
     return this.http.get<Filiale[]>(this.apiUrl, this.httpOptions);

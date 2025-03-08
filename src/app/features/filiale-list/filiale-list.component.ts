@@ -16,13 +16,16 @@ export class FilialeListComponent implements OnInit {
   isLoading = false; // Initialisé à false, activé uniquement pendant le chargement
   errorMessage: string | null = null;
 
-  constructor(private filialeService: FilialeService) {}
+  constructor(public filialeService: FilialeService) {}
 
   ngOnInit(): void {
+    console.log('FilialeListComponent initialized');
     this.loadFiliales();
   }
 
   loadFiliales(): void {
+    console.log('Loading filiales...');
+
     this.isLoading = true;
     this.errorMessage = null;
 
@@ -32,6 +35,7 @@ export class FilialeListComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err: any) => {
+        console.error('Error loading filiales:', err);
         this.errorMessage = `Erreur lors du chargement des filiales : ${err.message || 'Erreur inconnue'}`;
         this.isLoading = false;
       }
