@@ -8,12 +8,12 @@ import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-filiale-detail',
-  templateUrl: './filiale-detail.component.html',
-  styleUrls: ['./filiale-detail.component.css'],
+  templateUrl: './filiale-details.component.html',
+  styleUrls: ['./filiale-details.component.css'],
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class FilialeDetailComponent implements OnInit {
+export class FilialeDetailsComponent implements OnInit {
   filiale: Filiale | null = null;
   errorMessage: string | null = null;
 
@@ -29,10 +29,15 @@ export class FilialeDetailComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+    console.error('hello Error loading filiale:'); // Log for debuggin
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      console.error('hello 1Error loading filiale:'); // Log for debuggin
+
       this.loadFiliale(id);
+      console.error('hello2 Error loading filiale:'); // Log for debuggin
+
     } else {
       this.errorMessage = 'ID de la filiale non trouvé dans l\'URL.';
     }
@@ -40,7 +45,8 @@ export class FilialeDetailComponent implements OnInit {
 
   loadFiliale(id: string): void {
     this.filialeService.getFiliale(id).subscribe({
-      next: (response) => {
+      next: (response ) => {
+        console.log('Response data:', response);
         // Adjust based on your backend response structure
         // If backend returns { data: Filiale, message: string }
         this.filiale = response; 

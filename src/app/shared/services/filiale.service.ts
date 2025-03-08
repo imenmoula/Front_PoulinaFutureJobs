@@ -125,16 +125,19 @@ export class FilialeService {
   }
 
   getFiliale(id: string): Observable<Filiale> {
-    return this.http.get<Filiale>(`${this.apiUrl}/${id}`).pipe(
-      catchError((error) => {
-        // Loggez l'erreur pour l'analyse, si nécessaire
-        console.error('Erreur API:', error);
-
-        // Retournez un observable d'erreur avec un message d'erreur personnalisé
-        return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
-      })
+    return this.http.get<{ data: Filiale; message: string }>(`${this.apiUrl}/${id}`).pipe(
+        map(response => {
+            if (response && response.data) {
+                return response.data;
+            }
+            throw new Error('Données de la filiale non trouvées dans la réponse');
+        }),
+        catchError((error) => {
+            console.error('Erreur API:', error);
+            return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
+        })
     );
-  }
+}
 
   addFiliale(filiale: Filiale): Observable<Filiale> {
     return this.http.post<{ data: Filiale, message: string }>(this.apiUrl, filiale, { headers: this.getHeaders() })

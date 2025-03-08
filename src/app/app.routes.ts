@@ -1,6 +1,6 @@
 import { Filiale } from './../Models/filiale.model';
 import { AuthGuard } from './guards/auth.guard';
-import { FilialeDetailComponent } from './features/filiale-details/filiale-details.component';
+import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -57,7 +57,7 @@ export const routes: Routes = [
   // { path: 'admin/filiales/edit/:id', component: FilialeFormComponent },
   {
     path: 'admin/filiales/:id', 
-    component: FilialeDetailComponent
+    component: FilialeDetailsComponent
   
    },
 
