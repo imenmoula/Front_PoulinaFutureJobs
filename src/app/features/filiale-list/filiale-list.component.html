@@ -1,11 +1,17 @@
 <!-- src/app/features/filiale-form/filiale-form.component.html -->
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
-  <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+  <app-header (toggleSidebarEvent)="toggleSidebar()">
+
+  </app-header>
+    
   <div class="page-body-wrapper">
-    <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+    <app-sidebar [sidebarOpen]="sidebarOpen">
+
+    </app-sidebar>
     <div class="container">
       <h2>Liste des filiales</h2>
-    
+
+     
       <p *ngIf="isLoading" class="alert alert-info">Chargement des filiales...</p>
       <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
     
