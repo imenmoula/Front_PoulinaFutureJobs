@@ -1,10 +1,56 @@
-.form-container { padding: 20px; max-width: 600px; margin: 0 auto; }
-.form-group { margin-bottom: 15px; }
-.form-group label { display: block; margin-bottom: 5px; }
-.form-group input, .form-group textarea { width: 100%; padding: 8px; }
-.error { color: red; font-size: 0.9em; }
-.alert { padding: 10px; margin-bottom: 15px; }
-.alert-success { background-color: #d4edda; color: #155724; }
-.alert-danger { background-color: #f8d7da; color: #721c24; }
-button { padding: 10px 20px; background-color: #007bff; color: white; border: none; }
-button:disabled { background-color: #cccccc; cursor: not-allowed; }
+/* src/app/features/filiale-form/filiale-form.component.css */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  textarea.form-control {
+    height: 100px;
+  }
+  
+  .text-danger {
+    color: red;
+    font-size: 0.9em;
+  }
+  
+  .alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-primary:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }

@@ -1,18 +1,15 @@
 <div class="form-container">
   <h2>{{ isEditMode ? 'Modifier une Filiale' : 'Ajouter une Filiale' }}</h2>
 
-  <!-- Message de succès -->
-  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
-
-  <!-- Message d'erreur -->
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <!-- Messages -->
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
   <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
-    <!-- Votre formulaire ici -->
     <div class="form-group">
       <label for="nom">Nom :</label>
-      <input type="text" id="nom" formControlName="nom" />
-      <div *ngIf="nom?.invalid && (nom?.dirty || nom?.touched)" class="error">
+      <input type="text" id="nom" formControlName="nom" class="form-control" />
+      <div *ngIf="nom?.invalid && (nom?.dirty || nom?.touched)" class="text-danger">
         <div *ngIf="nom?.errors?.['required']">Le nom est requis.</div>
         <div *ngIf="nom?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</div>
       </div>
@@ -20,8 +17,8 @@
 
     <div class="form-group">
       <label for="adresse">Adresse :</label>
-      <input type="text" id="adresse" formControlName="adresse" />
-      <div *ngIf="adresse?.invalid && (adresse?.dirty || adresse?.touched)" class="error">
+      <input type="text" id="adresse" formControlName="adresse" class="form-control" />
+      <div *ngIf="adresse?.invalid && (adresse?.dirty || adresse?.touched)" class="text-danger">
         <div *ngIf="adresse?.errors?.['required']">L'adresse est requise.</div>
         <div *ngIf="adresse?.errors?.['minlength']">L'adresse doit contenir au moins 5 caractères.</div>
       </div>
@@ -29,28 +26,30 @@
 
     <div class="form-group">
       <label for="description">Description :</label>
-      <textarea id="description" formControlName="description"></textarea>
+      <textarea id="description" formControlName="description" class="form-control"></textarea>
     </div>
 
     <div class="form-group">
       <label for="image">Image :</label>
-      <input type="file" id="image" (change)="onFileChange($event)" accept="image/*" />
-      <div *ngIf="photo" class="preview">
-        <img [src]="photo" alt="Preview" style="max-width: 200px; margin-top: 10px;" />
+      <input type="file" id="image" (change)="onFileChange($event)" accept=".jpg,.png,.jfif" class="form-control" />
+      <div *ngIf="photo" class="preview mt-2">
+        <img [src]="photo" alt="Aperçu de l'image" style="max-width: 200px;" />
       </div>
     </div>
-    
 
     <div class="form-group">
       <label for="dateCreation">Date de création :</label>
-      <input type="date" id="dateCreation" formControlName="dateCreation" />
-      <div *ngIf="dateCreation?.invalid && (dateCreation?.dirty || dateCreation?.touched)" class="error">
+      <input type="date" id="dateCreation" formControlName="dateCreation" class="form-control" />
+      <div *ngIf="dateCreation?.invalid && (dateCreation?.dirty || dateCreation?.touched)" class="text-danger">
         <div *ngIf="dateCreation?.errors?.['required']">La date est requise.</div>
       </div>
     </div>
 
-    <button type="submit" [disabled]="filialeForm.invalid || (!isEditMode && filialeForm.pristine)">
+    <button type="submit" class="btn btn-primary" [disabled]="filialeForm.invalid || (!isEditMode && filialeForm.pristine)">
       {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
     </button>
+
+    <button class="btn btn-secondary" [routerLink]="['/admin/filiales']">Retour à la liste</button>
+
   </form>
 </div>

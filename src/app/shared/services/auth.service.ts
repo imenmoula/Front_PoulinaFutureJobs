@@ -136,7 +136,7 @@ export class AuthService {
     if (redirect) {
       this.router.navigate(['/login']);
     }
-    console.log('Utilisateur déconnecté');
+    // console.log('Utilisateur déconnecté');
   }
 
   // Get user's roles as a string

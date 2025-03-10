@@ -1,0 +1,10 @@
+{
+    "/uploads": {
+      "target": "http://localhost:5006",
+      "secure": false,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/uploads": "/uploads"
+      }
+    }
+  }

@@ -79,11 +79,19 @@ export class FilialeService {
 // filiale.service.ts
 
 
+// Uploader une photo
 uploadPhoto(file: File): Observable<any> {
-  const formData: FormData = new FormData();
+  const formData = new FormData();
   formData.append('file', file, file.name);
 
-  return this.http.post<any>(`${this.apiUrl}/upload-photo`, formData);
+  return this.http.post(`${this.apiUrl}/upload-photo`, formData).pipe(
+    catchError(this.handleUploadError)
+  );
+}
+
+private handleUploadError(error: any) {
+  console.error('Erreur dans le service :', error);
+  return throwError(() => new Error('Erreur lors de la communication avec le serveur'));
 }
 
 }

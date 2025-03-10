@@ -1,83 +1,25 @@
-import { AuthService } from './../../shared/services/auth.service';
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { RouterModule } from '@angular/router';
-// import { Filiale } from '../../../Models/filiale.model';
-// import { FilialeService } from '../../shared/services/filiale.service';
-
-// @Component({
-//   selector: 'app-filiale-list',
-//   templateUrl: './filiale-list.component.html',
-//   styleUrls: ['./filiale-list.component.css'],
-//   standalone: true,
-//   imports: [CommonModule, RouterModule]
-// })
-// export class FilialeListComponent implements OnInit {
-//   filiales: Filiale[] = [];
-//   isLoading = false;
-//   errorMessage: string | null = null;
-
-//   constructor(private filialeService: FilialeService) {}
-
-//   ngOnInit(): void {
-//     this.loadFiliales();
-//   }
-
-//   loadFiliales(): void {
-//     this.isLoading = true;
-//     this.errorMessage = null;
-
-//     this.filialeService.getFiliales().subscribe({
-//       next: (data) => {
-//         this.filiales = data;
-//         this.isLoading = false;
-//       },
-//       error: (err) => {
-//         this.errorMessage = `Erreur lors du chargement des filiales : ${err.message}`;
-//         this.isLoading = false;
-//       }
-//     });
-//   }
-
-//   onDelete(id: string): void {
-//     if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
-//       this.filialeService.deleteFiliale(id).subscribe({
-//         next: () => {
-//           this.filiales = this.filiales.filter(f => f.idFiliale !== id);
-//           this.errorMessage = null;
-//         },
-//         error: (err) => {
-//           this.errorMessage = `Erreur lors de la suppression : ${err.message}`;
-//         }
-//       });
-//     }
-//   }
-// }
-
+import { SidebarComponent } from './../../layoutBackend/sidebar/sidebar.component';
 import { Component, OnInit } from '@angular/core';
+import { FilialeService } from '../../shared/services/filiale.service';
+import { Filiale } from '../../../Models/filiale.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Filiale } from '../../../Models/filiale.model';
-import { FilialeService } from '../../shared/services/filiale.service';
-import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
-import { ContentComponent } from '../../layoutBackend/content/content.component';
-import { LayoutBackendComponent } from '../../layoutBackend/layout-backend/layout-backend.component';
-import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
 
 @Component({
   selector: 'app-filiale-list',
   templateUrl: './filiale-list.component.html',
   styleUrls: ['./filiale-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent, ContentComponent, SidebarComponent],
+  imports: [CommonModule, RouterModule,FooterComponent,HeaderComponent,SidebarComponent]
 })
-export class FilialeListComponent implements OnInit {
-  sidebarOpen: boolean = false;
-  filiales: any[] = []; 
-  isLoading = false;
-  errorMessage: string | null = null;
 
+export class FilialeListComponent implements OnInit {
+  filiales: Filiale[] = [];
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
+  sidebarOpen: boolean = false;
   constructor(private filialeService: FilialeService) {}
 
   ngOnInit(): void {
@@ -87,31 +29,42 @@ export class FilialeListComponent implements OnInit {
   loadFiliales(): void {
     this.isLoading = true;
     this.filialeService.getFiliales().subscribe({
-      next: (data) => {
-        this.filiales = data;
+      next: (filiales) => {
+        this.filiales = filiales.map(filiale => ({
+          ...filiale,
+          photo: filiale.photo
+            ? filiale.photo.startsWith('http')
+              ? filiale.photo
+              : `http://localhost:5006${filiale.photo}` // Ajoute la base URL si nécessaire
+            : ''
+        }));
         this.isLoading = false;
       },
-      error: (err) => {
-        this.errorMessage = `Erreur : ${err.message}`;
+      error: (error) => {
+        this.errorMessage = 'Erreur lors du chargement des filiales : ' + error.message;
         this.isLoading = false;
       }
     });
   }
 
-  onDelete(id: string): void {
-    if (!id) return;
-    
-    if (confirm('Voulez-vous vraiment supprimer cette filiale ? Cette action est irréversible.')) {
-      this.filialeService.deleteFiliale(id).subscribe({
+  onDelete(idFiliale: string): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
+      this.filialeService.deleteFiliale(idFiliale).subscribe({
         next: () => {
-          this.filiales = this.filiales.filter(f => f.idFiliale !== id);
-          this.errorMessage = null;
+          this.filiales = this.filiales.filter(f => f.idFiliale !== idFiliale);
         },
-        error: (err) => {
-          this.errorMessage = `Erreur de suppression : ${err.message}`;
+        error: (error) => {
+          this.errorMessage = 'Erreur lors de la suppression : ' + error.message;
         }
       });
     }
+  }
+
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.style.display = 'none'; // Masquer l'image en cas d'erreur
+    console.error('Erreur de chargement de l\'image pour l\'URL :', imgElement.src);
+    this.errorMessage = 'Erreur lors du chargement d\'une image. Vérifiez l\'URL ou l\'authentification.';
   }
 
   isAdmin(): boolean {

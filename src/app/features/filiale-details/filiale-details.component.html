@@ -1,18 +1,29 @@
-<div class="container">
-  <h2>Détails de la filiale</h2>
+<!-- src/app/features/filiale-detail/filiale-detail.component.html -->
+<div class="container" *ngIf="filiale; else loading">
+  <h2>Détails de la filiale : {{ filiale.nom }}</h2>
 
-  <!-- Affichage du message d'erreur s'il y en a un -->
   <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
 
-  <!-- Affichage des détails de la filiale si les données sont chargées correctement -->
-  <div *ngIf="filiale" class="details">
+  <div class="details">
     <p><strong>ID :</strong> {{ filiale.idFiliale }}</p>
     <p><strong>Nom :</strong> {{ filiale.nom }}</p>
     <p><strong>Adresse :</strong> {{ filiale.adresse }}</p>
-    <p><strong>Description :</strong> {{ filiale.description }}</p>
+    <p><strong>Description :</strong> {{ filiale.description || 'Aucune description' }}</p>
     <p><strong>Date de création :</strong> {{ filiale.dateCreation | date:'medium' }}</p>
-    <p><strong>Photo :</strong> {{ filiale.photo || 'Aucune photo' }}</p>
-    <button (click)="goBack()" class="btn btn-primary">Retour</button>
+    <p><strong>Photo :</strong></p>
+    <div *ngIf="filiale.photo" class="photo">
+      <img [src]="filiale.photo" alt="Photo de {{ filiale.nom }}" style="max-width: 300px; max-height: 300px;" (error)="onImageError($event)" />
+    </div>
+    <p *ngIf="!filiale.photo">Aucune photo disponible</p>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" [routerLink]="['/admin/filiales/edit', filiale.idFiliale]">Éditer</button>
+    <button class="btn btn-danger" (click)="onDelete(filiale.idFiliale)">Supprimer</button>
+    <button class="btn btn-secondary" [routerLink]="['/admin/filiales']">Retour à la liste</button>
   </div>
 </div>
 
+<ng-template #loading>
+  <p class="alert alert-info">Chargement des détails de la filiale...</p>
+</ng-template>

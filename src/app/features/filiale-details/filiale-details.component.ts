@@ -1,12 +1,10 @@
+// src/app/features/filiale-detail/filiale-detail.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { Filiale } from '../../../Models/filiale.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
-import { HeaderComponent } from '../../layoutBackend/header/header.component';
-import { FooterComponent } from '../../layoutBackend/footer/footer.component';
+import { Filiale } from '../../../Models/filiale.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-filiale-detail',
@@ -20,56 +18,55 @@ export class FilialeDetailsComponent implements OnInit {
   errorMessage: string | null = null;
 
   constructor(
-    private filialeService: FilialeService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private filialeService: FilialeService
   ) {}
 
   ngOnInit(): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-    console.error('hello Error loading filiale:'); // Log for debuggin
-
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      console.error('hello 1Error loading filiale:'); // Log for debuggin
-
       this.loadFiliale(id);
-      console.error('hello2 Error loading filiale:'); // Log for debuggin
-
     } else {
-      this.errorMessage = 'ID de la filiale non trouvé dans l\'URL.';
+      this.errorMessage = 'ID de la filiale non fourni.';
     }
   }
 
   loadFiliale(id: string): void {
     this.filialeService.getFiliale(id).subscribe({
-      next: (response ) => {
-        console.log('Response data:', response);
-        // Adjust based on your backend response structure
-        // If backend returns { data: Filiale, message: string }
-        this.filiale = response; 
-        this.errorMessage = null;
+      next: (filiale) => {
+        this.filiale = {
+          ...filiale,
+          photo: filiale.photo
+            ? filiale.photo.startsWith('http')
+              ? filiale.photo
+              : `http://localhost:5006${filiale.photo}`
+            : ''
+        };
       },
-      error: (err) => {
-        if (err.status === 401) {
-          this.errorMessage = 'Vous n\'êtes pas autorisé à accéder à cette ressource. Veuillez vous reconnecter.';
-          this.authService.logout();
-          this.router.navigate(['/login']);
-        } else if (err.status === 404) {
-          this.errorMessage = 'La filiale spécifiée n\'existe pas.';
-        } else {
-          this.errorMessage = `Erreur lors du chargement des détails de la filiale : ${err.message}`;
-          console.error('Error loading filiale:', err); // Log for debugging
-        }
-        this.filiale = null;
+      error: (error) => {
+        this.errorMessage = 'Erreur lors du chargement des détails de la filiale : ' + error.message;
       }
     });
   }
-  goBack(): void {
-    this.router.navigate(['/filiales']);
+
+  onDelete(idFiliale: string): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
+      this.filialeService.deleteFiliale(idFiliale).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/filiales']);
+        },
+        error: (error) => {
+          this.errorMessage = 'Erreur lors de la suppression : ' + error.message;
+        }
+      });
+    }
+  }
+
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.style.display = 'none';
+    console.error('Erreur de chargement de l\'image pour l\'URL :', imgElement.src);
+    this.errorMessage = 'Erreur lors du chargement de l\'image. Vérifiez l\'URL.';
   }
 }

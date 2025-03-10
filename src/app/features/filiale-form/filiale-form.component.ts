@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Filiale } from '../../../Models/filiale.model';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { CommonModule } from '@angular/common';
 
@@ -22,6 +20,7 @@ export class FilialeFormComponent implements OnInit {
   successMessage: string | null = null;
   selectedFile: File | null = null;
   photo: string | null = null;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +45,7 @@ export class FilialeFormComponent implements OnInit {
   }
 
   loadFilialeData(id: string): void {
+    this.isLoading = true;
     this.filialeService.getFiliale(id).subscribe({
       next: (filiale: Filiale) => {
         const date = new Date(filiale.dateCreation);
@@ -58,10 +58,11 @@ export class FilialeFormComponent implements OnInit {
           dateCreation: formattedDate
         });
         this.photo = filiale.photo ?? null;
+        this.isLoading = false;
       },
       error: (err: any) => {
         this.errorMessage = `Erreur lors du chargement de la filiale : ${err.message || err.statusText || 'Une erreur est survenue'}`;
-        console.error('Load filiale error:', err);
+        this.isLoading = false;
       }
     });
   }
@@ -78,87 +79,85 @@ export class FilialeFormComponent implements OnInit {
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.photo = e.target.result as string;
+        this.photo = e.target.result as string; // Aperçu local de l'image
       };
       reader.readAsDataURL(this.selectedFile);
     }
   }
 
-  uploadPhoto(): Observable<string> {
-    if (!this.selectedFile) {
-      return of(this.photo || '');  // Si pas de photo sélectionnée, renvoyer l'URL existante
-    }
-  
-    const formData = new FormData();
-    formData.append('photo', this.selectedFile);
-  
-    return this.filialeService.uploadPhoto(this.selectedFile).pipe(
-      catchError((err: any) => {
-        this.errorMessage = `Erreur lors du téléchargement de la photo : ${err.message || err.statusText || 'Une erreur est survenue'}`;
-        return of('');
-      })
-    );
+  uploadPhoto(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.selectedFile) {
+        resolve(this.photo || ''); // Retourne l'URL existante ou une chaîne vide
+        return;
+      }
+
+      this.isLoading = true;
+      this.filialeService.uploadPhoto(this.selectedFile).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          resolve(response.url); // Retourne l'URL de la photo uploadée
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = 'Erreur lors de l\'upload de la photo : ' + error.message;
+          reject(error);
+        }
+      });
+    });
   }
-  
-  
-  onSubmit(): void {
+
+  async onSubmit(): Promise<void> {
     if (this.filialeForm.invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs requis correctement';
       return;
     }
-  
+
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    let photoUrl = this.photo || '';
+    if (this.selectedFile) {
+      try {
+        photoUrl = await this.uploadPhoto();
+      } catch (error) {
+        return; // L'erreur est déjà gérée dans uploadPhoto
+      }
+    }
+
     const filiale: Filiale = {
-      idFiliale: this.isEditMode ? this.filialeId! : '',
+      idFiliale: this.isEditMode ? this.filialeId! : '', // L'ID sera généré par le backend en mode ajout
       nom: this.filialeForm.get('nom')?.value,
       adresse: this.filialeForm.get('adresse')?.value,
       description: this.filialeForm.get('description')?.value || '',
       dateCreation: new Date(this.filialeForm.get('dateCreation')?.value),
-      photo: this.photo  // L'URL de la photo sera assignée ici
+      photo: photoUrl
     };
-  
-    if (this.selectedFile) {
-      this.uploadPhoto().subscribe({
-        next: (photo: string) => {
-          if (photo) {
-            filiale.photo = photo;
-          }
-          this.saveFiliale(filiale);
-        },
-        error: (err: any) => {
-          this.errorMessage = `Erreur lors de l'upload de la photo : ${err.message}`;
-          this.successMessage = null;
-          console.error('Upload photo error:', err);
-        }
-      });
-    } else {
-      this.saveFiliale(filiale);
-    }
+
+    this.saveFiliale(filiale);
   }
-  
 
   saveFiliale(filiale: Filiale): void {
     const action = this.isEditMode
       ? this.filialeService.updateFiliale(this.filialeId!, filiale)
       : this.filialeService.addFiliale(filiale);
-  
-    (action as any).subscribe({
+
+      (action as any).subscribe({
       next: () => {
         this.successMessage = this.isEditMode
           ? 'Filiale mise à jour avec succès !'
           : 'Filiale ajoutée avec succès !';
-        this.errorMessage = null;
-  
-        // Vous pouvez aussi définir un délai avant de rediriger l'utilisateur, pour afficher le message de succès
-        setTimeout(() => this.router.navigate(['/']), 1500); // Redirection après 1.5 seconde
+        this.isLoading = false;
+        setTimeout(() => this.router.navigate(['/admin/filiales']), 1500); // Redirection vers la liste
       },
       error: (err: any) => {
         this.errorMessage = `Erreur lors de ${this.isEditMode ? 'la mise à jour' : "l'ajout"} : ${err.message || err.statusText || 'Une erreur est survenue'}`;
-        this.successMessage = null;
-        console.error('Save filiale error:', err);
+        this.isLoading = false;
       }
     });
   }
-  
+
   get nom() { return this.filialeForm.get('nom'); }
   get adresse() { return this.filialeForm.get('adresse'); }
   get dateCreation() { return this.filialeForm.get('dateCreation'); }

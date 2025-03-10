@@ -21,8 +21,7 @@ import { FilialeListComponent } from './features/filiale-list/filiale-list.compo
 import { AppRoutingModule } from './app.routes';
 import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './guards/auth.guard'; // Renamed to camelCase for consistency
-import { AuthInterceptor } from './shared/services/auth.interceptor'; // Adjust path if necessary
-
+import { AuthInterceptor } from './shared/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,8 +47,8 @@ import { AuthInterceptor } from './shared/services/auth.interceptor'; // Adjust 
   ],
   providers: [
     AuthService,
-    RoleGuard,
-    AuthGuard, // Use camelCase for consistency
+    // RoleGuard,
+    // AuthGuard, // Use camelCase for consistency
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
