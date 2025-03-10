@@ -1,6 +1,6 @@
 // fixed code filiale service
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.development';
@@ -45,13 +45,19 @@ export class FilialeService {
     );
 }
 
-  addFiliale(filiale: Filiale): Observable<Filiale> {
-    return this.http.post<{ data: Filiale, message: string }>(this.apiUrl, filiale, { headers: this.getHeaders() })
-      .pipe(
-        map(response => response.data),
-        catchError(error => this.handleError(error, 'Erreur lors de l\'ajout de la filiale'))
-      );
-  }
+
+addFiliale(filiale: Filiale): Observable<Filiale> {
+  return this.http.post<{ data: Filiale, message: string }>(
+    `${this.apiUrl}/add`,
+    filiale,
+    { headers: this.getHeaders() }
+  ).pipe(
+    map(response => response.data),
+    catchError(err => this.handleError(err))
+  );
+}
+
+
 
   updateFiliale(id: string, filiale: Filiale): Observable<void> {
     return this.http.put<{ message: string }>(`${this.apiUrl}/${id}`, filiale, { headers: this.getHeaders() })
@@ -72,26 +78,33 @@ export class FilialeService {
       );
   }
 
-  private handleError(error: any, message: string) {
-    console.error(message, error);
-    return throwError(() => new Error(message));
-  }
+ 
 // filiale.service.ts
 
 
 // Uploader une photo
-uploadPhoto(file: File): Observable<any> {
+// Uploader une photo
+uploadPhoto(file: File): Observable<{ message: string; url: string }> {
   const formData = new FormData();
-  formData.append('file', file, file.name);
+  formData.append('file', file); // "file" doit être le même nom que dans ton backend
 
-  return this.http.post(`${this.apiUrl}/upload-photo`, formData).pipe(
-    catchError(this.handleUploadError)
+  return this.http.post<{ message: string; url: string }>(
+    `${this.apiUrl}/upload-photo`,
+    formData
+  ).pipe(
+    catchError(error => this.handleUploadError(error))
   );
 }
+
 
 private handleUploadError(error: any) {
   console.error('Erreur dans le service :', error);
   return throwError(() => new Error('Erreur lors de la communication avec le serveur'));
+}
+private handleError(error: HttpErrorResponse, message?: string): Observable<never> {
+  const errorMsg = message ? `${message}: ${error.message}` : error.message;
+  console.error('Erreur API:', errorMsg);
+  return throwError(() => new Error(errorMsg));
 }
 
 }

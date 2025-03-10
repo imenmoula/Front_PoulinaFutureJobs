@@ -12,7 +12,7 @@ import { HeaderComponent } from '../../layoutBackend/header/header.component';
   templateUrl: './filiale-list.component.html',
   styleUrls: ['./filiale-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule,FooterComponent,HeaderComponent,SidebarComponent]
+  imports: [CommonModule, RouterModule, FooterComponent, HeaderComponent, SidebarComponent]
 })
 
 export class FilialeListComponent implements OnInit {
@@ -20,6 +20,7 @@ export class FilialeListComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string | null = null;
   sidebarOpen: boolean = false;
+
   constructor(private filialeService: FilialeService) {}
 
   ngOnInit(): void {
@@ -71,10 +72,7 @@ export class FilialeListComponent implements OnInit {
     return true;
   }
 
-
   toggleSidebar(): void {
     this.sidebarOpen = !this.sidebarOpen; // Méthode pour basculer
   }
-
 }
-

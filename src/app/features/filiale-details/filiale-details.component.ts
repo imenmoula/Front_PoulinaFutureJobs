@@ -1,4 +1,3 @@
-// src/app/features/filiale-detail/filiale-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';

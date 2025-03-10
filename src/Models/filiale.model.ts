@@ -1,9 +1,9 @@
 // src/app/models/filiale.model.ts
 export interface Filiale {
-  idFiliale: string; // GUID
+  idFiliale: string;
   nom: string;
   adresse: string;
   description: string;
-  photo?: string;
-  dateCreation: Date|string;
+  dateCreation: Date;
+  photo: string;
 }

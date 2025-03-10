@@ -4,13 +4,13 @@
       <div class="col-12">
         <div class="card profile-box">
           <div class="card-body">
-            <div class="d-flex media-wrapper justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
               <div class="flex-grow-1">
                 <div class="greeting-user">
                   <h2 class="f-w-600">Bienvenue, {{ authService.getUserFullName() }} !</h2>
                   <p>Bienvenue chez plateforme Poulina Recrute Future Jobs</p>
                   <div class="whatsnew-btn">
-                    <a class="btn btn-outline-white" href="#" (click)=" goToProfile()">Voir Profil</a>
+                    <a class="btn btn-outline-white" href="#" (click)="goToProfile()">Voir Profil</a>
                   </div>
                 </div>
               </div>
@@ -22,12 +22,98 @@
                       <path class="hour-marks" d="M300.5 94V61M506 300.5h32M300.5 506v33M94 300.5H60M411.3 107.8l7.9-13.8M493 190.2l13-7.4M492.1 411.4l16.5 9.5M411 492.3l8.9 15.3M189 492.3l-9.2 15.9M107.7 411L93 419.5M107.5 189.3l-17.1-9.9M188.1 108.2l-9-15.6"></path>
                       <circle class="mid-circle" cx="300" cy="300" r="16.2"></circle>
                     </g>
-                    <g id="hour"><path class="hour-hand" d="M300.5 298V142"></path><circle class="sizing-box" cx="300" cy="300" r="253.9"></circle></g>
-                    <g id="minute"><path class="minute-hand" d="M300.5 298V67"></path><circle class="sizing-box" cx="300" cy="300" r="253.9"></circle></g>
-                    <g id="second"><path class="second-hand" d="M300.5 350V55"></path><circle class="sizing-box" cx="300" cy="300" r="253.9"></circle></g>
+                    <g id="hour">
+                      <path class="hour-hand" d="M300.5 298V142"></path>
+                    </g>
+                    <g id="minute">
+                      <path class="minute-hand" d="M300.5 298V67"></path>
+                    </g>
+                    <g id="second">
+                      <path class="second-hand" d="M300.5 350V55"></path>
+                    </g>
                   </svg>
                 </div>
                 <div class="badge f-10 p-0" id="txt">{{ currentTime }}</div>
+              </div>
+            </div>
+
+            <!-- Adding spacing between the current time and cards -->
+            <div class="mb-4"></div> <!-- This adds margin-bottom to create space -->
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="container-fluid dashboard-11">
+              <div class="row">
+                <div class="col-xxl-8 box-col-12">
+                  <div class="row"> 
+                    <div class="col-xl-3 col-hr-6 col-sm-6">
+                      <div class="card widget-11 widget-hover">
+                        <div class="card-body">
+                          <div class="common-align justify-content-start">
+                            <div class="analytics-tread bg-light-primary">
+                              <svg class="fill-primary">
+                                <use href="../assets/svg/icon-sprite.svg#analytics-user"></use>
+                              </svg>
+                            </div>
+                            <div> <span class="c-o-light">Filiale</span>
+                              <h4 class="counter" data-target="356">0</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-3 col-hr-6 col-sm-6">
+                      <div class="card widget-11 widget-hover">
+                        <div class="card-body">
+                          <div class="common-align justify-content-start">
+                            <div class="analytics-tread bg-light-secondary">
+                              <svg class="fill-secondary">
+                                <use href="../assets/svg/icon-sprite.svg#hire-candidate"></use>
+                              </svg>
+                            </div>
+                            <div> <span class="c-o-light">Recruteur</span>
+                              <h4 class="counter" data-target="100">0</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-3 col-hr-6 col-sm-6">
+                      <div class="card widget-11 widget-hover">
+                        <div class="card-body">
+                          <div class="common-align justify-content-start">
+                            <div class="analytics-tread bg-light-warning">
+                              <svg class="fill-warning">
+                                <use href="../assets/svg/icon-sprite.svg#gross-salary"></use>
+                              </svg>
+                            </div>
+                            <div> <span class="c-o-light">Candidates</span>
+                              <h4 class="counter" data-target="562210">0</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-3 col-hr-6 col-sm-6">
+                      <div class="card widget-11 widget-hover">
+                        <div class="card-body">
+                          <div class="common-align justify-content-start">
+                            <div class="analytics-tread bg-light-success">
+                              <svg class="fill-success">
+                                <use href="../assets/svg/icon-sprite.svg#new-employee"></use>
+                              </svg>
+                            </div>
+                            <div> <span class="c-o-light">offre Emploi</span>
+                              <h4 class="counter" data-target="70">0</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

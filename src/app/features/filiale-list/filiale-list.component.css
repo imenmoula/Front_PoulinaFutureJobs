@@ -1,39 +1,26 @@
-/* src/app/features/filiale-list/filiale-list.component.css */
-.container {
-    padding: 20px;
+
+  .container {
+    padding-top: 20px; /* Espacement au-dessus du tableau */
   }
   
-  .table {
-    width: 100%;
-    margin-top: 20px;
+  table {
+    margin-top: 20px; /* Espacement entre l'en-tête et le tableau */
   }
   
-  .table img {
-    border-radius: 4px;
-    object-fit: cover; /* Ajuste l'image pour qu'elle remplisse l'espace sans déformation */
+  h2 {
+    font-size: 1.5rem; /* Taille du titre */
+  }
+
+  .table th, .table td {
+    text-align: center;
+    vertical-align: middle;
   }
   
+  .table td img {
+    max-width: 100px;
+    height: auto;
+  }
+
   .btn {
-    margin-right: 5px;
-  }
-  
-  .alert {
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-  }
-  
-  .alert-info {
-    background-color: #cce5ff;
-    color: #004085;
-  }
-  
-  .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-  }
-  
-  .alert-warning {
-    background-color: #fff3cd;
-    color: #856404;
+    margin-right: 5px; /* Espacement entre les boutons */
   }

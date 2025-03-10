@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
       this.service.signin(this.form.value).subscribe({
         next: (res: any) => {
+          console.log('Login successful')
           this.service.saveToken(res.token);
           this.toastr.success('Login successful!', 'Success');
           this.redirectBasedOnRoles();

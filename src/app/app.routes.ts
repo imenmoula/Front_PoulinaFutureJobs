@@ -15,6 +15,7 @@ import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-ba
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
 import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
+import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -65,7 +66,7 @@ export const routes: Routes = [
     component: FilialeFormComponent,
   
    },
-     { path: 'admin/filiales/add', component: FilialeFormComponent },
+   { path: 'admin/filiales/add', component: FilialeFormComponent },
 
 
 
