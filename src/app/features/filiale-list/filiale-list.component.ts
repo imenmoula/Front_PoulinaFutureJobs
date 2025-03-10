@@ -61,17 +61,19 @@ import { Filiale } from '../../../Models/filiale.model';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
+import { ContentComponent } from '../../layoutBackend/content/content.component';
+import { LayoutBackendComponent } from '../../layoutBackend/layout-backend/layout-backend.component';
+import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-filiale-list',
   templateUrl: './filiale-list.component.html',
   styleUrls: ['./filiale-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent, ContentComponent, SidebarComponent],
 })
 export class FilialeListComponent implements OnInit {
-  sidebarOpen = false; // Propriété locale pour contrôler l'état de la sidebar
-
+  sidebarOpen: boolean = false;
   filiales: any[] = []; 
   isLoading = false;
   errorMessage: string | null = null;
@@ -116,7 +118,10 @@ export class FilialeListComponent implements OnInit {
     return true;
   }
 
+
   toggleSidebar(): void {
     this.sidebarOpen = !this.sidebarOpen; // Méthode pour basculer
   }
+
 }
+
