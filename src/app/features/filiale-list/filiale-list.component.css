@@ -1,26 +1,10 @@
+td, th {
+  white-space: nowrap; /* Évite la coupure des mots */
+  text-overflow: ellipsis; /* Ajoute "..." si le texte est trop long */
+  overflow: hidden;
+}
 
-  .container {
-    padding-top: 20px; /* Espacement au-dessus du tableau */
-  }
-  
-  table {
-    margin-top: 20px; /* Espacement entre l'en-tête et le tableau */
-  }
-  
-  h2 {
-    font-size: 1.5rem; /* Taille du titre */
-  }
-
-  .table th, .table td {
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  .table td img {
-    max-width: 100px;
-    height: auto;
-  }
-
-  .btn {
-    margin-right: 5px; /* Espacement entre les boutons */
-  }
+td:first-child {
+  max-width: 120px; /* Limite la largeur de la colonne ID */
+  word-break: break-word; /* Permet le retour à la ligne si nécessaire */
+}

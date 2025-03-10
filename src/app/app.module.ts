@@ -26,6 +26,8 @@ import { AuthInterceptor } from './shared/auth.interceptor';
 import { CommonModule } from '@angular/common';
 import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +54,8 @@ import { FilialeDetailsComponent } from './features/filiale-details/filiale-deta
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    
   ],
   providers: [
     AuthService,

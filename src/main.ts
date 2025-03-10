@@ -60,7 +60,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
@@ -76,13 +76,12 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideAnimations(), 
     importProvidersFrom(
+      BrowserAnimationsModule, // Obligatoire pour ngx-toastr
       ToastrModule.forRoot({
-        positionClass: 'toast-top-center', 
-        timeOut: 5000, 
-        closeButton: true, // Bouton de fermeture
-        progressBar: true, 
-        preventDuplicates: true, 
-      })
+        positionClass: 'toast-top-right', // Position du toast
+        timeOut: 3000, // Durée d'affichage
+        progressBar: true,
+      }),
     ),
   ],
 }).catch((err) => console.error('Bootstrap error:', err));

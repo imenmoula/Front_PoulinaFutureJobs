@@ -1,4 +1,4 @@
-
+/* 
 /* You can add global styles to this file, and also import other style filesstyles.css */
 .ngx-toastr {
   top: 0 !important;
@@ -194,4 +194,4 @@ button {
 
 button:hover {
   background-color: #115293;
-}
+} 

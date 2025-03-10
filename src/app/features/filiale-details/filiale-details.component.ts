@@ -4,18 +4,21 @@ import { FilialeService } from '../../shared/services/filiale.service';
 import { Filiale } from '../../../Models/filiale.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from '../../layoutBackend/footer/footer.component';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
+import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-filiale-detail',
   templateUrl: './filiale-details.component.html',
   styleUrls: ['./filiale-details.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule,FooterComponent,HeaderComponent,SidebarComponent]
 })
 export class FilialeDetailsComponent implements OnInit {
   filiale: Filiale | null = null;
   errorMessage: string | null = null;
-
+  sidebarOpen: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -67,5 +70,8 @@ export class FilialeDetailsComponent implements OnInit {
     imgElement.style.display = 'none';
     console.error('Erreur de chargement de l\'image pour l\'URL :', imgElement.src);
     this.errorMessage = 'Erreur lors du chargement de l\'image. Vérifiez l\'URL.';
+  }
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen; // Méthode pour basculer
   }
 }

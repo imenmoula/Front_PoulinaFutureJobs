@@ -5,13 +5,16 @@ import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { ContentComponent } from '../../layoutBackend/content/content.component';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
+import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-filiale-form',
   templateUrl: './filiale-form.component.html',
   styleUrls: ['./filiale-form.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,ContentComponent,HeaderComponent,SidebarComponent],
 })
 export class FilialeFormComponent implements OnInit {
   filialeForm: FormGroup;
