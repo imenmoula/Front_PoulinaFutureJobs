@@ -1,0 +1,41 @@
+
+
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <app-header (toggleSidebarEvent)="toggleSidebar()">
+    </app-header>
+    
+    <br>
+    <br>
+    <br>
+    
+    
+  
+    <div class="page-body-wrapper">
+      <app-sidebar [sidebarOpen]="sidebarOpen">
+      </app-sidebar>
+  
+     
+<div class="page-body">
+        <div class="container">
+            <div class="row justify-content-center">
+            <div class="col-sm-8 mt-4">
+                <h1>Détails du Département</h1>
+                <div class="card p-4">
+                <p><strong>Nom :</strong> {{ departement.nom }}</p>
+                <p><strong>Description :</strong> {{ departement.description }}</p>
+                <p><strong>Date de Création :</strong> {{ departement.dateCreation }}</p>
+                <button class="btn btn-primary mt-3" (click)="goToDepartements()">⬅ Retour à la liste des départements</button>
+
+
+                <!-- <p><strong>Filiale appartient :</strong> {{ departement.filiale?.nom }}</p> -->
+                <!-- <p><strong>Filiale adresse :</strong> {{ departement.filiale?.adresse }}</p> -->
+                </div>
+
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
+</div>
+  

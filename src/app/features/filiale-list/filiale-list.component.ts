@@ -1,12 +1,12 @@
 import { SidebarComponent } from './../../layoutBackend/sidebar/sidebar.component';
 import { Component, OnInit } from '@angular/core';
 import { FilialeService } from '../../shared/services/filiale.service';
-import { Filiale } from '../../../Models/filiale.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { ContentComponent } from '../../layoutBackend/content/content.component';
+import { Filiale } from '../../Models/filiale.model';
 
 @Component({
   selector: 'app-filiale-list',

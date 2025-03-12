@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Filiale } from '../../../Models/filiale.model';
 import { Router, RouterModule } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { Filiale } from '../../Models/filiale.model';
 
 @Component({
   selector: 'app-filiale-add',
@@ -110,7 +110,7 @@ export class FilialeAddComponent implements OnInit {
   }
 
   saveFiliale(filiale: Filiale): void {
-    const action$: Observable<Filiale> = this.filialeService.addFiliale(filiale);
+    const action$: Observable<Filiale> = this.filialeService.createFiliale(filiale);
     action$.subscribe({
       next: () => {
         this.successMessage = 'Filiale ajoutée avec succès !';

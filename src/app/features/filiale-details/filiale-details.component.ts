@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';
-import { Filiale } from '../../../Models/filiale.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
+import { Filiale } from '../../Models/filiale.model';
 
 @Component({
   selector: 'app-filiale-detail',

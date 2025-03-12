@@ -15,7 +15,7 @@
     <div class="page-body">
       <div class="table-responsive">
         <h2 class="mb-4">Liste des filiales</h2> 
-        <button class="btn btn-info btn-sm" [routerLink]="['/admin/filiales/add']">Ajouter</button>
+        <button class="btn btn-info btn-sm" [routerLink]="['/admin/filiales/post']">Ajouter</button>
 
         <table class="table table-striped table-bordered">
           <thead>
@@ -47,51 +47,7 @@
         </table>
       </div>
       
-    
-    <!-- <div class="container ">
-
-      <p *ngIf="isLoading" class="alert alert-info">Chargement des filiales...</p>
-      <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
-      
-      <div *ngIf="filiales && filiales.length > 0 && !isLoading && !errorMessage">
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Adresse</th>
-              <th>Description</th>
-              <th>Photo</th>
-              <th>Date de création</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let filiale of filiales">
-              <td>{{ filiale.idFiliale }}</td>
-              <td>{{ filiale.nom }}</td>
-              <td>{{ filiale.adresse }}</td>
-              <td>{{ filiale.description }}</td>
-              <td>
-                <img [src]="filiale.photo" alt="Image de la filiale" *ngIf="filiale.photo">
-                <span *ngIf="!filiale.photo || !filiale.photo.trim()">Aucune photo</span>
-              </td>
-              <td>{{ filiale.dateCreation | date:'medium' }}</td>
-              <td>
-                <button class="btn btn-info btn-sm" >Ajouter</button>
-                <button class="btn btn-info btn-sm" >Détails</button>
-                <button class="btn btn-primary btn-sm" [routerLink]="['/admin/filiales/edit', filiale.idFiliale]">Éditer</button>
-                <button class="btn btn-danger btn-sm" >Supprimer</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <p *ngIf="filiales?.length === 0 && !isLoading && !errorMessage" class="alert alert-warning">
-        Aucune filiale trouvée.
-      </p>
-    </div> -->
+    </div>
   </div>
   <app-footer></app-footer>
 </div>

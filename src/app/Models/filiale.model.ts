@@ -5,5 +5,5 @@ export interface Filiale {
   adresse: string;
   description: string;
   dateCreation: Date;
-  photo: string;
+  photo?: string;
 }

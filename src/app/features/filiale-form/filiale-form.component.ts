@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Filiale } from '../../../Models/filiale.model';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { CommonModule } from '@angular/common';
@@ -8,13 +7,14 @@ import { Observable } from 'rxjs';
 import { ContentComponent } from '../../layoutBackend/content/content.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
+import { Filiale } from '../../Models/filiale.model';
 
 @Component({
   selector: 'app-filiale-form',
   templateUrl: './filiale-form.component.html',
   styleUrls: ['./filiale-form.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule,ContentComponent,HeaderComponent,SidebarComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
 })
 export class FilialeFormComponent implements OnInit {
   filialeForm: FormGroup;
@@ -148,7 +148,7 @@ export class FilialeFormComponent implements OnInit {
     if (this.isEditMode) {
       action$ = this.filialeService.updateFiliale(this.filialeId!, filiale);
     } else {
-      action$ = this.filialeService.addFiliale(filiale);
+      action$ = this.filialeService.createFiliale(filiale);
     }
 
     action$.subscribe({

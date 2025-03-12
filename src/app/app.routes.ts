@@ -1,4 +1,3 @@
-import { Filiale } from './../Models/filiale.model';
 import { AuthGuard } from './guards/auth.guard';
 import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
@@ -16,6 +15,9 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
 import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
 import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
+import { Filiale } from './Models/filiale.model';
+import { DepartementDetailsComponent } from './features/departement-details/departement-details.component';
+import { DepartementAddComponent } from './features/departement-add/departement-add.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -50,7 +52,10 @@ export const routes: Routes = [
      
     ]
   },
-  {path:'admin/departement',component:DepartmentListComponent},
+  {path:'Departements',component:DepartmentListComponent},
+  {path:'Departements/details/:id',component:DepartementDetailsComponent},
+  { path: 'departement/add', component: DepartementAddComponent },  // Route pour ajouter un département
+
   { path: 'admin/filiales', 
     component: FilialeListComponent
  }, 
@@ -66,7 +71,7 @@ export const routes: Routes = [
     component: FilialeFormComponent,
   
    },
-   { path: 'admin/filiales/add', component: FilialeFormComponent },
+   { path: 'admin/filiales/post', component: FilialeFormComponent },
 
 
 

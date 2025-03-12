@@ -28,6 +28,11 @@ import { FilialeAddComponent } from './features/filiale-add/filiale-add.componen
 import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DepartementDetailsComponent } from './features/departement-details/departement-details.component';
+import { DepartmentListComponent } from './features/department-list/department-list.component';
+import { DepartementAddComponent } from './features/departement-add/departement-add.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +51,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FilialeFormComponent,
     FilialeListComponent,
     FilialeAddComponent,
-    FilialeDetailsComponent
+    FilialeDetailsComponent,
+    DepartementDetailsComponent,
+    DepartmentListComponent,
+    DepartementAddComponent
 ],
   imports: [
     BrowserModule,
@@ -54,9 +62,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSnackBarModule,
     AppRoutingModule,
-    
+    BrowserAnimationsModule, // Obligatoire pour ngx-toastr
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      timeOut: 3000, // Temps d'affichage du toast
+      preventDuplicates: true, // Évite les doublons
+    })
   ],
+    
+  
   providers: [
     AuthService,
     // RoleGuard,

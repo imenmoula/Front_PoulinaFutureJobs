@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, RouterOutlet], // CommonModule doit être en premier
   templateUrl: './user.component.html',
-  styles: ``,
   animations: [
     trigger('routerFadeIn', [
       transition('* <=> *', [

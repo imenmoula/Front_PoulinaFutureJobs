@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.development';
-import { Filiale } from '../../../Models/filiale.model';
+import { Filiale } from '../../Models/filiale.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class FilialeService {
             throw new Error('Données de la filiale non trouvées dans la réponse');
         }),
         catchError((error) => {
-            console.error('Erreur API:', error);
+            // console.error('Erreur API:', error);
             return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
         })
     );
@@ -47,18 +47,34 @@ export class FilialeService {
 
 
 
-
-
-addFiliale(filiale: Filiale): Observable<Filiale> {
-  return this.http.post<{ data: Filiale, message: string }>(
-    `${this.apiUrl}/add`,
-    filiale,
-    { headers: this.getHeaders() }
-  ).pipe(
-    map(response => response.data),
-    catchError(err => this.handleError(err))
-  );
+createFiliale(filiale: any): Observable<any> {
+  return this.http.post<any>(this.apiUrl, filiale);
 }
+
+// addFiliale(filiale: Filiale): Observable<Filiale> {
+//   const url = `${this.apiUrl}`; // Ensure this is correct (e.g., 'api/filiales')
+//   console.log('Payload envoyé :', filiale);
+  
+//   return this.http.post<{ data: Filiale, message: string }>(
+//     url,
+//     filiale,
+//     { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+//   ).pipe(
+//     map(response => {
+//       console.log('Réponse reçue :', response);
+//       return response.data;
+//     }),
+//     catchError(err => {
+//       console.error('Détails de l\'erreur :', err.error);
+//       const errorMessage = err.error?.message || 'Erreur inconnue lors de l\'ajout de la filiale';
+//       return throwError(() => new Error(errorMessage));
+//     })
+//   );
+// }
+
+
+
+
 
 
 
@@ -82,10 +98,7 @@ addFiliale(filiale: Filiale): Observable<Filiale> {
   }
 
  
-// filiale.service.ts
 
-
-// Uploader une photo
 // Uploader une photo
 uploadPhoto(file: File): Observable<{ message: string; url: string }> {
   const formData = new FormData();
