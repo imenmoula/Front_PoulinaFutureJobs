@@ -5,13 +5,16 @@ import { Filiale } from '../../Models/filiale.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
+import { FooterComponent } from '../../layoutBackend/footer/footer.component';
+import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-departement-form',
   templateUrl: './departement-form.component.html',
   styleUrls: ['./departement-form.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule,HeaderComponent,FooterComponent,SidebarComponent],
 })
 export class DepartementFormComponent implements OnInit {
   departementForm: FormGroup;
@@ -19,6 +22,7 @@ export class DepartementFormComponent implements OnInit {
   departementId: string | null = null;
   successMessage: string | null = null;
   errorMessages: string[] = [];
+  sidebarOpen: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -114,5 +118,9 @@ export class DepartementFormComponent implements OnInit {
   private showError(messages: string[]): void {
     this.successMessage = null;
     this.errorMessages = messages;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }

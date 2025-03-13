@@ -1,41 +1,40 @@
-
-
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
-    <app-header (toggleSidebarEvent)="toggleSidebar()">
-    </app-header>
-    
-    <br>
-    <br>
-    <br>
-    
-    
+    <app-header></app-header>
   
     <div class="page-body-wrapper">
-      <app-sidebar [sidebarOpen]="sidebarOpen">
-      </app-sidebar>
+      <app-sidebar></app-sidebar>
   
-     
-<div class="page-body">
-        <div class="container">
-            <div class="row justify-content-center">
-            <div class="col-sm-8 mt-4">
-                <h1>Détails du Département</h1>
-                <div class="card p-4">
-                <p><strong>Nom :</strong> {{ departement.nom }}</p>
-                <p><strong>Description :</strong> {{ departement.description }}</p>
-                <p><strong>Date de Création :</strong> {{ departement.dateCreation }}</p>
-                <button class="btn btn-primary mt-3" (click)="goToDepartements()">⬅ Retour à la liste des départements</button>
-
-
-                <!-- <p><strong>Filiale appartient :</strong> {{ departement.filiale?.nom }}</p> -->
-                <!-- <p><strong>Filiale adresse :</strong> {{ departement.filiale?.adresse }}</p> -->
+      <div class="page-body">
+        <div class="container-fluid">
+          <!-- Error Messages -->
+          <div class="alert alert-danger alert-block" *ngIf="errorMessages.length > 0">
+            <strong>Une erreur s'est produite :</strong>
+            <ul>
+              <li *ngFor="let error of errorMessages">{{ error }}</li>
+            </ul>
+          </div>
+  
+        
+  
+          <div class="row justify-content-center">
+            <div class="col-sm-8">
+              <div class="card details-card">
+                <h1 class="card-title">Détails du Département</h1>
+                <div class="card-body">
+                  <p><strong>Nom :</strong> {{ departement?.nom || 'N/A' }}</p>
+                  <p><strong>Description :</strong> {{ departement?.description || 'N/A' }}</p>
+                  <p><strong>Filiale :</strong> {{ filiale?.nom || 'N/A' }}</p>
+                  <p><strong>Adresse :</strong> {{ filiale?.adresse || 'N/A' }}</p>
+                  <p><strong>Date de Création :</strong> {{ departement?.dateCreation | date:'yyyy-MM-dd HH:mm:ss'}}</p>
                 </div>
-
+                <div class="card-footer">
+                  <button class="btn btn-back" (click)="goBack()">← Retour à la liste des départements</button>
+                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<app-footer></app-footer>
-</div>
-  
+    <app-footer></app-footer>
+  </div>

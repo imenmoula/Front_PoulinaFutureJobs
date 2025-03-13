@@ -70,9 +70,12 @@ getDepartementById(id: string): Observable<any> {
 // Supprimer un département
 deleteDepartement(id: string): Observable<any> {
   return this.http.delete<any>(`${this.apiUrl}/${id}`);
-}  getDepartementByName(nom: string): Observable<Departement[]> {
-    return this.http.get<Departement[]>(`${this.apiUrl}/search?nom=${nom}`);
-  }
+}  
+getDepartementByName(nom: string): Observable<Departement[]> {
+  return this.http.get<Departement[]>(`${this.apiUrl}/search?nom=${nom}`, this.getHttpOptions()).pipe(
+    catchError(this.handleError)
+  );
+}
   
   
   private handleError(error: HttpErrorResponse) {

@@ -5,5 +5,6 @@ export interface Departement {
   nom: string;
   description: string;
   dateCreation?: Date;
+  idFiliale: string;
   filiale: Filiale; // 🔹 Ajoute ceci
   }
