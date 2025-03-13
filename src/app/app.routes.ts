@@ -1,3 +1,4 @@
+import { DepartementFormComponent } from './features/departement-form/departement-form.component';
 import { AuthGuard } from './guards/auth.guard';
 import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { AdminOnlyComponent } from './authorizeDemo/admin-only/admin-only.component';
@@ -54,8 +55,8 @@ export const routes: Routes = [
   },
   {path:'Departements',component:DepartmentListComponent},
   {path:'Departements/details/:id',component:DepartementDetailsComponent},
-  { path: 'departement/add', component: DepartementAddComponent },  // Route pour ajouter un département
-
+  { path: 'departement/add', component: DepartementAddComponent },
+ { path: 'departement/edit/:id', component: DepartementFormComponent},
   { path: 'admin/filiales', 
     component: FilialeListComponent
  }, 

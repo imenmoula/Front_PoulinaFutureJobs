@@ -1,11 +1,11 @@
 
-.ngx-toastr {
-  top: 0 !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: auto !important;
-  margin: 10px auto !important;
+
+.toast-success {
+  background-color: #28a745 !important; /* Vert */
+  color: white !important;
+  font-weight: bold;
 }
+
 
 
 
@@ -85,19 +85,19 @@ form.submitted input.ng-invalid{
   justify-content: center; 
   align-items: center;
 } */
-
+/* 
 .img-container img {
-  width:250px; /* Augmenter la taille */
+  width:250px;
   height: 250px;
-  border-radius: 50%; /* Rendre circulaire */
-  object-fit: cover; /* Ajuster l’image */
-  border: 3px solid #ddd; /* Bordure */
-  transition: transform 0.3s ease-in-out; /* Effet au survol */
+  border-radius: 50%
+  object-fit: cover;
+  border: 3px solid #ddd;
+  transition: transform 0.3s ease-in-out;
 }
 
 .img-container img:hover {
-  transform: scale(1.1); /* Effet zoom au survol */
-}
+  transform: scale(1.1); 
+} */
 
 /* End dashboard admin */
 

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHandler } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment'; // Import de l'URL de l'API
 import { Departement } from '../../Models/departement';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs/operators';
+import { Filiale } from '../../Models/filiale.model';
 
 
 @Injectable({
@@ -12,43 +13,64 @@ import { map } from 'rxjs/operators';
 })
 export class DepartementService {
   private apiUrl = `${environment.apiBaseUrl}/Departements`; // URL dynamique
-
   constructor(private http: HttpClient) {}
+  getHttpOptions() {
+    const token = localStorage.getItem('token');
+    console.log("Token récupéré :", token); // Vérifier si le token est bien présent
+    // Récupérer le token
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Ajouter le token dans l'en-tête
+      })
+    };
+  }
 
- // 🔹 Récupérer tous les départements
- getDepartements(): Observable<Departement[]> {
-  return this.http.get<Departement[]>(this.apiUrl);
-}
-
-// 🔹 Récupérer un département par ID
-// getDepartementById(id: string): Observable<Departement> {
-//   return this.http.get<{ message: string; data: Departement }>(`${this.apiUrl}/${id}`)
-//     .pipe(
-//       tap(response => console.log("Réponse reçue dans le service :", response)), // Ajout du log
-//       map(response => response.data) // Extraction du `data`
-//     );
+//    // Récupérer tous les départements
+//   getDepartements(): Observable<any> {
+//     return this.http.get<any>(`${this.apiUrl}`);
+//   }
+//  // Récupérer un département par ID
+//  getDepartementById(id: string): Observable<any> {
+//   return this.http.get(`${this.apiUrl}/${id}`);
 // }
-getDepartementById(id: string): Observable<any> {
-  return this.http.get(`${this.apiUrl}/${id}`);
-}
-
-
-
-// 🔹 Ajouter un département (POST)
+// Add a new department
 addDepartement(departement: any): Observable<any> {
-  return this.http.post(`${this.apiUrl}`, departement);
+  return this.http.post<any>(this.apiUrl, departement, this.getHttpOptions()).pipe(
+    tap(response => console.log('Department added:', response)),
+    catchError(this.handleError)
+  );
 }
 
-// 🔹 Modifier un département (PUT)
-updateDepartement(id: string, departement: Departement): Observable<Departement> {
-  return this.http.put<Departement>(`${this.apiUrl}/${id}`, departement);
+// Update an existing department
+updateDepartement(id: string, data: any): Observable<any> {
+  return this.http.put<any>(`${this.apiUrl}/${id}`, data, this.getHttpOptions()).pipe(
+    tap(response => console.log('Department updated:', response)),
+    catchError(this.handleError)
+  );
+}
+// Get all departments
+getDepartements(): Observable<any> {
+  return this.http.get<any>(this.apiUrl, this.getHttpOptions()).pipe(
+    catchError(this.handleError)
+  );
 }
 
-// 🔹 Supprimer un département (DELETE)
-deleteDepartement(id: string): Observable<void> {
-  return this.http.delete<void>(`${this.apiUrl}/${id}`);
+// Get department by ID
+getDepartementById(id: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/${id}`, this.getHttpOptions()).pipe(
+    catchError(this.handleError)
+  );
 }
-  getDepartementByName(nom: string): Observable<Departement[]> {
+
+
+
+
+
+// Supprimer un département
+deleteDepartement(id: string): Observable<any> {
+  return this.http.delete<any>(`${this.apiUrl}/${id}`);
+}  getDepartementByName(nom: string): Observable<Departement[]> {
     return this.http.get<Departement[]>(`${this.apiUrl}/search?nom=${nom}`);
   }
   

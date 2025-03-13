@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';  
+
+import { ReactiveFormsModule } from '@angular/forms';
 import {  HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';  // Import de HttpClientModule
 
@@ -32,6 +34,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DepartementDetailsComponent } from './features/departement-details/departement-details.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
 import { DepartementAddComponent } from './features/departement-add/departement-add.component';
+import { MatButtonModule } from '@angular/material/button';
+import { DepartementFormComponent } from './features/departement-form/departement-form.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,9 @@ import { DepartementAddComponent } from './features/departement-add/departement-
     FilialeDetailsComponent,
     DepartementDetailsComponent,
     DepartmentListComponent,
+    DepartementFormComponent,
     DepartementAddComponent
+  
 ],
   imports: [
     BrowserModule,
@@ -62,14 +68,11 @@ import { DepartementAddComponent } from './features/departement-add/departement-
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatSnackBarModule,
     AppRoutingModule,
-    BrowserAnimationsModule, // Obligatoire pour ngx-toastr
-    ToastrModule.forRoot({
-      positionClass: 'toast-top-right',
-      timeOut: 3000, // Temps d'affichage du toast
-      preventDuplicates: true, // Évite les doublons
-    })
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot(),
+  
+    
   ],
     
   

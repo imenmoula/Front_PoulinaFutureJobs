@@ -51,26 +51,7 @@ createFiliale(filiale: any): Observable<any> {
   return this.http.post<any>(this.apiUrl, filiale);
 }
 
-// addFiliale(filiale: Filiale): Observable<Filiale> {
-//   const url = `${this.apiUrl}`; // Ensure this is correct (e.g., 'api/filiales')
-//   console.log('Payload envoyé :', filiale);
-  
-//   return this.http.post<{ data: Filiale, message: string }>(
-//     url,
-//     filiale,
-//     { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-//   ).pipe(
-//     map(response => {
-//       console.log('Réponse reçue :', response);
-//       return response.data;
-//     }),
-//     catchError(err => {
-//       console.error('Détails de l\'erreur :', err.error);
-//       const errorMessage = err.error?.message || 'Erreur inconnue lors de l\'ajout de la filiale';
-//       return throwError(() => new Error(errorMessage));
-//     })
-//   );
-// }
+
 
 
 

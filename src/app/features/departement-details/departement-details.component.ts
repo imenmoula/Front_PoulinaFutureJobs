@@ -1,7 +1,7 @@
+import { Departement } from './../../Models/departement';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DepartementService } from '../../shared/services/departement.service';
-import { Departement } from '../../Models/departement';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
