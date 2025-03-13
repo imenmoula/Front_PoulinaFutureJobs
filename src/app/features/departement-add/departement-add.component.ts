@@ -17,15 +17,17 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, ReactiveFormsModule, CommonModule]
 })
 export class DepartementAddComponent implements OnInit {
+ 
   departementForm: FormGroup;
   filiales: Filiale[] = [];
+  successMessage: string | null = null;
+  errorMessages: string[] = [];
 
   constructor(
     private fb: FormBuilder,
     private departementService: DepartementService,
     private filialeService: FilialeService,
-    private router: Router, // Keep private
-    private toastr: ToastrService
+    private router: Router
   ) {
     this.departementForm = this.fb.group({
       nom: ['', Validators.required],
@@ -40,25 +42,30 @@ export class DepartementAddComponent implements OnInit {
         this.filiales = filiales;
       },
       error: (error) => {
-        this.showError('Failed to load filiales: ' + error.message);
+        this.showError(['Échec du chargement des filiales : ' + error.message]);
       }
     });
   }
 
   onSubmit(): void {
+    this.successMessage = null;
+    this.errorMessages = [];
+
     if (this.departementForm.invalid) {
-      this.showError('Please fill out all required fields');
+      this.showError(['Veuillez remplir tous les champs obligatoires']);
       return;
     }
 
     const departementData = this.departementForm.value;
     this.departementService.addDepartement(departementData).subscribe({
       next: (response) => {
-        this.showSuccess('Department added successfully');
-        this.router.navigate(['/departements']);
+        this.showSuccess('Département ajouté avec succès');
+        setTimeout(() => {
+          this.router.navigate(['/departements']);
+        }, 2000);
       },
       error: (error) => {
-        this.showError('Failed to add department: ' + error.message);
+        this.showError(['Échec de l\'ajout du département : ' + error.message]);
       }
     });
   }
@@ -68,10 +75,12 @@ export class DepartementAddComponent implements OnInit {
   }
 
   private showSuccess(message: string): void {
-    this.toastr.success(message, 'Success');
+    this.successMessage = message;
+    this.errorMessages = [];
   }
 
-  private showError(message: string): void {
-    this.toastr.error(message, 'Error');
+  private showError(messages: string[]): void {
+    this.successMessage = null;
+    this.errorMessages = messages;
   }
 }
