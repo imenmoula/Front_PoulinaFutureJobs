@@ -1,79 +1,129 @@
-import { SidebarComponent } from './../../layoutBackend/sidebar/sidebar.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { FilialeService } from '../../shared/services/filiale.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
-import { ContentComponent } from '../../layoutBackend/content/content.component';
+import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Filiale } from '../../Models/filiale.model';
 
 @Component({
   selector: 'app-filiale-list',
-  templateUrl: './filiale-list.component.html',
-  styleUrls: ['./filiale-list.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent, HeaderComponent, SidebarComponent]
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FooterComponent,
+    HeaderComponent,
+    SidebarComponent
+  ],
+  templateUrl: './filiale-list.component.html',
+  styles: [`
+    .card-header { background-color: #f8f9fa; }
+    .btn-xs { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+    .sharp { border-radius: 0; }
+    .mr-1 { margin-right: 0.25rem; }
+  `]
 })
-
 export class FilialeListComponent implements OnInit {
   filiales: Filiale[] = [];
-  isLoading: boolean = false;
-  errorMessage: string | null = null;
+  filteredFiliales: Filiale[] = [];
   sidebarOpen: boolean = false;
+  searchForm: FormGroup;
+  successMessage: string | null = null;
+  errorMessages: string[] = [];
 
-  constructor(private filialeService: FilialeService) {}
+  constructor(
+    private filialeService: FilialeService,
+    private fb: FormBuilder,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.searchForm = this.fb.group({
+      searchTerm: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.loadFiliales();
+    this.searchForm.get('searchTerm')?.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe((value) => {
+      console.log('Search term entered:', value);
+      this.searchFiliales(value);
+    });
   }
 
   loadFiliales(): void {
-    this.isLoading = true;
     this.filialeService.getFiliales().subscribe({
       next: (filiales) => {
-        this.filiales = filiales.map(filiale => ({
-          ...filiale,
-          photo: filiale.photo
-            ? filiale.photo.startsWith('http')
-              ? filiale.photo
-              : `http://localhost:5006${filiale.photo}` // Ajoute la base URL si nécessaire
-            : ''
-        }));
-        this.isLoading = false;
+        this.filiales = filiales || [];
+        this.filteredFiliales = [...this.filiales];
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        this.errorMessage = 'Erreur lors du chargement des filiales : ' + error.message;
-        this.isLoading = false;
+        this.showError(['Échec du chargement des filiales : ' + error.message]);
+        this.filteredFiliales = [];
       }
     });
   }
 
-  onDelete(idFiliale: string): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette filiale ?')) {
-      this.filialeService.deleteFiliale(idFiliale).subscribe({
+  searchFiliales(searchTerm: string): void {
+    if (!searchTerm.trim()) {
+      this.filteredFiliales = [...this.filiales];
+      this.cdr.detectChanges();
+      return;
+    }
+    
+    // Utiliser la méthode correcte du service
+    this.filialeService.searchFilialesByName(searchTerm).subscribe({
+      next: (filiales) => {
+        this.filteredFiliales = filiales || [];
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.showError(['Échec de la recherche des filiales : ' + error.message]);
+        this.filteredFiliales = [];
+      }
+    });
+  }
+
+  onDelete(id: string): void {
+    if (confirm('Voulez-vous vraiment supprimer cette filiale ?')) {
+      this.filialeService.deleteFiliale(id).subscribe({
         next: () => {
-          this.filiales = this.filiales.filter(f => f.idFiliale !== idFiliale);
+          this.filiales = this.filiales.filter(f => f.idFiliale !== id);
+          this.filteredFiliales = this.filteredFiliales.filter(f => f.idFiliale !== id);
+          this.showSuccess('Filiale supprimée avec succès');
         },
         error: (error) => {
-          this.errorMessage = 'Erreur lors de la suppression : ' + error.message;
+          this.showError(['Échec de la suppression de la filiale : ' + error.message]);
         }
       });
     }
   }
 
-  onImageError(event: Event): void {
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.style.display = 'none'; // Masquer l'image en cas d'erreur
-    console.error('Erreur de chargement de l\'image pour l\'URL :', imgElement.src);
-    this.errorMessage = 'Erreur lors du chargement d\'une image. Vérifiez l\'URL ou l\'authentification.';
-  }
-
-  isAdmin(): boolean {
-    return true;
-  }
-
   toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen; // Méthode pour basculer
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  handleImageError(event: Event): void {
+    (event.target as HTMLImageElement).src = 'assets/default-image.png';
+  }
+
+  private showSuccess(message: string): void {
+    this.successMessage = message;
+    this.errorMessages = [];
+    setTimeout(() => this.successMessage = null, 5000);
+  }
+
+  private showError(messages: string[]): void {
+    this.successMessage = null;
+    this.errorMessages = messages;
+    setTimeout(() => this.errorMessages = [], 5000);
   }
 }

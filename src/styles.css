@@ -1,5 +1,4 @@
 
-
 .toast-success {
   background-color: #28a745 !important; /* Vert */
   color: white !important;
@@ -102,12 +101,7 @@ form.submitted input.ng-invalid{
 /* End dashboard admin */
 
 
-.sidebar-wrapper {
-  background:burlywood; /* Dégradé bleu */
-  color: cornflowerblue;
-  padding: 20px;
-  min-height: 100vh;
-}
+
 
 .sidebar .nav-link {
   color: blue;
@@ -218,4 +212,4 @@ button:hover {
   background-color: #115293;
 } 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }  

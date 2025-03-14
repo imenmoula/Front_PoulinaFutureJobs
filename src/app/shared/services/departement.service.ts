@@ -26,15 +26,7 @@ export class DepartementService {
     };
   }
 
-//    // Récupérer tous les départements
-//   getDepartements(): Observable<any> {
-//     return this.http.get<any>(`${this.apiUrl}`);
-//   }
-//  // Récupérer un département par ID
-//  getDepartementById(id: string): Observable<any> {
-//   return this.http.get(`${this.apiUrl}/${id}`);
-// }
-// Add a new department
+
 addDepartement(departement: any): Observable<any> {
   return this.http.post<any>(this.apiUrl, departement, this.getHttpOptions()).pipe(
     tap(response => console.log('Department added:', response)),

@@ -1,52 +1,125 @@
-<div class="form-container">
-  <h2>{{ isEditMode ? 'Modifier une Filiale' : 'Ajouter une Filiale' }}</h2>
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+  <app-header (toggleSidebarEvent)="toggleSidebar()">
+  </app-header>
+  
+  <br>
+  <br>
+  <br>
+  
 
-  <!-- Messages -->
-  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
-  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div class="page-body-wrapper">
+    <app-sidebar [sidebarOpen]="sidebarOpen">
+    </app-sidebar>
 
-  <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="nom">Nom :</label>
-      <input type="text" id="nom" formControlName="nom" class="form-control" />
-      <div *ngIf="nom?.invalid && (nom?.dirty || nom?.touched)" class="text-danger">
-        <div *ngIf="nom?.errors?.['required']">Le nom est requis.</div>
-        <div *ngIf="nom?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</div>
-      </div>
-    </div>
+    <div class="page-body">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-sm-8 mt-4">
+                  
 
-    <div class="form-group">
-      <label for="adresse">Adresse :</label>
-      <input type="text" id="adresse" formControlName="adresse" class="form-control" />
-      <div *ngIf="adresse?.invalid && (adresse?.dirty || adresse?.touched)" class="text-danger">
-        <div *ngIf="adresse?.errors?.['required']">L'adresse est requise.</div>
-        <div *ngIf="adresse?.errors?.['minlength']">L'adresse doit contenir au moins 5 caractères.</div>
-      </div>
-    </div>
+                  
+                  <div class="card p-4">
+                    <h2>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une Filiale</h2>
+                  <div *ngIf="errorMessage" class="alert alert-danger mt-3 mb-0">{{ errorMessage }}</div>
+                  <div *ngIf="successMessage" class="alert alert-success mt-3 mb-0">{{ successMessage }}</div>
 
-    <div class="form-group">
-      <label for="description">Description :</label>
-      <textarea id="description" formControlName="description" class="form-control"></textarea>
-    </div>
+                    <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
+                      <div class="row">
+                        <!-- Nom -->
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Nom *</label>
+                          <input type="text" formControlName="nom" class="form-control" placeholder="Nom de la filiale">
+                          <div *ngIf="nom?.invalid && (nom?.dirty || nom?.touched)" class="text-danger small">
+                            <div *ngIf="nom?.errors?.['required']">Le nom est requis</div>
+                            <div *ngIf="nom?.errors?.['minlength']">Minimum 2 caractères</div>
+                          </div>
+                        </div>
 
-    <div class="form-group">
-      <label for="image">Image :</label>
-      <input type="file" (change)="onFileChange($event)">
-      <img *ngIf="photo" [src]="photo" alt="Image Filiale" width="200">
-    </div>
+                        <!-- Date de création -->
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Date de création *</label>
+                          <input type="date" formControlName="dateCreation" class="form-control">
+                          <div *ngIf="dateCreation?.invalid && (dateCreation?.dirty || dateCreation?.touched)" 
+                              class="text-danger small">
+                            Date requise
+                          </div>
+                        </div>
+                      </div>
 
-    <div class="form-group">
-      <label for="dateCreation">Date de création :</label>
-      <input type="date" id="dateCreation" formControlName="dateCreation" class="form-control" />
-      <div *ngIf="dateCreation?.invalid && (dateCreation?.dirty || dateCreation?.touched)" class="text-danger">
-        <div *ngIf="dateCreation?.errors?.['required']">La date est requise.</div>
-      </div>
-    </div>
+                      <div class="row">
+                        <!-- Adresse -->
+                        <div class="col-12 mb-3">
+                          <label class="form-label">Adresse *</label>
+                          <input type="text" formControlName="adresse" class="form-control" placeholder="Adresse">
+                          <div *ngIf="adresse?.invalid && (adresse?.dirty || adresse?.touched)" class="text-danger small">
+                            Adresse requise
+                          </div>
+                        </div>
+                      </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="filialeForm.invalid || (!isEditMode && filialeForm.pristine)">
-      {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
-    </button>
+                      <!-- Description -->
+                      <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea formControlName="description" class="form-control" rows="3" placeholder="Description"></textarea>
+                      </div>
 
-    <button class="btn btn-secondary" [routerLink]="['/admin/filiales']">Retour à la liste</button>
-  </form>
-</div>
+                      <div class="row">
+                        <!-- Contact -->
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">Téléphone *</label>
+                          <input type="text" formControlName="phone" class="form-control" placeholder="Téléphone">
+                          <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="text-danger small">
+                            Téléphone requis
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">Fax</label>
+                          <input type="text" formControlName="fax" class="form-control" placeholder="Fax">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">Email *</label>
+                          <input type="email" formControlName="email" class="form-control" placeholder="Email">
+                          <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="text-danger small">
+                            <div *ngIf="email?.errors?.['required']">Email requis</div>
+                            <div *ngIf="email?.errors?.['email']">Format invalide</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Site Web & Photo -->
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Site Web</label>
+                          <input type="text" formControlName="siteWeb" class="form-control" placeholder="Site Web">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Photo</label>
+                          <input type="file" (change)="onFileChange($event)" class="form-control">
+                          <div *ngIf="photo" class="mt-2">
+                            <img [src]="photo" alt="Photo filiale" class="img-thumbnail" style="max-width: 150px;">
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Messages et boutons -->
+                      <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary" [disabled]="filialeForm.invalid">
+                          {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
+                        </button>
+                        <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <app-footer></app-footer>
+        </div>
+             
+            

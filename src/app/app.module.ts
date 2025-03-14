@@ -26,7 +26,6 @@ import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './guards/auth.guard'; // Renamed to camelCase for consistency
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { CommonModule } from '@angular/common';
-import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { FilialeDetailsComponent } from './features/filiale-details/filiale-details.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,7 +53,6 @@ import { DepartementFormComponent } from './features/departement-form/departemen
 
     FilialeFormComponent,
     FilialeListComponent,
-    FilialeAddComponent,
     FilialeDetailsComponent,
     DepartementDetailsComponent,
     DepartmentListComponent,

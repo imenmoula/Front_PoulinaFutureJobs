@@ -14,11 +14,10 @@ import { FilialeListComponent } from './features/filiale-list/filiale-list.compo
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
-import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
-import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { Filiale } from './Models/filiale.model';
 import { DepartementDetailsComponent } from './features/departement-details/departement-details.component';
 import { DepartementAddComponent } from './features/departement-add/departement-add.component';
+import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -72,9 +71,7 @@ export const routes: Routes = [
     component: FilialeFormComponent,
   
    },
-   { path: 'admin/filiales/post', component: FilialeFormComponent },
-
-
+   { path: 'admin/filiales/add', component: FilialeFormComponent }, // Ajout
 
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }
 ];

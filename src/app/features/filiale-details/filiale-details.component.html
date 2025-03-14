@@ -14,42 +14,48 @@
     <app-sidebar [sidebarOpen]="sidebarOpen">
     </app-sidebar>
 
-    <div class="page-body">
-      <div class="container mt-5" *ngIf="filiale; else loading">
-        <div class="card shadow-lg">
-          <div class="card-header bg-secondary text-white">
-            <h4 class="mb-0">Détails de la filiale : {{ filiale.nom }}</h4>
-          </div>
-          <div class="card-body">
-            <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
-      
-            <div class="row">
-              <div class="col-md-6">
-                <p><strong>ID :</strong> {{ filiale.idFiliale }}</p>
-                <p><strong>Nom :</strong> {{ filiale.nom }}</p>
-                <p><strong>Adresse :</strong> {{ filiale.adresse }}</p>
-                <p><strong>Description :</strong> {{ filiale.description || 'Aucune description' }}</p>
-                <p><strong>Date de création :</strong> {{ filiale.dateCreation | date:'medium' }}</p>
-              </div>
-              <div class="col-md-6 text-center">
-                <p><strong>Photo :</strong></p>
-                <div *ngIf="filiale.photo" class="photo">
-                  <img [src]="filiale.photo" alt="Photo de {{ filiale.nom }}" class="img-fluid rounded shadow-sm" style="max-width: 300px; max-height: 300px;" (error)="onImageError($event)" />
+    
+      <div class="page-body">
+        <div class="container mt-5" *ngIf="filiale; else loading">
+          <div class="card shadow-lg">
+            <div class="card-header bg-secondary text-white">
+              <h4 class="mb-0">Détails de la filiale : {{ filiale.nom }}</h4>
+            </div>
+            <div class="card-body">
+              <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
+        
+              <div class="row">
+                <div class="col-md-6">
+                  <p><strong>ID :</strong> {{ filiale.idFiliale }}</p>
+                  <p><strong>Nom :</strong> {{ filiale.nom }}</p>
+                  <p><strong>Adresse :</strong> {{ filiale.adresse }}</p>
+                  <p><strong>Description :</strong> {{ filiale.description || 'Aucune description' }}</p>
+                  <p><strong>Date de création :</strong> {{ filiale.dateCreation | date:'medium' }}</p>
+                  <p><strong>phone :</strong> {{ filiale.phone || 'N/A' }}</p>
+                  <p><strong>fax :</strong> {{ filiale.fax || 'N/A' }}</p>
+                  <p><strong>email :</strong> {{ filiale.email || 'N/A' }}</p>
+                  <p><strong>site web :</strong> {{ filiale.siteWeb || 'N/A' }}</p>
                 </div>
-                <p *ngIf="!filiale.photo" class="text-muted">Aucune photo disponible</p>
+                <div class="col-md-6 text-center">
+                  <p><strong>Photo :</strong></p>
+                  <div *ngIf="filiale.photo" class="photo">
+                    <img [src]="filiale.photo" alt="Photo de {{ filiale.nom }}" class="img-fluid rounded shadow-sm" style="max-width: 300px; max-height: 300px;" (error)="onImageError($event)" />
+                  </div>
+                  <p *ngIf="!filiale.photo" class="text-muted">Aucune photo disponible</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="card-footer text-end">
-            
-            <button class="btn btn-secondary" [routerLink]="['/admin/filiales']">Retour</button>
+            <div class="card-footer text-end">
+              
+              <button class="btn btn-secondary" [routerLink]="['/admin/filiales']">Retour</button>
+            </div>
           </div>
         </div>
-      </div>
+        
+        <ng-template #loading>
+          <p class="alert alert-info text-center">Chargement des détails de la filiale...</p>
+        </ng-template>
       
-      <ng-template #loading>
-        <p class="alert alert-info text-center">Chargement des détails de la filiale...</p>
-      </ng-template>
     </div>
       
     

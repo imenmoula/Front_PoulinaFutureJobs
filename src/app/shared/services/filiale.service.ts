@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.development';
 import { Filiale } from '../../Models/filiale.model';
+import { CreateFilialeDto } from '../../Models/create-filiale-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class FilialeService {
   }
 
   getFiliale(id: string): Observable<Filiale> {
-    return this.http.get<{ data: Filiale; message: string }>(`${this.apiUrl}/${id}`).pipe(
+    console.log('Fetching filiale with ID:', id); // Debug log
+    return this.http.get<{ data: Filiale; message: string }>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
         map(response => {
             if (response && response.data) {
                 return response.data;
@@ -39,25 +41,17 @@ export class FilialeService {
             throw new Error('Données de la filiale non trouvées dans la réponse');
         }),
         catchError((error) => {
-            // console.error('Erreur API:', error);
             return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
         })
     );
 }
 
 
-
-createFiliale(filiale: any): Observable<any> {
-  return this.http.post<any>(this.apiUrl, filiale);
+// Create a new filiale
+// Create a new filiale using CreateFilialeDto
+addFiliale(filialeData: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}/post`, filialeData);
 }
-
-
-
-
-
-
-
-
 
   updateFiliale(id: string, filiale: Filiale): Observable<void> {
     return this.http.put<{ message: string }>(`${this.apiUrl}/${id}`, filiale, { headers: this.getHeaders() })
@@ -92,12 +86,24 @@ uploadPhoto(file: File): Observable<{ message: string; url: string }> {
     catchError(error => this.handleUploadError(error))
   );
 }
+// Renommer la méthode pour qu'elle corresponde à l'appel dans le composant
+searchFilialesByName(nom: string): Observable<Filiale[]> {
+  return this.http.get<{ data: Filiale[], message: string }>(`${this.apiUrl}/search?nom=${nom}`, { headers: this.getHeaders() })
+    .pipe(
+      map(response => response.data),
+      catchError(error => this.handleError(error, 'Erreur lors de la recherche de filiales par nom'))
+    );
+}
+
 
 
 private handleUploadError(error: any) {
   console.error('Erreur dans le service :', error);
   return throwError(() => new Error('Erreur lors de la communication avec le serveur'));
+
 }
+
+
 private handleError(error: HttpErrorResponse, message?: string): Observable<never> {
   const errorMsg = message ? `${message}: ${error.message}` : error.message;
   console.error('Erreur API:', errorMsg);

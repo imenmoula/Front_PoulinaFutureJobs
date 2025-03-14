@@ -1,44 +1,40 @@
-<div class="container">
-    <h2>Ajouter une nouvelle filiale</h2>
-    <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input id="nom" formControlName="nom" class="form-control" type="text">
-        <div *ngIf="nom?.invalid && nom?.touched" class="text-danger">
-          Le nom est obligatoire (au moins 2 caractères).
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="adresse">Adresse</label>
-        <input id="adresse" formControlName="adresse" class="form-control" type="text">
-        <div *ngIf="adresse?.invalid && adresse?.touched" class="text-danger">
-          L'adresse est obligatoire (au moins 5 caractères).
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" formControlName="description" class="form-control"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="dateCreation">Date de création</label>
-        <input id="dateCreation" formControlName="dateCreation" class="form-control" type="date">
-        <div *ngIf="dateCreation?.invalid && dateCreation?.touched" class="text-danger">
-          La date de création est obligatoire.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="photo">Photo</label>
-        <input id="photo" type="file" (change)="onFileChange($event)" class="form-control">
-        <div *ngIf="photo">
-          <img [src]="photo" alt="Prévisualisation de la photo" style="max-width: 300px; max-height: 300px;" />
-        </div>
-      </div>
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
-      <div *ngIf="successMessage" class="alert alert-success">
-        {{ successMessage }}
-      </div>
-      <button class="btn btn-primary" type="submit" [disabled]="isLoading">Ajouter</button>
-    </form>
+<!-- <h2>Ajouter une Filiale</h2>
+
+<form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
+  <label>Nom:</label>
+  <input type="text" formControlName="nom">
+  <div *ngIf="filialeForm.controls.nom.invalid && filialeForm.controls.nom.touched">
+    <small style="color: red;">Nom est requis et ne doit pas dépasser 255 caractères.</small>
   </div>
+
+  <label>Adresse:</label>
+  <input type="text" formControlName="adresse">
+
+  <label>Description:</label>
+  <textarea formControlName="description"></textarea>
+
+  <label>Photo URL:</label>
+  <input type="text" formControlName="photo">
+
+  <label>Téléphone:</label>
+  <input type="text" formControlName="phone">
+  <div *ngIf="filialeForm.controls.phone.invalid && filialeForm.controls.phone.touched">
+    <small style="color: red;">Numéro de téléphone invalide.</small>
+  </div>
+
+  <label>Fax:</label>
+  <input type="text" formControlName="fax">
+
+  <label>Email:</label>
+  <input type="email" formControlName="email">
+  <div *ngIf="filialeForm.controls.email.invalid && filialeForm.controls.email.touched">
+    <small style="color: red;">Email invalide.</small>
+  </div>
+
+  <label>Site Web:</label>
+  <input type="text" formControlName="siteWeb">
+
+  <button type="submit" [disabled]="filialeForm.invalid">Ajouter</button>
+</form>
+
+<p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p> -->

@@ -1,131 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { FilialeService } from '../../shared/services/filiale.service';
-import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
-import { Filiale } from '../../Models/filiale.model';
+// import { Component, OnInit } from '@angular/core';
+// import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+// import { Router, RouterModule } from '@angular/router';
+// import { FilialeService } from '../../shared/services/filiale.service';
+// import { CommonModule } from '@angular/common';
+// import { CreateFilialeDto } from '../../Models/create-filiale-dto.model';
 
-@Component({
-  selector: 'app-filiale-add',
-  templateUrl: './filiale-add.component.html',
-  styleUrls: ['./filiale-add.component.css'],
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
-})
-export class FilialeAddComponent implements OnInit {
-  filialeForm: FormGroup;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
-  selectedFile: File | null = null;
-  photo: string | null = null;  // For image preview
-  isLoading: boolean = false;
+// @Component({
+//   selector: 'app-filiale-add',
+//   standalone: true,
+//   imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+//   templateUrl: './filiale-add.component.html',
+//   styles: []
+// })
+// export class FilialeAddComponent implements OnInit {
+//   filialeForm: FormGroup;
+//   successMessage: string = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private filialeService: FilialeService,
-    private router: Router
-  ) {
-    this.filialeForm = this.fb.group({
-      nom: ['', [Validators.required, Validators.minLength(2)]],
-      adresse: ['', [Validators.required, Validators.minLength(5)]],
-      description: [''],
-      dateCreation: ['', Validators.required]
-    });
-  }
+//   constructor(private filialeService: FilialeService, private fb: FormBuilder, private router: Router) {
+//     this.filialeForm = this.fb.group({
+//       nom: ['', [Validators.required, Validators.maxLength(255)]],
+//       adresse: ['', [Validators.maxLength(500)]],
+//       description: ['', [Validators.maxLength(1000)]],
+//       photo: [''],
+//       phone: ['', [Validators.required, Validators.pattern('^[0-9+ ]*$')]], 
+//       fax: [''],
+//       email: ['', [Validators.required, Validators.email]],
+//       siteWeb: ['']
+//     });
+//   }
 
-  ngOnInit(): void {
-    // No initialization needed for add mode since we create a new filiale
-  }
+//   onSubmit(): void {
+//     if (this.filialeForm.invalid) {
+//       return;
+//     }
 
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      this.previewPhoto();
-    }
-  }
+//     this.filialeService.addFiliale(this.filialeForm.value).subscribe({
+//       next: (response) => {
+//         this.successMessage = response.message || 'Filiale ajoutée avec succès!';
+//         this.filialeForm.reset(); // Réinitialise le formulaire après succès
+//         setTimeout(() => {
+//           this.successMessage = '';
+//           this.router.navigate(['/filiales']); // Redirection vers la liste
+//         }, 2000);
+//       },
+//       error: (error) => {
+//         console.error('Erreur lors de l\'ajout', error);
+//         alert('Erreur lors de l\'ajout de la filiale');
+//       }
+//     });
+//   }
 
-  previewPhoto(): void {
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.photo = e.target.result as string;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
-
-  uploadPhoto(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      if (!this.selectedFile) {
-        resolve(this.photo || '');
-        return;
-      }
-      this.isLoading = true;
-      this.filialeService.uploadPhoto(this.selectedFile).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          resolve(response.url);
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = 'Erreur lors de l\'upload de la photo : ' + error.message;
-          reject(error);
-        }
-      });
-    });
-  }
-
-  async onSubmit(): Promise<void> {
-    if (this.filialeForm.invalid) {
-      this.errorMessage = 'Veuillez remplir tous les champs requis correctement';
-      return;
-    }
-
-    this.isLoading = true;
-    this.errorMessage = null;
-    this.successMessage = null;
-
-    let photoUrl = this.photo || '';
-    if (this.selectedFile) {
-      try {
-        photoUrl = await this.uploadPhoto();
-      } catch (error) {
-        return;
-      }
-    }
-
-    // Create a new filiale payload; the idFiliale is empty and will be generated by the backend
-    const filiale: Filiale = {
-      idFiliale: '',
-      nom: this.filialeForm.get('nom')?.value,
-      adresse: this.filialeForm.get('adresse')?.value,
-      description: this.filialeForm.get('description')?.value || '',
-      dateCreation: new Date(this.filialeForm.get('dateCreation')?.value),
-      photo: photoUrl
-    };
-
-    this.saveFiliale(filiale);
-  }
-
-  saveFiliale(filiale: Filiale): void {
-    const action$: Observable<Filiale> = this.filialeService.createFiliale(filiale);
-    action$.subscribe({
-      next: () => {
-        this.successMessage = 'Filiale ajoutée avec succès !';
-        this.isLoading = false;
-        setTimeout(() => this.router.navigate(['/admin/filiales']), 1500);
-      },
-      error: (err: any) => {
-        this.errorMessage = "Erreur lors de l'ajout : " + (err.message || err.statusText || 'Une erreur est survenue');
-        this.isLoading = false;
-      }
-    });
-  }
-
-  // Getters for form controls
-  get nom() { return this.filialeForm.get('nom'); }
-  get adresse() { return this.filialeForm.get('adresse'); }
-  get dateCreation() { return this.filialeForm.get('dateCreation'); }
-}
+//   ngOnInit(): void {}
+// }

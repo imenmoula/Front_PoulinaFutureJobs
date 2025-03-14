@@ -1,54 +1,119 @@
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
-  <app-header (toggleSidebarEvent)="toggleSidebar()">
-  </app-header>
-  
-  <br>
-  <br>
-  <br>
-  
-  
+  <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+  <br><br><br>
 
   <div class="page-body-wrapper">
-    <app-sidebar [sidebarOpen]="sidebarOpen">
-    </app-sidebar>
+    <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
 
     <div class="page-body">
-      <div class="table-responsive">
-        <h2 class="mb-4">Liste des filiales</h2> 
-        <button class="btn btn-info btn-sm" [routerLink]="['/admin/filiales/post']">Ajouter</button>
+      <div class="container-fluid">
+        <!-- Success Message -->
+        <div class="alert alert-success alert-block" *ngIf="successMessage">
+          <strong>{{ successMessage }}</strong>
+        </div>
 
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Adresse</th>
-              <th>Description</th>
-              <th>Photo</th>
-              <th>Date de création</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let filiale of filiales">
-              <td>{{ filiale.idFiliale }}</td>
-              <td>{{ filiale.nom }}</td>
-              <td>{{ filiale.adresse }}</td>
-              <td>{{ filiale.description }}</td>
-              <td><img [src]="filiale.photo" alt="Image" class="img-thumbnail" width="40"></td>
-              <td>{{ filiale.dateCreation | date:'medium' }}</td>
-              <td>
-                <button class="btn btn-primary btn-sm" [routerLink]="['/admin/filiales', filiale.idFiliale]">Détails</button>
-                <button class="btn btn-warning btn-sm"[routerLink]="['/admin/filiales/edit', filiale.idFiliale]">Éditer</button>
-                <button class="btn btn-danger btn-sm" (click)="onDelete(filiale.idFiliale)">Supprimer</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Error Messages -->
+        <div class="alert alert-danger alert-block" *ngIf="errorMessages.length > 0">
+          <strong>Une erreur s'est produite :</strong>
+          <ul>
+            <li *ngFor="let error of errorMessages">{{ error }}</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Liste des Filiales :</h4>
+              </div>
+
+              <!-- Search Form -->
+              <div class="card-body">
+                  <form [formGroup]="searchForm">
+                    <input
+                      type="text"
+                      class="form-control mb-3"
+                      formControlName="searchTerm"
+                      placeholder="Rechercher par nom de filiale..."
+                    >
+                  </form>
+              </div>
+
+              <div class="text-right">
+                <a routerLink="/admin/filiales/add" class="btn btn-primary mt-3">
+                  <i class="fa fa-plus"></i> Ajouter une nouvelle filiale
+                </a>
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-responsive-md">
+                    <thead>
+                      <tr>
+                        <th><strong>ID#</strong></th>
+                        <th><strong>Nom</strong></th>
+                        <th><strong>Adresse</strong></th>
+                        <th><strong>Description</strong></th>
+                        <th><strong>Photo</strong></th>
+                        <th> <strong>phone</strong></th>
+                        <th> <strong>fax</strong></th>
+                        <th> <strong>email</strong></th>
+                        <th> <strong>site web</strong></th>
+
+                        <th><strong>Date de Création</strong></th>
+                        <th><strong>Actions</strong></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let filiale of filteredFiliales">
+                        <td>{{ filiale.idFiliale }}</td>
+                        <td>{{ filiale.nom }}</td>
+                        <td>{{ filiale.adresse }}</td>
+                        <td>{{ filiale.description }}</td>
+                        <td>
+                          <img [src]="filiale.photo || 'assets/default-image.png'" 
+                               alt="Image de la filiale" 
+                               class="img-thumbnail" 
+                               height="50" 
+                               width="50" 
+                               (error)="handleImageError($event)">
+                        </td>
+                        <td>{{ filiale.phone }}</td>
+                        <td>{{ filiale.fax }}</td>
+                        <td>{{ filiale.email }}</td>
+                        <td>{{ filiale.siteWeb }}</td>
+                        <td>{{ filiale.dateCreation | date:'dd/MM/yyyy' }}</td>
+                        <td>
+                          <div class="d-flex">
+                            <a routerLink="/admin/filiales/edit/{{ filiale.idFiliale }}" 
+                               class="btn btn-primary shadow btn-xs sharp mr-1">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <button (click)="onDelete(filiale.idFiliale)" 
+                                    class="btn btn-danger shadow btn-xs sharp mr-1">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                            <a routerLink="/admin/filiales/{{ filiale.idFiliale }}" 
+                               class="btn btn-primary shadow btn-xs sharp">
+                              <i class="fa fa-eye"></i>
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngIf="filteredFiliales.length === 0">
+                        <td colspan="11" class="text-center">Aucune filiale trouvée</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      
     </div>
   </div>
+
   <app-footer></app-footer>
 </div>
-

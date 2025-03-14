@@ -6,4 +6,9 @@ export interface Filiale {
   description: string;
   dateCreation: Date;
   photo?: string;
+  phone?: string;
+  fax?: string;
+  email?: string;
+  siteWeb?: string;
+  departements?: any[];
 }

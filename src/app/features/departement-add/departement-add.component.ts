@@ -75,7 +75,7 @@ export class DepartementAddComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/departements']);
+    this.router.navigate(['/Departements']);
   }
 
   private showSuccess(message: string): void {
