@@ -35,6 +35,10 @@ import { DepartmentListComponent } from './features/department-list/department-l
 import { DepartementAddComponent } from './features/departement-add/departement-add.component';
 import { MatButtonModule } from '@angular/material/button';
 import { DepartementFormComponent } from './features/departement-form/departement-form.component';
+import { RoleDetailsComponent } from './features/role-details/role-details.component';
+import { RoleFormComponent } from './features/role-form/role-form.component';
+import { RoleListComponent } from './features/role-list/role-list.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,10 @@ import { DepartementFormComponent } from './features/departement-form/departemen
     DepartementDetailsComponent,
     DepartmentListComponent,
     DepartementFormComponent,
-    DepartementAddComponent
+    DepartementAddComponent,
+    RoleDetailsComponent,
+    RoleFormComponent,
+    RoleListComponent
   
 ],
   imports: [
@@ -67,6 +74,8 @@ import { DepartementFormComponent } from './features/departement-form/departemen
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    MatSnackBarModule,
+    RouterModule ,
     BrowserAnimationsModule, 
     ToastrModule.forRoot(),
   

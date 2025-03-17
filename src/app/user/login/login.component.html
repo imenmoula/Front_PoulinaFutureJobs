@@ -20,11 +20,19 @@
                 <label class="col-form-label">Mot de passe</label>
                 <div class="form-input position-relative">
                   <input class="form-control" type="password" placeholder="*********" formControlName="password">
-                  <div class="show-hide"><span class="show"></span></div>
+                  <!-- <div class="show-hide"><span class="show"></span></div> -->
                 </div>
                 <div class="error-feedback" *ngIf="hasDisplayableError('password') && form.controls['password'].hasError('required')">
                   Veuillez entrer votre mot de passe.
                 </div>
+              </div>
+<!-- //-----------------------forget password----------------------> 
+              <div class="d-flex justify-content-around align-items-center mb-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+                  <label class="form-check-label" for="form1Example3"> Remember me </label>
+                </div>
+                <a href="#!">Forgot password?</a>
               </div>
 
               <!-- Submit Button -->
@@ -41,4 +49,7 @@
               </p>
             </form>
           </div>
+            <!-- Checkbox -->
+           
+
       

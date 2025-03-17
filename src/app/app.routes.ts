@@ -18,6 +18,9 @@ import { Filiale } from './Models/filiale.model';
 import { DepartementDetailsComponent } from './features/departement-details/departement-details.component';
 import { DepartementAddComponent } from './features/departement-add/departement-add.component';
 import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
+import { RoleListComponent } from './features/role-list/role-list.component';
+import { RoleFormComponent } from './features/role-form/role-form.component';
+import { RoleDetailsComponent } from './features/role-details/role-details.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -71,7 +74,11 @@ export const routes: Routes = [
     component: FilialeFormComponent,
   
    },
-   { path: 'admin/filiales/add', component: FilialeFormComponent }, // Ajout
+   { path: 'admin/filiales/add', component: FilialeFormComponent },
+   { path: 'roles', component: RoleListComponent },
+   { path: 'roles/add', component: RoleFormComponent },
+   { path: 'roles/edit/:id', component: RoleFormComponent },
+   { path: 'roles/:id', component: RoleDetailsComponent },
 
   { path: '**', redirectTo: '/signin', pathMatch: 'full' }
 ];

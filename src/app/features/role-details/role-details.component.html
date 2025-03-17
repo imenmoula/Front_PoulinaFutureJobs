@@ -1,0 +1,43 @@
+<!-- <p>role-details works!</p>
+<h2>Détails du Rôle</h2>
+<p><strong>ID :</strong> {{ role?.id }}</p>
+<p><strong>Nom :</strong> {{ role?.name }}</p>
+<button (click)="backToList()" class="btn btn-primary">Retour</button> -->
+
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+    <div class="page-body-wrapper">
+        <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-8 mt-4">
+                        <div class="card p-4">
+                            <h2>Détails du Rôle</h2>
+
+                            <div *ngIf="errorMessage" class="alert alert-danger mt-3 mb-0">{{ errorMessage }}</div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">ID du Rôle :</label>
+                                <p class="form-control-static">{{ role?.id }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nom du Rôle :</label>
+                                <p class="form-control-static">{{ role?.name }}</p>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-secondary" (click)="goBack()">Retour</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-footer></app-footer>
+    </div>
+</div>

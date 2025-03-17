@@ -1,0 +1,41 @@
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+    <div class="page-body-wrapper">
+        <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-8 mt-4">
+                        <div class="card p-4">
+                            <h2>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un Rôle</h2>
+
+                            <!-- Messages d'erreur et de succès -->
+                            <div *ngIf="errorMessage" class="alert alert-danger mt-3 mb-0">{{ errorMessage }}</div>
+                            <div *ngIf="successMessage" class="alert alert-success mt-3 mb-0">{{ successMessage }}</div>
+
+                            <form (ngSubmit)="saveRole()">
+                                <!-- Nom du Rôle -->
+                                <div class="mb-3">
+                                    <label class="form-label">Nom du Rôle *</label>
+                                    <input type="text" [(ngModel)]="role.name" name="name" class="form-control" placeholder="Nom du rôle" required minlength="2">
+                                </div>
+
+                                <!-- Boutons d'action -->
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-footer></app-footer>
+    </div>
+</div>
