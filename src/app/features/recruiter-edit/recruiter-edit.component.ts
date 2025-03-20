@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-recruiter-edit',
   standalone: true,
-  imports: [FooterComponent,HeaderComponent,ReactiveFormsModule,RouterModule,CommonModule,FormsModule,SidebarComponent],
+  imports: [FooterComponent,ReactiveFormsModule,RouterModule,CommonModule,FormsModule,SidebarComponent],
   templateUrl: './recruiter-edit.component.html',
   styleUrls: ['./recruiter-edit.component.scss']
 })

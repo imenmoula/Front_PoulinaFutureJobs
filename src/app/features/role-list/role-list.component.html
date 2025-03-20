@@ -1,9 +1,8 @@
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
     <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
 
-    <br>
-    <br>
-    <br>
+    <br><br><br>
+    
     <div class="page-body-wrapper">
         <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
 
@@ -15,46 +14,67 @@
                             <div class="card-header">
                                 <h4 class="card-title">Liste des Rôles :</h4>
                             </div>
-                            <div class="text-right">
-                                <a routerLink="/roles/add" class="btn btn-primary mt-3">
-                                    <i class="fa fa-plus"> Ajouter un nouveau rôle</i>
+                            <div class="p-3 d-flex justify-content-between align-items-center">
+                                <div class="search-container">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        placeholder="Rechercher par nom..." 
+                                        [(ngModel)]="searchTerm"
+                                        (input)="onSearchChange($event)">
+                                </div>
+                                <a routerLink="/roles/add" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> Ajouter un nouveau rôle
                                 </a>
                             </div>
 
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-responsive-md">
-                                        <thead>
-                                            <tr>
-                                                <th><strong>ID#</strong></th>
-                                                <th><strong>Nom</strong></th>
-                                                <th><strong>Actions</strong></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let role of roles ; let i = index">
-                                                <td>{{ i +1 }}</td>
-                                                <td>{{ role.name }}</td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <a routerLink="/roles/edit/{{ role.id }}" class="btn btn-primary shadow btn-xs sharp mr-1">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                        <button (click)="deleteRole(role.id)" class="btn btn-danger shadow btn-xs sharp">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                        <a routerLink="/roles/{{ role.id }}" class="btn btn-primary shadow btn-xs sharp mr-2">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                <ngx-datatable
+                                    [rows]="rows"
+                                    [columns]="columns"
+                                    [columnMode]="'force'"
+                                    [headerHeight]="50"
+                                    [footerHeight]="50"
+                                    [rowHeight]="'auto'"
+                                    [limit]="pageSize"
+                                    [offset]="currentPage"
+                                    [count]="totalItems"
+                                    [externalPaging]="false"
+                                    (page)="onPage($event)"
+                                    class="material striped">
+                                    
+                                    <ngx-datatable-column name="ID#" prop="index">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{ row.index }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
 
+                                    <ngx-datatable-column name="Nom" prop="name">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{ row.name }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column name="Actions">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <div class="d-flex">
+                                                <a routerLink="/roles/edit/{{ row.id }}" 
+                                                   class="btn btn-primary shadow btn-xs sharp mr-1">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <button (click)="deleteRole(row.id)" 
+                                                        class="btn btn-danger shadow btn-xs sharp">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                <a routerLink="/roles/{{ row.id }}" 
+                                                   class="btn btn-primary shadow btn-xs sharp ml-1">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </div>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                </ngx-datatable>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,4 +84,3 @@
 
     <app-footer></app-footer>
 </div>
-

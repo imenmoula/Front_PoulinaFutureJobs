@@ -1,8 +1,67 @@
 .success-snackbar {
-    background-color: #4CAF50;
-    color: white;
+  background-color: #4CAF50;
+  color: white;
+}
+.error-snackbar {  
+  background-color: #f44336;  
+  color: white;  
+}
+
+/* DataTable specific styles */
+:host ::ng-deep .ngx-datatable {
+  .datatable-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
   }
-  .error-snackbar {  
-    background-color: #f44336;  
-    color: white;  
+  
+  .datatable-body-row {
+      border-bottom: 1px solid #e0e0e0;
   }
+  
+  .datatable-footer {
+      background-color: #f8f9fa;
+      padding: 10px;
+  }
+  
+  .datatable-footer .page-count {
+      line-height: 30px;
+  }
+}
+
+.success-snackbar {
+  background-color: #4CAF50;
+  color: white;
+}
+.error-snackbar {  
+  background-color: #f44336;  
+  color: white;  
+}
+
+:host ::ng-deep .ngx-datatable {
+  .datatable-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .datatable-body-row {
+      border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .datatable-footer {
+      background-color: #f8f9fa;
+      padding: 10px;
+  }
+  
+  .datatable-footer .page-count {
+      line-height: 30px;
+  }
+}
+
+.search-container {
+  width: 300px;
+}
+
+.search-container input {
+  padding: 8px 12px;
+  border-radius: 4px;
+}
