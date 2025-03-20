@@ -16,64 +16,81 @@
                             </div>
                             <div class="p-3 d-flex justify-content-between align-items-center">
                                 <div class="search-container">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        placeholder="Rechercher par nom..." 
-                                        [(ngModel)]="searchTerm"
-                                        (input)="onSearchChange($event)">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fa fa-search text-muted"></i>
+                                        </span>
+                                        <input 
+                                            type="text" 
+                                            class="form-control border-start-0" 
+                                            placeholder="Rechercher par nom..." 
+                                            [(ngModel)]="searchTerm"
+                                            (input)="onSearchChange($event)">
+                                    </div>
                                 </div>
-                                <a routerLink="/roles/add" class="btn btn-primary">
-                                    <i class="fa fa-plus"></i> Ajouter un nouveau rôle
+                                <a routerLink="/roles/add" class="btn btn-primary add-role-btn">
+                                    <i class="fa fa-plus me-1"></i> Ajouter un nouveau rôle
                                 </a>
                             </div>
 
                             <div class="card-body">
-                                <ngx-datatable
-                                    [rows]="rows"
-                                    [columns]="columns"
-                                    [columnMode]="'force'"
-                                    [headerHeight]="50"
-                                    [footerHeight]="50"
-                                    [rowHeight]="'auto'"
-                                    [limit]="pageSize"
-                                    [offset]="currentPage"
-                                    [count]="totalItems"
-                                    [externalPaging]="false"
-                                    (page)="onPage($event)"
-                                    class="material striped">
+                               
+
+                                    <ngx-datatable
+    [rows]="rows"
+    [columns]="columns"
+    [columnMode]="'force'"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="50"
+    [limit]="pageSize"
+    [offset]="currentPage"
+    [count]="totalItems"
+    [externalPaging]="false"
+    (page)="onPage($event)"
+    class="material styled-datatable">
+
+
                                     
-                                    <ngx-datatable-column name="ID#" prop="index">
+                                    <ngx-datatable-column name="ID#" prop="index" [flexGrow]="0.5" [minWidth]="60">
                                         <ng-template let-row="row" ngx-datatable-cell-template>
-                                            {{ row.index }}
+                                            <span class="id-cell">{{ row.index }}</span>
                                         </ng-template>
                                     </ngx-datatable-column>
 
-                                    <ngx-datatable-column name="Nom" prop="name">
+                                    <ngx-datatable-column name="Nom" prop="name" [flexGrow]="2" [minWidth]="150">
                                         <ng-template let-row="row" ngx-datatable-cell-template>
-                                            {{ row.name }}
+                                            <span class="name-cell">{{ row.name }}</span>
                                         </ng-template>
                                     </ngx-datatable-column>
 
-                                    <ngx-datatable-column name="Actions">
+                                    <ngx-datatable-column name="Actions" [flexGrow]="1" [minWidth]="150">
                                         <ng-template let-row="row" ngx-datatable-cell-template>
-                                            <div class="d-flex">
+                                            <div class="d-flex justify-content-end gap-2">
                                                 <a routerLink="/roles/edit/{{ row.id }}" 
-                                                   class="btn btn-primary shadow btn-xs sharp mr-1">
+                                                   class="btn btn-outline-primary action-btn" 
+                                                   title="Modifier">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                                 <button (click)="deleteRole(row.id)" 
-                                                        class="btn btn-danger shadow btn-xs sharp">
+                                                        class="btn btn-outline-danger action-btn"
+                                                        title="Supprimer">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                                 <a routerLink="/roles/{{ row.id }}" 
-                                                   class="btn btn-primary shadow btn-xs sharp ml-1">
+                                                   class="btn btn-outline-info action-btn"
+                                                   title="Voir détails">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </div>
                                         </ng-template>
                                     </ngx-datatable-column>
                                 </ngx-datatable>
+                                
+                                <!-- Message affiché si aucun résultat trouvé -->
+                                <div *ngIf="rows.length === 0" class="text-center py-4 mt-3">
+                                    <p class="text-muted mb-0">Aucun rôle trouvé</p>
+                                </div>
                             </div>
                         </div>
                     </div>
