@@ -12,7 +12,7 @@ import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component'
 @Component({
   selector: 'app-role-form',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule, FooterComponent, HeaderComponent, SidebarComponent],
+  imports: [ CommonModule, FormsModule, FooterComponent, HeaderComponent, SidebarComponent],
   templateUrl: './role-form.component.html',
   styles: ``
 })

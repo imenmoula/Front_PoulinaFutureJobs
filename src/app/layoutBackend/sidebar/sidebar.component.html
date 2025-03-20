@@ -87,13 +87,50 @@
         </li>
 
         <!-- Utilisateurs -->
-        <li class="menu-item">
+        <!-- <li class="menu-item">
           <a routerLink="" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center" >
-             <!-- [ngClass]="{'bg-primary text-white': activeRoute === '/admin/users'}"> -->
+             [ngClass]="{'bg-primary text-white': activeRoute === '/admin/users'}">
             <i class="fa fa-users me-3"></i>
             <span>Utilisateurs</span>
           </a>
+        </li> -->
+
+        <li class="menu-item">
+          <a 
+            class="menu-link py-3 px-4 d-flex align-items-center" 
+            data-bs-toggle="collapse" 
+            href="#users-menu" 
+            role="button" 
+            aria-expanded="false" 
+            aria-controls="users-menu">
+            <i class="fa fa-users me-3"></i>
+            <span>Utilisateurs</span>
+          </a>
+        
+          <div class="collapse" id="users-menu">
+            <ul class="submenu list-unstyled ms-4">
+              <li>
+                <a routerLink="/recruiter/list" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Liste des recruteurs
+                </a>
+              </li>
+              
+              <li>
+                <a routerLink="/candidates" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Liste des candidats
+                </a>
+              </li>
+             
+              <li>
+                <a routerLink="/admins" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Liste des administrateurs
+                </a>
+              </li>
+            
+            </ul>
+          </div>
         </li>
+        
 
         <!-- Paramètres -->
         <li class="menu-item">

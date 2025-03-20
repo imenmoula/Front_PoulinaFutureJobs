@@ -1,0 +1,10 @@
+<h2>Liste des Candidats</h2>
+
+<input type="text" [(ngModel)]="searchTerm" (input)="search()" placeholder="Rechercher par nom ou email" />
+
+<ul>
+  <li *ngFor="let candidat of candidats">
+    {{ candidat.fullName }} - {{ candidat.email }}
+    <button (click)="deleteUser(candidat.id)">Supprimer</button>
+  </li>
+</ul>

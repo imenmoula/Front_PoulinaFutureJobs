@@ -11,7 +11,7 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
-import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
+//  import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
 import { RoleGuard } from './guards/role.guard';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
@@ -39,6 +39,13 @@ import { RoleDetailsComponent } from './features/role-details/role-details.compo
 import { RoleFormComponent } from './features/role-form/role-form.component';
 import { RoleListComponent } from './features/role-list/role-list.component';
 import { RouterModule } from '@angular/router';
+import { AdminListComponent } from './features/admin-list/admin-list.component';
+import { CandidateListComponent } from './features/candidate-list/candidate-list.component';
+import { RecruiterListComponent } from './features/recruiter-list/recruiter-list.component';
+import { RecruiterEditComponent } from './features/recruiter-edit/recruiter-edit.component';
+import { RecruiterAddComponent } from './features/recruiter-add/recruiter-add.component';
+import { RecruiterDetailsComponent } from './features/recruiter-details/recruiter-details.component';
+import { AddAdminComponent } from './features/add-admin/add-admin.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +54,7 @@ import { RouterModule } from '@angular/router';
     RegistrationComponent,
     LoginComponent,
     RecruteurOnlyComponent,
-    CandidateOnlyComponent,
+    // CandidateOnlyComponent,
     GestionDepartementsComponent,
     LayoutBackendComponent,
     HeaderComponent,
@@ -64,7 +71,17 @@ import { RouterModule } from '@angular/router';
     DepartementAddComponent,
     RoleDetailsComponent,
     RoleFormComponent,
-    RoleListComponent
+    RoleListComponent,
+    AdminListComponent,
+    // AddAdminComponent,
+    // EditAdminComponent,
+    CandidateListComponent,
+    RecruiterListComponent,
+    RecruiterEditComponent,
+    RecruiterAddComponent,
+    RecruiterDetailsComponent
+    
+   
   
 ],
   imports: [
@@ -86,7 +103,7 @@ import { RouterModule } from '@angular/router';
   providers: [
     AuthService,
     // RoleGuard,
-    // AuthGuard, // Use camelCase for consistency
+    // AuthGuard, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

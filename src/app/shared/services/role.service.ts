@@ -30,10 +30,6 @@ export class RoleService {
     return this.http.get<Role>(`${this.apiUrl}/${id}`);
   }
 
-  // Ajouter un nouveau rôle
-  // addRole(role: Role): Observable<Role> {
-  //   return this.http.post<Role>(this.apiUrl, role);
-  // }
   addRole(role: Role): Observable<Role> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

@@ -32,6 +32,7 @@
     "rxjs": "~7.8.0",
     "simplebar": "^6.3.0",
     "tslib": "^2.3.0",
+    "uuid": "^11.1.0",
     "zone.js": "^0.15.0"
   },
   "devDependencies": {
@@ -42,6 +43,7 @@
     "@types/feather-icons": "^4.29.4",
     "@types/jasmine": "~5.1.0",
     "@types/jquery": "^3.5.32",
+    "@types/uuid": "^10.0.0",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

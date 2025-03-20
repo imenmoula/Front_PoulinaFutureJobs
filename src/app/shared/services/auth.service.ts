@@ -129,7 +129,11 @@ export class AuthService {
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }
-
+  // getUserProfile(): Observable<any> {
+  //   const token = this.getToken();
+  //   if (!token) return null;
+  //   return this.http.get(`${environment.apiBaseUrl}/UserProfile`);
+  // }
   // Logout user and redirect to login
   logout(redirect: boolean = true): void {
     this.deleteToken();
