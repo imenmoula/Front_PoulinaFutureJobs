@@ -32,8 +32,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let role of roles">
-                                                <td>{{ role.id }}</td>
+                                            <tr *ngFor="let role of roles ; let i = index">
+                                                <td>{{ i +1 }}</td>
                                                 <td>{{ role.name }}</td>
                                                 <td>
                                                     <div class="d-flex">
