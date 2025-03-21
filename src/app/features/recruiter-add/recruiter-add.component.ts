@@ -17,8 +17,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [FooterComponent,HeaderComponent,SidebarComponent,CommonModule,FormsModule,ReactiveFormsModule,RouterModule],
   templateUrl: './recruiter-add.component.html',
-  styleUrls: ['./recruiter-add.component.scss']
-})
+  styles: ``,})
 export class RecruiterAddComponent {
   addForm: FormGroup;
   roles: Role[] = [];

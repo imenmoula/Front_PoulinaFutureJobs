@@ -12,7 +12,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-department-list',
   standalone: true,
   templateUrl: './department-list.component.html',
-  styleUrls: ['./department-list.component.css'],
+  styles: ``,
+
   imports: [
     CommonModule,
     RouterModule,

@@ -16,7 +16,8 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [FormsModule,CommonModule,ReactiveFormsModule,FooterComponent,HeaderComponent,SidebarComponent,RouterModule],
   templateUrl: './recruiter-list.component.html',
-  styleUrls: ['./recruiter-list.component.scss']
+  styles: ``,
+
 })
 export class RecruiterListComponent implements OnInit {
   recruiters: User[] = [];

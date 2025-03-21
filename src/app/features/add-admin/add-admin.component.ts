@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule,CommonModule,ReactiveFormsModule],
   templateUrl: './add-admin.component.html',
-  styleUrls: ['./add-admin.component.css']
+
+
 })
 export class AddAdminComponent implements OnInit {
   adminForm: FormGroup;

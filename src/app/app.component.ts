@@ -13,7 +13,7 @@ declare var $: any;
   standalone: true,
   imports: [ RouterModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrls: ['']
+  styles: ``,
 })
 export class AppComponent  {
   

@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FooterComponent,ReactiveFormsModule,RouterModule,CommonModule,FormsModule,SidebarComponent],
   templateUrl: './recruiter-edit.component.html',
-  styleUrls: ['./recruiter-edit.component.scss']
+  styles: ``,
 })
 export class RecruiterEditComponent implements OnInit {
   editForm: FormGroup;

@@ -14,7 +14,10 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FooterComponent,HeaderComponent,SidebarComponent,ReactiveFormsModule,CommonModule,FormsModule,RouterLink],
   templateUrl: './admin-list.component.html',
-  styleUrls: ['./admin-list.component.css']
+  styles: ``,
+
+
+
 })
 export class AdminListComponent implements OnInit {
   admins: any[] = [];

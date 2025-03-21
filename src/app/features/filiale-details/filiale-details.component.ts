@@ -11,7 +11,7 @@ import { Filiale } from '../../Models/filiale.model';
 @Component({
   selector: 'app-filiale-detail',
   templateUrl: './filiale-details.component.html',
-  styleUrls: ['./filiale-details.component.css'],
+  styles: ``,
   standalone: true,
   imports: [CommonModule, RouterModule,FooterComponent,HeaderComponent,SidebarComponent]
 })

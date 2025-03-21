@@ -6,7 +6,7 @@ import { AuthService } from './../../shared/services/auth.service';
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
-  styleUrls: [''],
+  styles: ``,
   standalone: true,
   imports: [CommonModule, RouterModule]
 })

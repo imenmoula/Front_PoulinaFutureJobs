@@ -39,7 +39,7 @@ export const routes: Routes = [
     component: UserComponent,
     children: [
       { path: 'signup', component: RegistrationComponent },
-      { path: 'signin', component: LoginComponent }
+      { path: 'login', component: LoginComponent }
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent },
@@ -103,7 +103,7 @@ export const routes: Routes = [
   { path: 'recruiter/add', component: RecruiterAddComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
   { path: 'recruiter/edit/:id', component: RecruiterEditComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
   { path: 'recruiter/details/:id', component: RecruiterDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
-{path:'',redirectTo:'signin',pathMatch:'full'}];
+{path:'',redirectTo:'login',pathMatch:'full'}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
