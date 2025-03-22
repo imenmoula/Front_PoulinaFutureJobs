@@ -1,7 +1,7 @@
+import { Role } from "./role.model";
 import { UserRole } from "./user-role.model";
 import { v4 as uuidv4 } from 'uuid';
 
-// src/app/models/user.ts
 export interface User {
   id: string;
   email: string;
@@ -24,6 +24,7 @@ export interface User {
   portfolio?: string;
   entreprise?: string;
   poste?: string;
+role?: Role;
   UserRoles?: UserRole[];
 }
   

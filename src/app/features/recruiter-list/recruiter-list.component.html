@@ -1,14 +1,3 @@
-<h2>Liste des Recruteurs</h2>
-<!-- 
-<input type="text" [(ngModel)]="searchTerm" (input)="search()" placeholder="Rechercher par nom ou email" />
-
-<ul>
-  <li *ngFor="let recruteur of recruteurs">
-    {{ recruteur.fullName }} - {{ recruteur.email }}
-    <button (click)="deleteUser(recruteur.id)">Supprimer</button>
-  </li>
-</ul> -->
-
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
   <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
 
@@ -25,35 +14,51 @@
                 <h4 class="card-title">Liste des Recruteurs :</h4>
               </div>
 
+              <!-- Search Form -->
               <div class="card-body">
                 <form [formGroup]="searchForm">
-                  <input
-                    type="text"
-                    class="form-control mb-3"
-                    formControlName="searchTerm"
-                    placeholder="Rechercher par nom ou email..."
-                  >
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input
+                        type="text"
+                        class="form-control mb-3"
+                        formControlName="searchTerm"
+                        placeholder="Rechercher par nom ou email..."
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <input
+                        type="text"
+                        class="form-control mb-3"
+                        formControlName="ville"
+                        placeholder="Filtrer par ville..."
+                      >
+                    </div>
+                  </div>
                 </form>
               </div>
 
               <div class="text-right">
-                <a routerLink="/recruiter/add" class="btn btn-primary mt-3">
+                <a routerLink="/recruiter/form" class="btn btn-primary mt-3">
                   <i class="fa fa-plus"> Ajouter un Recruteur</i>
                 </a>
               </div>
 
               <div class="card-body">
-                <div class="table-responsive">
+                <div *ngIf="loading" class="text-center">
+                  Chargement...
+                </div>
+                <div class="table-responsive" *ngIf="!loading">
                   <table class="table table-responsive-md">
                     <thead>
                       <tr>
                         <th><strong>ID#</strong></th>
+                        <th><strong>photo</strong></th>
                         <th><strong>Nom</strong></th>
                         <th><strong>Prénom</strong></th>
+                        <th><strong>Telephone</strong></th>
                         <th><strong>Email</strong></th>
-                        <th><strong>Entreprise</strong></th>
-                        <th><strong>Téléphone</strong></th>
-                        <th><strong>Poste</strong></th>
+                        <th><strong>Ville</strong></th>
                         <th><strong>Rôle</strong></th>
                         <th><strong>Actions</strong></th>
                       </tr>
@@ -61,31 +66,29 @@
                     <tbody>
                       <tr *ngFor="let recruiter of filteredRecruiters">
                         <td>{{ recruiter.id }}</td>
+                        <td>{{ recruiter.photo }}</td>
                         <td>{{ recruiter.nom || 'N/A' }}</td>
                         <td>{{ recruiter.prenom || 'N/A' }}</td>
-                        <td>{{ recruiter.email }}</td>
-                        <td>{{ recruiter.entreprise}}</td>
                         <td>{{ recruiter.phone }}</td>
-                        <td>{{ recruiter.poste }}</td>
-                        <!-- <td>{{ recruiter.role?.name || 'N/A' }}</td> -->
-
-                        <td>{{ getRoleName(recruiter) }}</td>
+                        <td>{{ recruiter.email }}</td>
+                        <td>{{ recruiter.ville || 'N/A' }}</td>
+                        <td>{{ recruiter.role || 'N/A' }}</td>
                         <td>
                           <div class="d-flex">
-                            <a [routerLink]="['/recruiter/edit', recruiter.id]" class="btn btn-primary shadow btn-xs sharp mr-1">
+                            <a [routerLink]="['/recruiter/form', recruiter.id]" class="btn btn-primary shadow btn-xs sharp mr-1">
                               <i class="fa fa-pencil"></i>
                             </a>
                             <button (click)="deleteRecruiter(recruiter.id)" class="btn btn-danger shadow btn-xs sharp">
                               <i class="fa fa-trash"></i>
                             </button>
-                            <a [routerLink]="['/recruiter/details/', recruiter.id]" class="btn btn-primary shadow btn-xs sharp mr-2">
+                            <a [routerLink]="['/recruiter/details', recruiter.id]" class="btn btn-primary shadow btn-xs sharp mr-2">
                               <i class="fa fa-eye"></i>
                             </a>
                           </div>
                         </td>
                       </tr>
                       <tr *ngIf="filteredRecruiters.length === 0">
-                        <td colspan="6" class="text-center">Aucun recruteur trouvé.</td>
+                        <td colspan="7" class="text-center">Aucun recruteur trouvé.</td>
                       </tr>
                     </tbody>
                   </table>

@@ -1,3 +1,4 @@
+import { DetailsAdminComponent } from './features/details-admin/details-admin.component';
 import { RecruiterDetailsComponent } from './features/recruiter-details/recruiter-details.component';
 import { CandidateListComponent } from './features/candidate-list/candidate-list.component';
 import { DepartementFormComponent } from './features/departement-form/departement-form.component';
@@ -25,12 +26,12 @@ import { RoleFormComponent } from './features/role-form/role-form.component';
 import { RoleDetailsComponent } from './features/role-details/role-details.component';
 // import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { AdminListComponent } from './features/admin-list/admin-list.component';
-// import { DetailsAdminComponent } from './features/details-admin/details-admin.component';
-// import { EditAdminComponent } from './features/edit-admin/edit-admin.component';
-import { AddAdminComponent } from './features/add-admin/add-admin.component';
 import { RecruiterListComponent } from './features/recruiter-list/recruiter-list.component';
-import { RecruiterAddComponent } from './features/recruiter-add/recruiter-add.component';
-import { RecruiterEditComponent } from './features/recruiter-edit/recruiter-edit.component';
+// import { RecruiterAddComponent } from './features/recruiter-add/recruiter-add.component';
+// import { RecruiterEditComponent } from './features/recruiter-edit/recruiter-edit.component';
+import { AdminFormComponent } from './features/admin-form/admin-form.component';
+import { CandidateFormComponent } from './features/candidate-form/candidate-form.component';
+import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -91,19 +92,26 @@ export const routes: Routes = [
    { path: 'roles/add', component: RoleFormComponent },
    { path: 'roles/edit/:id', component: RoleFormComponent },
    { path: 'roles/:id', component: RoleDetailsComponent },
-   /*gestion des users*/
+   /*gestion des candidats*/
    { path: 'recruiters', component: RecruiterListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'candidates', component: CandidateListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
-  { path: 'admins', component: AdminListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
-  { path: 'admin/add', component: AddAdminComponent}, 
-  // { path: 'admin/edit/:id', component: EditAdminComponent}, 
-  // { path: 'admin/details/:id', component: DetailsAdminComponent},
+  { path: 'candidate', component: CandidateListComponent },
+  { path: 'candidate/form', component: CandidateFormComponent }, // Ajout
+  { path: 'candidate/form/:id', component: CandidateFormComponent },
+  { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
+  /*gestion des admins*/
+  { path: 'admins', component: AdminListComponent},
+  { path: 'admins/form', component: AdminFormComponent},
+  { path: 'admins/form/:id', component: AdminFormComponent},
+  { path: 'admins/details/:id', component: DetailsAdminComponent},
 /*gestion des recruteurs */
 { path: 'recruiter/list', component: RecruiterListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
-  { path: 'recruiter/add', component: RecruiterAddComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
-  { path: 'recruiter/edit/:id', component: RecruiterEditComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
+{ path: 'recruiter', component: RecruiterListComponent },
+  { path: 'recruiter/form', component:AdminFormComponent}, // Utilisation de UserFormComponent
+  { path: 'recruiter/form/:id', component: AdminFormComponent }, // Utilisation de UserFormComponent
   { path: 'recruiter/details/:id', component: RecruiterDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
-{path:'',redirectTo:'login',pathMatch:'full'}];
+{path:'',redirectTo:'login',pathMatch:'full'}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

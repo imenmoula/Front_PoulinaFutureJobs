@@ -12,7 +12,6 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
 //  import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
-import { GestionDepartementsComponent } from './gestion-departements/gestion-departements.component';
 import { RoleGuard } from './guards/role.guard';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { HeaderComponent } from './layoutBackend/header/header.component';
@@ -42,10 +41,10 @@ import { RouterModule } from '@angular/router';
 import { AdminListComponent } from './features/admin-list/admin-list.component';
 import { CandidateListComponent } from './features/candidate-list/candidate-list.component';
 import { RecruiterListComponent } from './features/recruiter-list/recruiter-list.component';
-import { RecruiterEditComponent } from './features/recruiter-edit/recruiter-edit.component';
-import { RecruiterAddComponent } from './features/recruiter-add/recruiter-add.component';
 import { RecruiterDetailsComponent } from './features/recruiter-details/recruiter-details.component';
-import { AddAdminComponent } from './features/add-admin/add-admin.component';
+import { AdminFormComponent } from './features/admin-form/admin-form.component';
+import { CandidateFormComponent } from './features/candidate-form/candidate-form.component';
+import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +54,6 @@ import { AddAdminComponent } from './features/add-admin/add-admin.component';
     LoginComponent,
     RecruteurOnlyComponent,
     // CandidateOnlyComponent,
-    GestionDepartementsComponent,
     LayoutBackendComponent,
     HeaderComponent,
     SidebarComponent,
@@ -73,12 +71,11 @@ import { AddAdminComponent } from './features/add-admin/add-admin.component';
     RoleFormComponent,
     RoleListComponent,
     AdminListComponent,
-    // AddAdminComponent,
-    // EditAdminComponent,
+    AdminFormComponent,
     CandidateListComponent,
+    CandidateFormComponent,
+    CandidateDetailsComponent,
     RecruiterListComponent,
-    RecruiterEditComponent,
-    RecruiterAddComponent,
     RecruiterDetailsComponent
     
    

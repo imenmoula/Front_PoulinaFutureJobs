@@ -1,48 +1,62 @@
-<p>recruiter-details works!</p>
-<div class="page-wrapper compact-wrapper">
-    <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
-  
-    <br><br><br>
-    <div class="page-body-wrapper">
-      <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
-  
-      <div class="page-body">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">Détails du Recruteur</h4>
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+  <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+  <br><br><br>
+  <div class="page-body-wrapper">
+    <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+
+    <div class="page-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Détails du Recruteur</h4>
+              </div>
+
+              <div class="card-body">
+                <div *ngIf="loading" class="text-center">
+                  Chargement...
                 </div>
-                <div class="card-body" *ngIf="recruiter">
+
+                <div *ngIf="!loading && recruiter">
                   <div class="row">
                     <div class="col-md-6">
                       <p><strong>ID :</strong> {{ recruiter.id }}</p>
-                      <p><strong>Email :</strong> {{ recruiter.email }}</p>
-                      <p><strong>Nom complet :</strong> {{ recruiter.fullName }}</p>
                       <p><strong>Nom :</strong> {{ recruiter.nom || 'N/A' }}</p>
                       <p><strong>Prénom :</strong> {{ recruiter.prenom || 'N/A' }}</p>
+                      <p><strong>Nom complet :</strong> {{ recruiter.fullName || 'N/A' }}</p>
+                      <p><strong>Email :</strong> {{ recruiter.email }}</p>
+                      <p><strong>Ville :</strong> {{ recruiter.ville || 'N/A' }}</p>
                     </div>
                     <div class="col-md-6">
-                      <p><strong>Téléphone :</strong> {{ recruiter.phone|| 'N/A' }}</p>
+                      <p><strong>Rôle :</strong> {{ recruiter.role || 'N/A' }}</p>
+                      <p><strong>Téléphone :</strong> {{ recruiter.phone || 'N/A' }}</p>
                       <p><strong>Entreprise :</strong> {{ recruiter.entreprise || 'N/A' }}</p>
                       <p><strong>Poste :</strong> {{ recruiter.poste || 'N/A' }}</p>
-                      <p><strong>Rôle :</strong> {{ getRoleName(recruiter) }}</p>
                     </div>
                   </div>
+
+                  <div class="mt-3">
+                    <!-- <button class="btn btn-primary" [routerLink]="['/recruiter/form', recruiter.id]">
+                      Modifier
+                    </button> -->
+                    <button class="btn btn-secondary ms-2" >
+                      Retour à la liste
+                    </button>
+                  </div>
                 </div>
-                <div class="card-body" *ngIf="!recruiter">
-                  <p class="text-center">Aucun recruteur trouvé.</p>
-                </div>
-                <div class="card-footer">
-                  <a routerLink="/recruiter/list" class="btn btn-secondary">Retour à la liste</a>
+
+                <div *ngIf="!loading && !recruiter" class="text-center">
+                  Aucun recruteur trouvé.
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-  
-      <app-footer></app-footer>
     </div>
+
+    <app-footer></app-footer>
   </div>
+</div>

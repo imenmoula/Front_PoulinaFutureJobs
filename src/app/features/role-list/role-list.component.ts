@@ -57,7 +57,9 @@ export class RoleListComponent implements OnInit {
       next: (data) => {
         this.originalRows = data.map((role, index) => ({
           ...role,
-          index: index + 1
+          name: role.name,
+          normalizedName: role.normalizedName,
+                    index: index + 1
         }));
         this.rows = [...this.originalRows];
         this.totalItems = this.rows.length;

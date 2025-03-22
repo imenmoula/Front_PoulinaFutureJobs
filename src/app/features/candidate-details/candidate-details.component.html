@@ -1,0 +1,70 @@
+<p>candidate-details works!</p>
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+  
+    <br><br><br>
+    <div class="page-body-wrapper">
+      <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+  
+      <div class="page-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Détails du Candidat</h4>
+                </div>
+  
+                <div class="card-body">
+                  <div *ngIf="loading" class="text-center">
+                    Chargement...
+                  </div>
+  
+                  <div *ngIf="!loading && candidate">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong>ID :</strong> {{ candidate.id }}</p>
+                        <p><strong>Nom :</strong> {{ candidate.nom || 'N/A' }}</p>
+                        <p><strong>Prénom :</strong> {{ candidate.prenom || 'N/A' }}</p>
+                        <p><strong>Nom complet :</strong> {{ candidate.fullName || 'N/A' }}</p>
+                        <p><strong>Email :</strong> {{ candidate.email }}</p>
+                        <p><strong>Ville :</strong> {{ candidate.ville || 'N/A' }}</p>
+                        <p><strong>Rôle :</strong> {{ candidate.role || 'N/A' }}</p>
+                        <p><strong>Téléphone :</strong> {{ candidate.phone || 'N/A' }}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <p><strong>Date de naissance :</strong> {{ candidate.dateNaissance || 'N/A' }}</p>
+                        <p><strong>Adresse :</strong> {{ candidate.adresse || 'N/A' }}</p>
+                        <p><strong>Niveau d'étude :</strong> {{ candidate.niveauEtude || 'N/A' }}</p>
+                        <p><strong>Diplôme :</strong> {{ candidate.diplome || 'N/A' }}</p>
+                        <p><strong>Université :</strong> {{ candidate.universite || 'N/A' }}</p>
+                        <p><strong>Spécialité :</strong> {{ candidate.specialite || 'N/A' }}</p>
+                        <p><strong>LinkedIn :</strong> <a [href]="candidate.linkedIn" target="_blank">{{ candidate.linkedIn || 'N/A' }}</a></p>
+                        <p><strong>GitHub :</strong> <a [href]="candidate.github" target="_blank">{{ candidate.github || 'N/A' }}</a></p>
+                        <p><strong>Portfolio :</strong> <a [href]="candidate.portfolio" target="_blank">{{ candidate.portfolio || 'N/A' }}</a></p>
+                      </div>
+                    </div>
+  
+                    <div class="mt-3">
+                      <button class="btn btn-primary" [routerLink]="['/candidate/form', candidate.id]">
+                        Modifier
+                      </button>
+                      <button class="btn btn-secondary ms-2" (click)="onCancel()">
+                        Retour à la liste
+                      </button>
+                    </div>
+                  </div>
+  
+                  <div *ngIf="!loading && !candidate" class="text-center">
+                    Aucun candidat trouvé.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <app-footer></app-footer>
+    </div>
+  </div>

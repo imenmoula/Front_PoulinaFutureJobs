@@ -1,105 +1,105 @@
-import { CommonModule } from '@angular/common';
-import { UserRole } from './../../Models/user-role.model';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { User } from '../../Models/user.model';
-import { Role } from '../../Models/role.model';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
-import { RoleService } from '../../shared/services/role.service';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { User } from '../../Models/user.model';
 
 @Component({
   selector: 'app-recruiter-list',
   standalone: true,
-  imports: [FormsModule,CommonModule,ReactiveFormsModule,FooterComponent,HeaderComponent,SidebarComponent,RouterModule],
+  imports: [FooterComponent, HeaderComponent, SidebarComponent, ReactiveFormsModule, CommonModule, FormsModule, RouterLink],
   templateUrl: './recruiter-list.component.html',
-  styles: ``,
-
+  styles: ``
 })
 export class RecruiterListComponent implements OnInit {
   recruiters: User[] = [];
   filteredRecruiters: User[] = [];
-  roles: Role[] = [];
-  sidebarOpen: boolean = false;
   searchForm: FormGroup;
+  sidebarOpen: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private userService: UserService,
-    private roleService: RoleService,
+    private router: Router,
+    private snackBar: MatSnackBar,
     private fb: FormBuilder
   ) {
     this.searchForm = this.fb.group({
-      searchTerm: ['']
+      searchTerm: [''],
+      ville: ['']
     });
   }
 
   ngOnInit(): void {
-    console.log('Initialisation de RecruiterListComponent');
-    this.loadRecruiters();
-    this.loadRoles();
-    this.searchForm.get('searchTerm')?.valueChanges.subscribe((value) => {
-      console.log('Recherche :', value);
-      this.searchRecruiters(value);
-    });
+    this.getRecruiters();
+    this.searchForm.valueChanges.subscribe(value => this.applyFilters(value));
   }
 
-  loadRecruiters(): void {
-    console.log('Chargement des recruteurs...');
+  getRecruiters(): void {
+    this.loading = true;
     this.userService.getUsersByRole('Recruteur').subscribe({
       next: (response) => {
-        console.log('Réponse de getUsersByRole :', response);
-        this.recruiters = response.data;
-        this.filteredRecruiters = [...this.recruiters];
-        console.log('Recruteurs chargés :', this.recruiters);
+        if (response.success) {
+          this.recruiters = response.data;
+          this.filteredRecruiters = this.recruiters;
+        } else {
+          this.snackBar.open(response.message, 'Fermer', { duration: 3000 });
+        }
+        this.loading = false;
       },
-      error: (err) => console.error('Erreur lors du chargement des recruteurs :', err)
+      error: (error) => {
+        console.error('Erreur lors du chargement des recruteurs', error);
+        this.snackBar.open('Erreur lors du chargement des recruteurs.', 'Fermer', { duration: 3000 });
+        this.loading = false;
+      }
     });
-  }
-
-  loadRoles(): void {
-    console.log('Chargement des rôles...');
-    this.roleService.getRoles().subscribe({
-      next: (roles) => {
-        this.roles = roles;
-        console.log('Rôles chargés :', this.roles);
-      },
-      error: (err) => console.error('Erreur lors du chargement des rôles :', err)
-    });
-  }
-
-  searchRecruiters(query: string): void {
-    if (!query.trim()) {
-      this.filteredRecruiters = [...this.recruiters];
-    } else {
-      const lowerQuery = query.toLowerCase();
-      this.filteredRecruiters = this.recruiters.filter(
-        (recruiter) =>
-          recruiter.fullName?.toLowerCase().includes(lowerQuery) ||
-          recruiter.email?.toLowerCase().includes(lowerQuery)
-      );
-    }
-    console.log('Recruteurs filtrés :', this.filteredRecruiters);
-  }
-
-  getRoleName(user: User): string {
-    if (!user || !user.UserRoles|| user.UserRoles.length === 0) return 'N/A';
-    const roleId = user.UserRoles[0].roleId;
-    return this.roles.find((r) => r.id === roleId)?.name || 'N/A';
   }
 
   deleteRecruiter(id: string): void {
     if (confirm('Voulez-vous vraiment supprimer ce recruteur ?')) {
       this.userService.deleteUser(id).subscribe({
-        next: () => this.loadRecruiters(),
-        error: (err) => console.error('Erreur lors de la suppression :', err)
+        next: () => {
+          this.getRecruiters();
+          this.showSnackbar('Recruteur supprimé avec succès !', 'Fermer');
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression:', err);
+          this.showSnackbar('Erreur lors de la suppression.', 'Fermer');
+        }
       });
     }
   }
 
+  applyFilters(value: { searchTerm: string, ville: string }): void {
+    const searchTerm = value.searchTerm ? value.searchTerm.toLowerCase() : '';
+    const ville = value.ville ? value.ville.toLowerCase() : '';
+
+    this.filteredRecruiters = this.recruiters.filter(recruiter => {
+      const matchesSearchTerm = !searchTerm ||
+        (recruiter.fullName && recruiter.fullName.toLowerCase().includes(searchTerm)) ||
+        (recruiter.email && recruiter.email.toLowerCase().includes(searchTerm));
+
+      const matchesVille = !ville ||
+        (recruiter.ville && recruiter.ville.toLowerCase().includes(ville));
+
+      return matchesSearchTerm && matchesVille;
+    });
+  }
+
   toggleSidebar(): void {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  showSnackbar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
@@ -7,23 +7,21 @@ import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
+import { User } from '../../Models/user.model';
 
 @Component({
   selector: 'app-admin-list',
-
   standalone: true,
-  imports: [FooterComponent,HeaderComponent,SidebarComponent,ReactiveFormsModule,CommonModule,FormsModule,RouterLink],
+  imports: [FooterComponent, HeaderComponent, SidebarComponent, ReactiveFormsModule, CommonModule, FormsModule, RouterLink],
   templateUrl: './admin-list.component.html',
-  styles: ``,
-
-
-
+  styles: ``
 })
 export class AdminListComponent implements OnInit {
-  admins: any[] = [];
-  filteredAdmins: any[] = [];
+  admins: User[] = [];
+  filteredAdmins: User[] = [];
   searchForm: FormGroup;
   sidebarOpen: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -42,21 +40,29 @@ export class AdminListComponent implements OnInit {
   }
 
   getAdmins(): void {
-    this.userService.getUsersByRole('Admin').subscribe(
-      response => {
-        console.log('Admins loaded:', response);
-        this.admins = response.data ? response.data : response; // Gérer les deux cas
-        this.filteredAdmins = this.admins;
+    this.loading = true;
+    this.userService.getUsersByRole('Admin').subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.admins = response.data; // Charger uniquement les utilisateurs avec le rôle "Admin"
+          this.filteredAdmins = this.admins;
+        } else {
+          this.snackBar.open(response.message, 'Fermer', { duration: 3000 });
+        }
+        this.loading = false;
       },
-      error => console.error('Erreur lors du chargement des admins', error)
-    );
+      error: (error) => {
+        console.error('Erreur lors du chargement des admins', error);
+        this.snackBar.open('Erreur lors du chargement des administrateurs.', 'Fermer', { duration: 3000 });
+        this.loading = false;
+      }
+    });
   }
-
   deleteAdmin(id: string): void {
     if (confirm('Voulez-vous vraiment supprimer cet administrateur ?')) {
       this.userService.deleteUser(id).subscribe({
         next: () => {
-          this.getAdmins(); // Rechargez la liste après suppression
+          this.getAdmins();
           this.showSnackbar('Administrateur supprimé avec succès !', 'Fermer');
         },
         error: (err) => {
@@ -69,7 +75,7 @@ export class AdminListComponent implements OnInit {
 
   search(value: string): void {
     if (!value) {
-      this.filteredAdmins = [...this.admins]; // Reset to original list
+      this.filteredAdmins = [...this.admins];
       return;
     }
 

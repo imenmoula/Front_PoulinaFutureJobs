@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService} from '../../shared/services/user.service';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../Models/user.model';
 
 @Component({
-  selector: 'app-recruiter-details',
+  selector: 'app-candidate-details',
   standalone: true,
-  imports: [CommonModule, FooterComponent, HeaderComponent, SidebarComponent,RouterModule,RouterLink],
-  templateUrl: './recruiter-details.component.html',
-  styleUrls: ['./recruiter-details.component.css']
+  imports: [CommonModule, FooterComponent, HeaderComponent, SidebarComponent],
+  templateUrl: './candidate-details.component.html',
+  styleUrls: ['./candidate-details.component.css']
 })
-export class RecruiterDetailsComponent implements OnInit {
-  recruiter: User | null = null;
+export class CandidateDetailsComponent implements OnInit {
+  candidate: User | null = null;
   sidebarOpen: boolean = false;
   loading: boolean = false;
 
@@ -28,31 +28,33 @@ export class RecruiterDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const recruiterId = this.route.snapshot.paramMap.get('id');
-    if (recruiterId) {
-      this.loadRecruiterDetails(recruiterId);
+    const candidateId = this.route.snapshot.paramMap.get('id');
+    if (candidateId) {
+      this.loadCandidateDetails(candidateId);
     } else {
-      this.snackBar.open('ID du recruteur non fourni.', 'Fermer', { duration: 3000 });
-      this.router.navigate(['/recruiter']);
+      this.snackBar.open('ID du candidat non fourni.', 'Fermer', { duration: 3000 });
+      this.router.navigate(['/candidate']);
     }
   }
 
-  loadRecruiterDetails(id: string): void {
+  loadCandidateDetails(id: string): void {
     this.loading = true;
     this.userService.getUserById(id).subscribe({
       next: (response) => {
-        this.recruiter = response.data ? response.data : response;
+        this.candidate = response.data ? response.data : response;
         this.loading = false;
       },
       error: (error) => {
         console.error('Erreur lors du chargement des détails:', error);
-        this.snackBar.open('Erreur lors du chargement des détails du recruteur.', 'Fermer', { duration: 3000 });
-        this.router.navigate(['/recruiter']);
+        this.snackBar.open('Erreur lors du chargement des détails du candidat.', 'Fermer', { duration: 3000 });
+        this.router.navigate(['/candidate']);
         this.loading = false;
       }
     });
   }
-
+onCancle() {
+  this.router.navigate(['/candidate']);
+}
   toggleSidebar(): void {
     this.sidebarOpen = !this.sidebarOpen;
   }
