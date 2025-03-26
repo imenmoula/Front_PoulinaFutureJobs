@@ -30,9 +30,8 @@
                     </div>
                     <div class="col-md-6">
                       <p><strong>Rôle :</strong> {{ admin.role || 'N/A' }}</p>
-                      <p><strong>Téléphone :</strong> {{ admin.phone || 'N/A' }}</p>
+                      <!-- <p><strong>Téléphone :</strong> {{ admin.phone || 'N/A' }}</p> -->
                       <p><strong>Entreprise :</strong> {{ admin.entreprise || 'N/A' }}</p>
-                      <p><strong>Poste :</strong> {{ admin.poste || 'N/A' }}</p>
                     </div>
                   </div>
 
@@ -40,7 +39,7 @@
                     <button class="btn btn-primary" [routerLink]="['/admins/form', admin.id]">
                       Modifier
                     </button>
-                    <button class="btn btn-secondary ms-2" routerLink="/adminss">
+                    <button class="btn btn-secondary ms-2" routerLink="/admins">
                       Retour à la liste
                     </button>
                   </div>

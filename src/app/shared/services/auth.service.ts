@@ -129,6 +129,8 @@ export class AuthService {
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }
+
+  // Check if user is an admin
   // getUserProfile(): Observable<any> {
   //   const token = this.getToken();
   //   if (!token) return null;
@@ -138,7 +140,7 @@ export class AuthService {
   logout(redirect: boolean = true): void {
     this.deleteToken();
     if (redirect) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/signin']);
     }
     // console.log('Utilisateur déconnecté');
   }
@@ -166,4 +168,6 @@ export class AuthService {
     const claims = this.getClaims();
     console.log('JWT Claims:', claims || 'No claims available');
   }
+
+  
 }

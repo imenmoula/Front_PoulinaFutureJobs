@@ -27,11 +27,10 @@
                       <p><strong>Prénom :</strong> {{ recruiter.prenom || 'N/A' }}</p>
                       <p><strong>Nom complet :</strong> {{ recruiter.fullName || 'N/A' }}</p>
                       <p><strong>Email :</strong> {{ recruiter.email }}</p>
-                      <p><strong>Ville :</strong> {{ recruiter.ville || 'N/A' }}</p>
                     </div>
                     <div class="col-md-6">
                       <p><strong>Rôle :</strong> {{ recruiter.role || 'N/A' }}</p>
-                      <p><strong>Téléphone :</strong> {{ recruiter.phone || 'N/A' }}</p>
+                      <!-- <p><strong>Téléphone :</strong> {{ recruiter.PhoneNumber || 'N/A' }}</p> -->
                       <p><strong>Entreprise :</strong> {{ recruiter.entreprise || 'N/A' }}</p>
                       <p><strong>Poste :</strong> {{ recruiter.poste || 'N/A' }}</p>
                     </div>
@@ -41,7 +40,7 @@
                     <!-- <button class="btn btn-primary" [routerLink]="['/recruiter/form', recruiter.id]">
                       Modifier
                     </button> -->
-                    <button class="btn btn-secondary ms-2" >
+                    <button class="btn btn-secondary ms-2"  routerLink="/recruiters">
                       Retour à la liste
                     </button>
                   </div>

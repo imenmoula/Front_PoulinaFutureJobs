@@ -9,6 +9,7 @@ import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 import { FormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-role-list',
@@ -20,7 +21,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     HeaderComponent,
     SidebarComponent,
     FormsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    PaginationComponent // Ajouter le composant de pagination
   ],
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.css']
@@ -28,14 +30,13 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 export class RoleListComponent implements OnInit {
   rows: Role[] = [];
   originalRows: Role[] = [];
+  paginatedRows: Role[] = []; // Nouvelle propriété pour les lignes paginées
   sidebarOpen: boolean = false;
   searchTerm: string = '';
   
-  pageSize = 2; // Increased page size for better usability
+  pageSize = 2; // Ajustez la taille de page selon vos besoins
   currentPage = 0;
   totalItems = 0;
-  Math = Math; // For use in the template
-
 
   columns = [
     { name: 'ID#', prop: 'index', flexGrow: 0.5, minWidth: 60 },
@@ -59,16 +60,27 @@ export class RoleListComponent implements OnInit {
           ...role,
           name: role.name,
           normalizedName: role.normalizedName,
-                    index: index + 1
+          index: index + 1
         }));
         this.rows = [...this.originalRows];
         this.totalItems = this.rows.length;
+        this.updatePaginatedRows(); // Mettre à jour les lignes paginées
       },
       error: (err) => {
         this.showErrorMessage('Impossible de charger les rôles. Veuillez réessayer.');
         console.error('Error loading roles:', err);
       }
     });
+  }
+
+  updatePaginatedRows(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    this.paginatedRows = this.rows.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updatePaginatedRows();
   }
 
   toggleSidebar(): void {
@@ -104,10 +116,6 @@ export class RoleListComponent implements OnInit {
     });
   }
 
-  onPage(event: any): void {
-    this.currentPage = event.offset;
-  }
-
   filterRows(searchTerm: string): void {
     if (!searchTerm) {
       this.rows = [...this.originalRows];
@@ -118,25 +126,11 @@ export class RoleListComponent implements OnInit {
     }
     this.totalItems = this.rows.length;
     this.currentPage = 0;
+    this.updatePaginatedRows();
   }
 
   onSearchChange(event: any): void {
     this.searchTerm = event.target.value;
     this.filterRows(this.searchTerm);
-  }
-
-  getPages(): number[] {
-    const pageCount = Math.ceil(this.totalItems / this.pageSize);
-    const visiblePages = 5; // Number of visible page links
-    
-    let startPage = Math.max(1, this.currentPage + 1 - Math.floor(visiblePages / 2));
-    let endPage = Math.min(pageCount, startPage + visiblePages - 1);
-    
-    // Adjust if we're at the end
-    if (endPage - startPage + 1 < visiblePages) {
-      startPage = Math.max(1, endPage - visiblePages + 1);
-    }
-    
-    return Array.from({length: (endPage - startPage + 1)}, (_, i) => startPage + i);
   }
 }

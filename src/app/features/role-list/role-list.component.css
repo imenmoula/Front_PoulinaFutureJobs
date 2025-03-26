@@ -56,8 +56,17 @@
 /* Datatable body */
 :host ::ng-deep .ngx-datatable .datatable-body-row {
   border-bottom: 1px solid #e5e7eb;
+
+}
+/****************************************************************/
+:host ::ng-deep .ngx-datatable .datatable-body-row:not(:has(.name-cell)) {
+  display: none;
 }
 
+:host ::ng-deep .ngx-datatable .datatable-footer .pager {
+  display: none !important;
+}
+/********************************************************/
 :host ::ng-deep .ngx-datatable .datatable-body-cell {
   padding: 12px 15px;
   font-size: 14px;

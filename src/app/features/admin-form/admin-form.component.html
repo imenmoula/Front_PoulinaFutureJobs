@@ -94,7 +94,7 @@
       <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
         {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
       </button>
-      <button type="button" class="btn btn-secondary ms-2" (click)="router.navigate(['/' + userType])">
+      <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
         Annuler
       </button>
     </form>

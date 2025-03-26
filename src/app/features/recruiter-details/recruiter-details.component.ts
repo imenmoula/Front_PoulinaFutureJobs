@@ -11,7 +11,7 @@ import { User } from '../../Models/user.model';
 @Component({
   selector: 'app-recruiter-details',
   standalone: true,
-  imports: [CommonModule, FooterComponent, HeaderComponent, SidebarComponent,RouterModule,RouterLink],
+  imports: [CommonModule, FooterComponent, HeaderComponent, SidebarComponent,RouterModule],
   templateUrl: './recruiter-details.component.html',
   styleUrls: ['./recruiter-details.component.css']
 })

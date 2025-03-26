@@ -13,7 +13,7 @@ export interface User {
   adresse?: string;
   ville?: string;
   pays?: string;
-  phone?: string;
+  phone ?: string; 
   niveauEtude?: string;
   diplome?: string;
   universite?: string;
@@ -25,7 +25,7 @@ export interface User {
   entreprise?: string;
   poste?: string;
 role?: Role;
+index?: number;
   UserRoles?: UserRole[];
 }
   
- 

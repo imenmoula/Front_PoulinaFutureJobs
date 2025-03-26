@@ -187,20 +187,20 @@ export class UserService {
   }
 
   createUser(user: any): Observable<any> {
-    const token = localStorage.getItem('token'); // Récupérer le token stocké
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}` // Ajouter le token JWT dans l'en-tête
-    });
-
-    return this.http.post(`${this.apiUrl}/users`, user, { headers });
+    return this.http.post(`${this.apiUrl}`, user);
   }
 
   updateUser(id: string, user: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, user, { headers: this.getHeaders() });
   }
 
+  // updateUser(id: string, user: any): Observable<any> {
+  //   return this.http.put(`${this.apiUrl}/${id}`, user);
+  // }
   deleteUser(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  }
+  checkEmail(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-email?email=${email}`);
   }
 }

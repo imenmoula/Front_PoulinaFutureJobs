@@ -75,9 +75,21 @@ addFiliale(filialeData: any): Observable<any> {
  
 
 // Uploader une photo
+// uploadPhoto(file: File): Observable<{ message: string; url: string }> {
+//   const formData = new FormData();
+//   formData.append('file', file); // "file" doit être le même nom que dans ton backend
+
+//   return this.http.post<{ message: string; url: string }>(
+//     `${this.apiUrl}/upload-photo`,
+//     formData
+//   ).pipe(
+//     catchError(error => this.handleUploadError(error))
+//   );
+// }
+
 uploadPhoto(file: File): Observable<{ message: string; url: string }> {
   const formData = new FormData();
-  formData.append('file', file); // "file" doit être le même nom que dans ton backend
+  formData.append('file', file); // "file" matches backend IFormFile parameter
 
   return this.http.post<{ message: string; url: string }>(
     `${this.apiUrl}/upload-photo`,

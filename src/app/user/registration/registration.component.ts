@@ -1,16 +1,15 @@
+// 
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { FirstKeyPipe } from '../../shared/pipes/firstkey.pipe';
 import { Router, RouterLink } from '@angular/router';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  // imports: [ReactiveFormsModule, CommonModule, FirstKeyPipe, RouterLink],
-  imports: [ReactiveFormsModule, CommonModule, RouterLink] ,
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './registration.component.html',
   styles: [],
 })
@@ -21,7 +20,6 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly service: AuthService,
-    private readonly toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -30,7 +28,13 @@ export class RegistrationComponent implements OnInit {
       this.router.navigateByUrl('/dashboard');
     }
     this.initializeForm();
-    this.toastr.info('Welcome to registration!', 'Info'); // Optional: Test Toastr on load
+    Swal.fire({
+      title: 'Info',
+      text: 'Welcome to registration!',
+      icon: 'info',
+      timer: 2000,
+      showConfirmButton: false
+    });
   }
 
   private initializeForm(): void {
@@ -43,8 +47,8 @@ export class RegistrationComponent implements OnInit {
         Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/),
       ]],
       confirmPassword: ['', Validators.required],
-    nom: ['', Validators.required],
-    prenom: ['', Validators.required],
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
     }, { 
       validators: this.passwordMatchValidator 
     });
@@ -82,7 +86,11 @@ export class RegistrationComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.form.invalid) {
-      this.toastr.warning('Please correct the form errors before submitting.', 'Invalid Form');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid Form',
+        text: 'Please correct the form errors before submitting.',
+      });
       return;
     }
 
@@ -91,10 +99,21 @@ export class RegistrationComponent implements OnInit {
         if (res && res.succeeded) {
           this.form.reset();
           this.isSubmitted = false;
-          this.toastr.success('Account created successfully!', 'Registration Complete');
-          this.router.navigateByUrl('/dashboard');
+          Swal.fire({
+            icon: 'success',
+            title: 'Registration Complete',
+            text: 'Account created successfully!',
+            timer: 2000,
+            showConfirmButton: false
+          }).then(() => {
+            this.router.navigateByUrl('/dashboard');
+          });
         } else {
-          this.toastr.error(res.message || 'Registration failed unexpectedly.', 'Registration Error');
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Error',
+            text: res.message || 'Registration failed unexpectedly.',
+          });
         }
       },
       error: (err) => {
@@ -102,18 +121,34 @@ export class RegistrationComponent implements OnInit {
           err.error.errors.forEach((x: any) => {
             switch (x.code) {
               case 'DuplicateUserName':
-                this.toastr.error('This username is already in use.', 'Registration Failed');
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Registration Failed',
+                  text: 'This username is already in use.',
+                });
                 break;
               case 'DuplicateEmail':
-                this.toastr.error('This email is already registered.', 'Registration Failed');
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Registration Failed',
+                  text: 'This email is already registered.',
+                });
                 break;
               default:
-                this.toastr.error(x.description || 'An error occurred. Please contact support.', 'Registration Failed');
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Registration Failed',
+                  text: x.description || 'An error occurred. Please contact support.',
+                });
                 break;
             }
           });
         } else {
-          this.toastr.error(err.message || 'Unable to register. Please try again later.', 'Server Error');
+          Swal.fire({
+            icon: 'error',
+            title: 'Server Error',
+            text: err.message || 'Unable to register. Please try again later.',
+          });
         }
       },
     });

@@ -11,27 +11,25 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
-// import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
+import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { RoleGuard } from './guards/role.guard';
 import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DepartmentListComponent } from './features/department-list/department-list.component';
-import { Filiale } from './Models/filiale.model';
 import { DepartementDetailsComponent } from './features/departement-details/departement-details.component';
 import { DepartementAddComponent } from './features/departement-add/departement-add.component';
 import { FilialeFormComponent } from './features/filiale-form/filiale-form.component';
 import { RoleListComponent } from './features/role-list/role-list.component';
 import { RoleFormComponent } from './features/role-form/role-form.component';
 import { RoleDetailsComponent } from './features/role-details/role-details.component';
-// import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { AdminListComponent } from './features/admin-list/admin-list.component';
 import { RecruiterListComponent } from './features/recruiter-list/recruiter-list.component';
-// import { RecruiterAddComponent } from './features/recruiter-add/recruiter-add.component';
-// import { RecruiterEditComponent } from './features/recruiter-edit/recruiter-edit.component';
 import { AdminFormComponent } from './features/admin-form/admin-form.component';
 import { CandidateFormComponent } from './features/candidate-form/candidate-form.component';
-import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
+import { RecruiterFormComponent } from './features/recruiter-form/recruiter-form.component';
+import { UserFormComponent } from './features/user-form/user-form.component';
+import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -40,16 +38,16 @@ export const routes: Routes = [
     component: UserComponent,
     children: [
       { path: 'signup', component: RegistrationComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'signin', component: LoginComponent }
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent },
-  // {
-  //   path: 'candidate',
-  //   component:,
-  //   canActivate: [RoleGuard],
-  //   data: { role: 'Candidate' }
-  // },
+  {
+    path: 'candidate',
+    component : CandidateOnlyComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'Candidate' }
+  },
   {
     path: 'recruiter',
     component: RecruteurOnlyComponent,
@@ -69,13 +67,13 @@ export const routes: Routes = [
   /*gestion des departements*/
   {path:'Departements',component:DepartmentListComponent},
   {path:'Departements/details/:id',component:DepartementDetailsComponent},
-  { path: 'departement/add', component: DepartementAddComponent },
+  { path: 'departement/add', component: DepartementAddComponent},
  { path: 'departement/edit/:id', component: DepartementFormComponent},
  /*gestion des filiales*/
   { path: 'admin/filiales', 
     component: FilialeListComponent
  }, 
-  //  { path: 'admin/filiales/add', component: FilialeFormComponent },
+   { path: 'admin/filiales/add', component: FilialeAddComponent },
 
   {
     path: 'admin/filiales/:id', 
@@ -96,21 +94,21 @@ export const routes: Routes = [
    { path: 'recruiters', component: RecruiterListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'candidates', component: CandidateListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'candidate', component: CandidateListComponent },
-  { path: 'candidate/form', component: CandidateFormComponent }, // Ajout
-  { path: 'candidate/form/:id', component: CandidateFormComponent },
-  { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
+  { path: 'candidate/form', component: UserFormComponent}, // Ajout
+  { path: 'candidate/form/:id', component: UserFormComponent},
+  // { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
   /*gestion des admins*/
   { path: 'admins', component: AdminListComponent},
-  { path: 'admins/form', component: AdminFormComponent},
-  { path: 'admins/form/:id', component: AdminFormComponent},
+  { path: 'admins/form', component: UserFormComponent},
+  { path: 'admins/form/:id', component: UserFormComponent},
   { path: 'admins/details/:id', component: DetailsAdminComponent},
 /*gestion des recruteurs */
 { path: 'recruiter/list', component: RecruiterListComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
 { path: 'recruiter', component: RecruiterListComponent },
-  { path: 'recruiter/form', component:AdminFormComponent}, // Utilisation de UserFormComponent
-  { path: 'recruiter/form/:id', component: AdminFormComponent }, // Utilisation de UserFormComponent
+  { path: 'recruiter/form', component:UserFormComponent}, // Utilisation de UserFormComponent
+  { path: 'recruiter/form/:id', component: UserFormComponent }, // Utilisation de UserFormComponent
   { path: 'recruiter/details/:id', component: RecruiterDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
-{path:'',redirectTo:'login',pathMatch:'full'}
+{path:'',redirectTo:'/signin',pathMatch:'full'}
 ];
 
 @NgModule({
