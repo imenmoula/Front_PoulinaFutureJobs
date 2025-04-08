@@ -25,11 +25,16 @@ import { RoleFormComponent } from './features/role-form/role-form.component';
 import { RoleDetailsComponent } from './features/role-details/role-details.component';
 import { AdminListComponent } from './features/admin-list/admin-list.component';
 import { RecruiterListComponent } from './features/recruiter-list/recruiter-list.component';
-import { AdminFormComponent } from './features/admin-form/admin-form.component';
-import { CandidateFormComponent } from './features/candidate-form/candidate-form.component';
-import { RecruiterFormComponent } from './features/recruiter-form/recruiter-form.component';
+
 import { UserFormComponent } from './features/user-form/user-form.component';
 import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
+import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
+import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
+import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
+import { ContentComponent } from './layoutBackend/content/content.component';
+// import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -96,7 +101,7 @@ export const routes: Routes = [
   { path: 'candidate', component: CandidateListComponent },
   { path: 'candidate/form', component: UserFormComponent}, // Ajout
   { path: 'candidate/form/:id', component: UserFormComponent},
-  // { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
+  { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
   /*gestion des admins*/
   { path: 'admins', component: AdminListComponent},
   { path: 'admins/form', component: UserFormComponent},
@@ -108,6 +113,23 @@ export const routes: Routes = [
   { path: 'recruiter/form', component:UserFormComponent}, // Utilisation de UserFormComponent
   { path: 'recruiter/form/:id', component: UserFormComponent }, // Utilisation de UserFormComponent
   { path: 'recruiter/details/:id', component: RecruiterDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Admin'] } },
+  /*getion offre emploi*/
+
+  
+  { path: 'offres', component: OffreListComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'offres/details/:id', component: OffreDetailComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  {
+    path: 'offres/create',
+    component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  },
+  {
+    path: 'offres/update/:id',
+    component: OffreFormComponent,
+    canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+
+  },
+
+/**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];
 

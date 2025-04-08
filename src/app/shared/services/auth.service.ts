@@ -108,6 +108,8 @@ export class AuthService {
     return Array.isArray(roles) ? roles : roles ? [roles] : [];
   }
 
+  
+
   // Get user's full name
   getUserFullName(): string {
     const claims = this.getClaims();

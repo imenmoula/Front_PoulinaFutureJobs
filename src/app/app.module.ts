@@ -42,8 +42,9 @@ import { AdminListComponent } from './features/admin-list/admin-list.component';
 import { CandidateListComponent } from './features/candidate-list/candidate-list.component';
 import { RecruiterListComponent } from './features/recruiter-list/recruiter-list.component';
 import { RecruiterDetailsComponent } from './features/recruiter-details/recruiter-details.component';
-import { AdminFormComponent } from './features/admin-form/admin-form.component';
-import { CandidateFormComponent } from './features/candidate-form/candidate-form.component';
+import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
+import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
+import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 
 @NgModule({
@@ -71,12 +72,13 @@ import { CandidateDetailsComponent } from './features/candidate-details/candidat
     RoleFormComponent,
     RoleListComponent,
     AdminListComponent,
-    AdminFormComponent,
     CandidateListComponent,
-    CandidateFormComponent,
     CandidateDetailsComponent,
     RecruiterListComponent,
-    RecruiterDetailsComponent
+    RecruiterDetailsComponent,
+    OffreDetailComponent,
+    OffreListComponent,
+    OffreFormComponent,
     
    
   

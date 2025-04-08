@@ -17,15 +17,14 @@
 
     <!-- Menu items -->
     <div class="sidebar-menu">
-      <ul class="list-unstyled">
-        <!-- Accueil -->
+      <!-- Menu pour Admin -->
+      <ul class="list-unstyled" *ngIf="isAdmin()">
         <li class="menu-item">
           <a routerLink="/admin/dashboard" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center">
             <i class="fa fa-home me-3"></i>
             <span>Accueil</span>
           </a>
         </li>
-        
         <!-- Filiales -->
         <li class="menu-item">
           <a class="menu-link py-3 px-4 d-flex align-items-center justify-content-between" 
@@ -33,14 +32,15 @@
              href="#filiales-menu" 
              role="button" 
              aria-expanded="false" 
-             aria-controls="filiales-menu">
+             aria-controls="filiales-menu"
+             (click)="toggleMenu('filiales')">
             <div>
               <i class="fa fa-building me-3"></i>
               <span>Filiales</span>
             </div>
             <i class="fa fa-chevron-down"></i>
           </a>
-          <div class="collapse" id="filiales-menu">
+          <div class="collapse" id="filiales-menu" [ngClass]="{'show': menuState['filiales']}">
             <ul class="submenu list-unstyled ms-4">
               <li>
                 <a routerLink="/admin/filiales" routerLinkActive="active" class="submenu-link py-2 d-block">
@@ -55,7 +55,6 @@
             </ul>
           </div>
         </li>
-
         <!-- Départements -->
         <li class="menu-item">
           <a class="menu-link py-3 px-4 d-flex align-items-center justify-content-between" 
@@ -140,9 +139,47 @@
           </a>
         </li>
 
-        
-
-        
+      </ul>
+    
+      <!-- Menu pour Recruteur -->
+      <ul class="list-unstyled" *ngIf="isRecruteur()">
+        <li class="menu-item">
+          <a routerLink="/recruiter/dashboard" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center">
+            <i class="fa fa-home me-3"></i>
+            <span>Accueil</span>
+          </a>
+        </li>
+        <!-- Offres d'emploi -->
+        <li class="menu-item">
+          <a class="menu-link py-3 px-4 d-flex align-items-center justify-content-between" 
+             data-bs-toggle="collapse" 
+             href="#jobs-menu" 
+             role="button" 
+             aria-expanded="false" 
+             aria-controls="jobs-menu"
+             (click)="toggleMenu('jobs')">
+            <div>
+              <i class="fa fa-briefcase me-3"></i>
+              <span>Offres d'emploi</span>
+            </div>
+            <i class="fa fa-chevron-down"></i>
+          </a>
+          <div class="collapse" id="jobs-menu" [ngClass]="{'show': menuState['jobs']}">
+            <ul class="submenu list-unstyled ms-4">
+              <li>
+                <a routerLink="/offres" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Liste des offres
+                </a>
+              </li>
+              <li>
+                <a routerLink="/recruiter/jobs/add" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Ajouter une offre
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <!-- Autres sections du menu Recruteur -->
       </ul>
     </div>
   </div>
