@@ -1,109 +1,120 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
-import { FilialeService } from '../../shared/services/filiale.service';
-import { Filiale } from '../../Models/filiale.model';
 import { CommonModule } from '@angular/common';
-import { FooterComponent } from '../../layoutBackend/footer/footer.component';
-import { HeaderComponent } from '../../layoutBackend/header/header.component';
-import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
+import { ModeTravail, StatutOffre, TypeContratEnum } from '../../Models/enums.model';
+import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
+import { CompetenceService } from '../../shared/services/competence.service';
+import { FilialeService } from '../../shared/services/filiale.service';
+import { UserService } from '../../shared/services/user.service';
+import { Observable, forkJoin as rxjsForkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-offre-detail',
   standalone: true,
-  imports: [CommonModule,FooterComponent,HeaderComponent,SidebarComponent],
+  imports: [CommonModule],
   templateUrl: './offre-detail.component.html',
+  styleUrls: ['./offre-detail.component.css']
 })
 export class OffreDetailComponent implements OnInit {
-  idOffre?: string;
-  offreDetails: any = null; // Stocke les détails de l’offre
-  filiales: Filiale[] = []; // Pour afficher le nom de la filiale
-  sidebarOpen: boolean = false;
+  offre: any = null;
+  loading: boolean = true;
+  errorMessage: string | null = null;
+  filiale: any = null;
+  recruiterName: string = 'Chargement...';
+
+  // Enum mappings for display
+  typeContratLabels: { [key: number]: string } = {
+    [TypeContratEnum.CDI]: 'CDI',
+    [TypeContratEnum.CDD]: 'CDD',
+    [TypeContratEnum.Freelance]: 'Freelance',
+    [TypeContratEnum.Stage]: 'Stage'
+  };
+
+  modeTravailLabels: { [key: number]: string } = {
+    [ModeTravail.Presentiel]: 'Présentiel',
+    [ModeTravail.Hybride]: 'Hybride',
+    [ModeTravail.Teletravail]: 'Télétravail'
+  };
+
+  statutLabels: { [key: number]: string } = {
+    [StatutOffre.Ouvert]: 'Ouverte',
+    [StatutOffre.Ferme]: 'Fermée'
+  };
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private offreService: OffreEmploiService,
+    private competenceService: CompetenceService,
     private filialeService: FilialeService,
-    private router: Router 
+    private userService: UserService
   ) {}
 
-  ngOnInit() {
-    this.idOffre = this.route.snapshot.paramMap.get('id')!;
-    if (this.idOffre) {
-      this.loadOffreDetails();
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadOffre(id);
     }
+  }
 
-    // Charger les filiales pour associer l’idFiliale au nom
-    this.filialeService.getFiliales().subscribe({
-      next: (filiales) => {
-        this.filiales = filiales;
-        console.log('Filiales loaded:', this.filiales);
+  loadOffre(id: string): void {
+    this.loading = true;
+    this.offreService.getOffreEmploi(id).subscribe({
+      next: (response) => {
+        this.offre = response.offreEmploi;
+
+        // Fetch Filiale and Recruiter
+        const requests = [
+          this.filialeService.getFiliale(this.offre.idFiliale),
+          this.userService.getUserById(this.offre.idRecruteur)
+        ];
+
+        // Competences are already included in the response, no need to fetch separately
+        forkJoin(requests).subscribe({
+          next: ([filialeResponse, recruiterResponse]) => {
+            this.filiale = filialeResponse;
+            this.recruiterName = recruiterResponse.fullName || 'Inconnu';
+            this.loading = false;
+          },
+          error: (error) => {
+            this.errorMessage = 'Erreur lors du chargement des détails supplémentaires.';
+            this.loading = false;
+            console.error('Error loading additional details:', error);
+          }
+        });
       },
-      error: (err) => {
-        console.error('Error fetching filiales:', err);
+      error: (error) => {
+        this.errorMessage = 'Erreur lors du chargement de l\'offre.';
+        this.loading = false;
+        console.error('Error loading offer:', error);
       }
     });
   }
 
-  loadOffreDetails() {
-    this.offreService.getOffreById(this.idOffre!).subscribe({
-      next: (data) => {
-        this.offreDetails = data;
-        console.log('Offre details loaded:', this.offreDetails);
-      },
-      error: (err) => {
-        console.error('Error fetching offre:', err);
-      }
-    });
-  }
-
-  
-  getTypeContratLabel(value: number | undefined): string {
-    if (value === undefined) return 'Non spécifié';
-    switch (value) {
-      case 1: return 'CDI';
-      case 2: return 'CDD';
-      case 3: return 'Freelance';
-      case 4: return 'Stage';
-      default: return 'Inconnu';
+  editOffre(): void {
+    if (this.offre) {
+      this.router.navigate(['/offre-emploi/edit', this.offre.idOffreEmploi]);
     }
   }
 
-  getStatutLabel(value: number | undefined): string {
-    if (value === undefined) return 'Non spécifié';
-    switch (value) {
-      case 0: return 'Ouvert';
-      case 1: return 'Fermé';
-      default: return 'Inconnu';
+  deleteOffre(): void {
+    if (this.offre && confirm('Êtes-vous sûr de vouloir supprimer cette offre ?')) {
+      this.offreService.deleteOffre(this.offre.idOffreEmploi).subscribe({
+        next: () => {
+          this.router.navigate(['/offre-emplois']);
+        },
+        error: (error) => {
+          this.errorMessage = 'Erreur lors de la suppression de l\'offre.';
+          console.error('Error deleting offer:', error);
+        }
+      });
     }
-  }
-
-  getModeTravailLabel(value: number | undefined): string {
-    if (value === undefined) return 'Non spécifié';
-    switch (value) {
-      case 0: return 'Présentiel';
-      case 1: return 'Hybride';
-      case 2: return 'Télétravail';
-      default: return 'Inconnu';
-    }
-  }
-
-  getFilialeName(idFiliale: string | undefined): string {
-    if (!idFiliale) return 'Non spécifiée';
-    const filiale = this.filiales.find(f => f.idFiliale === idFiliale);
-    return filiale ? filiale.nom : 'Non spécifiée';
-  }
-
-  getFilialeAdresse(idFiliale: string | undefined): string {
-    if (!idFiliale) return 'Non spécifiée';
-    const filiale = this.filiales.find(f => f.idFiliale === idFiliale);
-    return filiale ? filiale.adresse : 'Non spécifiée';
-  }
-
-  goBack() {
-    this.router.navigate(['/offres']); // Remplace '/liste-offres' par la route de ta liste d'offres
-  }
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
   }
 }
+
+function forkJoin(requests: Observable<any>[]): Observable<any[]> {
+  return rxjsForkJoin(requests);
+}
+
+
+

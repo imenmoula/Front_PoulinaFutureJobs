@@ -1,213 +1,445 @@
-<div class="container mt-4">
-  <!-- Afficher un indicateur de chargement -->
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Chargement...</span>
+<!-- 
+
+<div class="container mt-4 mb-5">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">{{ isEditMode ? 'Modifier une offre d\'emploi' : 'Créer une offre d\'emploi' }}</h2>
     </div>
-    <p>Vérification de votre rôle...</p>
-  </div>
-
-  <!-- Afficher un message d'erreur si nécessaire -->
-  <div *ngIf="errorMessage && !loading" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Afficher le formulaire uniquement si l'utilisateur est un recruteur et que le chargement est terminé -->
-  <form *ngIf="!loading && isRecruiter" [formGroup]="offreForm" (ngSubmit)="onSubmit()" class="container mt-4">
-    <div class="form-group">
-      <label for="titre">Titre</label>
-      <input id="titre" formControlName="titre" type="text" class="form-control" placeholder="Ex: Développeur Full Stack" />
-      <div *ngIf="offreForm.get('titre')?.invalid && offreForm.get('titre')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('titre')?.errors?.['required']">Le titre est requis.</div>
-        <div *ngIf="offreForm.get('titre')?.errors?.['maxLength']">Le titre ne peut pas dépasser 200 caractères.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="specialite">Spécialité</label>
-      <input id="specialite" formControlName="specialite" type="text" class="form-control" placeholder="Ex: Informatique" />
-      <div *ngIf="offreForm.get('specialite')?.invalid && offreForm.get('specialite')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('specialite')?.errors?.['required']">La spécialité est requise.</div>
-        <div *ngIf="offreForm.get('specialite')?.errors?.['maxLength']">La spécialité ne peut pas dépasser 100 caractères.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea id="description" formControlName="description" class="form-control" placeholder="Description du poste..."></textarea>
-      <div *ngIf="offreForm.get('description')?.invalid && offreForm.get('description')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('description')?.errors?.['required']">La description est requise.</div>
-        <div *ngIf="offreForm.get('description')?.errors?.['maxLength']">La description ne peut pas dépasser 2000 caractères.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="diplomeRequis">Diplôme Requis</label>
-      <input id="diplomeRequis" formControlName="diplomeRequis" type="text" class="form-control" placeholder="Ex: Licence" />
-      <div *ngIf="offreForm.get('diplomeRequis')?.invalid && offreForm.get('diplomeRequis')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('diplomeRequis')?.errors?.['required']">Le diplôme requis est requis.</div>
-        <div *ngIf="offreForm.get('diplomeRequis')?.errors?.['maxLength']">Le diplôme requis ne peut pas dépasser 100 caractères.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="niveauExperienceRequis">Niveau d'expérience</label>
-      <input id="niveauExperienceRequis" formControlName="niveauExperienceRequis" type="text" class="form-control" placeholder="Ex: 2 ans" />
-      <div *ngIf="offreForm.get('niveauExperienceRequis')?.invalid && offreForm.get('niveauExperienceRequis')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('niveauExperienceRequis')?.errors?.['required']">Le niveau d'expérience est requis.</div>
-        <div *ngIf="offreForm.get('niveauExperienceRequis')?.errors?.['maxLength']">Le niveau d'expérience ne peut pas dépasser 50 caractères.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="salaire">Salaire</label>
-      <input id="salaire" formControlName="salaire" type="number" class="form-control" placeholder="Ex: 50000" />
-      <div *ngIf="offreForm.get('salaire')?.invalid && offreForm.get('salaire')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('salaire')?.errors?.['required']">Le salaire est requis.</div>
-        <div *ngIf="offreForm.get('salaire')?.errors?.['min']">Le salaire doit être positif.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="datePublication">Date de publication</label>
-      <input id="datePublication" formControlName="datePublication" type="date" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="dateExpiration">Date d'expiration</label>
-      <input id="dateExpiration" formControlName="dateExpiration" type="date" class="form-control" />
-    </div>
-
-    <!-- <div class="form-group">
-      <label for="dateModification">Date de modification</label>
-      <input id="dateModification" formControlName="dateModification" type="date" class="form-control" readonly />
-    </div> -->
-
-    <div class="form-group">
-      <label for="typeContrat">Type de Contrat</label>
-      <select id="typeContrat" formControlName="typeContrat" class="form-control">
-        <option [value]="null" disabled selected>Choisir un type</option>
-        <option *ngFor="let contrat of typeContrats" [value]="contrat[1]">{{ contrat[0] }}</option>
-      </select>
-      <div *ngIf="offreForm.get('typeContrat')?.invalid && offreForm.get('typeContrat')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('typeContrat')?.errors?.['required']">Le type de contrat est requis.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="statut">Statut</label>
-      <select id="statut" formControlName="statut" class="form-control">
-        <option [value]="null" disabled selected>Choisir un statut</option>
-        <option *ngFor="let statut of statuts" [value]="statut[1]">{{ statut[0] }}</option>
-      </select>
-      <div *ngIf="offreForm.get('statut')?.invalid && offreForm.get('statut')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('statut')?.errors?.['required']">Le statut est requis.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="modeTravail">Mode de travail</label>
-      <select id="modeTravail" formControlName="modeTravail" class="form-control">
-        <option *ngFor="let mode of modesTravail" [value]="mode[1]">{{ mode[0] }}</option>
-      </select>
-      <div *ngIf="offreForm.get('modeTravail')?.invalid && offreForm.get('modeTravail')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('modeTravail')?.errors?.['required']">Le mode de travail est requis.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="nombrePostes">Nombre de postes</label>
-      <input id="nombrePostes" formControlName="nombrePostes" type="number" class="form-control" placeholder="Ex: 1" />
-      <div *ngIf="offreForm.get('nombrePostes')?.invalid && offreForm.get('nombrePostes')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('nombrePostes')?.errors?.['required']">Le nombre de postes est requis.</div>
-        <div *ngIf="offreForm.get('nombrePostes')?.errors?.['min']">Le nombre de postes doit être au moins 1.</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="avantages">Avantages</label>
-      <textarea id="avantages" formControlName="avantages" class="form-control" placeholder="Ex: Assurance, télétravail..."></textarea>
-    </div>
-
-
-    <div class="form-group">
-      <label for="recruteurNom">Nom du Recruteur</label>
-      <input id="recruteurNom" formControlName="recruteurNom" type="text" class="form-control" readonly />
-    </div>
-
-    <div class="form-group">
-      <label for="idFiliale">Filiale</label>
-      <select id="idFiliale" formControlName="idFiliale" class="form-control">
-        <option [value]="null" disabled selected>Choisir une filiale</option>
-        <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
-      </select>
-      <div *ngIf="offreForm.get('idFiliale')?.invalid && offreForm.get('idFiliale')?.touched" class="text-danger">
-        <div *ngIf="offreForm.get('idFiliale')?.errors?.['required']">La filiale est requise.</div>
-      </div>
-    </div>
-
-    <h3>Compétences</h3>
-    <div formArrayName="offreCompetences">
-      <div *ngFor="let comp of offreCompetences.controls; let i = index" [formGroupName]="i" class="card mb-3">
-        <div class="card-body">
-          <div class="form-group">
-            <label>ID Compétence (optionnel)</label>
-            <input formControlName="idCompetence" class="form-control" placeholder="ID compétence" />
-          </div>
-          <div formGroupName="competence">
-            <div class="form-group">
-              <label for="nom-{{i}}">Nom</label>
-              <input id="nom-{{i}}" formControlName="nom" class="form-control" placeholder="Ex: Angular" />
-              <div *ngIf="offreCompetences.at(i).get('competence.nom')?.invalid && offreCompetences.at(i).get('competence.nom')?.touched" class="text-danger">
-                <div *ngIf="offreCompetences.at(i).get('competence.nom')?.errors?.['required']">Le nom de la compétence est requis.</div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="description-{{i}}">Description</label>
-              <input id="description-{{i}}" formControlName="description" class="form-control" placeholder="Ex: Maîtrise d'Angular" />
-            </div>
-            <div class="form-group">
-              <label>Hard Skills (max 5)</label>
-              <div *ngFor="let skill of hardSkills; let j = index">
-                <label>
-                  <input type="checkbox" [formControl]="getHardSkillControl(i, j)" />
-                  {{ skill }}
-                </label>
-              </div>
-              <div *ngIf="getHardSkillsArray(i).errors?.['maxSelections']" class="text-danger">
-                Maximum 5 hard skills autorisés. Actuellement sélectionnés: {{ getHardSkillsArray(i).errors?.['maxSelections'].selected }}
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Soft Skills (max 5)</label>
-              <div *ngFor="let skill of softSkills; let j = index">
-                <label>
-                  <input type="checkbox" [formControl]="getSoftSkillControl(i, j)" />
-                  {{ skill }}
-                </label>
-              </div>
-              <div *ngIf="getSoftSkillsArray(i).errors?.['maxSelections']" class="text-danger">
-                Maximum 5 soft skills autorisés. Actuellement sélectionnés: {{ getSoftSkillsArray(i).errors?.['maxSelections'].selected }}
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="niveauRequis-{{i}}">Niveau requis</label>
-            <select id="niveauRequis-{{i}}" formControlName="niveauRequis" class="form-control">
-              <option *ngFor="let niveau of niveauxRequis" [value]="niveau">{{ niveau }}</option>
-            </select>
-            <div *ngIf="offreCompetences.at(i).get('niveauRequis')?.invalid && offreCompetences.at(i).get('niveauRequis')?.touched" class="text-danger">
-              <div *ngIf="offreCompetences.at(i).get('niveauRequis')?.errors?.['required']">Le niveau requis est requis.</div>
-            </div>
-          </div>
-          <button type="button" class="btn btn-danger" (click)="removeCompetence(i)">Supprimer</button>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
         </div>
       </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      
+      <form [formGroup]="offreForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h4 class="mb-0">Informations principales</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="titre" class="form-label">Titre*</label>
+                  <input type="text" class="form-control" id="titre" formControlName="titre" 
+                         [ngClass]="{'is-invalid': offreForm.get('titre')?.invalid && (offreForm.get('titre')?.dirty || offreForm.get('titre')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('titre') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="specialite" class="form-label">Spécialité*</label>
+                  <input type="text" class="form-control" id="specialite" formControlName="specialite"
+                         [ngClass]="{'is-invalid': offreForm.get('specialite')?.invalid && (offreForm.get('specialite')?.dirty || offreForm.get('specialite')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('specialite') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description*</label>
+                  <textarea class="form-control" id="description" rows="5" formControlName="description"
+                            [ngClass]="{'is-invalid': offreForm.get('description')?.invalid && (offreForm.get('description')?.dirty || offreForm.get('description')?.touched)}"></textarea>
+                  <div class="invalid-feedback">{{ getFieldError('description') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="datePublication" class="form-label">Date de publication*</label>
+                  <input type="date" class="form-control" id="datePublication" formControlName="datePublication"
+                         [ngClass]="{'is-invalid': offreForm.get('datePublication')?.invalid && (offreForm.get('datePublication')?.dirty || offreForm.get('datePublication')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('datePublication') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="dateExpiration" class="form-label">Date d'expiration*</label>
+                  <input type="date" class="form-control" id="dateExpiration" formControlName="dateExpiration"
+                         [ngClass]="{'is-invalid': offreForm.get('dateExpiration')?.invalid && (offreForm.get('dateExpiration')?.dirty || offreForm.get('dateExpiration')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('dateExpiration') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="idFiliale" class="form-label">Filiale*</label>
+                  <select class="form-select" id="idFiliale" formControlName="idFiliale"
+                          [ngClass]="{'is-invalid': offreForm.get('idFiliale')?.invalid && (offreForm.get('idFiliale')?.dirty || offreForm.get('idFiliale')?.touched)}">
+                    <option value="">Sélectionnez une filiale</option>
+                    <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
+                  </select>
+                  <div class="invalid-feedback">{{ getFieldError('idFiliale') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="idRecruteur" class="form-label">Recruteur*</label>
+                  <select class="form-select" id="idRecruteur" formControlName="idRecruteur"
+                          [ngClass]="{'is-invalid': offreForm.get('idRecruteur')?.invalid && (offreForm.get('idRecruteur')?.dirty || offreForm.get('idRecruteur')?.touched)}">
+                    <option value="">Sélectionnez un recruteur</option>
+                    <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
+                  </select>
+                  <div class="invalid-feedback">{{ getFieldError('idRecruteur') }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h4 class="mb-0">Conditions de travail</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="typeContrat" class="form-label">Type de contrat*</label>
+                  <select class="form-select" id="typeContrat" formControlName="typeContrat">
+                    <option *ngFor="let type of typeContrats" [value]="type.id">{{ type.name }}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="modeTravail" class="form-label">Mode de travail*</label>
+                  <select class="form-select" id="modeTravail" formControlName="modeTravail">
+                    <option *ngFor="let mode of modesTravail" [value]="mode.id">{{ mode.name }}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nombrePostes" class="form-label">Nombre de postes*</label>
+                  <input type="number" class="form-control" id="nombrePostes" formControlName="nombrePostes" min="1"
+                         [ngClass]="{'is-invalid': offreForm.get('nombrePostes')?.invalid && (offreForm.get('nombrePostes')?.dirty || offreForm.get('nombrePostes')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('nombrePostes') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="salaire" class="form-label">Salaire</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="salaire" formControlName="salaire" min="0"
+                           [ngClass]="{'is-invalid': offreForm.get('salaire')?.invalid && (offreForm.get('salaire')?.dirty || offreForm.get('salaire')?.touched)}">
+                    <span class="input-group-text">TND</span>
+                    <div class="invalid-feedback">{{ getFieldError('salaire') }}</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="avantages" class="form-label">Avantages</label>
+                  <textarea class="form-control" id="avantages" rows="3" formControlName="avantages" 
+                            placeholder="Exemples: Assurance maladie, Tickets restaurant, Prime, etc."></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h4 class="mb-0">Prérequis</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="niveauExperienceRequis" class="form-label">Niveau d'expérience requis*</label>
+                  <input type="text" class="form-control" id="niveauExperienceRequis" formControlName="niveauExperienceRequis"
+                         [ngClass]="{'is-invalid': offreForm.get('niveauExperienceRequis')?.invalid && (offreForm.get('niveauExperienceRequis')?.dirty || offreForm.get('niveauExperienceRequis')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('niveauExperienceRequis') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="diplomeRequis" class="form-label">Diplôme requis</label>
+                  <input type="text" class="form-control" id="diplomeRequis" formControlName="diplomeRequis">
+                </div>
+                <div class="mb-3">
+                  <label for="statut" class="form-label">Statut de l'offre*</label>
+                  <select class="form-select" id="statut" formControlName="statut">
+                    <option *ngFor="let statut of statuts" [value]="statut.id">{{ statut.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Compétences requises*</h4>
+            <button type="button" class="btn btn-sm btn-primary" (click)="addCompetence()">
+              <i class="bi bi-plus-circle"></i> Ajouter une compétence
+            </button>
+          </div>
+          <div class="card-body">
+            <div formArrayName="offreCompetences">
+              <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="mb-3 p-3 border rounded">
+                <div class="row align-items-center">
+                  <div class="col-md-6">
+                    <div class="mb-2 position-relative">
+                      <label [for]="'competence-nom-' + i" class="form-label">Nom de la compétence*</label>
+                      <input type="text" class="form-control" [id]="'competence-nom-' + i" formControlName="nom"
+                             (input)="searchCompetence($event, i)" (keydown)="handleKeyDown($event, i)"
+                             [ngClass]="{'is-invalid': getCompetenceFieldError(i, 'nom')}">
+                      <div class="invalid-feedback">{{ getCompetenceFieldError(i, 'nom') }}</div>
+                      <div *ngIf="showCompetenceSuggestions && i === offreCompetences.length - 1" 
+                           class="position-absolute w-100 bg-white border rounded mt-1 shadow-sm" 
+                           style="max-height: 200px; overflow-y: auto; z-index: 1000;">
+                        <div *ngIf="isSearchingCompetence" class="p-2 text-center">
+                          <div class="spinner-border spinner-border-sm text-primary" role="status">
+                            <span class="visually-hidden">Recherche...</span>
+                          </div>
+                        </div>
+                        <div *ngFor="let suggestion of competenceSuggestions; let j=index" 
+                             class="p-2 cursor-pointer hover-bg-light" 
+                             [class.bg-light]="j === activeSuggestionIndex"
+                             (click)="selectCompetence(suggestion, i)">
+                          {{ suggestion.nom }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-2">
+                      <label [for]="'competence-description-' + i" class="form-label">Description</label>
+                      <textarea class="form-control" [id]="'competence-description-' + i" formControlName="description" rows="2"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-2">
+                      <label [for]="'competence-niveau-' + i" class="form-label">Niveau requis*</label>
+                      <select class="form-select" [id]="'competence-niveau-' + i" formControlName="niveauRequis">
+                        <option *ngFor="let niveau of niveauxCompetence" [value]="niveau.id">{{ niveau.name }}</option>
+                      </select>
+                    </div>
+                    <div class="mb-2 d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [id]="'competence-technique-' + i" formControlName="estTechnique">
+                        <label class="form-check-label" [for]="'competence-technique-' + i">Technique</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [id]="'competence-softskill-' + i" formControlName="estSoftSkill">
+                        <label class="form-check-label" [for]="'competence-softskill-' + i">Soft Skill</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removeCompetence(i)" [disabled]="offreCompetences.length === 1">
+                      <i class="bi bi-trash"></i> Supprimer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+          </button>
+        </div>
+      </form>
     </div>
-    <button type="button" class="btn btn-primary mb-3" (click)="addCompetence()">Ajouter compétence</button>
-
-    <div class="text-center">
-      <button type="submit" class="btn btn-success">{{ isEditMode ? 'Mettre à jour' : 'Créer' }}</button>
-    </div>
-  </form>
+  </div>
 </div>
+
+<style>
+  .cursor-pointer { cursor: pointer; }
+  .hover-bg-light:hover { background-color: #f8f9fa; }
+  .z-1000 { z-index: 1000; }
+</style> --> 
+
+<div class="container mt-4 mb-5">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">{{ isEditMode ? 'Modifier une offre d\'emploi' : 'Créer une offre d\'emploi' }}</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      
+      <form [formGroup]="offreForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h4 class="mb-0">Informations principales</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="titre" class="form-label">Titre*</label>
+                  <input type="text" class="form-control" id="titre" formControlName="titre" 
+                         [ngClass]="{'is-invalid': offreForm.get('titre')?.invalid && (offreForm.get('titre')?.dirty || offreForm.get('titre')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('titre') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="specialite" class="form-label">Spécialité*</label>
+                  <input type="text" class="form-control" id="specialite" formControlName="specialite"
+                         [ngClass]="{'is-invalid': offreForm.get('specialite')?.invalid && (offreForm.get('specialite')?.dirty || offreForm.get('specialite')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('specialite') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description*</label>
+                  <textarea class="form-control" id="description" rows="5" formControlName="description"
+                            [ngClass]="{'is-invalid': offreForm.get('description')?.invalid && (offreForm.get('description')?.dirty || offreForm.get('description')?.touched)}"></textarea>
+                  <div class="invalid-feedback">{{ getFieldError('description') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="datePublication" class="form-label">Date de publication*</label>
+                  <input type="date" class="form-control" id="datePublication" formControlName="datePublication"
+                         [ngClass]="{'is-invalid': offreForm.get('datePublication')?.invalid && (offreForm.get('datePublication')?.dirty || offreForm.get('datePublication')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('datePublication') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="dateExpiration" class="form-label">Date d'expiration*</label>
+                  <input type="date" class="form-control" id="dateExpiration" formControlName="dateExpiration"
+                         [ngClass]="{'is-invalid': offreForm.get('dateExpiration')?.invalid && (offreForm.get('dateExpiration')?.dirty || offreForm.get('dateExpiration')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('dateExpiration') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="idFiliale" class="form-label">Filiale*</label>
+                  <select class="form-select" id="idFiliale" formControlName="idFiliale"
+                          [ngClass]="{'is-invalid': offreForm.get('idFiliale')?.invalid && (offreForm.get('idFiliale')?.dirty || offreForm.get('idFiliale')?.touched)}">
+                    <option value="">Sélectionnez une filiale</option>
+                    <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
+                  </select>
+                  <div class="invalid-feedback">{{ getFieldError('idFiliale') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="idRecruteur" class="form-label">Recruteur*</label>
+                  <select class="form-select" id="idRecruteur" formControlName="idRecruteur"
+                          [ngClass]="{'is-invalid': offreForm.get('idRecruteur')?.invalid && (offreForm.get('idRecruteur')?.dirty || offreForm.get('idRecruteur')?.touched)}">
+                    <option value="">Sélectionnez un recruteur</option>
+                    <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
+                  </select>
+                  <div class="invalid-feedback">{{ getFieldError('idRecruteur') }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h4 class="mb-0">Conditions de travail</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="typeContrat" class="form-label">Type de contrat*</label>
+                  <select class="form-select" id="typeContrat" formControlName="typeContrat">
+                    <option *ngFor="let type of typeContrats" [value]="type.id">{{ type.name }}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="modeTravail" class="form-label">Mode de travail*</label>
+                  <select class="form-select" id="modeTravail" formControlName="modeTravail">
+                    <option *ngFor="let mode of modesTravail" [value]="mode.id">{{ mode.name }}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nombrePostes" class="form-label">Nombre de postes*</label>
+                  <input type="number" class="form-control" id="nombrePostes" formControlName="nombrePostes" min="1"
+                         [ngClass]="{'is-invalid': offreForm.get('nombrePostes')?.invalid && (offreForm.get('nombrePostes')?.dirty || offreForm.get('nombrePostes')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('nombrePostes') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="salaire" class="form-label">Salaire</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="salaire" formControlName="salaire" min="0"
+                           [ngClass]="{'is-invalid': offreForm.get('salaire')?.invalid && (offreForm.get('salaire')?.dirty || offreForm.get('salaire')?.touched)}">
+                    <span class="input-group-text">TND</span>
+                    <div class="invalid-feedback">{{ getFieldError('salaire') }}</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="avantages" class="form-label">Avantages</label>
+                  <textarea class="form-control" id="avantages" rows="3" formControlName="avantages" 
+                            placeholder="Exemples: Assurance maladie, Tickets restaurant, Prime, etc."></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h4 class="mb-0">Prérequis</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="niveauExperienceRequis" class="form-label">Niveau d'expérience requis*</label>
+                  <input type="text" class="form-control" id="niveauExperienceRequis" formControlName="niveauExperienceRequis"
+                         [ngClass]="{'is-invalid': offreForm.get('niveauExperienceRequis')?.invalid && (offreForm.get('niveauExperienceRequis')?.dirty || offreForm.get('niveauExperienceRequis')?.touched)}">
+                  <div class="invalid-feedback">{{ getFieldError('niveauExperienceRequis') }}</div>
+                </div>
+                <div class="mb-3">
+                  <label for="diplomeRequis" class="form-label">Diplôme requis</label>
+                  <input type="text" class="form-control" id="diplomeRequis" formControlName="diplomeRequis">
+                </div>
+                <div class="mb-3">
+                  <label for="statut" class="form-label">Statut de l'offre*</label>
+                  <select class="form-select" id="statut" formControlName="statut">
+                    <option *ngFor="let statut of statuts" [value]="statut.id">{{ statut.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Compétences requises*</h4>
+            <button type="button" class="btn btn-sm btn-primary" (click)="addCompetence()">
+              <i class="bi bi-plus-circle"></i> Ajouter une compétence
+            </button>
+          </div>
+          <div class="card-body">
+            <div formArrayName="offreCompetences">
+              <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="mb-3 p-3 border rounded">
+                <div class="row align-items-center">
+                  <div class="col-md-6">
+                    <div class="mb-2 position-relative">
+                      <label [for]="'competence-nom-' + i" class="form-label">Nom de la compétence*</label>
+                      <input type="text" class="form-control" [id]="'competence-nom-' + i" formControlName="nom"
+                             (input)="searchCompetence($event, i)" (keydown)="handleKeyDown($event, i)"
+                             [ngClass]="{'is-invalid': getCompetenceFieldError(i, 'nom')}">
+                      <div class="invalid-feedback">{{ getCompetenceFieldError(i, 'nom') }}</div>
+                      <div *ngIf="showCompetenceSuggestions && i === offreCompetences.length - 1" 
+                           class="position-absolute w-100 bg-white border rounded mt-1 shadow-sm" 
+                           style="max-height: 200px; overflow-y: auto; z-index: 1000;">
+                        <div *ngIf="isSearchingCompetence" class="p-2 text-center">
+                          <div class="spinner-border spinner-border-sm text-primary" role="status">
+                            <span class="visually-hidden">Recherche...</span>
+                          </div>
+                        </div>
+                        <div *ngFor="let suggestion of competenceSuggestions; let j=index" 
+                             class="p-2 cursor-pointer hover-bg-light" 
+                             [class.bg-light]="j === activeSuggestionIndex"
+                             (click)="selectCompetence(suggestion, i)">
+                          {{ suggestion.nom }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-2">
+                      <label [for]="'competence-description-' + i" class="form-label">Description</label>
+                      <textarea class="form-control" [id]="'competence-description-' + i" formControlName="description" rows="2"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-2">
+                      <label [for]="'competence-niveau-' + i" class="form-label">Niveau requis*</label>
+                      <select class="form-select" [id]="'competence-niveau-' + i" formControlName="niveauRequis">
+                        <option *ngFor="let niveau of niveauxCompetence" [value]="niveau.id">{{ niveau.name }}</option>
+                      </select>
+                    </div>
+                    <div class="mb-2 d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [id]="'competence-technique-' + i" formControlName="estTechnique">
+                        <label class="form-check-label" [for]="'competence-technique-' + i">Technique</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [id]="'competence-softskill-' + i" formControlName="estSoftSkill">
+                        <label class="form-check-label" [for]="'competence-softskill-' + i">Soft Skill</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removeCompetence(i)" [disabled]="offreCompetences.length === 1">
+                      <i class="bi bi-trash"></i> Supprimer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cursor-pointer { cursor: pointer; }
+  .hover-bg-light:hover { background-color: #f8f9fa; }
+  .z-1000 { z-index: 1000; }
+</style>

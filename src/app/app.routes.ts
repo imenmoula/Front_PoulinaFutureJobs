@@ -30,10 +30,9 @@ import { UserFormComponent } from './features/user-form/user-form.component';
 import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
 import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
-import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { ContentComponent } from './layoutBackend/content/content.component';
-// import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 
 
 export const routes: Routes = [

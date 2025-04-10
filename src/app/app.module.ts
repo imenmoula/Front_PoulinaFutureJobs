@@ -1,3 +1,5 @@
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';  
@@ -11,7 +13,7 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
-//  import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
+ import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { RoleGuard } from './guards/role.guard';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
 import { HeaderComponent } from './layoutBackend/header/header.component';
@@ -46,7 +48,6 @@ import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-de
 import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +55,7 @@ import { CandidateDetailsComponent } from './features/candidate-details/candidat
     RegistrationComponent,
     LoginComponent,
     RecruteurOnlyComponent,
-    // CandidateOnlyComponent,
+    CandidateOnlyComponent,
     LayoutBackendComponent,
     HeaderComponent,
     SidebarComponent,
@@ -94,8 +95,11 @@ import { CandidateDetailsComponent } from './features/candidate-details/candidat
     RouterModule ,
     BrowserAnimationsModule, 
     ToastrModule.forRoot(),
-  
     
+    MatCardModule, // Add this
+    MatButtonModule,
+    MatIconModule,
+   
   ],
     
   

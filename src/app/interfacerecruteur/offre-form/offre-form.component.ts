@@ -1,643 +1,1148 @@
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
-// import { ActivatedRoute } from '@angular/router';
-// import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
-// import { HardSkillType, ModeTravail, NiveauRequisType, SoftSkillType, StatutOffre, TypeContratEnum } from '../../Models/enums.model';
-// import { CommonModule } from '@angular/common';
-// import { AuthService } from '../../shared/services/auth.service';
-// import { FilialeService } from '../../shared/services/filiale.service';
-// import { Filiale } from '../../Models/filiale.model';
 
-// // Standalone validator function for max selections
-// function maxSelectionsValidator(max: number): ValidatorFn {
-//   return (control: AbstractControl): ValidationErrors | null => {
-//     const formArray = control as FormArray;
-//     const selected = formArray.controls.filter(ctrl => ctrl.value).length;
-//     return selected <= max ? null : { maxSelections: { max, selected } };
-//   };
-// }
+// import { Component, OnInit } from '@angular/core';
+// import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { ActivatedRoute, Router } from '@angular/router';
+// import Swal from 'sweetalert2';
+// import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
+// import { FilialeService } from '../../shared/services/filiale.service';
+// import { CompetenceService } from '../../shared/services/competence.service';
+// import { OffreEmploi } from '../../Models/offre-emploi.model';
+// import { CommonModule } from '@angular/common';
+// import { OffreCompetence } from '../../Models/offre-competence.model';
 
 // @Component({
 //   selector: 'app-offre-form',
 //   standalone: true,
-//   imports: [FormsModule, CommonModule, ReactiveFormsModule],
+//   imports: [CommonModule, FormsModule, ReactiveFormsModule],
 //   templateUrl: './offre-form.component.html',
+//   styles: ''
 // })
 // export class OffreFormComponent implements OnInit {
-//   offreForm: FormGroup;
+//   offreForm!: FormGroup;
 //   isEditMode = false;
-//   idOffre?: string;
-//   typeContrats = Object.entries(TypeContratEnum).filter(([k, v]) => isNaN(Number(k)));
-//   statuts = Object.entries(StatutOffre).filter(([k, v]) => isNaN(Number(k)));
-//   modesTravail = Object.entries(ModeTravail).filter(([k, v]) => isNaN(Number(k)));
-//   niveauxRequis = Object.values(NiveauRequisType);
-//   hardSkills = Object.values(HardSkillType);
-//   softSkills = Object.values(SoftSkillType);
-//   filiales: Filiale[] = [];
-//   connectedRecruiterId: string = '';
+//   offreId?: string;
+//   loading = false;
+//   error = '';
+//   filiales: any[] = [];
+//   recruteurs: any[] = [];
+//   isSearchingCompetence = false;
+//   showCompetenceSuggestions = false;
+//   activeSuggestionIndex = -1;
+//   competenceSuggestions: any[] = [];
+
+//   typeContrats = [
+//     { id: 1, name: 'CDI' },
+//     { id: 2, name: 'CDD' },
+//     { id: 3, name: 'Freelance' },
+//     { id: 4, name: 'Stage' }
+//   ];
+
+//   statuts = [
+//     { id: 0, name: 'Ouvert' },
+//     { id: 1, name: 'Fermé' }
+//   ];
+
+//   modesTravail = [
+//     { id: 0, name: 'Présentiel' },
+//     { id: 1, name: 'Hybride' },
+//     { id: 2, name: 'Télétravail' }
+//   ];
+
+//   niveauxCompetence = [
+//     { id: 'Debutant', name: 'Débutant' },
+//     { id: 'Intermediaire', name: 'Intermédiaire' },
+//     { id: 'Avance', name: 'Avancé' },
+//     { id: 'Expert', name: 'Expert' }
+//   ];
 
 //   constructor(
 //     private fb: FormBuilder,
-//     private offreService: OffreEmploiService,
+//     private offreEmploiService: OffreEmploiService,
+//     private filialeService: FilialeService,
+//     private competenceService: CompetenceService,
 //     private route: ActivatedRoute,
-//     private authService: AuthService,
-//     private filialeService: FilialeService
-//   ) {
+//     private router: Router
+//   ) {}
+
+//   ngOnInit(): void {
+//     this.initializeForm();
+//     this.loadFiliales();
+//     this.loadRecruteurs();
+
+//     this.route.params.subscribe(params => {
+//       const id = params['id'];
+//       console.log('ID dans les paramètres de route:', id);
+//       if (id && this.isValidGuid(id)) {
+//         this.isEditMode = true;
+//         this.offreId = id;
+//         if (this.offreId) {
+//           this.loadOffreDetails(this.offreId);
+//         }
+//       } else if (id) {
+//         this.showErrorToast('ID d\'offre invalide dans l\'URL');
+//       }
+//     });
+//   }
+
+//   initializeForm(): void {
 //     this.offreForm = this.fb.group({
 //       idOffreEmploi: [null],
 //       titre: ['', [Validators.required, Validators.maxLength(200)]],
 //       specialite: ['', [Validators.required, Validators.maxLength(100)]],
 //       description: ['', [Validators.required, Validators.maxLength(2000)]],
-//       diplomeRequis: ['', [Validators.required, Validators.maxLength(100)]],
-//       niveauExperienceRequis: ['', [Validators.required, Validators.maxLength(50)]],
-//       salaire: [0, [Validators.required, Validators.min(0)]],
-//       datePublication: [null],
-//       dateExpiration: [null],
-//       typeContrat: [null, Validators.required],
-//       statut: [null, Validators.required],
-//       modeTravail: [0, Validators.required], // Valeur par défaut à 0 (Présentiel)
+//       datePublication: [new Date().toISOString().split('T')[0], [Validators.required]],
+//       dateExpiration: ['', [Validators.required]],
+//       salaire: [0, [Validators.min(0)]],
+//       typeContrat: [1, [Validators.required]], // CDI par défaut
 //       nombrePostes: [1, [Validators.required, Validators.min(1)]],
+//       modeTravail: [0, [Validators.required]], // Présentiel par défaut
 //       avantages: [''],
-//       idRecruteur: [{ value: '', disabled: true }, Validators.required],
-//       idFiliale: [null, Validators.required],
-//       offreCompetences: this.fb.array([])
+//       statut: [0, [Validators.required]], // Ouvert par défaut
+//       niveauExperienceRequis: ['', [Validators.required, Validators.maxLength(50)]],
+//       diplomeRequis: ['', [Validators.maxLength(100)]],
+//       idRecruteur: ['', [Validators.required]],
+//       idFiliale: ['', [Validators.required]],
+//       offreCompetences: this.fb.array([this.createCompetenceFormGroup()])
 //     });
-//   }
-
-//   ngOnInit() {
-//     // Récupérer l'ID du recruteur connecté (doit être un Guid)
-//     this.connectedRecruiterId = this.authService.getUserId() || ''; // Assurez-vous que getUserId renvoie un Guid
-//     if (this.connectedRecruiterId) {
-//       this.offreForm.patchValue({ idRecruteur: this.connectedRecruiterId });
-//     } else {
-//       console.warn('No connected recruiter found.');
-//       alert('Aucun recruteur connecté. Veuillez vous connecter.');
-//     }
-
-//     // Charger les filiales
-//     this.filialeService.getFiliales().subscribe({
-//       next: (filiales) => {
-//         this.filiales = filiales;
-//         console.log('Filiales loaded:', this.filiales);
-//       },
-//       error: (err) => {
-//         console.error('Error fetching filiales:', err);
-//         alert('Erreur lors du chargement des filiales. Veuillez réessayer.');
-//       }
-//     });
-
-//     // Vérifier si on est en mode édition
-//     this.idOffre = this.route.snapshot.paramMap.get('id') || undefined;
-//     if (this.idOffre) {
-//       this.isEditMode = true;
-//       this.offreService.getOffreById(this.idOffre).subscribe({
-//         next: (data) => {
-//           if (data.datePublication) {
-//             data.datePublication = new Date(data.datePublication);
-//           }
-//           if (data.dateExpiration) {
-//             data.dateExpiration = new Date(data.dateExpiration);
-//           }
-//           this.offreForm.patchValue(data);
-//           data.offreCompetences.forEach((comp: any) => this.addCompetence(comp));
-//         },
-//         error: (err) => {
-//           console.error('Error fetching offre:', err);
-//           alert('Erreur lors du chargement de l\'offre. Veuillez réessayer.');
-//         }
-//       });
-//     }
 //   }
 
 //   get offreCompetences(): FormArray {
 //     return this.offreForm.get('offreCompetences') as FormArray;
 //   }
 
-//   addCompetence(data?: any) {
-//     const competenceGroup = this.fb.group({
-//       idOffreEmploi: [data?.idOffreEmploi || null],
-//       idCompetence: [data?.idCompetence || null],
-//       niveauRequis: [data?.niveauRequis || NiveauRequisType.Debutant, Validators.required],
-//       competence: this.fb.group({
-//         id: [data?.competence?.id || null],
-//         nom: [data?.competence?.nom || '', Validators.required],
-//         description: [data?.competence?.description || ''],
-//         dateModification: [data?.competence?.dateModification || null],
-//         hardSkills: this.fb.array(
-//           this.hardSkills.map(skill => this.fb.control(data?.competence?.hardSkills?.includes(skill) || false)),
-//           maxSelectionsValidator(5)
-//         ),
-//         softSkills: this.fb.array(
-//           this.softSkills.map(skill => this.fb.control(data?.competence?.softSkills?.includes(skill) || false)),
-//           maxSelectionsValidator(5)
-//         )
-//       })
+//   loadFiliales(): void {
+//     this.filialeService.getFiliales().subscribe({
+//       next: (response) => {
+//         this.filiales = response;
+//         if (this.filiales.length === 1) {
+//           this.offreForm.patchValue({ idFiliale: this.filiales[0].idFiliale });
+//         }
+//       },
+//       error: (error) => {
+//         this.showErrorToast('Erreur lors du chargement des filiales');
+//         console.error(error);
+//       }
 //     });
-//     this.offreCompetences.push(competenceGroup);
 //   }
 
-//   removeCompetence(index: number) {
-//     this.offreCompetences.removeAt(index);
+//   loadRecruteurs(): void {
+//     this.offreEmploiService.getRecruteurIds().subscribe({
+//       next: (response) => {
+//         if (response.success) {
+//           this.recruteurs = response.data;
+//         } else {
+//           this.recruteurs = [];
+//           this.showErrorToast(response.message || 'Erreur lors du chargement des recruteurs');
+//         }
+//       },
+//       error: (error) => {
+//         this.recruteurs = [];
+//         this.showErrorToast(error.message || 'Erreur serveur lors du chargement des recruteurs');
+//         console.error('Erreur détaillée :', error);
+//       }
+//     });
 //   }
 
-//   getHardSkillsArray(index: number): FormArray {
-//     return this.offreCompetences.at(index).get('competence.hardSkills') as FormArray;
+//   loadOffreDetails(id: string): void {
+//     console.log('ID passé à loadOffreDetails:', id);
+//     if (!id || !this.isValidGuid(id)) {
+//       this.showErrorToast('ID d\'offre invalide');
+//       this.loading = false;
+//       return;
+//     }
+//     this.loading = true;
+//     this.offreEmploiService.getOffreEmploi(id).subscribe({
+//       next: (response) => {
+//         if (response.success) {
+//           this.populateFormWithOffre(response.offreEmploi);
+//         } else {
+//           this.showErrorToast(response.message || 'Offre non trouvée');
+//         }
+//         this.loading = false;
+//       },
+//       error: (error) => {
+//         this.showErrorToast(error.message || 'Erreur lors du chargement de l\'offre');
+//         this.loading = false;
+//       }
+//     });
 //   }
 
-//   getSoftSkillsArray(index: number): FormArray {
-//     return this.offreCompetences.at(index).get('competence.softSkills') as FormArray;
+//   private isValidGuid(value: string): boolean {
+//     const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+//     return guidRegex.test(value);
 //   }
 
-//   // Helper method to get a specific FormControl from a FormArray
-//   getHardSkillControl(index: number, skillIndex: number): FormControl {
-//     return this.getHardSkillsArray(index).controls[skillIndex] as FormControl;
+//   populateFormWithOffre(offre: any): void {
+//     while (this.offreCompetences.length) {
+//       this.offreCompetences.removeAt(0);
+//     }
+
+//     const datePublication = offre.datePublication ? new Date(offre.datePublication).toISOString().split('T')[0] : '';
+//     const dateExpiration = offre.dateExpiration ? new Date(offre.dateExpiration).toISOString().split('T')[0] : '';
+
+//     this.offreForm.patchValue({
+//       idOffreEmploi: offre.idOffreEmploi,
+//       titre: offre.titre,
+//       specialite: offre.specialite,
+//       description: offre.description,
+//       datePublication,
+//       dateExpiration,
+//       salaire: offre.salaire,
+//       typeContrat: offre.typeContrat,
+//       nombrePostes: offre.nombrePostes,
+//       modeTravail: offre.modeTravail,
+//       avantages: offre.avantages,
+//       statut: offre.statut,
+//       niveauExperienceRequis: offre.niveauExperienceRequis,
+//       diplomeRequis: offre.diplomeRequis,
+//       idRecruteur: offre.idRecruteur,
+//       idFiliale: offre.idFiliale
+//     });
+
+//     if (offre.offreCompetences && offre.offreCompetences.length > 0) {
+//       offre.offreCompetences.forEach((oc: any) => this.offreCompetences.push(this.createCompetenceFormGroup(oc)));
+//     } else {
+//       this.offreCompetences.push(this.createCompetenceFormGroup());
+//     }
 //   }
 
-//   getSoftSkillControl(index: number, skillIndex: number): FormControl {
-//     return this.getSoftSkillsArray(index).controls[skillIndex] as FormControl;
+//   createCompetenceFormGroup(competence?: any): FormGroup {
+//     return this.fb.group({
+//       idOffreEmploi: [competence?.idOffreEmploi || null],
+//       idCompetence: [competence?.idCompetence || null],
+//       niveauRequis: [competence?.niveauRequis || 'Debutant', Validators.required],
+//       nom: [competence?.competence?.nom || '', Validators.required],
+//       description: [competence?.competence?.description || ''],
+//       estTechnique: [competence?.competence?.estTechnique || false],
+//       estSoftSkill: [competence?.competence?.estSoftSkill || false]
+//     });
 //   }
 
-//   onSubmit() {
-//     if (this.offreForm.invalid) {
-//       console.error('Form is invalid:', this.offreForm.errors);
-//       console.log('Form values:', this.offreForm.getRawValue());
-//       // Afficher les erreurs spécifiques
-//       const errors = this.getFormValidationErrors();
-//       alert('Veuillez corriger les erreurs suivantes :\n' + errors.join('\n'));
+//   addCompetence(): void {
+//     this.offreCompetences.push(this.createCompetenceFormGroup());
+//   }
+
+//   removeCompetence(index: number): void {
+//     if (this.offreCompetences.length > 1) {
+//       Swal.fire({
+//         title: 'Confirmer la suppression',
+//         text: 'Voulez-vous vraiment supprimer cette compétence ?',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonText: 'Oui, supprimer',
+//         cancelButtonText: 'Annuler'
+//       }).then((result) => {
+//         if (result.isConfirmed) {
+//           this.offreCompetences.removeAt(index);
+//           this.showSuccessToast('Compétence supprimée avec succès');
+//         }
+//       });
+//     } else {
+//       this.showWarningToast('Au moins une compétence est requise');
+//     }
+//   }
+
+//   searchCompetence(event: any, index: number): void {
+//     const term = event.target.value.trim();
+//     if (!term || term.length < 2) {
+//       this.competenceSuggestions = [];
+//       this.showCompetenceSuggestions = false;
 //       return;
 //     }
 
-//     const formValue = this.offreForm.getRawValue();
+//     this.isSearchingCompetence = true;
+//     this.competenceService.searchCompetences(term).subscribe({
+//       next: (response) => {
+//         if (response.success) {
+//           this.competenceSuggestions = response.data;
+//           this.showCompetenceSuggestions = true;
+//           this.activeSuggestionIndex = -1;
 
-//     // Debugging logs
-//     console.log('Form values before mapping:', formValue);
-//     console.log('Selected idFiliale:', formValue.idFiliale);
-//     console.log('Selected idRecruteur:', formValue.idRecruteur);
-//     console.log('Selected modeTravail:', formValue.modeTravail);
+//           if (this.competenceSuggestions.length === 0) {
+//             Swal.fire({
+//               icon: 'info',
+//               title: 'Compétence introuvable',
+//               text: `La compétence "${term}" n'existe pas. Voulez-vous l'ajouter ?`,
+//               showCancelButton: true,
+//               confirmButtonText: 'Oui, ajouter',
+//               cancelButtonText: 'Annuler'
+//             }).then((result) => {
+//               if (result.isConfirmed) {
+//                 this.addNewCompetence(index);
+//               }
+//             });
+//           }
+//         } else {
+//           this.competenceSuggestions = [];
+//           this.showCompetenceSuggestions = true;
 
-//     // Map the payload to match backend expectations
-//     const payload = {
-//       ...formValue,
-//       idOffreEmploi: formValue.idOffreEmploi || null,
-//       datePublication: formValue.datePublication ? new Date(formValue.datePublication).toISOString() : null,
-//       dateExpiration: formValue.dateExpiration ? new Date(formValue.dateExpiration).toISOString() : null,
-//       typeContrat: parseInt(formValue.typeContrat), // Convertir en int
-//       statut: parseInt(formValue.statut), // Convertir en int
-//       modeTravail: parseInt(formValue.modeTravail), // Convertir en int
-//       idRecruteur: formValue.idRecruteur, // Doit être un Guid valide
-//       idFiliale: formValue.idFiliale, // Doit être un Guid valide
-//       offreCompetences: formValue.offreCompetences.map((comp: any) => ({
-//         idCompetence: comp.idCompetence || null,
-//         niveauRequis: comp.niveauRequis,
-//         competence: {
-//           id: comp.competence.id || null,
-//           nom: comp.competence.nom,
-//           description: comp.competence.description,
-//           hardSkills: this.hardSkills.filter((_, i) => comp.competence.hardSkills[i]),
-//           softSkills: this.softSkills.filter((_, i) => comp.competence.softSkills[i])
+//           Swal.fire({
+//             icon: 'info',
+//             title: 'Aucune correspondance',
+//             text: `Aucune compétence trouvée pour "${term}". Voulez-vous l’ajouter ?`,
+//             showCancelButton: true,
+//             confirmButtonText: 'Oui, ajouter',
+//             cancelButtonText: 'Annuler'
+//           }).then((result) => {
+//             if (result.isConfirmed) {
+//               this.addNewCompetence(index);
+//             }
+//           });
 //         }
-//       }))
+//         this.isSearchingCompetence = false;
+//       },
+//       error: (error) => {
+//         console.error('Search error:', error);
+//         this.competenceSuggestions = [];
+//         this.showCompetenceSuggestions = true;
+//         this.isSearchingCompetence = false;
+
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Erreur de recherche',
+//           text: `Erreur lors de la recherche de "${term}". Voulez-vous l’ajouter manuellement ?`,
+//           showCancelButton: true,
+//           confirmButtonText: 'Oui, ajouter',
+//           cancelButtonText: 'Annuler'
+//         }).then((result) => {
+//           if (result.isConfirmed) {
+//             this.addNewCompetence(index);
+//           }
+//         });
+//       }
+//     });
+//   }
+
+//   selectCompetence(competence: any, index: number): void {
+//     const competenceFormGroup = this.offreCompetences.at(index) as FormGroup;
+//     competenceFormGroup.patchValue({
+//       nom: competence.nom,
+//       description: competence.description,
+//       estTechnique: competence.estTechnique,
+//       estSoftSkill: competence.estSoftSkill,
+//       idCompetence: competence.id
+//     });
+//     this.showCompetenceSuggestions = false;
+//   }
+
+//   addNewCompetence(index: number): void {
+//     const competenceFormGroup = this.offreCompetences.at(index) as FormGroup;
+//     const nom = competenceFormGroup.get('nom')?.value;
+
+//     if (!nom) {
+//       this.showWarningToast('Le nom de la compétence est requis');
+//       return;
+//     }
+
+//     const newCompetence = {
+//       nom,
+//       description: competenceFormGroup.get('description')?.value || '',
+//       estTechnique: competenceFormGroup.get('estTechnique')?.value || false,
+//       estSoftSkill: competenceFormGroup.get('estSoftSkill')?.value || false
 //     };
 
-//     console.log('Payload Submitted:', payload);
+//     this.competenceService.createCompetence(newCompetence).subscribe({
+//       next: (response) => {
+//         if (response.success) {
+//           competenceFormGroup.patchValue({ idCompetence: response.data.id });
+//           this.showSuccessToast('Compétence ajoutée avec succès');
+//           this.showCompetenceSuggestions = false;
+//         } else {
+//           this.showErrorToast(response.message || 'Erreur lors de l\'ajout de la compétence');
+//         }
+//       },
+//       error: (error) => {
+//         this.showErrorToast('Erreur serveur lors de l\'ajout');
+//         console.error(error);
+//       }
+//     });
+//   }
+
+//   handleKeyDown(event: KeyboardEvent, index: number): void {
+//     if (!this.showCompetenceSuggestions || this.competenceSuggestions.length === 0) return;
+
+//     switch (event.key) {
+//       case 'ArrowDown':
+//         event.preventDefault();
+//         this.activeSuggestionIndex = Math.min(this.activeSuggestionIndex + 1, this.competenceSuggestions.length - 1);
+//         break;
+//       case 'ArrowUp':
+//         event.preventDefault();
+//         this.activeSuggestionIndex = Math.max(this.activeSuggestionIndex - 1, -1);
+//         break;
+//       case 'Enter':
+//         event.preventDefault();
+//         if (this.activeSuggestionIndex >= 0 && this.activeSuggestionIndex < this.competenceSuggestions.length) {
+//           this.selectCompetence(this.competenceSuggestions[this.activeSuggestionIndex], index);
+//         }
+//         break;
+//       case 'Escape':
+//         event.preventDefault();
+//         this.showCompetenceSuggestions = false;
+//         break;
+//     }
+//   }
+
+//   onSubmit(): void {
+//     if (this.offreForm.invalid) {
+//       this.markFormGroupTouched(this.offreForm);
+//       this.showWarningToast('Veuillez corriger les erreurs du formulaire');
+//       return;
+//     }
+
+//     this.loading = true;
+//     const offreData = this.prepareFormData();
 
 //     if (this.isEditMode) {
-//       console.log('Updating offre with ID:', this.idOffre);
-//       this.offreService.updateOffre(this.idOffre!, payload).subscribe({
-//         next: (res) => {
-//           console.log('Update response:', res);
-//           alert('Offre mise à jour avec succès');
-//         },
-//         error: (err) => {
-//           console.error('Error updating offre:', err);
-//           this.handleError(err);
-//         }
-//       });
+//       this.updateOffre(offreData);
 //     } else {
-//       console.log('Creating new offre');
-//       this.offreService.createOffre(payload).subscribe({
-//         next: (res) => {
-//           console.log('Create response:', res);
-//           alert('Offre créée avec succès');
-//           this.offreForm.reset();
-//           this.offreCompetences.clear();
-//           this.offreForm.patchValue({ idRecruteur: this.connectedRecruiterId });
-//         },
-//         error: (err) => {
-//           console.error('Error creating offre:', err);
-//           this.handleError(err);
-//         }
-//       });
+//       this.createOffre(offreData);
 //     }
 //   }
 
-//   private getFormValidationErrors(): string[] {
-//     const errors: string[] = [];
-//     Object.keys(this.offreForm.controls).forEach(key => {
-//       const controlErrors: ValidationErrors | null = this.offreForm.get(key)?.errors ?? null;
-//       if (controlErrors) {
-//         Object.keys(controlErrors).forEach(errorKey => {
-//           let message = '';
-//           switch (errorKey) {
-//             case 'required':
-//               message = `${key} est requis.`;
-//               break;
-//             case 'maxLength':
-//               message = `${key} dépasse la longueur maximale de ${controlErrors['maxLength'].requiredLength} caractères.`;
-//               break;
-//             case 'min':
-//               message = `${key} doit être supérieur ou égal à ${controlErrors['min'].min}.`;
-//               break;
-//             default:
-//               message = `${key} a une erreur: ${errorKey}.`;
-//           }
-//           errors.push(message);
-//         });
-//       }
-//     });
-
-//     // Vérifier les erreurs dans le FormArray offreCompetences
-//     this.offreCompetences.controls.forEach((compGroup: any, index: number) => {
-//       const compErrors = compGroup.get('competence')?.errors;
-//       if (compErrors) {
-//         Object.keys(compErrors).forEach(errorKey => {
-//           errors.push(`Compétence ${index + 1} (compétence): ${errorKey}`);
-//         });
-//       }
-
-//       const nomErrors = compGroup.get('competence.nom')?.errors;
-//       if (nomErrors) {
-//         Object.keys(nomErrors).forEach(errorKey => {
-//           errors.push(`Compétence ${index + 1} (nom): ${errorKey === 'required' ? 'Le nom est requis.' : errorKey}`);
-//         });
-//       }
-
-//       const hardSkillsErrors = compGroup.get('competence.hardSkills')?.errors;
-//       if (hardSkillsErrors) {
-//         errors.push(`Compétence ${index + 1} (hardSkills): Maximum 5 hard skills autorisés. Sélectionnés: ${hardSkillsErrors['maxSelections']?.selected}`);
-//       }
-
-//       const softSkillsErrors = compGroup.get('competence.softSkills')?.errors;
-//       if (softSkillsErrors) {
-//         errors.push(`Compétence ${index + 1} (softSkills): Maximum 5 soft skills autorisés. Sélectionnés: ${softSkillsErrors['maxSelections']?.selected}`);
-//       }
-//     });
-
-//     return errors;
+//   prepareFormData(): any {
+//     const formValue = this.offreForm.value;
+  
+//     const validCompetences = formValue.offreCompetences
+//       .filter((oc: any) => oc.nom && oc.nom.trim() !== '')
+//       .map((oc: any) => ({
+//         idCompetence: oc.idCompetence,
+//         niveauRequis: oc.niveauRequis,
+//         competence: {
+//           nom: oc.nom,
+//           description: oc.description,
+//           estTechnique: oc.estTechnique,
+//           estSoftSkill: oc.estSoftSkill
+//         }
+//       }));
+  
+//     if (validCompetences.length === 0) {
+//       this.showWarningToast('Au moins une compétence valide est requise');
+//       this.loading = false;
+//       return null;
+//     }
+  
+//     // Construire offreData sans inclure idOffreEmploi par défaut
+//     const offreData: any = {
+//       titre: formValue.titre,
+//       specialite: formValue.specialite,
+//       description: formValue.description,
+//       datePublication: formValue.datePublication,
+//       dateExpiration: formValue.dateExpiration,
+//       salaire: formValue.salaire,
+//       typeContrat: formValue.typeContrat,
+//       nombrePostes: formValue.nombrePostes,
+//       modeTravail: formValue.modeTravail,
+//       avantages: formValue.avantages,
+//       statut: formValue.statut,
+//       niveauExperienceRequis: formValue.niveauExperienceRequis,
+//       diplomeRequis: formValue.diplomeRequis,
+//       idRecruteur: formValue.idRecruteur,
+//       idFiliale: formValue.idFiliale,
+//       offreCompetences: validCompetences
+//     };
+  
+//     // Ajouter idOffreEmploi uniquement en mode édition
+//     if (this.isEditMode) {
+//       offreData.idOffreEmploi = this.offreId;
+//     }
+  
+//     console.log('Données envoyées au backend:', JSON.stringify(offreData, null, 2));
+//     return offreData;
 //   }
 
-//   private handleError(err: any) {
-//     console.error('Status:', err.status);
-//     console.error('Status Text:', err.statusText);
-//     console.error('Error Details:', err.error);
+//   createOffre(offreData: any): void {
+//     if (!offreData) return;
 
-//     if (err.error && err.error.errors) {
-//       console.error('Validation Errors:', err.error.errors);
-//       const validationErrors = Object.entries(err.error.errors)
-//         .map(([field, messages]) => `${field}: ${(messages as string[]).join(', ')}`)
-//         .join('\n');
-//       alert('Erreur de validation :\n' + validationErrors);
-//     } else if (err.error && err.error.message) {
-//       alert('Erreur : ' + err.error.message);
-//     } else {
-//       alert('Une erreur inattendue est survenue. Veuillez réessayer.');
+//     this.offreEmploiService.createOffreEmploi(offreData).subscribe({
+//       next: (response) => {
+//         if (response.success) {
+//           this.showSuccessToast('Offre créée avec succès');
+//           this.router.navigate(['/offres']);
+//         } else {
+//           this.showErrorToast(response.message || 'Erreur lors de la création');
+//         }
+//         this.loading = false;
+//       },
+//       error: (error) => {
+//         this.showErrorToast(error.error?.message || 'Erreur lors de la création');
+//         this.loading = false;
+//       }
+//     });
+//   }
+
+//   updateOffre(offreData: any): void {
+//     if (!offreData) return;
+
+//     this.offreEmploiService.updateOffreEmploi(this.offreId!, offreData).subscribe({
+//       next: (response) => {
+//         if (response.success) {
+//           this.showSuccessToast('Offre mise à jour avec succès');
+//           this.router.navigate(['/offres']);
+//         } else {
+//           this.showErrorToast(response.message || 'Erreur lors de la mise à jour');
+//         }
+//         this.loading = false;
+//       },
+//       error: (error) => {
+//         this.showErrorToast(error.error?.message || 'Erreur lors de la mise à jour');
+//         this.loading = false;
+//       }
+//     });
+//   }
+
+//   markFormGroupTouched(formGroup: FormGroup | FormArray): void {
+//     Object.keys(formGroup.controls).forEach(key => {
+//       const control = formGroup.get(key);
+//       if (control instanceof FormGroup || control instanceof FormArray) {
+//         this.markFormGroupTouched(control);
+//       } else {
+//         control?.markAsTouched();
+//       }
+//     });
+//   }
+
+//   cancel(): void {
+//     Swal.fire({
+//       title: 'Êtes-vous sûr?',
+//       text: 'Toutes les modifications non enregistrées seront perdues.',
+//       icon: 'warning',
+//       showCancelButton: true,
+//       confirmButtonColor: '#3085d6',
+//       cancelButtonColor: '#d33',
+//       confirmButtonText: 'Oui, quitter',
+//       cancelButtonText: 'Annuler'
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         this.router.navigate(['/offres']);
+//       }
+//     });
+//   }
+
+//   showSuccessToast(message: string): void {
+//     Swal.fire({
+//       icon: 'success',
+//       title: 'Succès!',
+//       text: message,
+//       toast: true,
+//       position: 'top-end',
+//       showConfirmButton: false,
+//       timer: 3000
+//     });
+//   }
+
+//   showErrorToast(message: string): void {
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'Erreur',
+//       text: message,
+//       toast: true,
+//       position: 'top-end',
+//       showConfirmButton: false,
+//       timer: 3000
+//     });
+//   }
+
+//   showWarningToast(message: string): void {
+//     Swal.fire({
+//       icon: 'warning',
+//       title: 'Attention',
+//       text: message,
+//       toast: true,
+//       position: 'top-end',
+//       showConfirmButton: false,
+//       timer: 3000
+//     });
+//   }
+
+//   getFieldError(fieldName: string): string {
+//     const control = this.offreForm.get(fieldName);
+//     if (control?.invalid && (control.dirty || control.touched)) {
+//       if (control.errors?.['required']) return 'Ce champ est requis';
+//       if (control.errors?.['maxlength']) return `La longueur maximale est de ${control.errors['maxlength'].requiredLength} caractères`;
+//       if (control.errors?.['min']) return `La valeur minimale est ${control.errors['min'].min}`;
 //     }
+//     return '';
+//   }
+
+//   getCompetenceFieldError(index: number, fieldName: string): string {
+//     const control = this.offreCompetences.at(index).get(fieldName);
+//     if (control?.invalid && (control.dirty || control.touched)) {
+//       if (control.errors?.['required']) return 'Ce champ est requis';
+//     }
+//     return '';
 //   }
 // }
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
-import { HardSkillType, ModeTravail, NiveauRequisType, SoftSkillType, StatutOffre, TypeContratEnum } from '../../Models/enums.model';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '../../shared/services/auth.service';
 import { FilialeService } from '../../shared/services/filiale.service';
-import { Filiale } from '../../Models/filiale.model';
-
-// Standalone validator function for max selections
-function maxSelectionsValidator(max: number): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const formArray = control as FormArray;
-    const selected = formArray.controls.filter(ctrl => ctrl.value).length;
-    return selected <= max ? null : { maxSelections: { max, selected } };
-  };
-}
+import { CompetenceService } from '../../shared/services/competence.service';
+import { OffreEmploi } from '../../Models/offre-emploi.model';
+import { CommonModule } from '@angular/common';
+import { OffreCompetence } from '../../Models/offre-competence.model';
 
 @Component({
   selector: 'app-offre-form',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './offre-form.component.html',
+  styles: ''
 })
 export class OffreFormComponent implements OnInit {
-  offreForm: FormGroup;
+  offreForm!: FormGroup;
   isEditMode = false;
-  idOffre?: string;
-  typeContrats = Object.entries(TypeContratEnum).filter(([k, v]) => isNaN(Number(k)));
-  statuts = Object.entries(StatutOffre).filter(([k, v]) => isNaN(Number(k)));
-  modesTravail = Object.entries(ModeTravail).filter(([k, v]) => isNaN(Number(k)));
-  niveauxRequis = Object.values(NiveauRequisType);
-  hardSkills = Object.values(HardSkillType);
-  softSkills = Object.values(SoftSkillType);
-  filiales: Filiale[] = [];
-  connectedRecruiterId: string | null = null;
-  recruiterName: string | null = null;
-  isRecruiter: boolean = false;
-  errorMessage: string | null = null;
-  loading: boolean = true;
+  offreId?: string;
+  loading = false;
+  error = '';
+  filiales: any[] = [];
+  recruteurs: any[] = [];
+  isSearchingCompetence = false;
+  showCompetenceSuggestions = false;
+  activeSuggestionIndex = -1;
+  competenceSuggestions: any[] = [];
+
+  typeContrats = [
+    { id: 1, name: 'CDI' },
+    { id: 2, name: 'CDD' },
+    { id: 3, name: 'Freelance' },
+    { id: 4, name: 'Stage' }
+  ];
+
+  statuts = [
+    { id: 0, name: 'Ouvert' },
+    { id: 1, name: 'Fermé' }
+  ];
+
+  modesTravail = [
+    { id: 0, name: 'Présentiel' },
+    { id: 1, name: 'Hybride' },
+    { id: 2, name: 'Télétravail' }
+  ];
+
+  niveauxCompetence = [
+    { id: 'Debutant', name: 'Débutant' },
+    { id: 'Intermediaire', name: 'Intermédiaire' },
+    { id: 'Avance', name: 'Avancé' },
+    { id: 'Expert', name: 'Expert' }
+  ];
 
   constructor(
     private fb: FormBuilder,
-    private offreService: OffreEmploiService,
+    private offreEmploiService: OffreEmploiService,
+    private filialeService: FilialeService,
+    private competenceService: CompetenceService,
     private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService,
-    private filialeService: FilialeService
-  ) {
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
+    this.loadFiliales();
+    this.loadRecruteurs();
+
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      console.log('ID dans les paramètres de route:', id);
+      if (id && this.isValidGuid(id)) {
+        this.isEditMode = true;
+        this.offreId = id;
+        if (this.offreId) {
+          this.loadOffreDetails(this.offreId);
+        }
+      } else if (id) {
+        this.showErrorToast('ID d\'offre invalide dans l\'URL');
+      }
+    });
+  }
+
+  initializeForm(): void {
     this.offreForm = this.fb.group({
       idOffreEmploi: [null],
       titre: ['', [Validators.required, Validators.maxLength(200)]],
       specialite: ['', [Validators.required, Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.maxLength(2000)]],
-      diplomeRequis: ['', [Validators.required, Validators.maxLength(100)]],
-      niveauExperienceRequis: ['', [Validators.required, Validators.maxLength(50)]],
-      salaire: [0, [Validators.required, Validators.min(0)]],
-      datePublication: [null],
-      dateExpiration: [null],
-      typeContrat: [null, Validators.required],
-      statut: [null, Validators.required],
-      modeTravail: [0, Validators.required],
+      datePublication: [new Date().toISOString().split('T')[0], [Validators.required]],
+      dateExpiration: ['', [Validators.required]],
+      salaire: [0, [Validators.min(0)]],
+      typeContrat: [1, [Validators.required]], // CDI par défaut
       nombrePostes: [1, [Validators.required, Validators.min(1)]],
+      modeTravail: [0, [Validators.required]], // Présentiel par défaut
       avantages: [''],
-      idRecruteur: [{ value: '', disabled: true }, Validators.required],
-      recruteurNom: [{ value: '', disabled: true }], // Champ pour le nom du recruteur
-      idFiliale: [null, Validators.required],
-      offreCompetences: this.fb.array([]),
-      dateModification: [null]
+      statut: [0, [Validators.required]], // Ouvert par défaut
+      niveauExperienceRequis: ['', [Validators.required, Validators.maxLength(50)]],
+      diplomeRequis: ['', [Validators.maxLength(100)]],
+      idRecruteur: ['', [Validators.required]],
+      idFiliale: ['', [Validators.required]],
+      offreCompetences: this.fb.array([this.createCompetenceFormGroup()])
     });
-  }
-
-  ngOnInit() {
-    // Vérifier si un utilisateur est connecté
-    this.connectedRecruiterId = this.authService.getUserId();
-    if (!this.connectedRecruiterId || !this.authService.isLoggedIn()) {
-      this.errorMessage = 'Vous devez être connecté pour créer une offre.';
-      this.router.navigate(['/signin']);
-      return;
-    }
-
-    // Vérifier si l'utilisateur connecté est un recruteur
-    this.isRecruiter = this.authService.hasRole('Recruteur');
-    this.loading = false;
-
-    if (!this.isRecruiter) {
-      this.errorMessage = 'Seuls les recruteurs peuvent créer ou modifier des offres.';
-      this.router.navigate(['/offres']);
-      return;
-    }
-
-    // Récupérer le nom du recruteur
-    this.recruiterName = this.authService.getUserFullName();
-
-    // Définir l'ID et le nom du recruteur dans le formulaire
-    this.offreForm.patchValue({
-      idRecruteur: this.connectedRecruiterId,
-      recruteurNom: this.recruiterName
-    });
-
-    // Charger les filiales
-    this.filialeService.getFiliales().subscribe({
-      next: (filiales) => {
-        this.filiales = filiales;
-        console.log('Filiales loaded:', this.filiales);
-      },
-      error: (err) => {
-        console.error('Error fetching filiales:', err);
-        this.errorMessage = 'Erreur lors du chargement des filiales. Veuillez réessayer.';
-      }
-    });
-
-    // Vérifier si on est en mode édition
-    this.idOffre = this.route.snapshot.paramMap.get('id') || undefined;
-    if (this.idOffre) {
-      this.isEditMode = true;
-      this.offreService.getOffreById(this.idOffre).subscribe({
-        next: (data) => {
-          if (data.datePublication) {
-            data.datePublication = new Date(data.datePublication);
-          }
-          if (data.dateExpiration) {
-            data.dateExpiration = new Date(data.dateExpiration);
-          }
-          // if (data.dateModification) {
-          //   data.dateModification = new Date(data.dateModification).toISOString().split('T')[0];
-          // }
-          this.offreForm.patchValue(data);
-          data.offreCompetences.forEach((comp: any) => this.addCompetence(comp));
-        },
-        error: (err) => {
-          console.error('Error fetching offre:', err);
-          this.errorMessage = 'Erreur lors du chargement de l\'offre. Veuillez réessayer.';
-        }
-      });
-    }
   }
 
   get offreCompetences(): FormArray {
     return this.offreForm.get('offreCompetences') as FormArray;
   }
 
-  addCompetence(data?: any) {
-    const competenceGroup = this.fb.group({
-      idOffreEmploi: [data?.idOffreEmploi || null],
-      idCompetence: [data?.idCompetence || null],
-      niveauRequis: [data?.niveauRequis || NiveauRequisType.Debutant, Validators.required],
-      competence: this.fb.group({
-        id: [data?.competence?.id || null],
-        nom: [data?.competence?.nom || '', Validators.required],
-        description: [data?.competence?.description || ''],
-        dateModification: [data?.competence?.dateModification || null],
-        hardSkills: this.fb.array(
-          this.hardSkills.map(skill => this.fb.control(data?.competence?.hardSkills?.includes(skill) || false)),
-          maxSelectionsValidator(5)
-        ),
-        softSkills: this.fb.array(
-          this.softSkills.map(skill => this.fb.control(data?.competence?.softSkills?.includes(skill) || false)),
-          maxSelectionsValidator(5)
-        )
-      })
+  loadFiliales(): void {
+    this.filialeService.getFiliales().subscribe({
+      next: (response) => {
+        this.filiales = response;
+        if (this.filiales.length === 1) {
+          this.offreForm.patchValue({ idFiliale: this.filiales[0].idFiliale });
+        }
+      },
+      error: (error) => {
+        this.showErrorToast('Erreur lors du chargement des filiales');
+        console.error(error);
+      }
     });
-    this.offreCompetences.push(competenceGroup);
   }
 
-  removeCompetence(index: number) {
-    this.offreCompetences.removeAt(index);
+  loadRecruteurs(): void {
+    this.offreEmploiService.getRecruteurIds().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.recruteurs = response.data;
+        } else {
+          this.recruteurs = [];
+          this.showErrorToast(response.message || 'Erreur lors du chargement des recruteurs');
+        }
+      },
+      error: (error) => {
+        this.recruteurs = [];
+        this.showErrorToast(error.message || 'Erreur serveur lors du chargement des recruteurs');
+        console.error('Erreur détaillée :', error);
+      }
+    });
   }
 
-  getHardSkillsArray(index: number): FormArray {
-    return this.offreCompetences.at(index).get('competence.hardSkills') as FormArray;
+  loadOffreDetails(id: string): void {
+    console.log('ID passé à loadOffreDetails:', id);
+    if (!id || !this.isValidGuid(id)) {
+      this.showErrorToast('ID d\'offre invalide');
+      this.loading = false;
+      return;
+    }
+    this.loading = true;
+    this.offreEmploiService.getOffreEmploi(id).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.populateFormWithOffre(response.offreEmploi);
+        } else {
+          this.showErrorToast(response.message || 'Offre non trouvée');
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        this.showErrorToast(error.message || 'Erreur lors du chargement de l\'offre');
+        this.loading = false;
+      }
+    });
   }
 
-  getSoftSkillsArray(index: number): FormArray {
-    return this.offreCompetences.at(index).get('competence.softSkills') as FormArray;
+  private isValidGuid(value: string): boolean {
+    const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return guidRegex.test(value);
   }
 
-  getHardSkillControl(index: number, skillIndex: number): FormControl {
-    return this.getHardSkillsArray(index).controls[skillIndex] as FormControl;
+  populateFormWithOffre(offre: any): void {
+    while (this.offreCompetences.length) {
+      this.offreCompetences.removeAt(0);
+    }
+
+    const datePublication = offre.datePublication ? new Date(offre.datePublication).toISOString().split('T')[0] : '';
+    const dateExpiration = offre.dateExpiration ? new Date(offre.dateExpiration).toISOString().split('T')[0] : '';
+
+    this.offreForm.patchValue({
+      idOffreEmploi: offre.idOffreEmploi,
+      titre: offre.titre,
+      specialite: offre.specialite,
+      description: offre.description,
+      datePublication,
+      dateExpiration,
+      salaire: offre.salaire,
+      typeContrat: offre.typeContrat,
+      nombrePostes: offre.nombrePostes,
+      modeTravail: offre.modeTravail,
+      avantages: offre.avantages,
+      statut: offre.statut,
+      niveauExperienceRequis: offre.niveauExperienceRequis,
+      diplomeRequis: offre.diplomeRequis,
+      idRecruteur: offre.idRecruteur,
+      idFiliale: offre.idFiliale
+    });
+
+    if (offre.offreCompetences && offre.offreCompetences.length > 0) {
+      offre.offreCompetences.forEach((oc: any) => this.offreCompetences.push(this.createCompetenceFormGroup(oc)));
+    } else {
+      this.offreCompetences.push(this.createCompetenceFormGroup());
+    }
   }
 
-  getSoftSkillControl(index: number, skillIndex: number): FormControl {
-    return this.getSoftSkillsArray(index).controls[skillIndex] as FormControl;
+  createCompetenceFormGroup(competence?: any): FormGroup {
+    return this.fb.group({
+      idOffreEmploi: [competence?.idOffreEmploi || null],
+      idCompetence: [competence?.idCompetence || null],
+      niveauRequis: [competence?.niveauRequis || 'Debutant', Validators.required],
+      nom: [competence?.competence?.nom || '', Validators.required],
+      description: [competence?.competence?.description || ''],
+      estTechnique: [competence?.competence?.estTechnique || false],
+      estSoftSkill: [competence?.competence?.estSoftSkill || false]
+    });
   }
 
-  onSubmit() {
-    if (this.offreForm.invalid) {
-      console.error('Form is invalid:', this.offreForm.errors);
-      console.log('Form values:', this.offreForm.getRawValue());
-      const errors = this.getFormValidationErrors();
-      alert('Veuillez corriger les erreurs suivantes :\n' + errors.join('\n'));
+  addCompetence(): void {
+    this.offreCompetences.push(this.createCompetenceFormGroup());
+  }
+
+  removeCompetence(index: number): void {
+    if (this.offreCompetences.length > 1) {
+      Swal.fire({
+        title: 'Confirmer la suppression',
+        text: 'Voulez-vous vraiment supprimer cette compétence ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.offreCompetences.removeAt(index);
+          this.showSuccessToast('Compétence supprimée avec succès');
+        }
+      });
+    } else {
+      this.showWarningToast('Au moins une compétence est requise');
+    }
+  }
+
+  searchCompetence(event: any, index: number): void {
+    const term = event.target.value.trim();
+    if (!term || term.length < 2) {
+      this.competenceSuggestions = [];
+      this.showCompetenceSuggestions = false;
       return;
     }
 
-    const formValue = this.offreForm.getRawValue();
+    this.isSearchingCompetence = true;
+    this.competenceService.searchCompetences(term).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.competenceSuggestions = response.data;
+          this.showCompetenceSuggestions = true;
+          this.activeSuggestionIndex = -1;
 
-    console.log('Form values before mapping:', formValue);
-    console.log('Selected idFiliale:', formValue.idFiliale);
-    console.log('Selected idRecruteur:', formValue.idRecruteur);
-    console.log('Selected modeTravail:', formValue.modeTravail);
+          if (this.competenceSuggestions.length === 0) {
+            Swal.fire({
+              icon: 'info',
+              title: 'Compétence introuvable',
+              text: `La compétence "${term}" n'existe pas. Voulez-vous l'ajouter ?`,
+              showCancelButton: true,
+              confirmButtonText: 'Oui, ajouter',
+              cancelButtonText: 'Annuler'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.addNewCompetence(index);
+              }
+            });
+          }
+        } else {
+          this.competenceSuggestions = [];
+          this.showCompetenceSuggestions = true;
 
-    const payload = {
-      ...formValue,
-      idOffreEmploi: formValue.idOffreEmploi || null,
-      datePublication: formValue.datePublication ? new Date(formValue.datePublication).toISOString() : null,
-      dateExpiration: formValue.dateExpiration ? new Date(formValue.dateExpiration).toISOString() : null,
-      dateModification: formValue.dateModification ? new Date(formValue.dateModification).toISOString() : null,
-      typeContrat: parseInt(formValue.typeContrat),
-      statut: parseInt(formValue.statut),
-      modeTravail: parseInt(formValue.modeTravail),
-      idRecruteur: formValue.idRecruteur,
-      idFiliale: formValue.idFiliale,
-      offreCompetences: formValue.offreCompetences.map((comp: any) => ({
-        idCompetence: comp.idCompetence || null,
-        niveauRequis: comp.niveauRequis,
-        competence: {
-          id: comp.competence.id || null,
-          nom: comp.competence.nom,
-          description: comp.competence.description,
-          hardSkills: this.hardSkills.filter((_, i) => comp.competence.hardSkills[i]),
-          softSkills: this.softSkills.filter((_, i) => comp.competence.softSkills[i]),
-          dateModification: comp.competence.dateModification ? new Date(comp.competence.dateModification).toISOString() : null
+          Swal.fire({
+            icon: 'info',
+            title: 'Aucune correspondance',
+            text: `Aucune compétence trouvée pour "${term}". Voulez-vous l’ajouter ?`,
+            showCancelButton: true,
+            confirmButtonText: 'Oui, ajouter',
+            cancelButtonText: 'Annuler'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.addNewCompetence(index);
+            }
+          });
         }
-      }))
+        this.isSearchingCompetence = false;
+      },
+      error: (error) => {
+        console.error('Search error:', error);
+        this.competenceSuggestions = [];
+        this.showCompetenceSuggestions = true;
+        this.isSearchingCompetence = false;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur de recherche',
+          text: `Erreur lors de la recherche de "${term}". Voulez-vous l’ajouter manuellement ?`,
+          showCancelButton: true,
+          confirmButtonText: 'Oui, ajouter',
+          cancelButtonText: 'Annuler'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.addNewCompetence(index);
+          }
+        });
+      }
+    });
+  }
+
+  selectCompetence(competence: any, index: number): void {
+    const competenceFormGroup = this.offreCompetences.at(index) as FormGroup;
+    competenceFormGroup.patchValue({
+      nom: competence.nom,
+      description: competence.description,
+      estTechnique: competence.estTechnique,
+      estSoftSkill: competence.estSoftSkill,
+      idCompetence: competence.id
+    });
+    this.showCompetenceSuggestions = false;
+  }
+
+  addNewCompetence(index: number): void {
+    const competenceFormGroup = this.offreCompetences.at(index) as FormGroup;
+    const nom = competenceFormGroup.get('nom')?.value;
+
+    if (!nom) {
+      this.showWarningToast('Le nom de la compétence est requis');
+      return;
+    }
+
+    const newCompetence = {
+      nom,
+      description: competenceFormGroup.get('description')?.value || '',
+      estTechnique: competenceFormGroup.get('estTechnique')?.value || false,
+      estSoftSkill: competenceFormGroup.get('estSoftSkill')?.value || false
     };
 
-    console.log('Payload Submitted:', payload);
+    this.competenceService.createCompetence(newCompetence).subscribe({
+      next: (response) => {
+        if (response.success) {
+          competenceFormGroup.patchValue({ idCompetence: response.data.id });
+          this.showSuccessToast('Compétence ajoutée avec succès');
+          this.showCompetenceSuggestions = false;
+        } else {
+          this.showErrorToast(response.message || 'Erreur lors de l\'ajout de la compétence');
+        }
+      },
+      error: (error) => {
+        this.showErrorToast('Erreur serveur lors de l\'ajout');
+        console.error(error);
+      }
+    });
+  }
+
+  handleKeyDown(event: KeyboardEvent, index: number): void {
+    if (!this.showCompetenceSuggestions || this.competenceSuggestions.length === 0) return;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        this.activeSuggestionIndex = Math.min(this.activeSuggestionIndex + 1, this.competenceSuggestions.length - 1);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this.activeSuggestionIndex = Math.max(this.activeSuggestionIndex - 1, -1);
+        break;
+      case 'Enter':
+        event.preventDefault();
+        if (this.activeSuggestionIndex >= 0 && this.activeSuggestionIndex < this.competenceSuggestions.length) {
+          this.selectCompetence(this.competenceSuggestions[this.activeSuggestionIndex], index);
+        }
+        break;
+      case 'Escape':
+        event.preventDefault();
+        this.showCompetenceSuggestions = false;
+        break;
+    }
+  }
+
+  onSubmit(): void {
+    if (this.offreForm.invalid) {
+      this.markFormGroupTouched(this.offreForm);
+      this.showWarningToast('Veuillez corriger les erreurs du formulaire');
+      return;
+    }
+
+    this.loading = true;
+    const offreData = this.prepareFormData();
 
     if (this.isEditMode) {
-      console.log('Updating offre with ID:', this.idOffre);
-      this.offreService.updateOffre(this.idOffre!, payload).subscribe({
-        next: (res) => {
-          console.log('Update response:', res);
-          alert('Offre mise à jour avec succès');
-          this.router.navigate(['/offres']);
-        },
-        error: (err) => {
-          console.error('Error updating offre:', err);
-          this.handleError(err);
-        }
-      });
+      this.updateOffre(offreData);
     } else {
-      console.log('Creating new offre');
-      this.offreService.createOffre(payload).subscribe({
-        next: (res) => {
-          console.log('Create response:', res);
-          alert('Offre créée avec succès');
-          this.offreForm.reset();
-          this.offreCompetences.clear();
-          this.offreForm.patchValue({
-            idRecruteur: this.connectedRecruiterId,
-            recruteurNom: this.recruiterName
-          });
-          this.router.navigate(['/offres']);
-        },
-        error: (err) => {
-          console.error('Error creating offre:', err);
-          this.handleError(err);
-        }
-      });
+      this.createOffre(offreData);
     }
   }
 
-  private getFormValidationErrors(): string[] {
-    const errors: string[] = [];
-    Object.keys(this.offreForm.controls).forEach(key => {
-      const controlErrors: ValidationErrors | null = this.offreForm.get(key)?.errors ?? null;
-      if (controlErrors) {
-        Object.keys(controlErrors).forEach(errorKey => {
-          let message = '';
-          switch (errorKey) {
-            case 'required':
-              message = `${key} est requis.`;
-              break;
-            case 'maxLength':
-              message = `${key} dépasse la longueur maximale de ${controlErrors['maxLength'].requiredLength} caractères.`;
-              break;
-            case 'min':
-              message = `${key} doit être supérieur ou égal à ${controlErrors['min'].min}.`;
-              break;
-            default:
-              message = `${key} a une erreur: ${errorKey}.`;
-          }
-          errors.push(message);
-        });
-      }
-    });
+  prepareFormData(): any {
+    const formValue = this.offreForm.value;
 
-    this.offreCompetences.controls.forEach((compGroup: any, index: number) => {
-      const compErrors = compGroup.get('competence')?.errors;
-      if (compErrors) {
-        Object.keys(compErrors).forEach(errorKey => {
-          errors.push(`Compétence ${index + 1} (compétence): ${errorKey}`);
-        });
-      }
+    const validCompetences = formValue.offreCompetences
+      .filter((oc: any) => oc.nom && oc.nom.trim() !== '')
+      .map((oc: any) => ({
+        idCompetence: oc.idCompetence,
+        niveauRequis: oc.niveauRequis,
+        competence: {
+          nom: oc.nom,
+          description: oc.description,
+          estTechnique: oc.estTechnique,
+          estSoftSkill: oc.estSoftSkill
+        }
+      }));
 
-      const nomErrors = compGroup.get('competence.nom')?.errors;
-      if (nomErrors) {
-        Object.keys(nomErrors).forEach(errorKey => {
-          errors.push(`Compétence ${index + 1} (nom): ${errorKey === 'required' ? 'Le nom est requis.' : errorKey}`);
-        });
-      }
+    if (validCompetences.length === 0) {
+      this.showWarningToast('Au moins une compétence valide est requise');
+      this.loading = false;
+      return null;
+    }
 
-      const hardSkillsErrors = compGroup.get('competence.hardSkills')?.errors;
-      if (hardSkillsErrors) {
-        errors.push(`Compétence ${index + 1} (hardSkills): Maximum 5 hard skills autorisés. Sélectionnés: ${hardSkillsErrors['maxSelections']?.selected}`);
-      }
+    const offreData: any = {
+      titre: formValue.titre,
+      specialite: formValue.specialite,
+      description: formValue.description,
+      datePublication: formValue.datePublication,
+      dateExpiration: formValue.dateExpiration,
+      salaire: formValue.salaire,
+      typeContrat: formValue.typeContrat,
+      nombrePostes: formValue.nombrePostes,
+      modeTravail: formValue.modeTravail,
+      avantages: formValue.avantages,
+      statut: formValue.statut,
+      niveauExperienceRequis: formValue.niveauExperienceRequis,
+      diplomeRequis: formValue.diplomeRequis,
+      idRecruteur: formValue.idRecruteur,
+      idFiliale: formValue.idFiliale,
+      offreCompetences: validCompetences
+    };
 
-      const softSkillsErrors = compGroup.get('competence.softSkills')?.errors;
-      if (softSkillsErrors) {
-        errors.push(`Compétence ${index + 1} (softSkills): Maximum 5 soft skills autorisés. Sélectionnés: ${softSkillsErrors['maxSelections']?.selected}`);
-      }
-    });
+    if (this.isEditMode) {
+      offreData.idOffreEmploi = this.offreId;
+    }
 
-    return errors;
+    console.log('Données envoyées au backend:', JSON.stringify(offreData, null, 2));
+    return offreData;
   }
 
-  private handleError(err: any) {
-    console.error('Status:', err.status);
-    console.error('Status Text:', err.statusText);
-    console.error('Error Details:', err.error);
+  createOffre(offreData: any): void {
+    if (!offreData) return;
 
-    if (err.error && err.error.errors) {
-      console.error('Validation Errors:', err.error.errors);
-      const validationErrors = Object.entries(err.error.errors)
-        .map(([field, messages]) => `${field}: ${(messages as string[]).join(', ')}`)
-        .join('\n');
-      alert('Erreur de validation :\n' + validationErrors);
-    } else if (err.error && err.error.message) {
-      alert('Erreur : ' + err.error.message);
-    } else {
-      alert('Une erreur inattendue est survenue. Veuillez réessayer.');
+    this.offreEmploiService.createOffreEmploi(offreData).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.showSuccessToast('Offre créée avec succès');
+          this.router.navigate(['/offres']);
+        } else {
+          this.showErrorToast(response.message || 'Erreur lors de la création');
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        this.showErrorToast(error.error?.message || 'Erreur lors de la création');
+        this.loading = false;
+      }
+    });
+  }
+
+  updateOffre(offreData: any): void {
+    if (!offreData) return;
+
+    this.offreEmploiService.updateOffreEmploi(this.offreId!, offreData).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.showSuccessToast('Offre mise à jour avec succès');
+          this.router.navigate(['/offres']);
+        } else {
+          this.showErrorToast(response.message || 'Erreur lors de la mise à jour');
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        this.showErrorToast(error.error?.message || 'Erreur lors de la mise à jour');
+        this.loading = false;
+      }
+    });
+  }
+
+  markFormGroupTouched(formGroup: FormGroup | FormArray): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markFormGroupTouched(control);
+      } else {
+        control?.markAsTouched();
+      }
+    });
+  }
+
+  cancel(): void {
+    Swal.fire({
+      title: 'Êtes-vous sûr?',
+      text: 'Toutes les modifications non enregistrées seront perdues.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, quitter',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/offres']);
+      }
+    });
+  }
+
+  showSuccessToast(message: string): void {
+    Swal.fire({
+      icon: 'success',
+      title: 'Succès!',
+      text: message,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  showErrorToast(message: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: message,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  showWarningToast(message: string): void {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Attention',
+      text: message,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  getFieldError(fieldName: string): string {
+    const control = this.offreForm.get(fieldName);
+    if (control?.invalid && (control.dirty || control.touched)) {
+      if (control.errors?.['required']) return 'Ce champ est requis';
+      if (control.errors?.['maxlength']) return `La longueur maximale est de ${control.errors['maxlength'].requiredLength} caractères`;
+      if (control.errors?.['min']) return `La valeur minimale est ${control.errors['min'].min}`;
     }
+    return '';
+  }
+
+  getCompetenceFieldError(index: number, fieldName: string): string {
+    const control = this.offreCompetences.at(index).get(fieldName);
+    if (control?.invalid && (control.dirty || control.touched)) {
+      if (control.errors?.['required']) return 'Ce champ est requis';
+    }
+    return '';
   }
 }
