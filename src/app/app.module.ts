@@ -80,6 +80,9 @@ import { CandidateDetailsComponent } from './features/candidate-details/candidat
     OffreDetailComponent,
     OffreListComponent,
     OffreFormComponent,
+    ContentComponent,
+    HeaderComponent,
+    FooterComponent
     
    
   
