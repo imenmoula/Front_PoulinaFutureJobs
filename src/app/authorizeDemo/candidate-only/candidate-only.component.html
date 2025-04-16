@@ -20,7 +20,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-2">
                             <div class="logo">
-                                <a routerLink="/"><img src="../../../assets/User/img/logo/logo.png"  alt="Poulina Logo"></a>
+                                <a routerLink="/"><img src="../../../assets/User/img/logo/poulina.jpg"  with="50" height="50" alt="Poulina Logo"></a>
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-9">
@@ -29,7 +29,7 @@
                                     <nav class="d-none d-lg-block">
                                         <ul id="navigation">
                                             <li><a routerLink="/">Accueil</a></li>
-                                            <li><a routerLink="/jobs">Offres d'emploi</a></li>
+                                            <li><a routerLink="/job-list">Offres d'emploi</a></li>
                                             <li><a routerLink="/about">A propos</a></li>
                                             <li><a routerLink="/contact">Contact</a></li>
                                         </ul>
@@ -50,36 +50,38 @@
             </div>
         </div>
       </header> 
-
+      <header>
+        <!-- Header Start -->
+    
+        <!-- Header End -->
+    </header>
     
     
 
     <!-- Main Content -->
     <main>
         <!-- Slider Area Start -->
-        <div class="slider-area">
-            <div class="slider-active">
-                <div 
-                class="single-slider slider-height d-flex align-items-center" 
-                [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/poulina_group_holding_cover.png)'}">
-                                  <div class="container">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-9 col-md-10">
-                                <div class="hero__caption">
-                                    <h2>
-                                        <span class="typewriter blue">Poulina Future Dream Jobs</span>
-                                        Bienvenue, nous sommes ravis de vous accueillir sur la plateforme de recrutement.<br>
-                                        Découvrez des opportunités uniques, mettez en valeur vos compétences à travers nos quiz interactifs, 
-                                        et trouvez le poste qui vous correspond le mieux au sein de nos différentes filiales.<br>
-                                        Votre avenir commence ici. Bonne chance dans votre parcours !
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Slider Area Start -->
+<!-- Slider Area Start -->
+<div class="slider-area">
+    <div class="slider-active">
+      <div class="single-slider slider-height d-flex align-items-center" 
+           [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/poulina_group_holding_cover.png)'}">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-6 col-lg-9 col-md-10">
+              <!-- <div class="hero__caption">
+                    <h1>Find the most exciting startup jobs</h1> 
+                
+              </div> -->
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider Area End -->
+  <!-- Slider Area End -->
         <!-- Slider Area End -->
  <!-- Our Services Start -->
  <div class="our-services section-pad-t30">
@@ -254,35 +256,49 @@
             </div>
         </section>
 <!-- Support Company Start-->
+<!-- Support Company Start -->
 <div class="support-company-area support-padding fix">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-xl-6 col-lg-6">
-                <div class="right-caption">
-                    <!-- Section Tittle -->
-                    <div class="section-tittle section-tittle2">
-                        <span>Que vous recherchez un emploi </span>
-                        <h2>avec poulina future dream jobs  profite de nos services qui peut vous aider pour trouver votre futur emploi dans ces filiales</h2>
-                    </div>
-                    <div class="support-caption">
-                        <p class="pera-top">Poulian future dream jobs .</p>
-                        <p>Poulina Group Holding est un groupe Tunisien créé en 1967. Originellement spécialisé dans l'aviculture, le groupe s'est peu à peu diversifié pour devenir le premier groupe à capitaux privés de Tunisie. Le groupe exerce 8 métiers distincts: l’intégration avicole, les produits de grande consommation, la transformation de l’acier, l’emballage, l’immobilier, le bois et les biens d’équipement, les matériaux de construction et le commerce et les services.</p>
-                        <a href="about.html" class="btn post-btn">Post a job</a>
-                    </div>
-                </div>
+      <div class="row align-items-center">
+        <div class="col-xl-6 col-lg-6">
+          <div class="right-caption">
+            <!-- Section Title -->
+            <div class="section-tittle section-tittle2">
+              <span class="highlight-text">Que vous recherchez un emploi</span>
+              <h2>Avec Poulina Future Dream Jobs, profitez de nos services pour trouver votre futur emploi dans ces filiales</h2>
             </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="support-location-img">
-                    <img src=".../../../../../assets/UserUser/img/service/po0.jpg" alt="poulina future dream jobs">
-                    <div class="support-img-cap text-center">
-                        <p>créé en</p>
-                        <span>1967</span>
-                    </div>
-                </div>
+            <div class="support-caption">
+              <p class="pera-top"><strong>Poulina Future Dream Jobs</strong></p>
+              <p>Poulina Group Holding est un groupe tunisien créé en <strong>1967</strong>. Originellement spécialisé dans l'aviculture, le groupe s'est diversifié pour devenir le premier groupe à capitaux privés de Tunisie. Il exerce 8 métiers distincts :</p>
+              <ul class="metiers-list">
+                <li>L’intégration avicole</li>
+                <li>Les produits de grande consommation</li>
+                <li>La transformation de l’acier</li>
+                <li>L’emballage</li>
+                <li>L’immobilier</li>
+                <li>Le bois et les biens d’équipement</li>
+                <li>Les matériaux de construction</li>
+                <li>Le commerce et les services</li>
+              </ul>
+              <a href="about.html" class="btn post-btn">Post a Job</a>
             </div>
+          </div>
         </div>
+        <div class="col-xl-6 col-lg-6">
+          <div class="support-location-img">
+            <div class="logo-background" [ngStyle]="{'background-image': 'url(../../../assets/User/img/service/po0.jpg)'}">
+              <div class="support-img-cap text-center">
+                <p>Créé en</p>
+                <span class="year-highlight">1967</span>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  <!-- Support Company End -->
         <!-- How to Apply Section -->
         <div class="apply-process-area apply-bg pt-150 pb-150" data-background="../../../../../assets/UserUser/img/gallery/how-applybg.png">
             <div class="container">

@@ -1,75 +1,68 @@
-// // job-listing.component.ts
+import { Component, OnInit } from '@angular/core';
+import { OffreEmploi } from '../../../Models/offre-emploi.model';
+import { OffreEmploiService } from '../../../shared/services/offre-emploi.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-// import { Component, Input, OnInit } from '@angular/core';
-// import { OffreEmploi } from '../../../Models/offre-emploi.model';
-// import { OffreEmploiService } from '../../../shared/services/offre-emploi.service';
 
+@Component({
+  selector: 'app-job-listing',
+  standalone: true,
+  imports: [FormsModule,CommonModule],
+  templateUrl: './job-listing.component.html',
+  styleUrls: [
+    './job-listing.component.css',
+        '../../../../assets/User/css/bootstrap.min.css',
+        '../../../../assets/User/css/owl.carousel.min.css',
+        '../../../../assets/User/css/flaticon.css',
+        '../../../../assets/User/css/price_rangs.css',
+        '../../../../assets/User/css/slicknav.css',
+        '../../../../assets/User/css/animate.min.css',
+        '../../../../assets/User/css/magnific-popup.css',
+        '../../../../assets/User/css/fontawesome-all.min.css',
+        '../../../../assets/User/css/themify-icons.css',
+        '../../../../assets/User/css/slick.css',
+        '../../../../assets/User/css/nice-select.css',
+        '../../../../assets/User/css/style.css'
+      ]
+})
+export class JobListingComponent implements OnInit {
+  offres: OffreEmploi[] = [];
+  filteredOffres: OffreEmploi[] = [];
+  specialite: string = '';
+  typeContrat: string = '';
+  modeTravail: string = '';
 
-// @Component({
-//   selector: 'app-job-listing',
-//   templateUrl: './job-listing.component.html',
-//   styleUrls: ['./job-listing.component.css']
-// })
-// export class JobListingComponent implements OnInit {
-//   offres: OffreEmploi[] = [];
-//   @Input() offres: OffreEmploi[] = []; // Use Input to receive offers
+  constructor(private offreService: OffreEmploiService) {}
 
-//   constructor(private offreEmploiService: OffreEmploiService) { }
+  ngOnInit(): void {
+    this.loadOffres();
+  }
 
-//   ngOnInit(): void {
-//     this.loadOffres();
-//   }
+  loadOffres(): void {
+    this.offreService.getAllOffres().subscribe(
+      (data: OffreEmploi[]) => {
+        this.offres = data;
+        this.filterOffres(); // Apply initial filter
+      },
+      (error: any) => {
+        console.error('Error loading offers:', error);
+      }
+    );
+  }
 
-//   loadOffres(): void {
-//     this.offreEmploiService.getAllOffres().subscribe(
-//       (offres) => {
-//         this.offres = offres;
-//       },
-//       (error) => {
-//         console.error('Erreur lors de la récupération des offres:', error);
-//       }
-//     );
-//   }
+  filterOffres(): void {
+    this.offreService.searchOffres(this.specialite, '', this.typeContrat, '', this.modeTravail, '').subscribe(
+      (data) => {
+        this.filteredOffres = data.offresEmploi || [];
+      },
+      (error) => {
+        console.error('Error filtering offers:', error);
+      }
+    );
+  }
 
-//   formatDate(date: any): string {
-//     if (date) {
-//       try {
-//         const parsedDate = new Date(date);
-//         return parsedDate.toLocaleDateString('fr-FR');
-//       } catch (error) {
-//         console.error('Erreur de format de date:', error);
-//         return 'Date inconnue';
-//       }
-//     }
-//     return 'Date inconnue';
-//   }
-
-  
-
-//   timeSince(date: any): string {
-//       const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
-//       let interval = seconds / 31536000;
-
-//       if (interval > 1) {
-//           return "il y a " + Math.floor(interval) + " ans";
-//       }
-//       interval = seconds / 2592000;
-//       if (interval > 1) {
-//           return "il y a " + Math.floor(interval) + " mois";
-//       }
-//       interval = seconds / 86400;
-//       if (interval > 1) {
-//           return "il y a " + Math.floor(interval) + " jours";
-//       }
-//       interval = seconds / 3600;
-//       if (interval > 1) {
-//           return "il y a " + Math.floor(interval) + " heures";
-//       }
-//       interval = seconds / 60;
-//       if (interval > 1) {
-//           return "il y a " + Math.floor(interval) + " minutes";
-//       }
-//       return "il y a " + Math.floor(seconds) + " secondes";
-//   }
-  
-// }
+  onFilterChange(): void {
+    this.filterOffres();
+  }
+}
