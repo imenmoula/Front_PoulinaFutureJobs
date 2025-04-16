@@ -150,7 +150,7 @@ export class CandidateOnlyComponent implements OnInit {
   }
 
   getImageUrl(photo: string | undefined): string {
-    if (!photo) return '../../../assets/User/img/default-filiale.jpg';
+    if (!photo) return '../../../assets/User/img/logo/poulina.jpg';
     return photo.startsWith('http') ? photo : `${environment.apiBaseUrl}/Uploads/${photo}`;
   }
 

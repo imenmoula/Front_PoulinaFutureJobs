@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html class="no-js" lang="fr">
 <head>
@@ -11,33 +7,20 @@
     <meta name="description" content="Plateforme de recherche d'emploi et de gestion de candidatures">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../assets/User/img/favicon.ico">
 </head>
 
 <body>
-
-      <!-- Preloader Start -->
-      <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="../../../assets/User/img/logo/poulina.jpg" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
-    <!-- Header Component -->
-     <header>
+     
+   
+     <header> 
         <div class="header-area header-transparrent">
             <div class="headder-top header-sticky">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-2">
                             <div class="logo">
-                                <a routerLink="/"><img src="../../../assets/User/img/logo/poulina.jpg"  alt="Poulina Logo"></a>
+                                <a routerLink="/"><img src="../../../assets/User/img/logo/logo.png"  alt="Poulina Logo"></a>
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-9">
@@ -55,7 +38,7 @@
                                 <div class="header-btn d-none f-right d-lg-block">
                                     <a routerLink="/signin" class="btn head-btn1">Connexion</a>
                                     <a routerLink="/singup" class="btn head-btn1">Inscription</a>
-                                    <button (click)="onLogout()" class="btn head-btn2">Déconnexion</button>
+                                    <!-- <button (click)="onLogout()" class="btn head-btn2">Déconnexion</button> -->
                                 </div>
                             </div>
                         </div>
@@ -66,7 +49,7 @@
                 </div>
             </div>
         </div>
-      </header>
+      </header> 
 
     
     
@@ -76,8 +59,10 @@
         <!-- Slider Area Start -->
         <div class="slider-area">
             <div class="slider-active">
-                <div class="single-slider slider-height d-flex align-items-center" data-background="../../../assets/User/img/hero/poulina_group_holding_cover.jpg">
-                    <div class="container">
+                <div 
+                class="single-slider slider-height d-flex align-items-center" 
+                [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/poulina_group_holding_cover.png)'}">
+                                  <div class="container">
                         <div class="row">
                             <div class="col-xl-6 col-lg-9 col-md-10">
                                 <div class="hero__caption">
@@ -288,7 +273,7 @@
             </div>
             <div class="col-xl-6 col-lg-6">
                 <div class="support-location-img">
-                    <img src=".../../../assets/User/img/service/po0.jpg" alt="poulina future dream jobs">
+                    <img src=".../../../../../assets/UserUser/img/service/po0.jpg" alt="poulina future dream jobs">
                     <div class="support-img-cap text-center">
                         <p>créé en</p>
                         <span>1967</span>
@@ -299,7 +284,7 @@
     </div>
 </div>
         <!-- How to Apply Section -->
-        <div class="apply-process-area apply-bg pt-150 pb-150" data-background="../../../../assets/User/img/gallery/how-applybg.png">
+        <div class="apply-process-area apply-bg pt-150 pb-150" data-background="../../../../../assets/UserUser/img/gallery/how-applybg.png">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -431,26 +416,26 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="../../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="../../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="../../../../assets/User/js/popper.min.js"></script>
-    <script src="../../../../assets/User/js/bootstrap.min.js"></script>
-    <script src="../../../../assets/User/js/jquery.slicknav.min.js"></script>
-    <script src="../../../../assets/User/js/owl.carousel.min.js"></script>
-    <script src="../../../../assets/User/js/slick.min.js"></script>
-    <script src="../../../../assets/User/js/price_rangs.js"></script>
-    <script src="../../../../assets/User/js/wow.min.js"></script>
-    <script src="../../../../assets/User/js/animated.headline.js"></script>
-    <script src="../../../../assets/User/js/jquery.magnific-popup.js"></script>
-    <script src="../../../../assets/User/js/jquery.scrollUp.min.js"></script>
-    <script src="../../../../assets/User/js/jquery.nice-select.min.js"></script>
-    <script src="../../../../assets/User/js/jquery.sticky.js"></script>
-    <script src="../../../../assets/User/js/contact.js"></script>
-    <script src="../../../../assets/User/js/jquery.form.js"></script>
-    <script src="../../../../assets/User/js/jquery.validate.min.js"></script>
-    <script src="../../../../assets/User/js/mail-script.js"></script>
-    <script src="../../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
-    <script src="../../../../assets/User/js/plugins.js"></script>
-    <script src="../../../../assets/User/js/main.js"></script>
-</body>
+    <script src="../../../../../assets/UserUser/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/popper.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/bootstrap.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.slicknav.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/owl.carousel.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/slick.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/price_rangs.js"></script>
+    <script src="../../../../../assets/UserUser/js/wow.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/animated.headline.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.magnific-popup.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.scrollUp.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.nice-select.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.sticky.js"></script>
+    <script src="../../../../../assets/UserUser/js/contact.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.form.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.validate.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/mail-script.js"></script>
+    <script src="../../../../../assets/UserUser/js/jquery.ajaxchimp.min.js"></script>
+    <script src="../../../../../assets/UserUser/js/plugins.js"></script>
+    <script src="../../../../../assets/UserUser/js/main.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9315d8332b65e1cd',t:'MTc0NDgyOTE3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

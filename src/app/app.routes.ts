@@ -130,6 +130,7 @@ export const routes: Routes = [
   },
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
+  // { path: 'job-list', component: JobListingComponent },
   /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];
