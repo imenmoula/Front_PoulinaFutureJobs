@@ -49,6 +49,7 @@ import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.c
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
+import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +85,8 @@ import { JobListingComponent } from './CandidateFront/components/job-listing/job
     ContentComponent,
     HeaderComponent,
     FooterComponent,
-    JobListingComponent
+    JobListingComponent,
+    JobDetailsComponent
    
   
 ],
