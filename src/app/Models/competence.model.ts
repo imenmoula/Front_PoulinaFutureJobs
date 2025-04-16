@@ -1,3 +1,4 @@
+import { OffreCompetence } from './offre-competence.model';
 
 export interface Competence {
   id?: string;
@@ -8,4 +9,6 @@ export interface Competence {
   hardSkills: boolean;
   estTechnique: boolean;
   estSoftSkill: boolean;
+  offreCompetences: OffreCompetence[];
+
   }

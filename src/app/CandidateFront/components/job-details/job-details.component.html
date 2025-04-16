@@ -1,0 +1,277 @@
+<!-- <!DOCTYPE html>
+<html class="no-js" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Détails de l'Offre - Job Board</title>
+    <meta name="description" content="Détails de l'offre d'emploi">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <header>
+        <div class="header-area header-transparrent">
+            <div class="headder-top header-sticky">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-2">
+                            <div class="logo">
+                                <a routerLink="/"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Logo"></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-9">
+                            <div class="menu-wrapper">
+                                <div class="main-menu">
+                                    <nav class="d-none d-lg-block">
+                                        <ul id="navigation">
+                                            <li><a routerLink="/">Accueil</a></li>
+                                            <li><a routerLink="/jobs">Offres d'emploi</a></li>
+                                            <li><a routerLink="/about">A propos</a></li>
+                                            <li><a routerLink="/contact">Contact</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="header-btn d-none f-right d-lg-block">
+                                    <a routerLink="/signin" class="btn head-btn1">Connexion</a>
+                                    <a routerLink="/singup" class="btn head-btn1">Inscription</a>
+                                    <button (click)="onLogout()" class="btn head-btn2">Déconnexion</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Area Start -->
+        <div class="slider-area">
+            <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="../../../assets/User/img/hero/poulina_group_holding_cover.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap text-center">
+                                <h2>{{ offre?.titre || 'Détails de l\'Offre' }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Hero Area End -->
+
+        <!-- Job Post Company Start -->
+        <div class="job-post-company pt-120 pb-120">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <!-- Left Content -->
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Job Single -->
+                        <div class="single-job-items mb-50">
+                            <div class="job-items">
+                                <div class="company-img company-img-details">
+                                    <a [routerLink]="['/job-details', offre?.idOffreEmploi]">
+                                        <img [src]="getImageUrl(offre?.filiale?.photo)" [alt]="offre?.filiale?.nom || 'N/A'" class="company-logo">
+                                    </a>
+                                </div>
+                                <div class="job-tittle">
+                                    <a [routerLink]="['/job-details', offre?.idOffreEmploi]">
+                                        <h4>{{ offre?.titre || 'Titre non spécifié' }}</h4>
+                                    </a>
+                                    <ul>
+                                        <li><i class="fas fa-building"></i> {{ offre?.filiale?.nom || 'N/A' }}</li>
+                                        <li><i class="fas fa-map-marker-alt"></i> {{ offre?.filiale?.adresse || 'Adresse non spécifiée' }}</li>
+                                        <li>{{ offre?.salaire ? offre.salaire + ' Tnd' : 'Salaire non spécifié' }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Single End -->
+
+                        <!-- Job Post Details -->
+                        <div class="job-post-details">
+                            <div class="post-details1 mb-50">
+                                <div class="small-section-tittle">
+                                    <h4>Description de l'Offre</h4>
+                                </div>
+                                <p>{{ offre?.description || 'Aucune description disponible.' }}</p>
+                            </div>
+                            <div class="post-details2 mb-50">
+                                <div class="small-section-tittle">
+                                    <h4>Connaissances, Compétences et Aptitudes Requises</h4>
+                                </div>
+                                <ul>
+                                    <li>{{ offre?.requiredSkills?.length ? offre.requiredSkills[0] : 'Compétences non spécifiées' }}</li>
+                                    <!-- Add more dynamic skills if available -->
+                                    <li *ngIf="offre?.requiredSkills?.length > 1">{{ offre.requiredSkills[1] }}</li>
+                                    <li *ngIf="offre?.requiredSkills?.length > 2">{{ offre.requiredSkills[2] }}</li>
+                                    <!-- Fallback for missing skills -->
+                                    <li *ngIf="!offre?.requiredSkills?.length">Aucune compétence spécifique requise</li>
+                                </ul>
+                            </div>
+                            <div class="post-details2 mb-50">
+                                <div class="small-section-tittle">
+                                    <h4>Éducation + Expérience</h4>
+                                </div>
+                                <ul>
+                                    <li>{{ offre?.requiredExperience?.length ? offre.requiredExperience[0] : 'Expérience non spécifiée' }}</li>
+                                    <li *ngIf="offre?.requiredExperience?.length > 1">{{ offre.requiredExperience[1] }}</li>
+                                    <li *ngIf="!offre?.requiredExperience?.length">Aucune expérience spécifique requise</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Content -->
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="post-details3 mb-50">
+                            <div class="small-section-tittle">
+                                <h4>Aperçu de l'Offre</h4>
+                            </div>
+                            <ul>
+                                <li>Date de publication : <span>{{ formatDate(offre?.datePublication) }}</span></li>
+                                <li>Lieu : <span>{{ offre?.filiale?.adresse || 'Non spécifié' }}</span></li>
+                                <li>Mode de travail : <span>{{ offre?.modeTravail || 'Non spécifié' }}</span></li>
+                                
+
+                                <li>Contrat : <span> {{ offre?.typeContrat || 'Non spécifié' }}</span></li>
+                                <li>Postes : <span></span></li>
+                                <li>Nature du poste : <span></span></li>
+                                <li>Salaire : <span>{{ offre?.salaire ? offre.salaire + ' Tnd' : 'Non spécifié' }}</span></li>
+                                <li>Date limite de candidature : <span>{{ formatDate(offre?.dateExpiration) || 'Non spécifiée' }}</span></li>
+                            </ul>
+                            <div class="apply-btn2">
+                                <a href="#" class="btn" (click)="applyNow(); $event.preventDefault()">Postuler Maintenant</a>
+                            </div>
+                        </div>
+                        <div class="post-details4 mb-50">
+                            <div class="small-section-tittle">
+                                <h4>Informations sur la Filiale</h4>
+                            </div>
+                            <span>{{ offre?.filiale?.nom || 'N/A' }}</span>
+                            <p>{{ offre?.filiale?.description || 'Aucune description disponible.' }}</p>
+                            <ul>
+                                <li>Nom : <span>{{ offre?.filiale?.nom || 'N/A' }}</span></li>
+                                <li>Site web : <span>{{ offre?.filiale?.website || 'Non spécifié' }}</span></li>
+                                <li>Email : <span>{{ offre?.filiale?.email || 'Non spécifié' }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Job Post Company End -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-area footer-bg footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>À propos</h4>
+                                <div class="footer-pera">
+                                    <p>Nous sommes une plateforme dédiée à connecter les talents avec des opportunités au sein du groupe Poulina.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Contact</h4>
+                                <ul>
+                                    <li><p>Adresse : Tunis, Tunisie</p></li>
+                                    <li><a href="#">Téléphone : +216 71 123 456</a></li>
+                                    <li><a href="#">Email : </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Liens utiles</h4>
+                                <ul>
+                                    <li><a routerLink="/jobs">Offres d'emploi</a></li>
+                                    <li><a routerLink="/about">À propos</a></li>
+                                    <li><a routerLink="/contact">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Newsletter</h4>
+                                <div class="footer-pera footer-pera2">
+                                    <p>Inscrivez-vous pour recevoir les dernières offres d'emploi.</p>
+                                </div>
+                                <div class="footer-form">
+                                    <form>
+                                        <input type="email" placeholder="Adresse Email" class="placeholder hide-on-focus">
+                                        <button type="submit" class="btn"><i class="fas fa-arrow-right"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom-area footer-bg">
+            <div class="container">
+                <div class="footer-border">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-xl-10 col-lg-10">
+                            <div class="footer-copy-right">
+                                <!-- <p>Copyright © {{ formatDate(new Date()) | slice:6 }} Tous droits réservés | Développé par Poulina</p> -->
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="footer-social f-right">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="../../../assets/User/js/popper.min.js"></script>
+    <script src="../../../assets/User/js/bootstrap.min.js"></script>
+    <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
+    <script src="../../../assets/User/js/owl.carousel.min.js"></script>
+    <script src="../../../assets/User/js/slick.min.js"></script>
+    <script src="../../../assets/User/js/price_rangs.js"></script>
+    <script src="../../../assets/User/js/wow.min.js"></script>
+    <script src="../../../assets/User/js/animated.headline.js"></script>
+    <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
+    <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
+    <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
+    <script src="../../../assets/User/js/jquery.sticky.js"></script>
+    <script src="../../../assets/User/js/contact.js"></script>
+    <script src="../../../assets/User/js/jquery.form.js"></script>
+    <script src="../../../assets/User/js/jquery.validate.min.js"></script>
+    <script src="../../../assets/User/js/mail-script.js"></script>
+    <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
+    <script src="../../../assets/User/js/plugins.js"></script>
+    <script src="../../../assets/User/js/main.js"></script>
+</body>
+</html> -->

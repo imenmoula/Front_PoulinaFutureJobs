@@ -1,3 +1,4 @@
+import { Filiale } from './filiale.model';
 import { ModeTravail, StatutOffre, TypeContratEnum } from "./enums.model";
 import { OffreCompetence } from "./offre-competence.model";
 
@@ -8,15 +9,18 @@ export interface OffreEmploi {
   description: string;
   datePublication?: Date; // Use string to match ISO date from backend
   dateExpiration?: Date;
-  salaire: number;
+  SalaireMax ?: number;
+ SalaireMin?: number;
   niveauExperienceRequis: string;
   diplomeRequis: string;
-  typeContrat: number;
-  statut: number;
-  modeTravail: number;
+  typeContrat: TypeContratEnum;
+  statut: StatutOffre;
+  modeTravail: ModeTravail;
   nombrePostes: number;
   avantages: string;
   idRecruteur: string;
   idFiliale: string;
+  filiale?: Filiale;
   offreCompetences: OffreCompetence[];
+
 }

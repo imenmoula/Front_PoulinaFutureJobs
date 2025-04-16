@@ -134,6 +134,9 @@ export class AuthService {
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
 
   // getRecruteurs(): Observable<any> {
   //   return this.http.get(`${this.apiUrl}/recruteurs`);

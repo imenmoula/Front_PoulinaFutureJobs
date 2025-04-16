@@ -1,121 +1,168 @@
-<div class="container mt-4">
-  <!-- Loading Indicator -->
+<!-- <div class="container mt-5">
   <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status">
+    <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Chargement...</span>
     </div>
-    <p>Chargement des détails de l'offre...</p>
+    <p class="mt-2">Chargement des détails de l'offre...</p>
   </div>
 
-  <!-- Error Message -->
-  <div *ngIf="errorMessage && !loading" class="alert alert-danger">
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
     {{ errorMessage }}
   </div>
 
-  <!-- Offer Details -->
-  <div *ngIf="!loading && !errorMessage && offre">
-    <!-- General Details Card -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Détails de l'Offre</h3>
+  <div *ngIf="!loading && !errorMessage && offre" class="offer-details">
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Informations Générales</h3>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label><strong>Titre:</strong></label>
+              <label><strong>Titre :</strong></label>
               <p>{{ offre.titre }}</p>
             </div>
             <div class="form-group">
-              <label><strong>Spécialité:</strong></label>
+              <label><strong>Spécialité :</strong></label>
               <p>{{ offre.specialite }}</p>
             </div>
             <div class="form-group">
-              <label><strong>Description:</strong></label>
+              <label><strong>Description :</strong></label>
               <p>{{ offre.description }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Diplôme Requis:</strong></label>
-              <p>{{ offre.diplomeRequis }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Niveau d'Expérience Requis:</strong></label>
-              <p>{{ offre.niveauExperienceRequis }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Salaire:</strong></label>
-              <p>{{ offre.salaire }} TND</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label><strong>Date de Publication:</strong></label>
-              <p>{{ offre.datePublication | date:'medium' }}</p>
+              <label><strong>Diplôme Requis :</strong></label>
+              <p>{{ offre.diplomeRequis || 'Non spécifié' }}</p>
             </div>
             <div class="form-group">
-              <label><strong>Date d'Expiration:</strong></label>
-              <p>{{ offre.dateExpiration | date:'medium' }}</p>
+              <label><strong>Niveau d'Expérience Requis :</strong></label>
+              <p>{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
             </div>
             <div class="form-group">
-              <label><strong>Type de Contrat:</strong></label>
-              <p>{{ typeContratLabels[offre.typeContrat] }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Statut:</strong></label>
-              <p>{{ statutLabels[offre.statut] }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Mode de Travail:</strong></label>
-              <p>{{ modeTravailLabels[offre.modeTravail] }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Nombre de Postes:</strong></label>
-              <p>{{ offre.nombrePostes }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Avantages:</strong></label>
-              <p>{{ offre.avantages }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Recruteur:</strong></label>
-              <p>{{ recruiterName }}</p>
-            </div>
-            <div class="form-group">
-              <label><strong>Filiale:</strong></label>
-              <p>{{ filiale?.nom || 'Chargement...' }}</p>
+              <label><strong>Salaire :</strong></label>
+            
+              <p>
+                {{ offre.salaireMin ? offre.salaireMin + ' TND' : 'Non spécifié' }}
+                {{ offre.salaireMax ? ' - ' + offre.salaireMax + ' TND' : '' }}
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Competencies Card -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Compétences Requises</h3>
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Dates</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Date de Publication :</strong></label>
+              <p>{{ offre.datePublication | date:'medium' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Date d'Expiration :</strong></label>
+              <p>{{ offre.dateExpiration | date:'medium' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Conditions de Travail</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Type de Contrat :</strong></label>
+              <p>{{ typeContratLabels[offre.typeContrat] || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Statut :</strong></label>
+              <p>{{ statutLabels[offre.statut] || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Mode de Travail :</strong></label>
+              <p>{{ modeTravailLabels[offre.modeTravail] || 'Non spécifié' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <div class="form-group">
+                <label><strong>Nombre de Postes :</strong></label>
+                <p>{{ offre.nombrePostes && offre.nombrePostes !== 1 ? offre.nombrePostes : 'Non spécifié' }}</p>
+              </div>
+            <div class="form-group">
+              <label><strong>Avantages :</strong></label>
+              <p>{{ offre.avantages || 'Non spécifié' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Recruteur et Filiale</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Nom du Recruteur :</strong></label>
+              <p>{{ recruiterName }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Filiale - Nom :</strong></label>
+              <p>{{ filiale?.nom || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Filiale - Adresse :</strong></label>
+              <p>{{ filiale?.adresse || 'Non spécifié' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Compétences Requises</h3>
       </div>
       <div class="card-body">
         <div *ngIf="offre.offreCompetences?.length > 0; else noCompetences">
-          <div *ngFor="let oc of offre.offreCompetences; let i = index" class="card mb-3">
+          <div *ngFor="let oc of offre.offreCompetences; let i = index" class="card mb-3 competency-card">
             <div class="card-body">
               <h5 class="card-title">Compétence {{ i + 1 }}</h5>
               <div class="form-group">
-                <label><strong>Nom:</strong></label>
+                <label><strong>Nom :</strong></label>
                 <p>{{ oc.competence.nom }}</p>
               </div>
               <div class="form-group">
-                <label><strong>Description:</strong></label>
-                <p>{{ oc.competence.description }}</p>
+                <label><strong>Description :</strong></label>
+                <p>{{ oc.competence.description || 'Non spécifié' }}</p>
               </div>
               <div class="form-group">
-                <label><strong>Niveau Requis:</strong></label>
+                <label><strong>Niveau Requis :</strong></label>
                 <p>{{ oc.niveauRequis }}</p>
               </div>
               <div class="form-group">
-                <label><strong>Type:</strong></label>
+                <label><strong>Type :</strong></label>
                 <p>
-                  {{ oc.competence.estTechnique ? 'Hard Skill' : '' }}
+                  {{ oc.competence.estTechnique ? 'Compétence technique' : '' }}
                   {{ oc.competence.estSoftSkill ? 'Soft Skill' : '' }}
+                  {{ !oc.competence.estTechnique && !oc.competence.estSoftSkill ? 'Non spécifié' : '' }}
                 </p>
               </div>
             </div>
@@ -127,13 +174,218 @@
       </div>
     </div>
 
-    <!-- Actions Card -->
-    <div class="card mb-4">
+    <div class="card mb-4 section-card">
       <div class="card-body text-center">
         <button class="btn btn-primary me-2" (click)="editOffre()">Modifier</button>
         <button class="btn btn-danger me-2" (click)="deleteOffre()">Supprimer</button>
-        <!-- <button class="btn btn-secondary" (click)="router.navigate(['/offre-emplois'])">Retour</button> -->
+         <button class="btn btn-secondary" (click)="router.navigate(['/offres'])">Retour</button> -
       </div>
     </div>
   </div>
+
+  <div *ngIf="!loading && !errorMessage && !offre" class="alert alert-warning" role="alert">
+    Aucune donnée à afficher. Redirection vers la liste des offres...
+  </div>
+</div> -->
+
+
+<div class="container mt-5">
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-2">Chargement des détails de l'offre...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Offer Details -->
+  <div *ngIf="!loading && !errorMessage && offre" class="offer-details">
+    <!-- General Information Section -->
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Informations Générales</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Titre :</strong></label>
+              <p>{{ offre.titre }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Spécialité :</strong></label>
+              <p>{{ offre.specialite }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Description :</strong></label>
+              <p>{{ offre.description }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Diplôme Requis :</strong></label>
+              <p>{{ offre.diplomeRequis || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Niveau d'Expérience Requis :</strong></label>
+              <p>{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Salaire :</strong></label>
+              <p>
+                {{ offre.salaireMin ? offre.salaireMin + ' TND' : 'Non spécifié' }}
+                {{ offre.salaireMax ? ' - ' + offre.salaireMax + ' TND' : '' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dates Section -->
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Dates</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Date de Publication :</strong></label>
+              <p>{{ offre.datePublication | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC'}}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Date d'Expiration :</strong></label>
+              <p>{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Work Conditions Section -->
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Conditions de Travail</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Type de Contrat :</strong></label>
+              <p [ngClass]="{'text-danger': typeContratLabels[offre.typeContrat] === 'Valeur invalide'}">
+                {{ typeContratLabels[offre.typeContrat] || 'Non spécifié' }}
+              </p>
+            </div>
+            <div class="form-group">
+              <label><strong>Statut :</strong></label>
+              <p>{{ statutLabels[offre.statut] || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Mode de Travail :</strong></label>
+              <p>{{ modeTravailLabels[offre.modeTravail] || 'Non spécifié' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Nombre de Postes :</strong></label>
+              <p>{{ offre.nombrePostes && offre.nombrePostes !== 1 ? offre.nombrePostes : 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Avantages :</strong></label>
+              <p>{{ offre.avantages || 'Non spécifié' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recruiter and Filiale Section -->
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">les details de  Filiale</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- <div class="col-md-6">
+             <div class="form-group">
+              <label><strong>Nom du Recruteur :</strong></label>
+              <p>{{ recruiterName }}</p>
+            </div>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><strong>Filiale - Nom :</strong></label>
+              <p>{{ filiale?.nom || 'Non spécifié' }}</p>
+            </div>
+            <div class="form-group">
+              <label><strong>Filiale - Adresse :</strong></label>
+              <p>{{ filiale?.adresse || 'Non spécifié' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Competencies Section -->
+    <div class="card mb-4 section-card">
+      <div class="card-header section-header">
+        <h3 class="section-title">Compétences Requises</h3>
+      </div>
+      <div class="card-body">
+        <div *ngIf="offre.offreCompetences?.length > 0; else noCompetences">
+          <div *ngFor="let oc of offre.offreCompetences; let i = index" class="card mb-3 competency-card">
+            <div class="card-body">
+              <h5 class="card-title">Compétence {{ i + 1 }}</h5>
+              <div class="form-group">
+                <label><strong>Nom :</strong></label>
+                <p>{{ oc.competence.nom }}</p>
+              </div>
+              <div class="form-group">
+                <label><strong>Description :</strong></label>
+                <p>{{ oc.competence.description || 'Non spécifié' }}</p>
+              </div>
+              <div class="form-group">
+                <label><strong>Niveau Requis :</strong></label>
+                <p>{{ oc.niveauRequis }}</p>
+              </div>
+              <div class="form-group">
+                <label><strong>Type :</strong></label>
+                <p>
+                  {{ oc.competence.estTechnique ? 'Compétence technique' : '' }}
+                  {{ oc.competence.estSoftSkill ? 'Soft Skill' : '' }}
+                  {{ !oc.competence.estTechnique && !oc.competence.estSoftSkill ? 'Non spécifié' : '' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noCompetences>
+          <p class="text-muted">Aucune compétence requise pour cette offre.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Actions Section -->
+    <div class="card mb-4 section-card">
+      <div class="card-body text-center">
+        <button class="btn btn-primary me-2" (click)="editOffre()">Modifier</button>
+        <button class="btn btn-danger me-2" (click)="deleteOffre()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fallback for unexpected state -->
+  <div *ngIf="!loading && !errorMessage && !offre" class="alert alert-warning" role="alert">
+    Aucune donnée à afficher. Redirection vers la liste des offres...
+  </div>
 </div>
+
+

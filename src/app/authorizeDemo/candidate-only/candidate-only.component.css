@@ -1,0 +1,33 @@
+/* Header Styling */
+.headder-top {
+  background-color: #b3e5fc; /* Pastel blue */
+  padding: 10px 20px;
+  color: #fff;
+}
+
+.menu-wrapper a, .menu-wrapper .btn {
+  color: #fff;
+}
+
+.main-menu ul li a:hover {
+  color: #0288d1; /* Darker blue for hover effect */
+}
+
+/* Footer Styling */
+.footer-area {
+  background-color: #b3e5fc; /* Pastel blue */
+  color: #fff;
+}
+
+.footer-tittle h4, .footer-pera p, .footer-form input, .footer-form button, .footer-social a {
+  color: #fff;
+}
+
+.footer-social a:hover {
+  color: #0288d1; /* Darker blue for hover effect */
+}
+
+/* Ensure text readability */
+.footer-copy-right p {
+  color: #fff;
+}

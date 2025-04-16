@@ -30,21 +30,41 @@ export class FilialeService {
         catchError(error => this.handleError(error, 'Erreur lors de la récupération des filiales'))
       );
   }
-
   getFiliale(id: string): Observable<Filiale> {
-    console.log('Fetching filiale with ID:', id); // Debug log
+    console.log('Fetching filiale with ID:', id);
     return this.http.get<{ data: Filiale; message: string }>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
-        map(response => {
-            if (response && response.data) {
-                return response.data;
-            }
-            throw new Error('Données de la filiale non trouvées dans la réponse');
-        }),
-        catchError((error) => {
-            return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
-        })
+      map(response => {
+        console.log('Réponse brute getFiliale:', JSON.stringify(response, null, 2));
+        if (response && response.data) {
+          // Normalize field names
+          const filiale = response.data;
+          return {
+            ...filiale,
+            nom: filiale.nom || filiale.nom || 'Non spécifié',
+            adresse: filiale.adresse || filiale.adresse || 'Non spécifié'
+          };
+        }
+        throw new Error('Données de la filiale non trouvées dans la réponse');
+      }),
+      catchError((error) => {
+        return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
+      })
     );
-}
+  }
+//   getFiliale(id: string): Observable<Filiale> {
+//     console.log('Fetching filiale with ID:', id); // Debug log
+//     return this.http.get<{ data: Filiale; message: string }>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+//         map(response => {
+//             if (response && response.data) {
+//                 return response.data;
+//             }
+//             throw new Error('Données de la filiale non trouvées dans la réponse');
+//         }),
+//         catchError((error) => {
+//             return throwError(() => new Error(`Erreur lors de la récupération des détails de la filiale : ${error.message}`));
+//         })
+//     );
+// }
 
 
 // Create a new filiale

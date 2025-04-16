@@ -90,7 +90,9 @@
   "src/assets/js/config.js",
   "src/assets/js/sidebar-menu.js",         
   "src/assets/js/scripts.js",
-  "src/assets/js/theme-customizer/customizer.js"        
+  "src/assets/js/theme-customizer/customizer.js" 
+ 
+
 ]
           },
           "configurations": {
@@ -189,7 +191,8 @@
   "src/assets/js/config.js",
   "src/assets/js/sidebar-menu.js",         
   "src/assets/js/scripts.js",
-  "src/assets/js/theme-customizer/customizer.js"         
+  "src/assets/js/theme-customizer/customizer.js"
+       
 ]
           }
         }

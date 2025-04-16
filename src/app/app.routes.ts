@@ -33,6 +33,7 @@ import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.c
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { ContentComponent } from './layoutBackend/content/content.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+// import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 
 
 export const routes: Routes = [
@@ -127,8 +128,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
 
   },
-
-/**************************** */
+  /**********inerface Candidate */
+  // { path: 'job-details/:id', component: JobDetailsComponent },
+  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];
 

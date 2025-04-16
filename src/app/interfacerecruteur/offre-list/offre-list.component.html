@@ -37,19 +37,25 @@
                     <div class="col-md-2">
                       <select class="form-control mb-3" formControlName="typeContrat">
                         <option value="">Tous les types de contrat</option>
-                        <option *ngFor="let type of typeContrats" [value]="type[1]">{{ type[0] }}</option>
+                        <option *ngFor="let type of typeContrats" [value]="type">{{ type }}</option>
                       </select>
                     </div>
                     <div class="col-md-2">
                       <select class="form-control mb-3" formControlName="statut">
                         <option value="">Tous les statuts</option>
-                        <option *ngFor="let statut of statuts" [value]="statut[1]">{{ statut[0] }}</option>
+                        <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
                       </select>
                     </div>
                     <div class="col-md-2">
                       <select class="form-control mb-3" formControlName="modeTravail">
                         <option value="">Tous les modes de travail</option>
-                        <option *ngFor="let mode of modesTravail" [value]="mode[1]">{{ mode[0] }}</option>
+                        <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <select class="form-control mb-3" formControlName="idFiliale">
+                        <option value="">Toutes les filiales</option>
+                        <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
                       </select>
                     </div>
                   </div>
@@ -85,13 +91,13 @@
                         <td>{{ i + 1 + (currentPage * pageSize) }}</td>
                         <td>{{ offre.titre }}</td>
                         <td>{{ offre.specialite }}</td>
-                        <td>{{ getEnumValue(typeContrats, offre.typeContrat) }}</td>
-                        <td>{{ getEnumValue(modesTravail, offre.modeTravail) }}</td>
+                        <td>{{ getTypeContratLabel(offre.typeContrat) }}</td>
+                        <td>{{ offre.modeTravail }}</td>
                         <td>{{ offre.nombrePostes }}</td>
-                        <td>{{ getEnumValue(statuts, offre.statut) }}</td>
+                        <td>{{ offre.statut }}</td>
                         <td>{{ getNomFiliale(offre.idFiliale) }}</td>
-                        <td>{{ offre.datePublication }}</td>
-                        <td>{{ offre.dateExpiration }}</td>
+                        <td>{{ offre.datePublication |  date: 'dd/MM/yyyy HH:mm:ss' : 'UTC'}}</td>
+                        <td>{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC'}}</td>
                         <td>
                           <div class="d-flex">
                             <a routerLink="/offres/update/{{ offre.idOffreEmploi }}" class="btn btn-primary shadow btn-xs sharp mr-1">

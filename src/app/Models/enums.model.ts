@@ -17,7 +17,8 @@ export enum NiveauRequisType {
     CDI = 1,
     CDD = 2,
     Freelance = 3,
-    Stage = 4
+    Stage = 4,
+    Alternance = 5
   }
   
   export enum ModeTravail {

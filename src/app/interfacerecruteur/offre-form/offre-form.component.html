@@ -1,445 +1,207 @@
-<!-- 
 
-<div class="container mt-4 mb-5">
-  <div class="card">
-    <div class="card-header bg-primary text-white">
-      <h2 class="mb-0">{{ isEditMode ? 'Modifier une offre d\'emploi' : 'Créer une offre d\'emploi' }}</h2>
+<div class="container mt-4">
+  <h2 class="mb-4">{{ isEditMode ? 'Modifier l\'offre d\'emploi' : 'Créer une nouvelle offre d\'emploi' }}</h2>
+
+  <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
+    <!-- Titre -->
+    <div class="form-group mb-3">
+      <label for="titre">Titre <span class="text-danger">*</span></label>
+      <input type="text" id="titre" formControlName="titre" class="form-control" placeholder="Entrez le titre de l'offre" required>
+      <div class="text-danger" *ngIf="getFieldError('titre')">{{ getFieldError('titre') }}</div>
     </div>
-    <div class="card-body">
-      <div *ngIf="loading" class="text-center my-4">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Chargement...</span>
-        </div>
+
+    <!-- Spécialité -->
+    <div class="form-group mb-3">
+      <label for="specialite">Spécialité <span class="text-danger">*</span></label>
+      <input type="text" id="specialite" formControlName="specialite" class="form-control" placeholder="Entrez la spécialité" required>
+      <div class="text-danger" *ngIf="getFieldError('specialite')">{{ getFieldError('specialite') }}</div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group mb-3">
+      <label for="description">Description <span class="text-danger">*</span></label>
+      <textarea id="description" formControlName="description" class="form-control" rows="5" placeholder="Entrez la description" required></textarea>
+      <div class="text-danger" *ngIf="getFieldError('description')">{{ getFieldError('description') }}</div>
+    </div>
+
+    <!-- Dates -->
+    <div class="row mb-3">
+      <div class="col-md-6 form-group">
+        <label for="datePublication">Date de publication <span class="text-danger">*</span></label>
+        <input type="date" id="datePublication" formControlName="datePublication" class="form-control" required>
+        <div class="text-danger" *ngIf="getFieldError('datePublication')">{{ getFieldError('datePublication') }}</div>
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-      
-      <form [formGroup]="offreForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+      <div class="col-md-6 form-group">
+        <label for="dateExpiration">Date d'expiration <span class="text-danger">*</span></label>
+        <input type="date" id="dateExpiration" formControlName="dateExpiration" class="form-control" required>
+        <div class="text-danger" *ngIf="getFieldError('dateExpiration')">{{ getFieldError('dateExpiration') }}</div>
+      </div>
+    </div>
+
+    <!-- Salaire Min et Max -->
+    <div class="row mb-3">
+      <div class="col-md-6 form-group">
+        <label for="salaireMin">Salaire minimum</label>
+        <input type="number" id="salaireMin" formControlName="salaireMin" class="form-control" placeholder="Entrez le salaire minimum">
+        <div class="text-danger" *ngIf="getFieldError('salaireMin')">{{ getFieldError('salaireMin') }}</div>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="salaireMax">Salaire maximum</label>
+        <input type="number" id="salaireMax" formControlName="salaireMax" class="form-control" placeholder="Entrez le salaire maximum">
+        <div class="text-danger" *ngIf="getFieldError('salaireMax')">{{ getFieldError('salaireMax') }}</div>
+      </div>
+    </div>
+
+    <!-- Type de contrat -->
+    <div class="form-group mb-3">
+      <label for="typeContrat">Type de contrat <span class="text-danger">*</span></label>
+      <select id="typeContrat" formControlName="typeContrat" class="form-control" required>
+        <option value="">Sélectionnez un type</option>
+        <option *ngFor="let type of typeContrats" [value]="type">{{ type }}</option>
+      </select>
+      <div class="text-danger" *ngIf="getFieldError('typeContrat')">{{ getFieldError('typeContrat') }}</div>
+    </div>
+
+    <!-- Nombre de postes -->
+    <div class="form-group mb-3">
+      <label for="nombrePostes">Nombre de postes <span class="text-danger">*</span></label>
+      <input type="number" id="nombrePostes" formControlName="nombrePostes" class="form-control" required>
+      <div class="text-danger" *ngIf="getFieldError('nombrePostes')">{{ getFieldError('nombrePostes') }}</div>
+    </div>
+
+    <!-- Mode de travail -->
+    <div class="form-group mb-3">
+      <label for="modeTravail">Mode de travail <span class="text-danger">*</span></label>
+      <select id="modeTravail" formControlName="modeTravail" class="form-control" required>
+        <option value="">Sélectionnez un mode</option>
+        <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
+      </select>
+      <div class="text-danger" *ngIf="getFieldError('modeTravail')">{{ getFieldError('modeTravail') }}</div>
+    </div>
+
+    <!-- Avantages -->
+    <div class="form-group mb-3">
+      <label for="avantages">Avantages</label>
+      <textarea id="avantages" formControlName="avantages" class="form-control" rows="3" placeholder="Entrez les avantages"></textarea>
+      <div class="text-danger" *ngIf="getFieldError('avantages')">{{ getFieldError('avantages') }}</div>
+    </div>
+
+    <!-- Statut -->
+    <div class="form-group mb-3">
+      <label for="statut">Statut <span class="text-danger">*</span></label>
+      <select id="statut" formControlName="statut" class="form-control" required>
+        <option value="">Sélectionnez un statut</option>
+        <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
+      </select>
+      <div class="text-danger" *ngIf="getFieldError('statut')">{{ getFieldError('statut') }}</div>
+    </div>
+
+    <!-- Niveau d'expérience requis -->
+    <div class="form-group mb-3">
+      <label for="niveauExperienceRequis">Niveau d'expérience requis <span class="text-danger">*</span></label>
+      <input type="text" id="niveauExperienceRequis" formControlName="niveauExperienceRequis" class="form-control" placeholder="Entrez le niveau requis" required>
+      <div class="text-danger" *ngIf="getFieldError('niveauExperienceRequis')">{{ getFieldError('niveauExperienceRequis') }}</div>
+    </div>
+
+    <!-- Diplôme requis -->
+    <div class="form-group mb-3">
+      <label for="diplomeRequis">Diplôme requis</label>
+      <input type="text" id="diplomeRequis" formControlName="diplomeRequis" class="form-control" placeholder="Entrez le diplôme requis">
+      <div class="text-danger" *ngIf="getFieldError('diplomeRequis')">{{ getFieldError('diplomeRequis') }}</div>
+    </div>
+
+    <!-- Recruteur -->
+    <div class="form-group mb-3">
+      <label for="idRecruteur">Recruteur <span class="text-danger">*</span></label>
+      <select id="idRecruteur" formControlName="idRecruteur" class="form-control" required>
+        <option value="">Sélectionnez un recruteur</option>
+        <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
+      </select>
+      <div class="text-danger" *ngIf="getFieldError('idRecruteur')">{{ getFieldError('idRecruteur') }}</div>
+    </div>
+
+    <!-- Filiale -->
+    <div class="form-group mb-3">
+      <label for="idFiliale">Filiale <span class="text-danger">*</span></label>
+      <select id="idFiliale" formControlName="idFiliale" class="form-control" required>
+        <option value="">Sélectionnez une filiale</option>
+        <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
+      </select>
+      <div class="text-danger" *ngIf="getFieldError('idFiliale')">{{ getFieldError('idFiliale') }}</div>
+    </div>
+
+    <!-- Compétences -->
+    <div formArrayName="offreCompetences">
+      <h4 class="mb-3">Compétences</h4>
+      <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="mb-4 p-3 border rounded">
         <div class="row">
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-light">
-                <h4 class="mb-0">Informations principales</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="titre" class="form-label">Titre*</label>
-                  <input type="text" class="form-control" id="titre" formControlName="titre" 
-                         [ngClass]="{'is-invalid': offreForm.get('titre')?.invalid && (offreForm.get('titre')?.dirty || offreForm.get('titre')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('titre') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="specialite" class="form-label">Spécialité*</label>
-                  <input type="text" class="form-control" id="specialite" formControlName="specialite"
-                         [ngClass]="{'is-invalid': offreForm.get('specialite')?.invalid && (offreForm.get('specialite')?.dirty || offreForm.get('specialite')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('specialite') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="description" class="form-label">Description*</label>
-                  <textarea class="form-control" id="description" rows="5" formControlName="description"
-                            [ngClass]="{'is-invalid': offreForm.get('description')?.invalid && (offreForm.get('description')?.dirty || offreForm.get('description')?.touched)}"></textarea>
-                  <div class="invalid-feedback">{{ getFieldError('description') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="datePublication" class="form-label">Date de publication*</label>
-                  <input type="date" class="form-control" id="datePublication" formControlName="datePublication"
-                         [ngClass]="{'is-invalid': offreForm.get('datePublication')?.invalid && (offreForm.get('datePublication')?.dirty || offreForm.get('datePublication')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('datePublication') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="dateExpiration" class="form-label">Date d'expiration*</label>
-                  <input type="date" class="form-control" id="dateExpiration" formControlName="dateExpiration"
-                         [ngClass]="{'is-invalid': offreForm.get('dateExpiration')?.invalid && (offreForm.get('dateExpiration')?.dirty || offreForm.get('dateExpiration')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('dateExpiration') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="idFiliale" class="form-label">Filiale*</label>
-                  <select class="form-select" id="idFiliale" formControlName="idFiliale"
-                          [ngClass]="{'is-invalid': offreForm.get('idFiliale')?.invalid && (offreForm.get('idFiliale')?.dirty || offreForm.get('idFiliale')?.touched)}">
-                    <option value="">Sélectionnez une filiale</option>
-                    <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
-                  </select>
-                  <div class="invalid-feedback">{{ getFieldError('idFiliale') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="idRecruteur" class="form-label">Recruteur*</label>
-                  <select class="form-select" id="idRecruteur" formControlName="idRecruteur"
-                          [ngClass]="{'is-invalid': offreForm.get('idRecruteur')?.invalid && (offreForm.get('idRecruteur')?.dirty || offreForm.get('idRecruteur')?.touched)}">
-                    <option value="">Sélectionnez un recruteur</option>
-                    <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
-                  </select>
-                  <div class="invalid-feedback">{{ getFieldError('idRecruteur') }}</div>
-                </div>
-              </div>
-            </div>
+          <div class="col-md-4 form-group position-relative">
+            <label [for]="'nom-' + i">Nom de la compétence <span class="text-danger">*</span></label>
+            <input [id]="'nom-' + i" formControlName="nom" class="form-control" placeholder="Rechercher une compétence"
+                   (input)="searchCompetence($event, i)" (keydown)="handleKeyDown($event, i)" required>
+            <div class="text-danger" *ngIf="getCompetenceFieldError(i, 'nom')">{{ getCompetenceFieldError(i, 'nom') }}</div>
+            <!-- Suggestions -->
+            <ul class="list-group position-absolute w-100" *ngIf="showCompetenceSuggestions && i === offreCompetences.controls.length - 1" style="z-index: 1000;">
+              <li *ngFor="let suggestion of competenceSuggestions; let j=index"
+                  class="list-group-item" [class.active]="j === activeSuggestionIndex"
+                  (click)="selectCompetence(suggestion, i)"
+                  [ngClass]="{'text-primary font-weight-bold': suggestion.isNew}">
+                {{ suggestion.nom }}
+              </li>
+            </ul>
           </div>
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-light">
-                <h4 class="mb-0">Conditions de travail</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="typeContrat" class="form-label">Type de contrat*</label>
-                  <select class="form-select" id="typeContrat" formControlName="typeContrat">
-                    <option *ngFor="let type of typeContrats" [value]="type.id">{{ type.name }}</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="modeTravail" class="form-label">Mode de travail*</label>
-                  <select class="form-select" id="modeTravail" formControlName="modeTravail">
-                    <option *ngFor="let mode of modesTravail" [value]="mode.id">{{ mode.name }}</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="nombrePostes" class="form-label">Nombre de postes*</label>
-                  <input type="number" class="form-control" id="nombrePostes" formControlName="nombrePostes" min="1"
-                         [ngClass]="{'is-invalid': offreForm.get('nombrePostes')?.invalid && (offreForm.get('nombrePostes')?.dirty || offreForm.get('nombrePostes')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('nombrePostes') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="salaire" class="form-label">Salaire</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" id="salaire" formControlName="salaire" min="0"
-                           [ngClass]="{'is-invalid': offreForm.get('salaire')?.invalid && (offreForm.get('salaire')?.dirty || offreForm.get('salaire')?.touched)}">
-                    <span class="input-group-text">TND</span>
-                    <div class="invalid-feedback">{{ getFieldError('salaire') }}</div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="avantages" class="form-label">Avantages</label>
-                  <textarea class="form-control" id="avantages" rows="3" formControlName="avantages" 
-                            placeholder="Exemples: Assurance maladie, Tickets restaurant, Prime, etc."></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="card mb-4">
-              <div class="card-header bg-light">
-                <h4 class="mb-0">Prérequis</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="niveauExperienceRequis" class="form-label">Niveau d'expérience requis*</label>
-                  <input type="text" class="form-control" id="niveauExperienceRequis" formControlName="niveauExperienceRequis"
-                         [ngClass]="{'is-invalid': offreForm.get('niveauExperienceRequis')?.invalid && (offreForm.get('niveauExperienceRequis')?.dirty || offreForm.get('niveauExperienceRequis')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('niveauExperienceRequis') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="diplomeRequis" class="form-label">Diplôme requis</label>
-                  <input type="text" class="form-control" id="diplomeRequis" formControlName="diplomeRequis">
-                </div>
-                <div class="mb-3">
-                  <label for="statut" class="form-label">Statut de l'offre*</label>
-                  <select class="form-select" id="statut" formControlName="statut">
-                    <option *ngFor="let statut of statuts" [value]="statut.id">{{ statut.name }}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+          <div class="col-md-3 form-group">
+            <label [for]="'niveauRequis-' + i">Niveau requis <span class="text-danger">*</span></label>
+            <select [id]="'niveauRequis-' + i" formControlName="niveauRequis" class="form-control" required>
+              <option *ngFor="let niveau of niveauxCompetence" [value]="niveau">{{ niveau }}</option>
+            </select>
+            <div class="text-danger" *ngIf="getCompetenceFieldError(i, 'niveauRequis')">{{ getCompetenceFieldError(i, 'niveauRequis') }}</div>
           </div>
-        </div>
-        <div class="card mb-4">
-          <div class="card-header bg-light d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Compétences requises*</h4>
-            <button type="button" class="btn btn-sm btn-primary" (click)="addCompetence()">
-              <i class="bi bi-plus-circle"></i> Ajouter une compétence
+          <div class="col-md-3 form-group">
+            <label [for]="'description-' + i">Description</label>
+            <input [id]="'description-' + i" formControlName="description" class="form-control" placeholder="Description">
+          </div>
+          <div class="col-md-2 form-group d-flex align-items-end">
+            <button type="button" class="btn btn-danger" (click)="removeCompetence(i)">
+              <i class="fa fa-trash"></i>
             </button>
           </div>
-          <div class="card-body">
-            <div formArrayName="offreCompetences">
-              <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="mb-3 p-3 border rounded">
-                <div class="row align-items-center">
-                  <div class="col-md-6">
-                    <div class="mb-2 position-relative">
-                      <label [for]="'competence-nom-' + i" class="form-label">Nom de la compétence*</label>
-                      <input type="text" class="form-control" [id]="'competence-nom-' + i" formControlName="nom"
-                             (input)="searchCompetence($event, i)" (keydown)="handleKeyDown($event, i)"
-                             [ngClass]="{'is-invalid': getCompetenceFieldError(i, 'nom')}">
-                      <div class="invalid-feedback">{{ getCompetenceFieldError(i, 'nom') }}</div>
-                      <div *ngIf="showCompetenceSuggestions && i === offreCompetences.length - 1" 
-                           class="position-absolute w-100 bg-white border rounded mt-1 shadow-sm" 
-                           style="max-height: 200px; overflow-y: auto; z-index: 1000;">
-                        <div *ngIf="isSearchingCompetence" class="p-2 text-center">
-                          <div class="spinner-border spinner-border-sm text-primary" role="status">
-                            <span class="visually-hidden">Recherche...</span>
-                          </div>
-                        </div>
-                        <div *ngFor="let suggestion of competenceSuggestions; let j=index" 
-                             class="p-2 cursor-pointer hover-bg-light" 
-                             [class.bg-light]="j === activeSuggestionIndex"
-                             (click)="selectCompetence(suggestion, i)">
-                          {{ suggestion.nom }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="mb-2">
-                      <label [for]="'competence-description-' + i" class="form-label">Description</label>
-                      <textarea class="form-control" [id]="'competence-description-' + i" formControlName="description" rows="2"></textarea>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="mb-2">
-                      <label [for]="'competence-niveau-' + i" class="form-label">Niveau requis*</label>
-                      <select class="form-select" [id]="'competence-niveau-' + i" formControlName="niveauRequis">
-                        <option *ngFor="let niveau of niveauxCompetence" [value]="niveau.id">{{ niveau.name }}</option>
-                      </select>
-                    </div>
-                    <div class="mb-2 d-flex gap-3">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [id]="'competence-technique-' + i" formControlName="estTechnique">
-                        <label class="form-check-label" [for]="'competence-technique-' + i">Technique</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [id]="'competence-softskill-' + i" formControlName="estSoftSkill">
-                        <label class="form-check-label" [for]="'competence-softskill-' + i">Soft Skill</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <button type="button" class="btn btn-danger btn-sm" (click)="removeCompetence(i)" [disabled]="offreCompetences.length === 1">
-                      <i class="bi bi-trash"></i> Supprimer
-                    </button>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <div class="form-check">
+              <input [id]="'estTechnique-' + i" type="checkbox" formControlName="estTechnique" class="form-check-input">
+              <label [for]="'estTechnique-' + i" class="form-check-label">Compétence technique</label>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <div class="form-check">
+              <input [id]="'estSoftSkill-' + i" type="checkbox" formControlName="estSoftSkill" class="form-check-input">
+              <label [for]="'estSoftSkill-' + i" class="form-check-label">Soft skill</label>
             </div>
           </div>
         </div>
-        <div class="d-flex justify-content-end gap-2">
-          <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
-          <button type="submit" class="btn btn-primary" [disabled]="loading">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
-          </button>
-        </div>
-      </form>
+      </div>
+      <button type="button" class="btn btn-primary mb-3" (click)="addCompetence()">
+        <i class="fa fa-plus"></i> Ajouter une compétence
+      </button>
+    </div>
+
+    <!-- Boutons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        {{ loading ? 'Enregistrement...' : (isEditMode ? 'Mettre à jour' : 'Créer') }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="loading" class="text-center mt-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Chargement...</span>
     </div>
   </div>
 </div>
 
-<style>
-  .cursor-pointer { cursor: pointer; }
-  .hover-bg-light:hover { background-color: #f8f9fa; }
-  .z-1000 { z-index: 1000; }
-</style> --> 
 
-<div class="container mt-4 mb-5">
-  <div class="card">
-    <div class="card-header bg-primary text-white">
-      <h2 class="mb-0">{{ isEditMode ? 'Modifier une offre d\'emploi' : 'Créer une offre d\'emploi' }}</h2>
-    </div>
-    <div class="card-body">
-      <div *ngIf="loading" class="text-center my-4">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Chargement...</span>
-        </div>
-      </div>
-      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-      
-      <form [formGroup]="offreForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-light">
-                <h4 class="mb-0">Informations principales</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="titre" class="form-label">Titre*</label>
-                  <input type="text" class="form-control" id="titre" formControlName="titre" 
-                         [ngClass]="{'is-invalid': offreForm.get('titre')?.invalid && (offreForm.get('titre')?.dirty || offreForm.get('titre')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('titre') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="specialite" class="form-label">Spécialité*</label>
-                  <input type="text" class="form-control" id="specialite" formControlName="specialite"
-                         [ngClass]="{'is-invalid': offreForm.get('specialite')?.invalid && (offreForm.get('specialite')?.dirty || offreForm.get('specialite')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('specialite') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="description" class="form-label">Description*</label>
-                  <textarea class="form-control" id="description" rows="5" formControlName="description"
-                            [ngClass]="{'is-invalid': offreForm.get('description')?.invalid && (offreForm.get('description')?.dirty || offreForm.get('description')?.touched)}"></textarea>
-                  <div class="invalid-feedback">{{ getFieldError('description') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="datePublication" class="form-label">Date de publication*</label>
-                  <input type="date" class="form-control" id="datePublication" formControlName="datePublication"
-                         [ngClass]="{'is-invalid': offreForm.get('datePublication')?.invalid && (offreForm.get('datePublication')?.dirty || offreForm.get('datePublication')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('datePublication') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="dateExpiration" class="form-label">Date d'expiration*</label>
-                  <input type="date" class="form-control" id="dateExpiration" formControlName="dateExpiration"
-                         [ngClass]="{'is-invalid': offreForm.get('dateExpiration')?.invalid && (offreForm.get('dateExpiration')?.dirty || offreForm.get('dateExpiration')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('dateExpiration') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="idFiliale" class="form-label">Filiale*</label>
-                  <select class="form-select" id="idFiliale" formControlName="idFiliale"
-                          [ngClass]="{'is-invalid': offreForm.get('idFiliale')?.invalid && (offreForm.get('idFiliale')?.dirty || offreForm.get('idFiliale')?.touched)}">
-                    <option value="">Sélectionnez une filiale</option>
-                    <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
-                  </select>
-                  <div class="invalid-feedback">{{ getFieldError('idFiliale') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="idRecruteur" class="form-label">Recruteur*</label>
-                  <select class="form-select" id="idRecruteur" formControlName="idRecruteur"
-                          [ngClass]="{'is-invalid': offreForm.get('idRecruteur')?.invalid && (offreForm.get('idRecruteur')?.dirty || offreForm.get('idRecruteur')?.touched)}">
-                    <option value="">Sélectionnez un recruteur</option>
-                    <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
-                  </select>
-                  <div class="invalid-feedback">{{ getFieldError('idRecruteur') }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-light">
-                <h4 class="mb-0">Conditions de travail</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="typeContrat" class="form-label">Type de contrat*</label>
-                  <select class="form-select" id="typeContrat" formControlName="typeContrat">
-                    <option *ngFor="let type of typeContrats" [value]="type.id">{{ type.name }}</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="modeTravail" class="form-label">Mode de travail*</label>
-                  <select class="form-select" id="modeTravail" formControlName="modeTravail">
-                    <option *ngFor="let mode of modesTravail" [value]="mode.id">{{ mode.name }}</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="nombrePostes" class="form-label">Nombre de postes*</label>
-                  <input type="number" class="form-control" id="nombrePostes" formControlName="nombrePostes" min="1"
-                         [ngClass]="{'is-invalid': offreForm.get('nombrePostes')?.invalid && (offreForm.get('nombrePostes')?.dirty || offreForm.get('nombrePostes')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('nombrePostes') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="salaire" class="form-label">Salaire</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" id="salaire" formControlName="salaire" min="0"
-                           [ngClass]="{'is-invalid': offreForm.get('salaire')?.invalid && (offreForm.get('salaire')?.dirty || offreForm.get('salaire')?.touched)}">
-                    <span class="input-group-text">TND</span>
-                    <div class="invalid-feedback">{{ getFieldError('salaire') }}</div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="avantages" class="form-label">Avantages</label>
-                  <textarea class="form-control" id="avantages" rows="3" formControlName="avantages" 
-                            placeholder="Exemples: Assurance maladie, Tickets restaurant, Prime, etc."></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="card mb-4">
-              <div class="card-header bg-light">
-                <h4 class="mb-0">Prérequis</h4>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="niveauExperienceRequis" class="form-label">Niveau d'expérience requis*</label>
-                  <input type="text" class="form-control" id="niveauExperienceRequis" formControlName="niveauExperienceRequis"
-                         [ngClass]="{'is-invalid': offreForm.get('niveauExperienceRequis')?.invalid && (offreForm.get('niveauExperienceRequis')?.dirty || offreForm.get('niveauExperienceRequis')?.touched)}">
-                  <div class="invalid-feedback">{{ getFieldError('niveauExperienceRequis') }}</div>
-                </div>
-                <div class="mb-3">
-                  <label for="diplomeRequis" class="form-label">Diplôme requis</label>
-                  <input type="text" class="form-control" id="diplomeRequis" formControlName="diplomeRequis">
-                </div>
-                <div class="mb-3">
-                  <label for="statut" class="form-label">Statut de l'offre*</label>
-                  <select class="form-select" id="statut" formControlName="statut">
-                    <option *ngFor="let statut of statuts" [value]="statut.id">{{ statut.name }}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4">
-          <div class="card-header bg-light d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Compétences requises*</h4>
-            <button type="button" class="btn btn-sm btn-primary" (click)="addCompetence()">
-              <i class="bi bi-plus-circle"></i> Ajouter une compétence
-            </button>
-          </div>
-          <div class="card-body">
-            <div formArrayName="offreCompetences">
-              <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="mb-3 p-3 border rounded">
-                <div class="row align-items-center">
-                  <div class="col-md-6">
-                    <div class="mb-2 position-relative">
-                      <label [for]="'competence-nom-' + i" class="form-label">Nom de la compétence*</label>
-                      <input type="text" class="form-control" [id]="'competence-nom-' + i" formControlName="nom"
-                             (input)="searchCompetence($event, i)" (keydown)="handleKeyDown($event, i)"
-                             [ngClass]="{'is-invalid': getCompetenceFieldError(i, 'nom')}">
-                      <div class="invalid-feedback">{{ getCompetenceFieldError(i, 'nom') }}</div>
-                      <div *ngIf="showCompetenceSuggestions && i === offreCompetences.length - 1" 
-                           class="position-absolute w-100 bg-white border rounded mt-1 shadow-sm" 
-                           style="max-height: 200px; overflow-y: auto; z-index: 1000;">
-                        <div *ngIf="isSearchingCompetence" class="p-2 text-center">
-                          <div class="spinner-border spinner-border-sm text-primary" role="status">
-                            <span class="visually-hidden">Recherche...</span>
-                          </div>
-                        </div>
-                        <div *ngFor="let suggestion of competenceSuggestions; let j=index" 
-                             class="p-2 cursor-pointer hover-bg-light" 
-                             [class.bg-light]="j === activeSuggestionIndex"
-                             (click)="selectCompetence(suggestion, i)">
-                          {{ suggestion.nom }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="mb-2">
-                      <label [for]="'competence-description-' + i" class="form-label">Description</label>
-                      <textarea class="form-control" [id]="'competence-description-' + i" formControlName="description" rows="2"></textarea>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="mb-2">
-                      <label [for]="'competence-niveau-' + i" class="form-label">Niveau requis*</label>
-                      <select class="form-select" [id]="'competence-niveau-' + i" formControlName="niveauRequis">
-                        <option *ngFor="let niveau of niveauxCompetence" [value]="niveau.id">{{ niveau.name }}</option>
-                      </select>
-                    </div>
-                    <div class="mb-2 d-flex gap-3">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [id]="'competence-technique-' + i" formControlName="estTechnique">
-                        <label class="form-check-label" [for]="'competence-technique-' + i">Technique</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [id]="'competence-softskill-' + i" formControlName="estSoftSkill">
-                        <label class="form-check-label" [for]="'competence-softskill-' + i">Soft Skill</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <button type="button" class="btn btn-danger btn-sm" (click)="removeCompetence(i)" [disabled]="offreCompetences.length === 1">
-                      <i class="bi bi-trash"></i> Supprimer
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex justify-content-end gap-2">
-          <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
-          <button type="submit" class="btn btn-primary" [disabled]="loading">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<style>
-  .cursor-pointer { cursor: pointer; }
-  .hover-bg-light:hover { background-color: #f8f9fa; }
-  .z-1000 { z-index: 1000; }
-</style>

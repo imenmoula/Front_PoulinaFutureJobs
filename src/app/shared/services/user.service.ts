@@ -15,7 +15,9 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Vérifiez que le token est bien stocké
+    const token = localStorage.getItem('token'); 
+    console.log('Token used in UserService:', token); // Debug token
+
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
