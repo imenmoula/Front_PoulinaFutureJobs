@@ -190,12 +190,28 @@ export class OffreEmploiService {
       );
   }
 
+
+
   // Récupérer une offre par ID
-  getOffreEmploi(id: string): Observable<any> {
+  getOffreEmploi(id: string): Observable<OffreEmploi> {
+    console.log(`Fetching offre with ID: ${id}`);
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
       .pipe(
-        tap(response => console.log('getOffreEmploi Response:', JSON.stringify(response, null, 2))),
-        catchError(this.handleError)
+        tap(response => console.log('Raw API response:', JSON.stringify(response, null, 2))),
+        map(response => {
+          // Extraction des données selon la structure de réponse de votre API
+          if (response && response.data) {
+            return response.data;
+          } else if (response && response.offreEmploi) {
+            return response.offreEmploi;
+          } else {
+            return response; // Fallback si la structure est différente
+          }
+        }),
+        catchError(error => {
+          console.error('Error in getOffreEmploi:', error);
+          return throwError(() => new Error(`Erreur lors de la récupération de l'offre: ${error.message}`));
+        })
       );
   }
 
@@ -304,6 +320,7 @@ export class OffreEmploiService {
       );
   }
 
+  
   // Gestion des erreurs HTTP
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Une erreur est survenue';

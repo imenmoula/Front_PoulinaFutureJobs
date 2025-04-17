@@ -166,7 +166,7 @@ export class OffreFormComponent implements OnInit {
   loadRecruteurs(): void {
     this.offreEmploiService.getRecruteurIds().subscribe({
       next: (response) => {
-        if (response.success) {
+        if (response) { // Assuming response itself indicates success
           this.recruteurs = response.data;
           console.log('Recruteurs chargés:', this.recruteurs);
         } else {
@@ -192,10 +192,10 @@ export class OffreFormComponent implements OnInit {
     this.loading = true;
     this.offreEmploiService.getOffreEmploi(id).subscribe({
       next: (response) => {
-        if (response.success) {
-          this.populateFormWithOffre(response.offreEmploi);
+        if (response && response.idOffreEmploi) { // Adjust condition based on actual properties of OffreEmploi
+          this.populateFormWithOffre(response);
         } else {
-          this.showErrorToast(response.message || 'Offre non trouvée');
+          this.showErrorToast('Offre non trouvée');
         }
         this.loading = false;
       },
@@ -816,7 +816,7 @@ export class OffreFormComponent implements OnInit {
 //   loadRecruteurs(): void {
 //     this.offreEmploiService.getRecruteurIds().subscribe({
 //       next: (response) => {
-//         if (response.success) {
+//         if (response && response.idOffreEmploi) { // Adjust condition based on actual properties of OffreEmploi
 //           this.recruteurs = response.data;
 //           console.log('Recruteurs chargés:', this.recruteurs);
 //         } else {
@@ -842,10 +842,10 @@ export class OffreFormComponent implements OnInit {
 //     this.loading = true;
 //     this.offreEmploiService.getOffreEmploi(id).subscribe({
 //       next: (response) => {
-//         if (response.success) {
-//           this.populateFormWithOffre(response.offreEmploi);
+//         if (response && response.idOffreEmploi) {
+//           this.populateFormWithOffre(response);
 //         } else {
-//           this.showErrorToast(response.message || 'Offre non trouvée');
+//           this.showErrorToast('Offre non trouvée ou erreur inconnue');
 //         }
 //         this.loading = false;
 //       },

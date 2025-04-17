@@ -7,8 +7,8 @@ export interface OffreEmploi {
   specialite: string;
   titre: string;
   description: string;
-  datePublication?: Date; // Use string to match ISO date from backend
-  dateExpiration?: Date;
+  datePublication?: Date|string; // Use string to match ISO date from backend
+  dateExpiration: Date|string;
   SalaireMax ?: number;
  SalaireMin?: number;
   niveauExperienceRequis: string;

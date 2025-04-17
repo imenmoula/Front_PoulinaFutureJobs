@@ -36,8 +36,8 @@
                                             <li><a href="">A propos</a></li>
                                             <li><a href="#">Page</a>
                                                 <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-blog.html">Blog Details</a></li>
+                                                    <li><a (click)="onLogout()">deconnexion</a></li>
+                                                    <li><a href="single-blog.html">Blog Dcetails</a></li>
                                                     <li><a href="elements.html">Elements</a></li>
                                                     <li><a href="job_details.html">job Details</a></li>
                                                 </ul>
@@ -88,118 +88,51 @@
   </div>
   
  <!-- Our Services Start -->
- <div class="our-services section-pad-t30">
+ <!-- Our Services Start -->
+<div class="our-services section-pad-t30">
     <div class="container">
-        <!-- Section Tittle -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-tittle text-center">
-                    <span>Offres d'emploi </span>
-                    <h2>les offres d'emploi pour les filiales de Poulina Group Holding </h2>
-                </div>
-            </div>
+      <!-- Section Tittle -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-tittle text-center">
+            <span>Offres d'emploi</span>
+            <h2>Les offres d'emploi pour les filiales de Poulina Group Holding</h2>
+          </div>
         </div>
-        <div class="row d-flex justify-contnet-center">
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-tour"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Design & Creative</a></h5>
-                        <span>(653)</span>
-                    </div>
-                </div>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <ng-container *ngIf="offresByFiliale.length > 0; else noFiliales">
+          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" *ngFor="let item of offresByFiliale; let i = index">
+            <div class="single-services text-center mb-30">
+              <div class="services-ion">
+                <span class="flaticon"></span>
+              </div>
+              <div class="services-cap">
+                <h5>
+                  <a (click)="navigateToFilialeOffres(item.filiale.idFiliale)">{{ item.filiale.nom }}</a>
+                </h5>
+                <span>({{ item.offreCount }})</span>
+              </div>
             </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-cms"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Design & Development</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-report"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Sales & Marketing</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-app"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Mobile Application</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-helmet"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Construction</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-high-tech"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Information Technology</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-real-estate"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Real Estate</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                <div class="single-services text-center mb-30">
-                    <div class="services-ion">
-                        <span class="flaticon-content"></span>
-                    </div>
-                    <div class="services-cap">
-                       <h5><a href="job_listing.html">Content Writer</a></h5>
-                        <span>(658)</span>
-                    </div>
-                </div>
-            </div>
+          </div>
+        </ng-container>
+        <ng-template #noFiliales>
+          <div class="col-12 text-center">
+            <p>Aucune filiale avec des offres disponible pour le moment.</p>
+          </div>
+        </ng-template>
+      </div>
+      <!-- More Btn -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="browse-btn2 text-center mt-50">
+            <a routerLink="/job-list" class="border-btn2">Voir toutes les offres</a>
+          </div>
         </div>
-        <!-- More Btn -->
-        <!-- Section Button -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="browse-btn2 text-center mt-50">
-                    <a href="job_listing.html" class="border-btn2">Browse All Sectors</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
+  <!-- Our Services End -->
 <!-- Our Services End -->
         <!-- Job Listings Section -->
         <section class="featured-job-area feature-padding">
@@ -247,9 +180,9 @@
                                             <strong>Date de publication :</strong>
                                             <p>{{ formatDate(offre.datePublication) }} ({{ timeSince(offre.datePublication) }})</p>
                                         </div>
-                                        <a [routerLink]="['/job-details', offre.idOffreEmploi]" class="btn btn-primary btn-sm">Plus de Détails</a>                                    </div>
+                                        <a [routerLink]="['/job-details', offre.idOffreEmploi]"  class="border-btn">Plus de Détails</a>                                    </div>
                                 </div>
-                            </div>
+                            </div>  
                         </ng-container>
                         <!-- Empty State -->
                         <div class="text-center mt-4" *ngIf="filteredOffres.length === 0">

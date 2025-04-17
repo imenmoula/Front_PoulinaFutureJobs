@@ -473,3 +473,89 @@ body {
     max-height: 60px;
   }
 }
+
+/* Our Services Section */
+.our-services {
+  padding: 60px 0;
+  background-color: #fff;
+}
+
+.section-tittle {
+  margin-bottom: 40px;
+}
+
+.section-tittle span {
+  color: #87CEEB;
+  font-weight: bold;
+}
+
+.section-tittle h2 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.single-services {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.single-services:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.services-ion span {
+  font-size: 2rem;
+  color: #007bff;
+}
+
+.services-cap h5 a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.services-cap h5 a:hover {
+  color: #0056b3;
+}
+
+.services-cap span {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.browse-btn2 a {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.browse-btn2 a:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .single-services {
+    margin-bottom: 20px;
+  }
+  .section-tittle h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .services-cap h5 a {
+    font-size: 1rem;
+  }
+  .services-cap span {
+    font-size: 0.8rem;
+  }
+}
