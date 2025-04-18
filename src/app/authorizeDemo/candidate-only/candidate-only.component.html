@@ -33,7 +33,7 @@
                                         <ul id="navigation">
                                             <li><a href="index.html">Home</a></li>
                                             <li><a href="/job-list">offre Emploi  </a></li>
-                                            <li><a href="">A propos</a></li>
+                                            <li><a href="/about">A propos</a></li>
                                             <li><a href="#">Page</a>
                                                 <ul class="submenu">
                                                     <li><a (click)="onLogout()">deconnexion</a></li>
@@ -48,8 +48,8 @@
                                 </div>          
                                 <!-- Header-btn -->
                                 <div class="header-btn d-none f-right d-lg-block">
-                                    <a href="#" class="btn head-btn1">Inscription</a>
-                                    <a href="#" class="btn head-btn2">Connexion</a>
+                                    <a routerLink="/singup" class="btn head-btn1">Inscription</a>
+                                    <a routerLink="/signin" class="btn head-btn2">Connexion</a>
                                 </div>
                             </div>
                         </div>
@@ -68,18 +68,16 @@
 
     <main>
        
-<!-- Slider Area Start -->
+
+ <!-- Slider Area Start -->
 <div class="slider-area">
     <div class="slider-active">
-      <div class="single-slider slider-height d-flex align-items-center" 
+      <div class="single-slider slider-height d-flex align-items-center"
            [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/poulina_group_holding_cover.png)'}">
         <div class="container">
           <div class="row">
             <div class="col-xl-6 col-lg-9 col-md-10">
-              <!-- <div class="hero__caption">
-                    <h1>Find the most exciting startup jobs</h1> 
-                
-              </div> -->
+             
             </div>
           </div>
         </div>
@@ -87,11 +85,10 @@
     </div>
   </div>
   
- <!-- Our Services Start -->
- <!-- Our Services Start -->
-<div class="our-services section-pad-t30">
+  <!-- Our Services Start -->
+  <div class="our-services section-pad-t30">
     <div class="container">
-      <!-- Section Tittle -->
+      <!-- Section Title -->
       <div class="row">
         <div class="col-lg-12">
           <div class="section-tittle text-center">
@@ -105,13 +102,17 @@
           <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" *ngFor="let item of offresByFiliale; let i = index">
             <div class="single-services text-center mb-30">
               <div class="services-ion">
-                <span class="flaticon"></span>
+                <img
+                  [src]="getImageUrl(item.filiale.photo)"
+                  [alt]="item.filiale.nom"
+                  class="filiale-photo"
+                  (click)="navigateToFilialeOffres(item.filiale.idFiliale)"
+                />
               </div>
               <div class="services-cap">
                 <h5>
                   <a (click)="navigateToFilialeOffres(item.filiale.idFiliale)">{{ item.filiale.nom }}</a>
                 </h5>
-                <span>({{ item.offreCount }})</span>
               </div>
             </div>
           </div>
@@ -132,69 +133,8 @@
       </div>
     </div>
   </div>
-  <!-- Our Services End -->
-<!-- Our Services End -->
-        <!-- Job Listings Section -->
-        <section class="featured-job-area feature-padding">
-            <div class="container">
-                <!-- Section Title -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle text-center">
-                            <span>Dernières Offres d'emploi</span>
-                            <h2>Les offres d'emploi les plus populaires</h2>
-                        </div>
-                    </div>
-                </div>
-                <!-- Search Bar -->
-                <div class="row mb-4">
-                    <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
-                        <input type="text" [(ngModel)]="searchTerm" class="form-control" placeholder="Rechercher par titre, description ou filiale">
-                    </div>
-                </div>
-                <!-- Job Listings -->
-                <div class="row justify-content-center">
-                    <div class="col-xl-10">
-                        <ng-container *ngFor="let offre of filteredOffres">
-                            <div class="single-job-items mb-30 card">
-                                <div class="job-items d-flex align-items-center">
-                                    <div class="company-img">
-                                        <a [routerLink]="['/job-details', offre.idOffreEmploi]">
-                                            <img [src]="getImageUrl(offre.filiale?.photo)" [alt]="offre.filiale?.nom || 'N/A'" class="company-logo">
-                                        </a>
-                                    </div>
-                                    <div class="job-tittle">
-                                        <a [routerLink]="['/job-details', offre.idOffreEmploi]">
-                                            <h4>{{ offre.titre || 'Titre non spécifié' }}</h4>
-                                        </a>
-                                        <ul>
-                                            <li><i class="fas fa-building"></i> {{ offre.filiale?.nom || 'N/A' }}</li>
-                                            <h3> {{ offre.description || 'Description non spécifiée' }}</h3>
-                                        </ul>
-                                        <div class="job-address">
-                                            <i class="fas fa-map-marker-alt"></i> {{ offre.filiale?.adresse || 'Adresse non spécifiée' }}
-                                        </div>
-                                    </div>
-                                    <div class="items-link f-right">
-                                        <div class="mb-2">
-                                            <strong>Date de publication :</strong>
-                                            <p>{{ formatDate(offre.datePublication) }} ({{ timeSince(offre.datePublication) }})</p>
-                                        </div>
-                                        <a [routerLink]="['/job-details', offre.idOffreEmploi]"  class="border-btn">Plus de Détails</a>                                    </div>
-                                </div>
-                            </div>  
-                        </ng-container>
-                        <!-- Empty State -->
-                        <div class="text-center mt-4" *ngIf="filteredOffres.length === 0">
-                            <p>Aucune offre d'emploi trouvée.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-<!-- Support Company Start-->
-<!-- Support Company Start -->
-<div class="support-company-area support-padding fix">
+  
+  <div class="support-company-area support-padding fix">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-xl-6 col-lg-6">
@@ -228,62 +168,61 @@
                 <p>Créé en</p>
                 <span class="year-highlight">1967</span>
               </div>
-              
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- Support Company End -->
-        <!-- How to Apply Section -->
-        <div class="apply-process-area apply-bg pt-150 pb-150" data-background="../../../../../assets/UserUser/img/gallery/how-applybg.png">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle white-text text-center">
-                            <span>Processus de candidature</span>
-                            <h2>Comment ça marche</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-process text-center mb-30">
-                            <div class="process-ion">
-                                <span class="flaticon-search"></span>
-                            </div>
-                            <div class="process-cap">
-                                <h5>1. Rechercher un emploi</h5>
-                                <p>Parcourez les offres d'emploi disponibles et trouvez celles qui correspondent à vos compétences.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-process text-center mb-30">
-                            <div class="process-ion">
-                                <span class="flaticon-curriculum-vitae"></span>
-                            </div>
-                            <div class="process-cap">
-                                <h5>2. Postuler</h5>
-                                <p>Soumettez votre candidature avec votre CV et répondez à nos quiz pour mettre en valeur vos compétences.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-process text-center mb-30">
-                            <div class="process-ion">
-                                <span class="flaticon-tour"></span>
-                            </div>
-                            <div class="process-cap">
-                                <h5>3. Obtenir le poste</h5>
-                                <p>Si votre profil correspond, vous serez contacté pour la suite du processus de recrutement.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  
+  <!-- How to Apply Section -->
+  <div class="apply-process-area apply-bg pt-150 pb-150" data-background="../../../../../assets/User/img/gallery/how-applybg.png">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-tittle white-text text-center">
+            <span>Processus de candidature</span>
+            <h2>Comment ça marche</h2>
+          </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <div class="single-process text-center mb-30">
+            <div class="process-ion">
+              <span class="flaticon-search"></span>
+            </div>
+            <div class="process-cap">
+              <h5>1. Rechercher un emploi</h5>
+              <p>Parcourez les offres d'emploi disponibles et trouvez celles qui correspondent à vos compétences.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="single-process text-center mb-30">
+            <div class="process-ion">
+              <span class="flaticon-curriculum-vitae"></span>
+            </div>
+            <div class="process-cap">
+              <h5>2. Postuler</h5>
+              <p>Soumettez votre candidature avec votre CV et répondez à nos quiz pour mettre en valeur vos compétences.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="single-process text-center mb-30">
+            <div class="process-ion">
+              <span class="flaticon-tour"></span>
+            </div>
+            <div class="process-cap">
+              <h5>3. Obtenir le poste</h5>
+              <p>Si votre profil correspond, vous serez contacté pour la suite du processus de recrutement.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     </main>
 
     <!-- Footer -->

@@ -9,216 +9,205 @@
   <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
 </head>
 <body>
-  <!-- Loading indicator -->
-  <div *ngIf="loading" class="text-center mt-5 pt-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Chargement...</span>
-    </div>
-    <p class="mt-2">Chargement des détails de l'offre...</p>
-  </div>
-
-  <!-- Error message -->
-  <div *ngIf="error" class="alert alert-danger m-5" role="alert">
-    {{ error }}
-  </div>
-
-  <!-- Content when data is loaded -->
-  <div *ngIf="!loading && !error">
-    <header>
-      <div class="header-area header-transparrent">
-        <div class="headder-top header-sticky">
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-3 col-md-2">
-                <div class="logo">
-                  <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Logo"></a>
-                </div>
-              </div>
-              <div class="col-lg-9 col-md-9">
-                <div class="menu-wrapper">
-                  <div class="main-menu">
-                    <nav class="d-none d-lg-block">
-                      <ul id="navigation">
-                        <li><a href="index.html">Accueil</a></li>
-                        <li><a href="/job-list">Offres d'Emploi</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                      </ul>
-                    </nav>
-                  </div>
-                  <div class="header-btn d-none f-right d-lg-block">
-                    <a href="#" class="btn head-btn1">Inscription</a>
-                    <a href="#" class="btn head-btn2">Connexion</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <main>
-      <div class="slider-area">
-        <div class="single-slider slider-height d-flex align-items-center"
-            [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
-          <div class="container">
-            <div class="row">
-              <div class="col-xl-12">
-                <div class="hero-cap text-center">
-                  <h2>{{ offre?.titre || 'Titre de l'offre' }}</h2>
-                  <p>{{ filiale?.nom || 'Entreprise inconnue' }} - {{ filiale?.adresse || 'Localisation inconnue' }}</p>
-                  <span class="badge" 
-                        [ngStyle]="{'background-color': offre?.statut === 0 ? '#28a745' : '#dc3545', 'color': '#fff', 'font-size': '1rem', 'padding': '8px 15px', 'margin-top': '10px'}">
-                    {{ getStatutLabel(offre?.statut) }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="job-post-company pt-120 pb-120">
-        <div class="container">
-          <div class="row justify-content-between">
-            <!-- Section principale -->
-            <div class="col-xl-7 col-lg-8">
-              <div class="single-job-items mb-50">
-                <div class="job-items">
-                  <div class="company-img company-img-details">
-                    <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}" 
-                        onerror="this.src='../../../assets/User/img/icon/job-list1.png'">
-                  </div>
-                  <div class="job-tittle">
-                    <h4>{{ offre?.titre }}</h4>
-                    <ul>
-                      <li><i class="fas fa-building"></i>{{ filiale?.nom || 'Entreprise inconnue' }}</li>
-                      <li><i class="fas fa-map-marker-alt"></i>{{ filiale?.adresse || 'Localisation inconnue' }}</li>
-                      <li><i class="fas fa-money-bill"></i>{{ offre?.SalaireMin || 'Non spécifié' }} - {{ offre?.SalaireMax || 'Non spécifié' }} /an</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <!-- Description -->
-              <div class="job-post-details">
-                <div class="post-details1 mb-50">
-                  <div class="small-section-tittle">
-                    <h4>Description de l'offre</h4>
-                  </div>
-                  <p>{{ offre?.description || 'Aucune description disponible.' }}</p>
-                </div>
-                <!-- Compétences techniques -->
-                <div class="post-details2 mb-50">
-                  <div class="small-section-tittle">
-                    <h4>Compétences techniques</h4>
-                  </div>
-                  <ul *ngIf="offre?.offreCompetences?.length">
-                    <li *ngFor="let competence of offre?.offreCompetences">
-                      <!-- {{ competence.competence?.nom || competence.nom || 'Compétence inconnue' }}  -->
-                      (Niveau: {{ competence.niveauRequis || 'Non spécifié' }})
-                    </li>
-                  </ul>
-                  <p *ngIf="!offre?.offreCompetences?.length">Aucune compétence spécifiée.</p>
-                </div>
-                <!-- Éducation et expérience -->
-                <div class="post-details2 mb-50">
-                  <div class="small-section-tittle">
-                    <h4>Éducation et expérience</h4>
-                  </div>
-                  <ul>
-                    <li>Expérience: {{ offre?.niveauExperienceRequis || 'Non spécifié' }}</li>
-                    <li>Diplôme: {{ offre?.diplomeRequis || 'Non spécifié' }}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <!-- Sidebar -->
-            <div class="col-xl-4 col-lg-4">
-              <!-- Aperçu de l'offre -->
-              <div class="post-details3 mb-50">
-                <div class="small-section-tittle">
-                  <h4>Aperçu de l'offre</h4>
-                </div>
-                <ul>
-                  <li>Date de publication: <span>{{ formatDate(offre?.datePublication) }}</span></li>
-                  <li>Localisation: <span>{{ filiale?.adresse || 'Inconnue' }}</span></li>
-                  <li>Postes vacants: <span>{{ offre?.nombrePostes || 'Non spécifié' }}</span></li>
-                  <li>Nature du travail: <span>{{ getModeTravailLabel(offre?.modeTravail) }}</span></li>
-                  <li>Statut: <span class="badge" 
-                      [ngStyle]="{'background-color': offre?.statut === 0 ? '#28a745' : '#dc3545', 'color': '#fff'}">
-                      {{ getStatutLabel(offre?.statut) }}
-                    </span>
-                  </li>
-                  <li>Type de contrat: <span class="badge" 
-                      [ngStyle]="{'background-color': getContractColor(offre?.typeContrat), 
-                                 'color': getTypeContratLabel(offre?.typeContrat) === 'Freelance' ? '#212529' : '#fff'}">
-                      {{ getTypeContratLabel(offre?.typeContrat) }}
-                    </span>
-                  </li>
-                  <li>Salaire: <span>{{ offre?.SalaireMin || 'Non spécifié' }} - {{ offre?.SalaireMax || 'Non spécifié' }} /an</span></li>
-                  <li>Date limite: <span>{{ formatDate(offre?.dateExpiration) }}</span></li>
-                </ul>
-                <div class="apply-btn2">
-                  <a (click)="applyForJob()" class="btn" 
-                     [ngClass]="{'disabled': !isOffrePosulable()}"
-                     [title]="!isOffrePosulable() ? 'Cette offre n\'est plus disponible pour les candidatures' : 'Postuler à cette offre'">
-                    Postuler maintenant
-                  </a>
-                </div>
-              </div>
-              <!-- Informations de l'entreprise -->
-              <div class="post-details4 mb-50">
-                <div class="small-section-tittle">
-                  <h4>À propos de l'entreprise</h4>
-                </div>
-                <span>{{ filiale?.nom || 'Entreprise inconnue' }}</span>
-                <p>{{ filiale?.description || 'Aucune description disponible.' }}</p>
-                <ul>
-                  <li>Nom: <span>{{ filiale?.nom || 'Inconnu' }}</span></li>
-                  <li>Site web: <span>
-                    <a *ngIf="filiale?.siteWeb" [href]="filiale?.siteWeb" target="_blank">{{ filiale?.siteWeb }}</a>
-                    <span *ngIf="!filiale?.siteWeb">Non spécifié</span>
-                  </span></li>
-                  <li>Email: <span>{{ filiale?.email || 'Non spécifié' }}</span></li>
-                  <li>Adresse: <span>{{ filiale?.adresse || 'Non spécifié' }}</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <footer>
-      <div class="footer-area footer-bg footer-padding">
-        <div class="container">
-          <div class="row d-flex justify-content-between">
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-              <div class="single-footer-caption mb-50">
-                <div class="footer-tittle">
-                  <h4>À propos de nous</h4>
-                  <p>Plateforme dédiée à la mise en relation des talents et des entreprises.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-              <div class="single-footer-caption mb-50">
-                <div class="footer-tittle">
-                  <h4>Contact</h4>
-                  <ul>
-                    <li><p>Adresse: Votre adresse ici</p></li>
-                    <li><a href="#">Téléphone: +8880 44338899</a></li>
-                    <li><a href="#">Email: </a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="footer-bottom-area footer-bg">
+  <header>
+    <!-- Header Start -->
+   <div class="header-area header-transparrent">
+       <div class="headder-top header-sticky">
             <div class="container">
-              <div class="footer-border">
-                <div class="row d-flex justify-content-between align-items-center">
-                  <div class="col-xl-10 col-lg-10">
-                    <div class="footer-copy-right">
-                      <!-- <p>© {{ new Date().getFullYear() }} Tous droits réservés.</p> -->
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-2">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
+                        </div>  
                     </div>
+                    <div class="col-lg-9 col-md-9">
+                        <div class="menu-wrapper">
+                            <!-- Main-menu -->
+                            <div class="main-menu">
+                                <nav class="d-none d-lg-block">
+                                    <ul id="navigation">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="/job-list">offre Emploi  </a></li>
+                                        <li><a href="/A propos">A propos</a></li>
+                                        <li><a href="#">Page</a>
+                                            <ul class="submenu">
+                                                <li><a (click)="onLogout()">deconnexion</a></li>
+                                                <li><a href="single-blog.html">Blog Dcetails</a></li>
+                                                <li><a href="elements.html">Elements</a></li>
+                                                <li><a href="job_details.html">job Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>          
+                            <!-- Header-btn -->
+                            <div class="header-btn d-none f-right d-lg-block">
+                                <a routerLink="/singup" class="btn head-btn1">Inscription</a>
+                                <a routerLink="/signin" class="btn head-btn2">Connexion</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+       </div>
+   </div>
+    <!-- Header End -->
+</header>
+  <main>
+    <div class="slider-area">
+      <div class="single-slider slider-height d-flex align-items-center"
+           [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="hero-cap text-center">
+                <h2>{{ offre?.titre || 'Titre de l’offre' }}</h2>
+                <p>{{ filiale?.nom || 'Entreprise inconnue' }} - {{ filiale?.adresse || 'Localisation inconnue' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="job-post-company pt-120 pb-120">
+      <div class="container">
+        <div class="row justify-content-between">
+          <!-- Section principale -->
+          <div class="col-xl-7 col-lg-8">
+            <div class="single-job-items mb-50">
+              <div class="job-items">
+                <div class="company-img company-img-details">
+                  <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
+                </div>
+                <div class="job-tittle">
+                  <h4>{{ offre?.titre }}</h4>
+                  <ul>
+                    <li><i class="fas fa-building"></i>{{ filiale?.nom || 'Entreprise inconnue' }}</li>
+                    <li><i class="fas fa-map-marker-alt"></i>{{ filiale?.adresse || 'Localisation inconnue' }}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Description -->
+            <div class="job-post-details">
+              <div class="post-details1 mb-50">
+                <div class="small-section-tittle">
+                  <h4>Description de l’offre</h4>
+                </div>
+                <p>{{ offre?.description || 'Aucune description disponible.' }}</p>
+              </div>
+              <div class="post-details2 mb-50">
+                <div class="small-section-tittle">
+                  <h4>les avantages de l’emploi</h4>
+                </div>
+                <ul>
+                  <p>{{ offre?.avantages || 'Aucun avantages disponibles.' }}</p>
+                </ul>
+              </div>
+
+             
+              
+              <!-- Compétences techniques -->
+              <div class="post-details2 mb-50">
+                <div class="small-section-tittle">
+                  <h4>Compétences techniques</h4>
+                </div>
+                <ul>
+                  <li *ngFor="let competence of offre?.offreCompetences">
+                    {{ competence.competence?.nom || 'Compétence inconnue' }} (Niveau: {{ competence.niveauRequis || 'Non spécifié' }})
+                  </li>
+                  <li *ngIf="!offre?.offreCompetences?.length">Aucune compétence spécifiée.</li>
+                </ul>
+              </div>
+              <!-- Éducation et expérience -->
+              <div class="post-details2 mb-50">
+                <div class="small-section-tittle">
+                  <h4>Profil recherché</h4>
+                </div>
+                <ul>
+                  <li>Expérience: {{ offre?.niveauExperienceRequis || 'Non spécifié' }}</li>
+                  <li>Diplôme: {{ offre?.diplomeRequis || 'Non spécifié' }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Sidebar -->
+          <div class="col-xl-4 col-lg-4">
+            <!-- Aperçu de l’offre -->
+            <div class="post-details3 mb-50">
+              <div class="small-section-tittle">
+                <h4>Aperçu de l’offre</h4>
+              </div>
+              <ul>
+                <li>Statut: <span>{{ offre?.statut || 'Inconnu' }}</span></li>
+                <li>Date de publication: <span>{{ formatDate(offre?.datePublication) }} </span></li>
+                <li>Localisation: <span>{{ filiale?.adresse || 'Inconnue' }}</span></li>
+                <li>Nombre de postes: <span>{{ offre?.nombrePostes || 'Non spécifié' }}</span></li>
+                <li>Nature du travail: <span>{{ getModeTravailLabel(offre?.modeTravail) }}</span></li>
+                <li>Type de contrat: <span class="badge" [ngStyle]="{'background-color': getContractColor(offre?.typeContrat), 'color': getTypeContratLabel(offre?.typeContrat) === 'Freelance' ? '#212529' : '#fff'}">{{ getTypeContratLabel(offre?.typeContrat) }}</span></li>
+                <li>Date limite: <span>{{ formatDate(offre?.dateExpiration) }}</span></li>
+              </ul>
+              <div class="apply-btn2">
+                <a (click)="applyForJob()" class="btn">Postuler maintenant</a>
+              </div>
+            </div>
+            <!-- Informations de l’entreprise -->
+            <div class="post-details4 mb-50">
+              <div class="small-section-tittle">
+                <h4>À propos de l’entreprise</h4>
+              </div>
+              <span>{{ filiale?.nom || 'Entreprise inconnue' }}</span>
+              <p>{{ filiale?.description || 'Aucune description disponible.' }}</p>
+              <ul>
+                <li>Nom: <span>{{ filiale?.nom || 'Inconnu' }}</span></li>
+                <li>Site web: <span><a [href]="filiale?.siteWeb" target="_blank">{{ filiale?.siteWeb || 'Non spécifié' }}</a></span></li>
+                <li>Email: <span>{{ filiale?.email || 'Non spécifié' }}</span></li>
+                <li>Adresse: <span>{{ filiale?.adresse || 'Non spécifié' }}</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-area footer-bg footer-padding">
+      <div class="container">
+        <div class="row d-flex justify-content-between">
+          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+            <div class="single-footer-caption mb-50">
+              <div class="footer-tittle">
+                <h4>À propos de nous</h4>
+                <p>Plateforme dédiée à la mise en relation des talents et des entreprises.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+            <div class="single-footer-caption mb-50">
+              <div class="footer-tittle">
+                <h4>Contact</h4>
+                <ul>
+                  <li><p>Adresse: Votre adresse ici</p></li>
+                  <li><a href="#">Téléphone: +8880 44338899</a></li>
+                  <li><a href="#">Email: </a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom-area footer-bg">
+          <div class="container">
+            <div class="footer-border">
+              <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-xl-10 col-lg-10">
+                  <div class="footer-copy-right">
+                    <!-- <p>© {{ currentYear }} Tous droits réservés.</p> -->
                   </div>
                 </div>
               </div>
@@ -226,41 +215,44 @@
           </div>
         </div>
       </div>
-    </footer>
-  </div>
-  <!-- All JS Custom Plugins Link Here here -->
-  <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
-  <!-- Jquery, Popper, Bootstrap -->
-  <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
-  <script src="../../../assets/User/js/popper.min.js"></script>
-  <script src="../../../assets/User/js/bootstrap.min.js"></script>
-  <!-- Jquery Mobile Menu -->
-  <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
+    </div>
+  </footer>
+  <!-- JS here -->
 
-  <!-- Jquery Slick , Owl-Carousel Range -->
-  <script src="../../../assets/User/js/owl.carousel.min.js"></script>
-  <script src="../../../assets/User/js/slick.min.js"></script>
-  <script src="../../../assets/User/js/price_rangs.js"></script>
-  <!-- One Page, Animated-HeadLin -->
-  <script src="../../../assets/User/js/wow.min.js"></script>
-  <script src="../../../assets/User/js/animated.headline.js"></script>
-  <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
+    <!-- All JS Custom Plugins Link Here here -->
+    <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="../../../assets/User/js/popper.min.js"></script>
+    <script src="../../../assets/User/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
 
-  <!-- Scrollup, nice-select, sticky -->
-  <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
-  <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
-  <script src="../../../assets/User/js/jquery.sticky.js"></script>
-  
-  <!-- contact js -->
-  <script src="../../../assets/User/js/contact.js"></script>
-  <script src="../../../assets/User/js/jquery.form.js"></script>
-  <script src="../../../assets/User/js/jquery.validate.min.js"></script>
-  <script src="../../../assets/User/js/mail-script.js"></script>
-  <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
-  
-  <!-- Jquery Plugins, main Jquery -->	
-  <script src="../../../assets/User/js/plugins.js"></script>
-  <script src="../../../assets/User/js/main.js"></script>
+    <!-- Jquery Slick , Owl-Carousel Range -->
+    <script src="../../../assets/User/js/owl.carousel.min.js"></script>
+    <script src="../../../assets/User/js/slick.min.js"></script>
+    <script src="../../../assets/User/js/price_rangs.js"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="../../../assets/User/js/wow.min.js"></script>
+    <script src="../../../assets/User/js/animated.headline.js"></script>
+    <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
+
+    <!-- Scrollup, nice-select, sticky -->
+    <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
+    <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
+    <script src="../../../assets/User/js/jquery.sticky.js"></script>
+    
+    <!-- contact js -->
+    <script src="../../../assets/User/js/contact.js"></script>
+    <script src="../../../assets/User/js/jquery.form.js"></script>
+    <script src="../../../assets/User/js/jquery.validate.min.js"></script>
+    <script src="../../../assets/User/js/mail-script.js"></script>
+    <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src="../../../assets/User/js/plugins.js"></script>
+    <script src="../../../assets/User/js/main.js"></script>
 </body>
 
+    
 </html>

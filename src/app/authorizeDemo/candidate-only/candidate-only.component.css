@@ -559,3 +559,19 @@ body {
     font-size: 0.8rem;
   }
 }
+
+/* Styles for filiale photos in Our Services section */
+.filiale-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.filiale-photo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

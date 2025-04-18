@@ -193,7 +193,10 @@ export class OffreEmploiService {
 
 
   // Récupérer une offre par ID
-  getOffreEmploi(id: string): Observable<OffreEmploi> {
+getOffreEmploi(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+  getOffreEmploiID(id: string): Observable<OffreEmploi> {
     console.log(`Fetching offre with ID: ${id}`);
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
       .pipe(
@@ -213,8 +216,7 @@ export class OffreEmploiService {
           return throwError(() => new Error(`Erreur lors de la récupération de l'offre: ${error.message}`));
         })
       );
-  }
-
+   }
   // Créer une offre
   createOffreEmploi(offre: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, offre, { headers: this.getHeaders() })

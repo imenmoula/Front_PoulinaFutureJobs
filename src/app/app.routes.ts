@@ -35,6 +35,7 @@ import { ContentComponent } from './layoutBackend/content/content.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
+// import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 
 
 export const routes: Routes = [
@@ -132,8 +133,9 @@ export const routes: Routes = [
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
   { path: 'job-list', component: JobListingComponent },
-  {path:'job-details/: idOffreEmploi',component:JobDetailsComponent},
-  /**************************** */
+  { path: 'job-details/:id', component: JobDetailsComponent },
+  // {path:'/about',component:ApropsComponent}, 
+  // Fixed: Removed space  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];
 

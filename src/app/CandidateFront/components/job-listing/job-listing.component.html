@@ -10,250 +10,234 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
 
-  <!-- CSS here -->
-  <!-- <link rel="stylesheet" href="../../../assets/User/css/bootstrap.min.css">
-            <link rel="stylesheet" href="../../../assets/User/css/owl.carousel.min.css">
-            <link rel="stylesheet" href="../../../assets/User/css/price_rangs.css">
-            <link rel="stylesheet" href="../../../assets/User/css/flaticon.css">
-            <link rel="stylesheet" href="../../../assets/User/css/slicknav.css">
-            <link rel="stylesheet" href="../../../assets/User/css/animate.min.css">
-            <link rel="stylesheet" href="../../../assets/User/css/magnific-popup.css">
-            <link rel="stylesheet" href="../../../assets/User/css/fontawesome-all.min.css">
-            <link rel="stylesheet" href="../../../assets/User/css/themify-icons.css">
-            <link rel="stylesheet" href="../../../assets/User/css/slick.css">
-            <link rel="stylesheet" href="../../../assets/User/css/nice-select.css">
-            <link rel="stylesheet" href="../../../assets/User/css/style.css"> -->
+
 </head>
 
 <body>
 
   <header>
     <!-- Header Start -->
-    <div class="header-area header-transparrent">
-      <div class="headder-top header-sticky">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-3 col-md-2">
-              <!-- Logo -->
-              <div class="logo">
-                <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
-              </div>
-            </div>
-            <div class="col-lg-9 col-md-9">
-              <div class="menu-wrapper">
-                <!-- Main-menu -->
-                <div class="main-menu">
-                  <nav class="d-none d-lg-block">
-                    <ul id="navigation">
-                      <li><a href="index.html">Home</a></li>
-                      <li><a href="/job-list">offre Emploi </a></li>
-                      <li><a href="">A propos</a></li>
-                      <li><a href="#">Page</a>
-                        <ul class="submenu">
-                          <li><a href="blog.html">Blog</a></li>
-                          <li><a href="single-blog.html">Blog Details</a></li>
-                          <li><a href="elements.html">Elements</a></li>
-                          <li><a href="job_details.html">job Details</a></li>
-                        </ul>
-                      </li>
-                      <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                  </nav>
+   <div class="header-area header-transparrent">
+       <div class="headder-top header-sticky">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-2">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
+                        </div>  
+                    </div>
+                    <div class="col-lg-9 col-md-9">
+                        <div class="menu-wrapper">
+                            <!-- Main-menu -->
+                            <div class="main-menu">
+                                <nav class="d-none d-lg-block">
+                                    <ul id="navigation">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="/job-list">offre Emploi  </a></li>
+                                        <li><a href="/A propos">A propos</a></li>
+                                        <li><a href="#">Page</a>
+                                            <ul class="submenu">
+                                                <li><a (click)="onLogout()">deconnexion</a></li>
+                                                <li><a href="single-blog.html">Blog Dcetails</a></li>
+                                                <li><a href="elements.html">Elements</a></li>
+                                                <li><a href="job_details.html">job Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>          
+                            <!-- Header-btn -->
+                            <div class="header-btn d-none f-right d-lg-block">
+                                <a routerLink="/singup" class="btn head-btn1">Inscription</a>
+                                <a routerLink="/signin" class="btn head-btn2">Connexion</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
                 </div>
-                <!-- Header-btn -->
-                <div class="header-btn d-none f-right d-lg-block">
-                  <a href="#" class="btn head-btn1">Inscription</a>
-                  <a href="#" class="btn head-btn2">Connexion</a>
-                </div>
-              </div>
             </div>
-            <!-- Mobile Menu -->
-            <div class="col-12">
-              <div class="mobile_menu d-block d-lg-none"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+       </div>
+   </div>
     <!-- Header End -->
-  </header>
+</header>
   <main>
 
-    <div class="slider-area ">
-
-      <div class="single-slider slider-height d-flex align-items-center"
-        [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
-        <div class="container">
-
-          <div class="row">
-            <div class="col-xl-12">
-              <div class="hero-cap text-center">
-                <h2>Avec Poulina Groupe Holding vous trouverez,
-                  votre futur emploi et vous pouvez postuler gratuitement ,
-                  et cree votre reve de carriere </h2>
-              </div>
-            </div>
+    <!-- Slider Area Start -->
+<div class="slider-area">
+  <div class="single-slider slider-height d-flex align-items-center"
+    [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="hero-cap text-center">
+            <h2>Avec Poulina Groupe Holding vous trouverez, votre futur emploi et vous pouvez postuler
+              gratuitement, et cree votre reve de carriere</h2>
           </div>
         </div>
       </div>
     </div>
-    <!-- Hero Area End -->
+  </div>
+</div>
+<!-- Hero Area End -->
 
-    <div class="job-listing-area pt-120 pb-120">
-      <div class="container">
+<!-- Job Listing Area Start -->
+<div class="job-listing-area pt-120 pb-120">
+  <div class="container">
+    <div class="row">
+      <!-- Left Sidebar (Filters) -->
+      <div class="col-xl-3 col-lg-3 col-md-4">
         <div class="row">
-          <div class="col-xl-3 col-lg-3 col-md-4">
-            <div class="row">
-              <div class="col-12">
-                <div class="small-section-tittle2 mb-45">
-                  <div class="ion">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
-                      height="12px">
-                      <!-- <path fill-rule="evenodd" fill="rgb(27, 207, 107)"
-                        d="M7.778,12.000 L12.222,编码12.000 L12.222,10.000 L7.778,10.000 L7.778,12.000 ZM-0.000,-0.000 L-0.000,2.000 L20.000,2.000 L20.000,-0.000 L-0.000,-0.000 ZM3.333,7.000 L16.667,7.000 L16.667,5.000 L3.333,5.000 L3.333,7.000 Z" /> -->
-                    </svg>
-                  </div>
-                  <h4>Filter les offres d'emploi</h4>
-                </div>
+          <div class="col-12">
+            <div class="small-section-tittle2 mb-45">
+              <div class="ion">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
+                  height="12px">
+                  <!-- SVG content (optional, can be removed if not needed) -->
+                </svg>
               </div>
+              <h4>Filtrer les offres d'emploi</h4>
             </div>
-            <!-- Job Category Listing start -->
-            <div class="job-category-listing mb-50">
-              <div class="single-listing">
-                <div class="small-section-tittle2">
-                  <h4>Specialite</h4>
-                </div>
-                <div class="select-job-items2">
-                  <input type="text" [(ngModel)]="specialite" (ngModelChange)="onFilterChange()"
-                    placeholder="Enter specialty" class="form-control">
-                </div>
-              </div>
-              <div class="single-listing">
-                <div class="small-section-tittle2">
-                  <h4>Type de contrat</h4>
-                </div>
-                <div class="select-job-items2">
-                  <select [(ngModel)]="typeContrat" (ngModelChange)="onFilterChange()" class="form-control">
-                    <option value="">--selectionne un type de contrat--</option>
-                    <option value="CDI">CDI</option>
-                    <option value="CDD">CDD</option>
-                    <option value="Freelance">Freelance</option>
-                    <option value="Stage">Stage</option>
-                    <option value="Alternance">Alternance</option>
-                  </select>
-                </div>
-              </div>
-              <div class="single-listing">
-                <div class="small-section-tittle2">
-                  <h4>Mode de travail</h4>
-                </div>
-                <div class="select-job-items2">
-                  <select [(ngModel)]="modeTravail" (ngModelChange)="onFilterChange()" class="form-control">
-                    <option value="">--selectionne un mode de travail--</option>
-                    <option value="Presentiel">Presentiel</option>
-                    <option value="Hybride">Hybride</option>
-                    <option value="Teletravail">Teletravail</option>
-                  </select>
-                </div>
-              </div>
-              <!-- Add Filiale Filter -->
-              <div class="single-listing">
-                <div class="small-section-tittle2">
-                  <h4>les filiales</h4>
-                </div>
-                <div class="select-job-items2">
-                  <select [(ngModel)]="selectedFiliale" (ngModelChange)="onFilterChange()" class="form-control">
-                    <option value="">--selectionne une filiale--</option>
-                    <option *ngFor="let filiale of filialesList" [value]="filiale.idFiliale">
-                      {{ filiale.nom }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <!-- Job Category Listing End -->
-          </div>
-          <!-- Right content (Job Listings) -->
-          <div class="col-xl-9 col-lg-9 col-md-8">
-            <!-- Featured_job_start -->
-            <section class="featured-job-area">
-              <div class="container">
-                <!-- Count of Job list Start -->
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div class="count-job mb-35">
-                      <span>{{ filteredOffres.length }} offre demploi trouvées</span>
-
-                    </div>
-                  </div>
-                </div>
-                <!-- Count of Job list End -->
-                <!-- single-job-content -->
-                <div class="job-card mb-30" *ngFor="let offre of getPaginatedOffres()">
-                  <div class="job-card-header">
-                    <h4 class="job-title-orange">{{ offre.titre | uppercase }}</h4>
-                    <span
-                      class="job-date">{{ offre.datePublication | date:'dd/MM/yyyy' }}</span>
-                  </div>
-                  <div class="job-card-body">
-                    <div class="filiale-image">
-                      <img [src]="filiales[offre.idFiliale]?.photo || 'assets/img/icon/job-list1.png'"
-                        alt="{{ filiales[offre.idFiliale]?.nom }}" class="filiale-img">
-                    </div>
-                    <div class="job-details">
-                      <h5>{{ offre.titre }}</h5>
-                      <ul class="job-info-list">
-                        <li>
-                          <i class="fas fa-building"></i>
-                          {{ filiales[offre.idFiliale]?.nom || 'Unknown Company' }}
-                        </li>
-                        <li>
-                        </li>
-                        <li>
-                          <i class="fas fa-briefcase"></i> {{ offre.specialite }}
-                        </li>
-                        <li>
-                          <i class="fas fa-tag"></i>
-                          <span class="contract-type"
-                            [ngStyle]="{'background-color': getContractColor(offre.typeContrat)}">
-                            {{ offre.typeContrat }}
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="job-actions">
-                      <a [routerLink]="['/job-details', offre.idOffreEmploi]" class="btn voir-detail">Voir Détail</a>
-
-                    </div>
-                  </div>
-                </div>
-                <!-- No offers message -->
-                <div class="text-center" *ngIf="filteredOffres.length === 0">
-                  <p>No jobs found matching your criteria.</p>
-                </div>
-                <!-- Pagination -->
-                <div class="pagination-area pb-115 text-center" *ngIf="totalPages > 1">
-                  <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item" [class.disabled]="currentPage === 1">
-                        <a class="page-link" (click)="prevPage()" href="javascript:void(0)">Previous</a>
-                      </li>
-                      <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
-                        <a class="page-link" (click)="currentPage = page" href="javascript:void(0)">{{ page }}</a>
-                      </li>
-                      <li class="page-item" [class.disabled]="currentPage === totalPages">
-                        <a class="page-link" (click)="nextPage()" href="javascript:void(0)">Next</a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </section>
-            <!-- Featured_job_end -->
           </div>
         </div>
+        <!-- Job Category Listing Start -->
+        <div class="job-category-listing mb-50">
+          <div class="single-listing">
+            <div class="small-section-tittle2">
+              <h4>Spécialité</h4>
+            </div>
+            <div class="select-job-items2">
+              <input type="text" [(ngModel)]="specialite" (ngModelChange)="onFilterChange()"
+                placeholder="Entrez une spécialité" class="form-control">
+            </div>
+          </div>
+          <div class="single-listing">
+            <div class="small-section-tittle2">
+              <h4>Type de contrat</h4>
+            </div>
+            <div class="select-job-items2">
+              <select [(ngModel)]="typeContrat" (ngModelChange)="onFilterChange()" class="form-control">
+                <option value="">--Sélectionnez un type de contrat--</option>
+                <option value="CDI">CDI</option>
+                <option value="CDD">CDD</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Stage">Stage</option>
+                <option value="Alternance">Alternance</option>
+              </select>
+            </div>
+          </div>
+          <div class="single-listing">
+            <div class="small-section-tittle2">
+              <h4>Mode de travail</h4>
+            </div>
+            <div class="select-job-items2">
+              <select [(ngModel)]="modeTravail" (ngModelChange)="onFilterChange()" class="form-control">
+                <option value="">--Sélectionnez un mode de travail--</option>
+                <option value="Presentiel">Présentiel</option>
+                <option value="Hybride">Hybride</option>
+                <option value="Teletravail">Télétravail</option>
+              </select>
+            </div>
+          </div>
+          <!-- Filiale Filter -->
+          <div class="single-listing">
+            <div class="small-section-tittle2">
+              <h4>Les filiales</h4>
+            </div>
+            <div class="select-job-items2">
+              <select [(ngModel)]="selectedFiliale" (ngModelChange)="onFilterChange()" class="form-control">
+                <option value="">--Sélectionnez une filiale--</option>
+                <option *ngFor="let filiale of filialesList" [value]="filiale.idFiliale">
+                  {{ filiale.nom }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- Job Category Listing End -->
+      </div>
+      <!-- Right Content (Job Listings) -->
+      <div class="col-xl-9 col-lg-9 col-md-8">
+        <!-- Featured Job Start -->
+        <section class="featured-job-area">
+          <div class="container">
+            <!-- Count of Job List Start -->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="count-job mb-35">
+                  <span>{{ filteredOffres.length }} offre(s) d'emploi trouvée(s)</span>
+                </div>
+              </div>
+            </div>
+            <!-- Count of Job List End -->
+            <!-- Single Job Content -->
+            <div class="job-card mb-30" *ngFor="let offre of getPaginatedOffres()">
+              <div class="job-card-header">
+                <h4 class="job-title-orange">{{ offre.titre | uppercase }}</h4>
+                <span class="job-date">
+                  Date de publication: {{ formatDate(offre.datePublication) }} ({{ timeSince(offre.datePublication) }})
+                </span>
+              </div>
+              <div class="job-card-body">
+                <div class="filiale-image">
+                  <img [src]="filiales[offre.idFiliale]?.photo || 'assets/img/icon/job-list1.png'"
+                    alt="{{ filiales[offre.idFiliale]?.nom }}" class="filiale-img">
+                </div>
+                <div class="job-details">
+                  <h5>{{ offre.titre }}</h5>
+                  <ul class="job-info-list">
+                    <li>
+                      <i class="fas fa-building"></i>
+                      {{ filiales[offre.idFiliale]?.nom || 'Unknown Company' }}
+                    </li>
+                    <li>
+                      <i class="fas fa-briefcase"></i> {{ offre.specialite }}
+                    </li>
+                    <li>
+                      <i class="fas fa-tag"></i>
+                      <span class="contract-type" [ngStyle]="{'background-color': getContractColor(offre.typeContrat)}">
+                        {{ offre.typeContrat }}
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="job-actions">
+                  <a [routerLink]="['/job-details', offre.idOffreEmploi]" class="btn">Voir les détails</a>
+                </div>
+              </div>
+            </div>
+            <!-- No Offers Message -->
+            <div class="text-center" *ngIf="filteredOffres.length === 0">
+              <p>Aucune offre d'emploi correspondant à vos critères.</p>
+            </div>
+            <!-- Pagination -->
+            <div class="pagination-area pb-115 text-center" *ngIf="totalPages > 1">
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="prevPage()" href="javascript:void(0)">Précédent</a>
+                  </li>
+                  <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
+                    <a class="page-link" (click)="currentPage = page" href="javascript:void(0)">{{ page }}</a>
+                  </li>
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="nextPage()" href="javascript:void(0)">Suivant</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </section>
+        <!-- Featured Job End -->
       </div>
     </div>
+  </div>
+</div>
+<!-- Job List Area End -->
     <!-- Job List Area End -->
     <!-- Job List Area End -->
   </main>

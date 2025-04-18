@@ -9,6 +9,5 @@ export interface Competence {
   hardSkills: boolean;
   estTechnique: boolean;
   estSoftSkill: boolean;
-  offreCompetences: OffreCompetence[];
 
   }

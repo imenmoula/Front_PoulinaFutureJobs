@@ -50,6 +50,7 @@ import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.c
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
+// import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +87,8 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
     HeaderComponent,
     FooterComponent,
     JobListingComponent,
-    JobDetailsComponent
+    JobDetailsComponent,
+    // ApropsComponent
    
   
 ],
