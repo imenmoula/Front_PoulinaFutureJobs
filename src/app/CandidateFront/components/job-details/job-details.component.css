@@ -1,0 +1,17 @@
+/* job-details.component.css */
+.company-img-details img {
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+    object-fit: cover; /* Ensures the image fits within the dimensions without distortion */
+    border-radius: 50%; /* Makes the image round */
+    display: block;
+    margin: 0 auto; /* Centers the image if needed */
+  }
+
+  /* Ensure the Site web link is visible */
+.post-details4 ul li span a {
+    display: inline !important;
+    visibility: visible !important;
+    color: #5784BA;
+    text-decoration: underline;
+  }

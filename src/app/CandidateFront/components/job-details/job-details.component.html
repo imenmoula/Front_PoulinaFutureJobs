@@ -10,55 +10,49 @@
 </head>
 <body>
   <header>
-    <!-- Header Start -->
-   <div class="header-area header-transparrent">
-       <div class="headder-top header-sticky">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-2">
-                        <!-- Logo -->
-                        <div class="logo">
-                            <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
-                        </div>  
-                    </div>
-                    <div class="col-lg-9 col-md-9">
-                        <div class="menu-wrapper">
-                            <!-- Main-menu -->
-                            <div class="main-menu">
-                                <nav class="d-none d-lg-block">
-                                    <ul id="navigation">
-                                        <li><a href="index.html">Home</a></li>
-                                        <li><a href="/job-list">offre Emploi  </a></li>
-                                        <li><a href="/A propos">A propos</a></li>
-                                        <li><a href="#">Page</a>
-                                            <ul class="submenu">
-                                                <li><a (click)="onLogout()">deconnexion</a></li>
-                                                <li><a href="single-blog.html">Blog Dcetails</a></li>
-                                                <li><a href="elements.html">Elements</a></li>
-                                                <li><a href="job_details.html">job Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                    </ul>
-                                </nav>
-                            </div>          
-                            <!-- Header-btn -->
-                            <div class="header-btn d-none f-right d-lg-block">
-                                <a routerLink="/singup" class="btn head-btn1">Inscription</a>
-                                <a routerLink="/signin" class="btn head-btn2">Connexion</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mobile Menu -->
-                    <div class="col-12">
-                        <div class="mobile_menu d-block d-lg-none"></div>
-                    </div>
-                </div>
+    <div class="header-area header-transparrent">
+      <div class="headder-top header-sticky">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-2">
+              <div class="logo">
+                <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
+              </div>
             </div>
-       </div>
-   </div>
-    <!-- Header End -->
-</header>
+            <div class="col-lg-9 col-md-9">
+              <div class="menu-wrapper">
+                <div class="main-menu">
+                  <nav class="d-none d-lg-block">
+                    <ul id="navigation">
+                      <li><a href="index.html">Home</a></li>
+                      <li><a href="/job-list">offre Emploi</a></li>
+                      <li><a href="/A propos">A propos</a></li>
+                      <li><a href="#">Page</a>
+                        <ul class="submenu">
+                          <li><a (click)="onLogout()">deconnexion</a></li>
+                          <li><a href="single-blog.html">Blog Dcetails</a></li>
+                          <li><a href="elements.html">Elements</a></li>
+                          <li><a href="job_details.html">job Details</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                  </nav>
+                </div>
+                <div class="header-btn d-none f-right d-lg-block">
+                  <a routerLink="/singup" class="btn head-btn1">Inscription</a>
+                  <a routerLink="/signin" class="btn head-btn2">Connexion</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mobile_menu d-block d-lg-none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
   <main>
     <div class="slider-area">
       <div class="single-slider slider-height d-flex align-items-center"
@@ -78,7 +72,6 @@
     <div class="job-post-company pt-120 pb-120">
       <div class="container">
         <div class="row justify-content-between">
-          <!-- Section principale -->
           <div class="col-xl-7 col-lg-8">
             <div class="single-job-items mb-50">
               <div class="job-items">
@@ -94,7 +87,6 @@
                 </div>
               </div>
             </div>
-            <!-- Description -->
             <div class="job-post-details">
               <div class="post-details1 mb-50">
                 <div class="small-section-tittle">
@@ -110,10 +102,6 @@
                   <p>{{ offre?.avantages || 'Aucun avantages disponibles.' }}</p>
                 </ul>
               </div>
-
-             
-              
-              <!-- Compétences techniques -->
               <div class="post-details2 mb-50">
                 <div class="small-section-tittle">
                   <h4>Compétences techniques</h4>
@@ -125,7 +113,6 @@
                   <li *ngIf="!offre?.offreCompetences?.length">Aucune compétence spécifiée.</li>
                 </ul>
               </div>
-              <!-- Éducation et expérience -->
               <div class="post-details2 mb-50">
                 <div class="small-section-tittle">
                   <h4>Profil recherché</h4>
@@ -137,27 +124,25 @@
               </div>
             </div>
           </div>
-          <!-- Sidebar -->
           <div class="col-xl-4 col-lg-4">
-            <!-- Aperçu de l’offre -->
             <div class="post-details3 mb-50">
               <div class="small-section-tittle">
                 <h4>Aperçu de l’offre</h4>
               </div>
               <ul>
-                <li>Statut: <span>{{ offre?.statut || 'Inconnu' }}</span></li>
-                <li>Date de publication: <span>{{ formatDate(offre?.datePublication) }} </span></li>
+                <li>Statut: <span class="badge" [ngStyle]="{'background-color': getStatutColor(offre?.statut), 'color': '#fff'}">{{ (offre?.statut) }}</span></li>
+                <li>Date de publication: <span>{{ formatDate(offre?.datePublication) }}</span></li>
                 <li>Localisation: <span>{{ filiale?.adresse || 'Inconnue' }}</span></li>
                 <li>Nombre de postes: <span>{{ offre?.nombrePostes || 'Non spécifié' }}</span></li>
                 <li>Nature du travail: <span>{{ getModeTravailLabel(offre?.modeTravail) }}</span></li>
                 <li>Type de contrat: <span class="badge" [ngStyle]="{'background-color': getContractColor(offre?.typeContrat), 'color': getTypeContratLabel(offre?.typeContrat) === 'Freelance' ? '#212529' : '#fff'}">{{ getTypeContratLabel(offre?.typeContrat) }}</span></li>
                 <li>Date limite: <span>{{ formatDate(offre?.dateExpiration) }}</span></li>
               </ul>
+              <!-- Remove the apply button -->
               <div class="apply-btn2">
                 <a (click)="applyForJob()" class="btn">Postuler maintenant</a>
               </div>
             </div>
-            <!-- Informations de l’entreprise -->
             <div class="post-details4 mb-50">
               <div class="small-section-tittle">
                 <h4>À propos de l’entreprise</h4>
@@ -166,8 +151,12 @@
               <p>{{ filiale?.description || 'Aucune description disponible.' }}</p>
               <ul>
                 <li>Nom: <span>{{ filiale?.nom || 'Inconnu' }}</span></li>
-                <li>Site web: <span><a [href]="filiale?.siteWeb" target="_blank">{{ filiale?.siteWeb || 'Non spécifié' }}</a></span></li>
-                <li>Email: <span>{{ filiale?.email || 'Non spécifié' }}</span></li>
+                <li>Site web: <span>
+                  <a [href]="filiale?.siteWeb?.includes('@') ? 'https://www.aster.com' : filiale?.siteWeb" target="_blank">
+                    {{ filiale?.siteWeb?.includes('@') ? 'https://www.aster.com' : (filiale?.siteWeb || 'Non spécifié') }}
+                  </a>
+                </span></li>
+                <li>Email: <span>{{ filiale?.siteWeb?.includes('@') ? filiale?.siteWeb : (filiale?.email || 'Non spécifié') }}</span></li>
                 <li>Adresse: <span>{{ filiale?.adresse || 'Non spécifié' }}</span></li>
               </ul>
             </div>
@@ -217,42 +206,27 @@
       </div>
     </div>
   </footer>
-  <!-- JS here -->
-
-    <!-- All JS Custom Plugins Link Here here -->
-    <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="../../../assets/User/js/popper.min.js"></script>
-    <script src="../../../assets/User/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Range -->
-    <script src="../../../assets/User/js/owl.carousel.min.js"></script>
-    <script src="../../../assets/User/js/slick.min.js"></script>
-    <script src="../../../assets/User/js/price_rangs.js"></script>
-    <!-- One Page, Animated-HeadLin -->
-    <script src="../../../assets/User/js/wow.min.js"></script>
-    <script src="../../../assets/User/js/animated.headline.js"></script>
-    <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
-
-    <!-- Scrollup, nice-select, sticky -->
-    <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
-    <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
-    <script src="../../../assets/User/js/jquery.sticky.js"></script>
-    
-    <!-- contact js -->
-    <script src="../../../assets/User/js/contact.js"></script>
-    <script src="../../../assets/User/js/jquery.form.js"></script>
-    <script src="../../../assets/User/js/jquery.validate.min.js"></script>
-    <script src="../../../assets/User/js/mail-script.js"></script>
-    <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
-    
-    <!-- Jquery Plugins, main Jquery -->	
-    <script src="../../../assets/User/js/plugins.js"></script>
-    <script src="../../../assets/User/js/main.js"></script>
+  <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
+  <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
+  <script src="../../../assets/User/js/popper.min.js"></script>
+  <script src="../../../assets/User/js/bootstrap.min.js"></script>
+  <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
+  <script src="../../../assets/User/js/owl.carousel.min.js"></script>
+  <script src="../../../assets/User/js/slick.min.js"></script>
+  <script src="../../../assets/User/js/price_rangs.js"></script>
+  <script src="../../../assets/User/js/wow.min.js"></script>
+  <script src="../../../assets/User/js/animated.headline.js"></script>
+  <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
+  <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
+  <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
+  <script src="../../../assets/User/js/jquery.sticky.js"></script>
+  <script src="../../../assets/User/js/contact.js"></script>
+  <script src="../../../assets/User/js/jquery.form.js"></script>
+  <script src="../../../assets/User/js/jquery.validate.min.js"></script>
+  <script src="../../../assets/User/js/mail-script.js"></script>
+  <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
+  <script src="../../../assets/User/js/plugins.js"></script>
+  <script src="../../../assets/User/js/main.js"></script>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9336e50a0f36dd20',t:'MTc0NTE3NTczMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
-
-    
 </html>
