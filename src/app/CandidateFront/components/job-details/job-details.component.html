@@ -130,7 +130,7 @@
                 <h4>Aperçu de l’offre</h4>
               </div>
               <ul>
-                <li>Statut: <span class="badge" [ngStyle]="{'background-color': getStatutColor(offre?.statut), 'color': '#fff'}">{{ (offre?.statut) }}</span></li>
+                <li>Statut: <span class="badge" >{{ (offre?.statut) }}</span></li>
                 <li>Date de publication: <span>{{ formatDate(offre?.datePublication) }}</span></li>
                 <li>Localisation: <span>{{ filiale?.adresse || 'Inconnue' }}</span></li>
                 <li>Nombre de postes: <span>{{ offre?.nombrePostes || 'Non spécifié' }}</span></li>
@@ -139,9 +139,9 @@
                 <li>Date limite: <span>{{ formatDate(offre?.dateExpiration) }}</span></li>
               </ul>
               <!-- Remove the apply button -->
-              <div class="apply-btn2">
-                <a (click)="applyForJob()" class="btn">Postuler maintenant</a>
-              </div>
+              <button class="btn btn-primary" (click)="navigateToCandidature()">
+                Postuler à cette offre
+              </button>
             </div>
             <div class="post-details4 mb-50">
               <div class="small-section-tittle">

@@ -1,1 +1,59 @@
-<p>candidature-list works!</p>
+<!-- mes-candidatures.component.html -->
+<div class="candidatures-container">
+    <h2>Mes candidatures</h2>
+    
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Chargement...</span>
+      </div>
+    </div>
+    
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="!isLoading && !error">
+      <div *ngIf="candidatures.length === 0" class="alert alert-info">
+        Vous n'avez pas encore postulé à des offres d'emploi.
+        <a routerLink="/offres" class="btn btn-link">Voir les offres disponibles</a>
+      </div>
+      
+      <div class="row">
+        <div *ngFor="let candidature of candidatures" class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">{{ candidature.offreTitre }}</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Date de soumission :</strong> {{ candidature.dateSoumission | date:'dd/MM/yyyy' }}
+              </p>
+              <div class="mb-2">
+                <span class="badge" [ngClass]="{
+                  'badge-primary': candidature.statut === 'Soumise',
+                  'badge-success': candidature.statut === 'Acceptée',
+                  'badge-danger': candidature.statut === 'Refusée',
+                  'badge-warning': candidature.statut === 'En attente',
+                  'badge-info': candidature.statut === 'En cours d\'évaluation'
+                }">{{ candidature.statut }}</span>
+              </div>
+              <p class="card-text">
+                <strong>Message de motivation :</strong>
+              </p>
+              <p class="card-text text-muted">
+                {{ (candidature.messageMotivation.length > 100) ? (candidature.messageMotivation | slice:0:100) + '...' : candidature.messageMotivation }}
+              </p>
+            </div>
+            <div class="card-footer">
+              <a [routerLink]="['/candidature', candidature.idCandidature]" class="btn btn-outline-primary btn-sm">
+                Voir les détails
+              </a>
+              <a [routerLink]="['/candidature/edit', candidature.idCandidature]" class="btn btn-outline-secondary btn-sm ml-2">
+                Modifier
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

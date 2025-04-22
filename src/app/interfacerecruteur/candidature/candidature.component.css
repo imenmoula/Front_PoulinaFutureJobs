@@ -1,0 +1,17 @@
+/* candidature-form.component.css */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  textarea {
+    resize: vertical;
+  }

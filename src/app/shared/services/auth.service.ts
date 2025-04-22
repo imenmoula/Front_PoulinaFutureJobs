@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { catchError, tap,map } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
@@ -141,26 +141,21 @@ export class AuthService {
   // getRecruteurs(): Observable<any> {
   //   return this.http.get(`${this.apiUrl}/recruteurs`);
   // }
-  getUserProfile(userId: string): Observable<any> {
+  getUserProfile(): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      return throwError(() => new Error('Utilisateur non connecté.'));
+    }
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     });
 
     return this.http.get(`${this.apiUrl}/${userId}`, { headers }).pipe(
-      map((response: any) => {
-        // Supposons que le backend renvoie un objet comme { user: { id, fullName, role } }
-        if (response && response.user) {
-          return response.user;
-        } else if (response && response.id) {
-          // Si le backend renvoie directement l'objet utilisateur
-          return response;
-        }
-        throw new Error('Utilisateur non trouvé dans la réponse');
-      }),
-      catchError(error => {
-        console.error('Erreur lors de la récupération du profil utilisateur:', error);
-        return of(null); // Retourner null en cas d'erreur
+      catchError((error) => {
+        console.error('Erreur lors de la récupération du profil utilisateur', error);
+        return throwError(() => new Error('Erreur lors de la récupération du profil utilisateur'));
       })
     );
   }
