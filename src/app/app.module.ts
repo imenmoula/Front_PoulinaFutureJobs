@@ -50,6 +50,7 @@ import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.c
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
+import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
   declarations: [
@@ -88,6 +89,9 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
     FooterComponent,
     JobListingComponent,
     JobDetailsComponent,
+   CandidateurDetailsComponent,
+    
+    CandidateListComponent
     // ApropsComponent
    
   
@@ -104,10 +108,8 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
     BrowserAnimationsModule, 
     ToastrModule.forRoot(),
     
-    MatCardModule, // Add this
-    MatButtonModule,
-    MatIconModule,
-   
+    
+ 
   ],
     
   

@@ -36,6 +36,9 @@ export class CompetenceService {
       catchError(this.handleError)
     );
   }
+  updateUserCompetences(userId: string, competences: any[]): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${userId}/competences`, competences);
+  }
 
   createCompetence(competence: any): Observable<any> {
     return this.http.post(this.apiUrl, competence);

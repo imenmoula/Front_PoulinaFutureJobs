@@ -1,0 +1,99 @@
+<div class="container">
+    <h2>Détails de la Candidature</h2>
+  
+    <!-- Display error message if something goes wrong -->
+    <div *ngIf="errorMessage" class="error card">
+      <p><i class="fas fa-exclamation-circle"></i> {{ errorMessage }}</p>
+    </div>
+  
+    <!-- Display loading message if candidature is null and no error -->
+    <div class="loading card" *ngIf="!candidature && !errorMessage">
+      <p><i class="fas fa-spinner fa-spin"></i> Chargement...</p>
+    </div>
+  
+    <!-- Display candidature details if available -->
+    <div class="candidate-details" *ngIf="candidature">
+      <h3>{{ candidature.appUser.fullName }}</h3>
+  
+      <!-- Section: Détails de l'Offre -->
+      <div class="section card">
+        <h4><i class="fas fa-briefcase"></i> Détails de l'Offre</h4>
+        <p><strong>Titre de l'Offre:</strong> {{ offre?.titre || candidature.offreTitre }}</p>
+        <p><strong>Type de Contrat:</strong> {{ getTypeContratString(offre?.typeContrat) }}</p>
+        <p><strong>Mode de Travail:</strong> {{ getModeTravailString(offre?.modeTravail) }}</p>
+      </div>
+  
+      <!-- Section: Informations Personnelles -->
+      <div class="section card">
+        <h4><i class="fas fa-user"></i> Informations Personnelles</h4>
+        <p><strong>Nom:</strong> {{ candidature.appUser.nom }}</p>
+        <p><strong>Prénom:</strong> {{ candidature.appUser.prenom }}</p>
+        <p><strong>Date de Naissance:</strong> {{ candidature.appUser.dateNaissance }}</p>
+        <p><strong>Adresse:</strong> {{ candidature.appUser.adresse }}, {{ candidature.appUser.ville }}, {{ candidature.appUser.pays }}</p>
+        <p><strong>Téléphone:</strong> {{ candidature.appUser.phone }}</p>
+        <p><strong>Candidate Status:</strong> {{ candidature.appUser.statut }}</p>
+        <p><strong>Niveau d'Étude:</strong> {{ candidature.appUser.niveauEtude }}</p>
+        <p><strong>Diplôme:</strong> {{ candidature.appUser.diplome }} ({{ candidature.appUser.universite }})</p>
+        <p><strong>Spécialité:</strong> {{ candidature.appUser.specialite }}</p>
+        <p><strong>CV:</strong> <a [href]="candidature.appUser.cv" target="_blank">Voir CV</a></p>
+        <p><strong>LinkedIn:</strong> <a [href]="candidature.appUser.linkedIn" target="_blank">Profil LinkedIn</a></p>
+        <p><strong>GitHub:</strong> <a [href]="candidature.appUser.github" target="_blank">Profil GitHub</a></p>
+        <p><strong>Portfolio:</strong> <a [href]="candidature.appUser.portfolio" target="_blank">Portfolio</a></p>
+      </div>
+  
+      <!-- Section: Message de Motivation -->
+      <div class="section card">
+        <h4><i class="fas fa-comment"></i> Message de Motivation</h4>
+        <p>{{ candidature.messageMotivation }}</p>
+      </div>
+  
+      <!-- Section: Expériences -->
+      <div class="section card">
+        <h4><i class="fas fa-history"></i> Expériences</h4>
+        <div class="experience" *ngFor="let experience of candidature.experiences">
+          <h5>{{ experience.poste }} chez {{ experience.nomEntreprise }}</h5>
+          <p>{{ experience.dateDebut | date:'mediumDate' }} - {{ experience.dateFin ? (experience.dateFin | date:'mediumDate') : 'Présent' }}</p>
+          <p>{{ experience.description }}</p>
+          <p><strong>Compétences acquises:</strong> {{ experience.competenceAcquise }}</p>
+          <div class="certificats" *ngIf="experience.certificats?.length">
+            <strong>Certificats:</strong>
+            <ul>
+              <li *ngFor="let cert of experience.certificats">
+                {{ cert.nom }} ({{ cert.organisme }}) - {{ cert.dateObtention | date:'mediumDate' }}
+                <a [href]="cert.urlDocument" target="_blank">Voir document</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Section: Compétences -->
+      <div class="section card">
+        <h4><i class="fas fa-tools"></i> Compétences</h4>
+        <div class="skills-container">
+          <div class="skills-scroller">
+            <span
+              class="competence"
+              *ngFor="let competence of candidature.competences"
+              [ngClass]="{
+                'level-advanced': competence.niveauPossede === 'Avancé' || competence.niveauPossede === 'Expert',
+                'level-intermediate': competence.niveauPossede === 'Intermédiaire',
+                'level-beginner': competence.niveauPossede === 'Débutant'
+              }"
+            >
+              {{ competence.competenceNom }} ({{ competence.niveauPossede }})
+            </span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Section: Statut -->
+      <div class="section card">
+        <h4><i class="fas fa-info-circle"></i> Statut</h4>
+        <p [ngClass]="{'status-accepted': candidature.statut === 'Acceptée', 'status-other': candidature.statut !== 'Acceptée'}">
+          {{ candidature.statut }}
+        </p>
+        <p><strong>Date de Soumission:</strong> {{ candidature.dateSoumission | date:'medium' }}</p>
+      </div>
+    </div>
+  </div>

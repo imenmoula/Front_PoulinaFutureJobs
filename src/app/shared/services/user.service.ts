@@ -62,5 +62,36 @@ export class UserService {
       }
     }
     return throwError(() => new Error(errorMessage));
+ 
+  }
+  ///********************************************les experiences et competences ****** */
+  // // POST /api/Users/{userId}/Experiences
+  // addExperience(userId: string, experience: ExperienceForm): Observable<ExperienceResponse> {
+  //   return this.http.post<ExperienceResponse>(`${this.apiUrl}/${userId}/Experiences`, experience);
+  // }
+
+  // // PUT /api/Users/{userId}/Experiences/{experienceId}
+  // updateExperience(userId: string, experienceId: string, experience: ExperienceForm): Observable<void> {
+  //   return this.http.put<void>(`${this.apiUrl}/${userId}/Experiences/${experienceId}`, experience);
+  // }
+
+  // // DELETE /api/Users/{userId}/Experiences/{experienceId}
+  // deleteExperience(userId: string, experienceId: string): Observable<void> {
+  //   return this.http.delete<void>(`${this.apiUrl}/${userId}/Experiences/${experienceId}`);
+  // }
+
+  // // POST /api/Users/{userId}/Competences
+  // addCompetence(userId: string, competence: CandidateCompetenceForm): Observable<CandidateCompetenceResponse> {
+  //   return this.http.post<CandidateCompetenceResponse>(`${this.apiUrl}/${userId}/Competences`, competence);
+  // }
+
+  // // PUT /api/Users/{userId}/Competences/{competenceId}
+  // updateCompetence(userId: string, competenceId: string, competence: CandidateCompetenceForm): Observable<void> {
+  //   return this.http.put<void>(`${this.apiUrl}/${userId}/Competences/${competenceId}`, competence);
+  // }
+
+  // DELETE /api/Users/{userId}/Competences/{competenceId}
+  deleteCompetence(userId: string, competenceId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${userId}/Competences/${competenceId}`);
   }
 }

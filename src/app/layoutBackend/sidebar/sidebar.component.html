@@ -142,13 +142,64 @@
       </ul>
     
       <!-- Menu pour Recruteur -->
-      <ul class="list-unstyled" *ngIf="isRecruteur()">
+      <!-- <ul class="list-unstyled" *ngIf="isRecruteur()">
         <li class="menu-item">
           <a routerLink="/recruiter/dashboard" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center">
             <i class="fa fa-home me-3"></i>
             <span>Accueil</span>
           </a>
         </li>
+        <li class="menu-item">
+          <a class="menu-link py-3 px-4 d-flex align-items-center justify-content-between" 
+             data-bs-toggle="collapse" 
+             href="#jobs-menu" 
+             role="button" 
+             aria-expanded="false" 
+             aria-controls="jobs-menu"
+             (click)="toggleMenu('jobs')">
+            <div>
+              <i class="fa fa-briefcase me-3"></i>
+              <span>Offres d'emploi</span>
+            </div>
+            <i class="fa fa-chevron-down"></i>
+          </a>
+          <div class="collapse" id="jobs-menu" [ngClass]="{'show': menuState['jobs']}">
+            <ul class="submenu list-unstyled ms-4">
+              <li>
+                <a routerLink="/offres" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Liste des offres
+                </a>
+              </li>
+              <li>
+                <a routerLink="/recruiter/jobs/add" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Ajouter une offre
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="collapse" id="jobs-menu" [ngClass]="{'show': menuState['jobs']}">
+            <ul class="submenu list-unstyled ms-4">
+              <li>
+                <a routerLink="/candidatures" routerLinkActive="active" class="submenu-link py-2 d-block">
+                  Liste des candidatures
+                </a>
+              </li>
+              
+            </ul>
+          </div>
+         
+        </li>
+      </ul> -->
+      <ul class="list-unstyled" *ngIf="isRecruteur()">
+        <!-- Accueil -->
+        <li class="menu-item">
+          <a routerLink="/recruiter/dashboard" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center">
+            <i class="fa fa-home me-3"></i>
+            <span>Accueil</span>
+          </a>
+        </li>
+      
         <!-- Offres d'emploi -->
         <li class="menu-item">
           <a class="menu-link py-3 px-4 d-flex align-items-center justify-content-between" 
@@ -179,6 +230,15 @@
             </ul>
           </div>
         </li>
+      
+        <!-- Liste des candidatures (as a top-level menu item) -->
+        <li class="menu-item">
+          <a routerLink="/candidatures" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center">
+            <i class="fa fa-users me-3"></i>
+            <span>Liste des candidatures</span>
+          </a>
+        </li>
+      
         <!-- Autres sections du menu Recruteur -->
       </ul>
     </div>

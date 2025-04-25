@@ -1,0 +1,256 @@
+/* Existing styles (unchanged) */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+  }
+  
+  h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  h3 {
+    color: #34495e;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+  
+  .card {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #007bff, #00c6ff);
+    transition: width 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card:hover::before {
+    width: 100%;
+  }
+  
+  .section {
+    h4 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 8px;
+    }
+  
+    h4 i {
+      color: #007bff;
+      font-size: 1.2rem;
+    }
+  
+    p {
+      margin: 8px 0;
+      color: #5a5a5a;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+  
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+  
+    a:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+  }
+  
+  .experience {
+    border-left: 4px solid #007bff;
+    padding-left: 15px;
+    margin: 15px 0;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+  
+  .experience::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 12px;
+    height: 12px;
+    background-color: #007bff;
+    border-radius: 50%;
+  }
+  
+  .experience h5 {
+    color: #34495e;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+  }
+  
+  .experience p {
+    margin: 5px 0;
+  }
+  
+  .certificats {
+    margin-top: 10px;
+  
+    ul {
+      list-style-type: disc;
+      padding-left: 25px;
+    }
+  
+    li {
+      margin: 5px 0;
+      color: #5a5a5a;
+    }
+  }
+  
+  .error {
+    background: linear-gradient(145deg, #f8d7da, #f1aeb5);
+    color: #721c24;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .loading {
+    text-align: center;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .status-accepted {
+    display: inline-block;
+    background: linear-gradient(145deg, #d4edda, #a3cfbb);
+    color: #155724;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: pulse 1.5s infinite;
+  }
+  
+  .status-other {
+    display: inline-block;
+    background: linear-gradient(145deg, #f8d7da, #f1aeb5);
+    color: #721c24;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+      transform: scale(1.02);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  /* New styles for the skills section */
+  .skills-container {
+    overflow: hidden;
+    padding: 10px 0;
+  }
+  
+  .skills-scroller {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  
+  /* Hide scrollbar for a cleaner look */
+  .skills-scroller::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .skills-scroller {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .competence {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    background-color: #f5f5f5; /* Light gray base color as in the image */
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 500;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .competence:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Conditional styling based on skill level */
+  .level-advanced {
+    background-color: #d4edda; /* Green for Avancé/Expert */
+    color: #155724;
+  }
+  
+  .level-intermediate {
+    background-color: #ffe8cc; /* Orange for Intermédiaire */
+    color: #664d03;
+  }
+  
+  .level-beginner {
+    background-color: #f8d7da; /* Red for Débutant */
+    color: #721c24;
+  }

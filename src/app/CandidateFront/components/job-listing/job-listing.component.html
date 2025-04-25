@@ -184,16 +184,16 @@
               </div>
               <div class="job-card-body">
                 <div class="filiale-image">
-                  <img [src]="filiales[offre.idFiliale]?.photo || 'assets/img/icon/job-list1.png'"
-                    alt="{{ filiales[offre.idFiliale]?.nom }}" class="filiale-img">
+                  <img [src]="filiales[offre.idFiliale].photo || 'assets/img/icon/job-listing.png'" 
+                  alt="{{ filiales[offre.idFiliale].nom }}" 
+                  class="filiale-img">                
                 </div>
                 <div class="job-details">
                   <h5>{{ offre.titre }}</h5>
                   <ul class="job-info-list">
                     <li>
                       <i class="fas fa-building"></i>
-                      {{ filiales[offre.idFiliale]?.nom || 'Unknown Company' }}
-                    </li>
+                      <p>{{ filiales[offre.idFiliale].nom || 'Unknown Company' }}</p>                    </li>
                     <li>
                       <i class="fas fa-briefcase"></i> {{ offre.specialite }}
                     </li>

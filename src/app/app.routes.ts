@@ -35,7 +35,9 @@ import { ContentComponent } from './layoutBackend/content/content.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
-import { CandidatureComponent } from './interfacerecruteur/candidature/candidature.component';
+// import { CandidatureComponent } from './interfacerecruteur/candidature/candidature.component';
+import { CandidatureListComponent } from './interfacerecruteur/candidature-list/candidature-list.component';
+import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 
 
@@ -137,9 +139,10 @@ export const routes: Routes = [
   { path: 'job-details/:id', component: JobDetailsComponent },
   // {path:'/about',component:ApropsComponent}, 
 
-  { path: 'offre/:id/postuler', component: CandidatureComponent, canActivate: [AuthGuard] },  { path: 'mes-candidatures', component: CandidateListComponent },
-  { path: 'candidature/:id', component: CandidateDetailsComponent },
-  { path: 'candidature/edit/:id', component: CandidatureComponent },
+  // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
+  // { path: 'candidature/edit/:id', component: CandidatureComponent },
+  { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   // Fixed: Removed space  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];

@@ -461,11 +461,12 @@
    }
  navigateToCandidature(): void {
    if (this.idOffreEmploi) {
-     this.router.navigate(['/offre', this.idOffreEmploi, 'postuler']);
+     this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
    } else {
      console.error('No idOffreEmploi available for navigation');
    }
  }
+ 
 
  
    getModeTravailLabel(mode: string | undefined): string {

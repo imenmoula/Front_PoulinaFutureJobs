@@ -1,0 +1,114 @@
+/* Container and layout */
+.container-fluid {
+    padding: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  /* Search form */
+  .form-control {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+  }
+  
+  /* Table styling */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-dark {
+    background-color: #343a40;
+    color: #fff;
+  }
+  
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* Select and button styling */
+  select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  
+  select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+  }
+  
+  .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+  }
+  
+  .shadow {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-xs {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+  }
+  
+  .sharp {
+    border-radius: 4px;
+  }
+  
+  .d-flex {
+    display: flex;
+    gap: 5px;
+  }
+  
+  /* Text alignment */
+  .text-center {
+    text-align: center;
+  }
