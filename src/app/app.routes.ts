@@ -38,6 +38,7 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
 // import { CandidatureComponent } from './interfacerecruteur/candidature/candidature.component';
 import { CandidatureListComponent } from './interfacerecruteur/candidature-list/candidature-list.component';
 import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
+import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 
 
@@ -137,7 +138,7 @@ export const routes: Routes = [
   // { path: 'job-details/:id', component: JobDetailsComponent },
   { path: 'job-list', component: JobListingComponent },
   { path: 'job-details/:id', component: JobDetailsComponent },
-  // {path:'/about',component:ApropsComponent}, 
+  // {path:'/about',component:ApropsComponent ,canActivate: [AuthGuard] ,data: { roles: ['Candidate'] } }, 
 
   // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   // { path: 'candidature/edit/:id', component: CandidatureComponent },
