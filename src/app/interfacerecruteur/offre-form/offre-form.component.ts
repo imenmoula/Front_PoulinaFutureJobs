@@ -76,6 +76,14 @@ export class OffreFormComponent implements OnInit {
     this.offreEmploiService.getStatuts().subscribe({
       next: (statuts) => {
         this.statuts = statuts;
+        console.log('Statuts chargés:', this.statuts);
+        // Ensure the statuts match the expected values
+        if (!this.statuts.includes('Ouvert')) {
+          this.statuts.push('Ouvert');
+        }
+        if (!this.statuts.includes('cloturer')) {
+          this.statuts.push('cloturer');
+        }
       },
       error: (error) => {
         console.error('Erreur lors du chargement des statuts', error);
@@ -124,7 +132,7 @@ export class OffreFormComponent implements OnInit {
       nombrePostes: [1, [Validators.required, Validators.min(1)]],
       modeTravail: ['', [Validators.required]],
       avantages: [''],
-      statut: ['', [Validators.required]],
+      statut: ['Ouvert', [Validators.required]], // Default to 'Ouvert'
       niveauExperienceRequis: ['', [Validators.required, Validators.maxLength(50)]],
       diplomeRequis: ['', [Validators.maxLength(100)]],
       idRecruteur: ['', [Validators.required]],
@@ -164,7 +172,7 @@ export class OffreFormComponent implements OnInit {
   loadRecruteurs(): void {
     this.offreEmploiService.getRecruteurIds().subscribe({
       next: (response) => {
-        if (response) {  
+        if (response) {
           this.recruteurs = response.data;
           console.log('Recruteurs chargés:', this.recruteurs);
         } else {
@@ -190,7 +198,8 @@ export class OffreFormComponent implements OnInit {
     this.loading = true;
     this.offreEmploiService.getOffreEmploi(id).subscribe({
       next: (response) => {
-        if (response && response.idOffreEmploi) {  
+        console.log('Réponse complète de getOffreEmploi:', response);
+        if (response && response.idOffreEmploi) {
           this.populateFormWithOffre(response);
         } else {
           this.showErrorToast('Offre non trouvée');
@@ -198,9 +207,9 @@ export class OffreFormComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
+        console.error('Erreur détaillée lors du chargement:', error);
         this.showErrorToast(error.message || 'Erreur lors du chargement de l\'offre');
         this.loading = false;
-        console.error('Erreur chargement offre:', error);
       }
     });
   }
@@ -225,39 +234,50 @@ export class OffreFormComponent implements OnInit {
       3: 'Freelance',
       4: 'Stage'
     };
-    const typeContratValue = typeContratReverseMap[offre.typeContrat] || '';
 
     const statutReverseMap: { [key: number]: string } = {
       0: 'Ouvert',
-      1: 'cloturer',
+      1: 'cloturer'
     };
-    const statutValue = statutReverseMap[offre.statut] || offre.statut;
 
     const modeTravailReverseMap: { [key: number]: string } = {
       1: 'Presentiel',
       2: 'Hybride',
       3: 'Teletravail'
     };
-    const modeTravailValue = modeTravailReverseMap[offre.modeTravail] || offre.modeTravail;
+
+    const typeContratValue = typeContratReverseMap[offre.typeContrat] || '';
+    const statutValue = statutReverseMap[offre.statut] || offre.statut || 'Ouvert';
+    const modeTravailValue = modeTravailReverseMap[offre.modeTravail] || '';
+
+    if (!typeContratValue) {
+      console.warn(`TypeContrat non mappé: ${offre.typeContrat}`);
+    }
+    if (!statutValue) {
+      console.warn(`Statut non mappé: ${offre.statut}`);
+    }
+    if (!modeTravailValue) {
+      console.warn(`ModeTravail non mappé: ${offre.modeTravail}`);
+    }
 
     this.offreForm.patchValue({
       idOffreEmploi: offre.idOffreEmploi,
-      titre: offre.titre,
-      specialite: offre.specialite,
-      description: offre.description,
+      titre: offre.titre || '',
+      specialite: offre.specialite || '',
+      description: offre.description || '',
       datePublication,
       dateExpiration,
-      salaireMin: offre.salaireMin,
-      salaireMax: offre.salaireMax,
+      salaireMin: offre.salaireMin || null,
+      salaireMax: offre.salaireMax || null,
       typeContrat: typeContratValue,
-      nombrePostes: offre.nombrePostes,
+      nombrePostes: offre.nombrePostes || 1,
       modeTravail: modeTravailValue,
-      avantages: offre.avantages,
+      avantages: offre.avantages || '',
       statut: statutValue,
-      niveauExperienceRequis: offre.niveauExperienceRequis,
-      diplomeRequis: offre.diplomeRequis,
-      idRecruteur: offre.idRecruteur,
-      idFiliale: offre.idFiliale
+      niveauExperienceRequis: offre.niveauExperienceRequis || '',
+      diplomeRequis: offre.diplomeRequis || '',
+      idRecruteur: offre.idRecruteur || '',
+      idFiliale: offre.idFiliale || ''
     });
 
     if (offre.offreCompetences && offre.offreCompetences.length > 0) {
@@ -465,9 +485,8 @@ export class OffreFormComponent implements OnInit {
     };
 
     const statutMap: { [key: string]: number } = {
-      'Ouverte': 1,
-      'Fermee': 2,
-      'EnAttente': 3
+      'Ouvert': 0,
+      'cloturer': 1
     };
 
     const modeTravailMap: { [key: string]: number } = {
@@ -506,7 +525,7 @@ export class OffreFormComponent implements OnInit {
     }
 
     const statutNumeric = statutMap[formValue.statut];
-    if (!statutNumeric) {
+    if (statutNumeric === undefined) {
       this.showWarningToast('Statut invalide. Veuillez sélectionner une valeur valide.');
       return null;
     }
@@ -546,8 +565,10 @@ export class OffreFormComponent implements OnInit {
   }
 
   createOffre(offreData: any): void {
+    console.log('Création de l\'offre avec données:', offreData);
     this.offreEmploiService.createOffreEmploi(offreData).subscribe({
       next: (response) => {
+        console.log('Réponse création:', response);
         if (response.success) {
           this.showSuccessToast('Offre créée avec succès');
           this.router.navigate(['/offres']);
@@ -570,7 +591,7 @@ export class OffreFormComponent implements OnInit {
       this.loading = false;
       return;
     }
-    console.log('Mise à jour de l\'offre ID:', this.offreId);
+    console.log('Mise à jour de l\'offre ID:', this.offreId, 'avec données:', offreData);
     this.offreEmploiService.updateOffreEmploi(this.offreId, offreData).subscribe({
       next: (response) => {
         console.log('Réponse mise à jour:', response);
