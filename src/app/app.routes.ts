@@ -11,7 +11,6 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
 import { RecruteurOnlyComponent } from './authorizeDemo/recruteur-only/recruteur-only.component';
-import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { RoleGuard } from './guards/role.guard';
 import { FilialeListComponent } from './features/filiale-list/filiale-list.component';
 import { LayoutBackendComponent } from './layoutBackend/layout-backend/layout-backend.component';
@@ -28,18 +27,13 @@ import { RecruiterListComponent } from './features/recruiter-list/recruiter-list
 
 import { UserFormComponent } from './features/user-form/user-form.component';
 import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
-import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
 import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { ContentComponent } from './layoutBackend/content/content.component';
-import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
-import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
-import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
-// import { CandidatureComponent } from './interfacerecruteur/candidature/candidature.component';
 import { CandidatureListComponent } from './interfacerecruteur/candidature-list/candidature-list.component';
-import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
 import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
-// import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
+import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
+import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
 
 
 export const routes: Routes = [
@@ -124,26 +118,26 @@ export const routes: Routes = [
   
   { path: 'offres', component: OffreListComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   { path: 'offres/details/:id', component: OffreDetailComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  {
-    path: 'offres/create',
-    component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
-  },
-  {
-    path: 'offres/update/:id',
-    component: OffreFormComponent,
-    canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  // {
+  //   path: 'offres/create',
+  //   component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  // },
+  // {
+  //   path: 'offres/update/:id',
+  //   component: OffreFormComponent,
+  //   canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
 
-  },
+  // },
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
-  { path: 'job-list', component: JobListingComponent },
-  { path: 'job-details/:id', component: JobDetailsComponent },
+  // { path: 'job-list', component: JobListingComponent },
+  // { path: 'job-details/:id', component: JobDetailsComponent },
   // {path:'/about',component:ApropsComponent ,canActivate: [AuthGuard] ,data: { roles: ['Candidate'] } }, 
 
   // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   // { path: 'candidature/edit/:id', component: CandidatureComponent },
-  { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  // { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  // { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   // Fixed: Removed space  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];

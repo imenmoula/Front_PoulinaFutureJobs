@@ -85,10 +85,10 @@ export class CandidateOnlyComponent implements OnInit {
   }
 
   loadOffres(): void {
-    this.offreEmploiService.getAllOffres().subscribe({
-      next: (offres: OffreEmploi[]) => {
-        console.log('Offres fetched:', offres);
-        this.offres = offres || [];
+    this.offreEmploiService.getAll().subscribe({
+      next: (response: { success: boolean; message: string; offresEmploi: OffreEmploi[]; }) => {
+        console.log('Offres fetched:', response.offresEmploi);
+        this.offres = response.offresEmploi || [];
         // Assurer que chaque offre a les données de la filiale
         this.offres.forEach((offre) => {
           if (!offre.filiale && offre.idFiliale) {
@@ -155,8 +155,8 @@ export class CandidateOnlyComponent implements OnInit {
     }
     const term = this.searchTerm.toLowerCase();
     return this.offres.filter(offre =>
-      (offre.titre?.toLowerCase().includes(term) || false) ||
-      (offre.description?.toLowerCase().includes(term) || false) ||
+      // (offre.titre?.toLowerCase().includes(term) || false) ||
+      // (offre.description?.toLowerCase().includes(term) || false) ||
       (offre.filiale?.nom?.toLowerCase().includes(term) || false)
     );
   }

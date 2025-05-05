@@ -1,74 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 .container {
   max-width: 1200px;
+  padding: 0 15px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
-  background-color: #f8f9fa;
-  padding: 15px 20px;
+  padding: 20px 25px;
+  border-bottom: none;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  color: #fff;
+}
+
+.card-header.bg-light {
+  background: #e9ecef;
+  color: #333;
 }
 
 .card-title {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
 .card-body {
-  padding: 20px;
+  padding: 25px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .form-group label {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
   display: block;
-  color: #333;
+  color: #222;
 }
 
 .form-group p {
   margin: 0;
-  font-size: 1rem;
-  color: #555;
+  font-size: 1.05rem;
+  color: #666;
+}
+
+.alert {
+  font-size: 1.05rem;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
 }
 
 .alert-danger {
-  font-size: 1rem;
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-  color: #721c24;
+  background-color: #ffe6e8;
+  border-color: #ffccd0;
+  color: #a71d2a;
 }
 
 .alert-warning {
-  font-size: 1rem;
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  background-color: #fff3cd;
-  border-color: #ffeeba;
-  color: #856404;
+  background-color: #fff4d6;
+  border-color: #ffe8a3;
+  color: #b8860b;
 }
 
 .text-center {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .btn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 4px;
+  padding: 12px 25px;
+  font-size: 1.05rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary {
@@ -81,6 +103,16 @@
   border-color: #004085;
 }
 
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
 .btn-danger {
   background-color: #dc3545;
   border-color: #dc3545;
@@ -91,31 +123,87 @@
   border-color: #bd2130;
 }
 
-.btn-secondary {
-  background-color: #6c757d;
+.btn-outline-secondary {
   border-color: #6c757d;
+  color: #6c757d;
 }
 
-.btn-secondary:hover {
-  background-color: #545b62;
-  border-color: #4e555b;
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-lg {
+  padding: 14px 35px;
+  font-size: 1.2rem;
 }
 
 .spinner-border {
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
-/* Custom SweetAlert2 styling */
+/* Accordion for Posts */
+.accordion-button {
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #f1f3f5;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e9ecef;
+  color: #007bff;
+}
+
+.accordion-body {
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+}
+
+/* SweetAlert2 Styling */
 .swal-large {
-  padding: 20px !important;
-  font-size: 1.2rem !important;
+  padding: 25px !important;
+  font-size: 1.25rem !important;
 }
 
 .swal-large .swal2-title {
-  font-size: 1.8rem !important;
+  font-size: 1.9rem !important;
 }
 
 .swal-large .swal2-content {
-  font-size: 1.1rem !important;
+  font-size: 1.15rem !important;
+}
+
+/* Animations */
+.animate__animated {
+  animation-duration: 0.6s;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .btn-lg {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-size: 1rem;
+  }
+
+  .form-group p {
+    font-size: 0.95rem;
+  }
 }

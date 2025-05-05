@@ -1,268 +1,12 @@
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute, Router } from '@angular/router';
-// import { CommonModule } from '@angular/common';
-// import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
-// import { FilialeService } from '../../shared/services/filiale.service';
-// import { UserService } from '../../shared/services/user.service';
-// import { catchError, Observable, of, forkJoin as rxjsForkJoin } from 'rxjs';
-// import Swal from 'sweetalert2';
-
-// @Component({
-//   selector: 'app-offre-detail',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './offre-detail.component.html',
-//   styleUrls: ['./offre-detail.component.css']
-// })
-// export class OffreDetailComponent implements OnInit {
-//   offre: any = null;
-//   loading: boolean = true;
-//   errorMessage: string | null = null;
-//   filiale: any = null;
-//   recruiterName: string = 'Chargement...';
-//   private toastActive: boolean = false;
-
-//   typeContratLabels: { [key: string]: string } = {
-//     'CDI': 'CDI',
-//     'CDD': 'CDD',
-//     'Freelance': 'Freelance',
-//     'Stage': 'Stage',
-//     '1': 'CDI',
-//     '2': 'CDD',
-//     '3': 'Freelance',
-//     '4': 'Stage'
-//   };
-
-//   modeTravailLabels: { [key: string]: string } = {
-//     'Presentiel': 'Présentiel',
-//     'Hybride': 'Hybride',
-//     'Teletravail': 'Télétravail',
-//     '1': 'Présentiel',
-//     '2': 'Hybride',
-//     '3': 'Télétravail'
-//   };
-
-//   statutLabels: { [key: string]: string } = {
-//     'Ouverte': 'Ouverte',
-//     'Fermee': 'Fermée',
-//     'EnAttente': 'En attente',
-//     '1': 'Ouverte',
-//     '2': 'Fermée',
-//     '3': 'En attente'
-//   };
-
-//   constructor(
-//     private route: ActivatedRoute,
-//     private router: Router,
-//     private offreService: OffreEmploiService,
-//     private filialeService: FilialeService,
-//     private userService: UserService
-//   ) {}
-
-//   ngOnInit(): void {
-//     const id = this.route.snapshot.paramMap.get('id');
-//     console.log('Offer ID from route:', id);
-//     if (id && this.isValidGuid(id)) {
-//       this.loadOffre(id);
-//     } else {
-//       this.setError('ID de l\'offre invalide.');
-//       this.loading = false;
-//     }
-//   }
-
-//   private isValidGuid(value: string): boolean {
-//     const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-//     return guidRegex.test(value);
-//   }
-
-//   private setError(message: string): void {
-//     console.log('Setting errorMessage:', message);
-//     this.errorMessage = message;
-//     if (!this.toastActive) {
-//       this.showErrorToast(message);
-//     }
-//   }
-
-//   loadOffre(id: string): void {
-//     this.loading = true;
-//     this.errorMessage = null;
-//     this.offreService.getOffreEmploiID(id).subscribe({
-//       next: (response) => {
-//         console.log('Réponse brute getOffreEmploi:', JSON.stringify(response, null, 2));
-//         if (response?.idOffreEmploi) {
-//           this.offre = response;
-          
-//           if (this.offre.typeContrat !== undefined) {
-//             this.offre.typeContrat = String(this.offre.typeContrat);
-//           }
-//           if (this.offre.statut !== undefined) {
-//             this.offre.statut = String(this.offre.statut);
-//           }
-//           if (this.offre.modeTravail !== undefined) {
-//             this.offre.modeTravail = String(this.offre.modeTravail);
-//           }
-          
-//           if (this.offre.nombrePostes === 2147483647) {
-//             this.offre.nombrePostes = null;
-//           }
-          
-//           console.log('Offre normalisée:', this.offre);
-
-//           const requests: Observable<any>[] = [
-//             this.filialeService.getFiliale(this.offre.idFiliale).pipe(
-//               catchError((error) => {
-//                 console.warn('Erreur récupération filiale:', error);
-//                 this.setError('Impossible de charger les détails de la filiale.');
-//                 return of(null);
-//               })
-//             ),
-//             this.userService.getUserById(this.offre.idRecruteur).pipe(
-//               catchError((error) => {
-//                 console.warn('Erreur récupération recruteur:', error);
-//                 this.setError('Impossible de charger les détails du recruteur.');
-//                 return of({ fullName: 'Non spécifié' });
-//               })
-//             )
-//           ];
-
-//           rxjsForkJoin(requests).subscribe({
-//             next: ([filialeResponse, recruiterResponse]) => {
-//               console.log('Filiale brute:', filialeResponse);
-//               console.log('Recruteur:', recruiterResponse);
-              
-//               if (filialeResponse) {
-//                 if (filialeResponse.data) {
-//                   this.filiale = filialeResponse.data;
-//                 } else if (filialeResponse.filiale) {
-//                   this.filiale = filialeResponse.filiale;
-//                 } else {
-//                   this.filiale = filialeResponse;
-//                 }
-//               } else {
-//                 this.filiale = { nom: 'Non spécifié', adresse: 'Non spécifié' };
-//               }
-              
-//               console.log('Filiale traitée:', this.filiale);
-              
-//               this.recruiterName = recruiterResponse?.fullName || 'Non spécifié';
-//               this.loading = false;
-//             },
-//             error: (error) => {
-//               this.setError('Erreur lors du chargement des détails supplémentaires.');
-//               this.loading = false;
-//               console.error('Erreur forkJoin:', error);
-//             }
-//           });
-//         } else {
-//           this.setError('Offre non trouvée ou réponse vide.');
-//           this.loading = false;
-//           setTimeout(() => {
-//             this.router.navigate(['/offres']);
-//           }, 3000);
-//         }
-//       },
-//       error: (error) => {
-//         const errorMsg = error.message || 'Erreur lors du chargement de l\'offre (introuvable ou serveur indisponible).';
-//         this.setError(errorMsg);
-//         this.loading = false;
-//         console.error('Erreur chargement offre:', JSON.stringify(error, null, 2));
-//         setTimeout(() => {
-//           this.router.navigate(['/offres']);
-//         }, 3000);
-//       }
-//     });
-//   }
-
-//   editOffre(): void {
-//     if (this.offre) {
-//       this.router.navigate(['/offre-emploi/edit', this.offre.idOffreEmploi]);
-//     } else {
-//       this.setError('Aucune offre sélectionnée pour modification.');
-//     }
-//   }
-
-//   deleteOffre(): void {
-//     if (this.offre) {
-//       Swal.fire({
-//         title: 'Êtes-vous sûr ?',
-//         text: 'Voulez-vous vraiment supprimer cette offre ? Cette action est irréversible.',
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonColor: '#3085d6',
-//         cancelButtonColor: '#d33',
-//         confirmButtonText: 'Oui, supprimer',
-//         cancelButtonText: 'Annuler',
-//         position: 'center',
-//         width: '500px',
-//         customClass: {
-//           popup: 'swal-large'
-//         }
-//       }).then((result) => {
-//         if (result.isConfirmed) {
-//           this.offreService.deleteOffre(this.offre.idOffreEmploi).subscribe({
-//             next: () => {
-//               this.showSuccessToast('Offre supprimée avec succès.');
-//               this.router.navigate(['/offres']);
-//             },
-//             error: (error) => {
-//               const errorMsg = error.message || 'Erreur lors de la suppression de l\'offre.';
-//               this.setError(errorMsg);
-//               console.error('Erreur suppression offre:', error);
-//             }
-//           });
-//         }
-//       });
-//     } else {
-//       this.setError('Aucune offre sélectionnée pour suppression.');
-//     }
-//   }
-
-//   showSuccessToast(message: string): void {
-//     this.toastActive = true;
-//     Swal.fire({
-//       icon: 'success',
-//       title: 'Succès!',
-//       text: message,
-//       position: 'center',
-//       showConfirmButton: false,
-//       timer: 3000,
-//       width: '500px',
-//       customClass: {
-//         popup: 'swal-large'
-//       }
-//     }).then(() => {
-//       this.toastActive = false;
-//     });
-//   }
-
-//   showErrorToast(message: string): void {
-//     if (this.toastActive) return;
-//     this.toastActive = true;
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'Erreur',
-//       text: message,
-//       position: 'center',
-//       showConfirmButton: false,
-//       timer: 3000,
-//       width: '500px',
-//       customClass: {
-//         popup: 'swal-large'
-//       }
-//     }).then(() => {
-//       this.toastActive = false;
-//     });
-//   }
-// }
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { UserService } from '../../shared/services/user.service';
-import { catchError, Observable, of, forkJoin as rxjsForkJoin } from 'rxjs';
+import { DiplomeService } from '../../shared/services/diplome.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { catchError, Observable, of, forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -278,35 +22,15 @@ export class OffreDetailComponent implements OnInit {
   errorMessage: string | null = null;
   filiale: any = null;
   recruiterName: string = 'Chargement...';
+  diplomes: any[] = [];
+  userRole: string = '';
   private toastActive: boolean = false;
 
-  typeContratLabels: { [key: string]: string } = {
-    'CDI': 'CDI',
-    'CDD': 'CDD',
-    'Freelance': 'Freelance',
-    'Stage': 'Stage',
-    '1': 'CDI',
-    '2': 'CDD',
-    '3': 'Freelance',
-    '4': 'Stage',
-    '0': 'Valeur invalide'
-  };
-
-  modeTravailLabels: { [key: string]: string } = {
-    'Presentiel': 'Présentiel',
-    'Hybride': 'Hybride',
-    'Teletravail': 'Télétravail',
-    '1': 'Présentiel',
-    '2': 'Hybride',
-    '3': 'Télétravail'
-  
-  };
-
-  statutLabels: { [key: string]: string } = {
-    'Ouvert': 'Ouvert',
-    'cloturer': 'cloturer',
-    '0': 'Ouvert',
-    '1': ' cloturer',
+  niveauRequisLabels: { [key: string]: string } = {
+    'Debutant': 'Débutant',
+    'Intermediaire': 'Intermédiaire',
+    'Avance': 'Avancé',
+    'Expert': 'Expert'
   };
 
   constructor(
@@ -314,10 +38,13 @@ export class OffreDetailComponent implements OnInit {
     private router: Router,
     private offreService: OffreEmploiService,
     private filialeService: FilialeService,
-    private userService: UserService
+    private userService: UserService,
+    private diplomeService: DiplomeService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.userRole = this.authService.getUserRoles()[0] || '';
     const id = this.route.snapshot.paramMap.get('id');
     console.log('Offer ID from route:', id);
     if (id && this.isValidGuid(id)) {
@@ -344,38 +71,28 @@ export class OffreDetailComponent implements OnInit {
   loadOffre(id: string): void {
     this.loading = true;
     this.errorMessage = null;
-    this.offreService.getOffreEmploiID(id).subscribe({
+    this.offreService.getById(id).subscribe({
       next: (response) => {
         console.log('Réponse brute getOffreEmploi:', JSON.stringify(response, null, 2));
-        if (response?.idOffreEmploi) {
-          // Correctly extract the offer object
-          this.offre = response; // Adjust this based on the actual response structure
-          // OR: this.offre = response.idOffreEmploi || response.data || response;
-
-          console.log('Offre extraite:', this.offre);
-
-          if (this.offre.typeContrat !== undefined) {
-            this.offre.typeContrat = String(this.offre.typeContrat);
-            if (this.offre.typeContrat === '0') {
-              console.warn('Type de contrat invalide détecté:', this.offre.typeContrat);
-              this.showWarningToast('Type de contrat invalide détecté. Veuillez modifier l\'offre pour corriger.');
-            }
-          }
-          if (this.offre.statut !== undefined) {
-            this.offre.statut = String(this.offre.statut);
-          }
-          if (this.offre.modeTravail !== undefined) {
-            this.offre.modeTravail = String(this.offre.modeTravail);
-          }
+        const offreData = response?.offreEmploi || response;
+                        if (offreData?.idOffreEmploi) {
+          this.offre = offreData;
 
           if (this.offre.nombrePostes === 2147483647) {
             this.offre.nombrePostes = null;
           }
 
+          // Initialize arrays
+          this.offre.offreMissions = this.offre.offreMissions || [];
+          this.offre.offreLangues = this.offre.offreLangues || [];
+          this.offre.offreCompetences = this.offre.offreCompetences || [];
+          this.offre.postes = this.offre.postes || [];
+          this.offre.diplomeIds = this.offre.diplomeIds || [];
+
           console.log('Offre normalisée:', this.offre);
 
           if (!this.offre.idFiliale || !this.offre.idRecruteur) {
-            this.setError('ID de la filiale ou du recruteur manquant dans les données de l\'offre.');
+            this.setError('ID de la filiale ou du recruteur manquant.');
             this.loading = false;
             return;
           }
@@ -397,33 +114,33 @@ export class OffreDetailComponent implements OnInit {
             )
           ];
 
-          rxjsForkJoin(requests).subscribe({
-            next: ([filialeResponse, recruiterResponse]) => {
+          if (this.offre.diplomeIds.length > 0) {
+            const diplomeRequests = this.offre.diplomeIds.map((id: string) =>
+              this.diplomeService.getById(id).pipe(
+                catchError((error) => {
+                  console.warn(`Erreur récupération diplôme ${id}:`, error);
+                  return of({ idDiplome: id, nomDiplome: 'Non spécifié', niveau: '', domaine: '', institution: '' });
+                })
+              )
+            );
+            requests.push(...diplomeRequests);
+          }
+
+          forkJoin(requests).subscribe({
+            next: (results) => {
+              const [filialeResponse, recruiterResponse, ...diplomeResponses] = results;
               console.log('Filiale brute:', filialeResponse);
               console.log('Recruteur brut:', recruiterResponse);
+              console.log('Diplômes bruts:', diplomeResponses);
 
               if (filialeResponse) {
-                if (filialeResponse.data) {
-                  this.filiale = filialeResponse.data;
-                } else if (filialeResponse.filiale) {
-                  this.filiale = filialeResponse.filiale;
-                } else {
-                  this.filiale = filialeResponse;
-                }
+                this.filiale = filialeResponse.data || filialeResponse.filiale || filialeResponse;
               } else {
                 this.filiale = { nom: 'Non spécifié', adresse: 'Non spécifié' };
               }
 
-              console.log('Filiale traitée:', this.filiale);
-
-              if (recruiterResponse && recruiterResponse.fullName) {
-                this.recruiterName = recruiterResponse.fullName;
-              } else {
-                console.warn('Nom du recruteur non trouvé dans la réponse:', recruiterResponse);
-                this.recruiterName = 'Non spécifié';
-                this.showWarningToast('Nom du recruteur non disponible.');
-              }
-
+              this.recruiterName = recruiterResponse?.fullName || 'Non spécifié';
+              this.diplomes = diplomeResponses || [];
               this.loading = false;
             },
             error: (error) => {
@@ -441,7 +158,7 @@ export class OffreDetailComponent implements OnInit {
         }
       },
       error: (error) => {
-        const errorMsg = error.message || 'Erreur lors du chargement de l\'offre (introuvable ou serveur indisponible).';
+        const errorMsg = error.message || 'Erreur lors du chargement de l\'offre.';
         this.setError(errorMsg);
         this.loading = false;
         console.error('Erreur chargement offre:', JSON.stringify(error, null, 2));
@@ -450,6 +167,21 @@ export class OffreDetailComponent implements OnInit {
         }, 3000);
       }
     });
+  }
+
+  applyForOffre(): void {
+    if (this.offre) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Postuler',
+        text: 'Fonctionnalité de candidature en cours de développement.',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        customClass: { popup: 'swal-large' }
+      });
+    } else {
+      this.setError('Aucune offre sélectionnée pour postuler.');
+    }
   }
 
   editOffre(): void {
@@ -473,12 +205,10 @@ export class OffreDetailComponent implements OnInit {
         cancelButtonText: 'Annuler',
         position: 'center',
         width: '500px',
-        customClass: {
-          popup: 'swal-large'
-        }
+        customClass: { popup: 'swal-large' }
       }).then((result) => {
         if (result.isConfirmed) {
-          this.offreService.deleteOffre(this.offre.idOffreEmploi).subscribe({
+          this.offreService.delete(this.offre.idOffreEmploi).subscribe({
             next: () => {
               this.showSuccessToast('Offre supprimée avec succès.');
               this.router.navigate(['/offres']);
@@ -506,9 +236,7 @@ export class OffreDetailComponent implements OnInit {
       showConfirmButton: false,
       timer: 3000,
       width: '500px',
-      customClass: {
-        popup: 'swal-large'
-      }
+      customClass: { popup: 'swal-large' }
     }).then(() => {
       this.toastActive = false;
     });
@@ -525,9 +253,7 @@ export class OffreDetailComponent implements OnInit {
       showConfirmButton: false,
       timer: 3000,
       width: '500px',
-      customClass: {
-        popup: 'swal-large'
-      }
+      customClass: { popup: 'swal-large' }
     }).then(() => {
       this.toastActive = false;
     });
@@ -544,9 +270,7 @@ export class OffreDetailComponent implements OnInit {
       showConfirmButton: false,
       timer: 3000,
       width: '500px',
-      customClass: {
-        popup: 'swal-large'
-      }
+      customClass: { popup: 'swal-large' }
     }).then(() => {
       this.toastActive = false;
     });

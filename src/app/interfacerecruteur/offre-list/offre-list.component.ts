@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
@@ -10,12 +9,15 @@ import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import Swal from 'sweetalert2';
+import { OffreEmploi } from '../../Models/offre-emploi.model';
+import { Filiale } from '../../Models/filiale.model';
+import { ModeTravail, StatutOffre, TypeContratEnum } from '../../Models/enums.model';
 
 @Component({
   selector: 'app-offre-list',
   standalone: true,
   templateUrl: './offre-list.component.html',
-  styles: ``,
+  styleUrls: ['./offre-list.component.css'],
   imports: [
     CommonModule,
     RouterModule,
@@ -27,19 +29,19 @@ import Swal from 'sweetalert2';
   ]
 })
 export class OffreListComponent implements OnInit {
-  offres: any[] = [];
-  filteredOffres: any[] = [];
-  paginatedOffres: any[] = [];
-  filiales: any[] = [];
+  offres: OffreEmploi[] = [];
+  filteredOffres: OffreEmploi[] = [];
+  paginatedOffres: OffreEmploi[] = [];
+  filiales: Filiale[] = [];
   sidebarOpen: boolean = false;
   searchForm: FormGroup;
   pageSize = 5;
   currentPage = 0;
   totalItems = 0;
 
-  typeContrats: string[] = [];
-  statuts: string[] = [];
-  modesTravail: string[] = [];
+  typeContrats = Object.values(TypeContratEnum);
+  statuts = Object.values(StatutOffre);
+  modesTravail = Object.values(ModeTravail);
 
   constructor(
     private offreService: OffreEmploiService,
@@ -58,78 +60,15 @@ export class OffreListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadLists();
     this.loadFiliales();
     this.loadOffres();
-    this.searchForm.valueChanges.subscribe((value) => this.searchOffres(value));
-  }
-
-  loadLists(): void {
-    this.offreService.getTypesContrat().subscribe({
-      next: (types) => {
-        this.typeContrats = types;
-        console.log('Types de contrat chargés :', types);
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de Chargement',
-          text: 'Échec du chargement des types de contrat : ' + error.message,
-        });
-        console.error('Erreur lors du chargement des types de contrat', error);
-      }
-    });
-
-    this.offreService.getStatuts().subscribe({
-      next: (statuts) => {
-        this.statuts = statuts;
-        console.log('Statuts chargés :', statuts);
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de Chargement',
-          text: 'Échec du chargement des statuts : ' + error.message,
-        });
-        console.error('Erreur lors du chargement des statuts', error);
-      }
-    });
-
-    this.offreService.getModesTravail().subscribe({
-      next: (modes) => {
-        this.modesTravail = modes;
-        console.log('Modes de travail chargés :', modes);
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de Chargement',
-          text: 'Échec du chargement des modes de travail : ' + error.message,
-        });
-        console.error('Erreur lors du chargement des modes de travail', error);
-      }
-    });
-  }
-
-  // Méthode pour convertir le type de contrat si nécessaire
-  getTypeContratLabel(typeContrat: string | number): string {
-    if (typeof typeContrat === 'number') {
-      switch(typeContrat) {
-        case 0: return 'CDI';
-        case 1: return 'CDD';
-        case 2: return 'Stage';
-        case 3: return 'Alternance';
-        default: return 'Inconnu';
-      }
-    }
-    return typeContrat as string;
+    this.searchForm.valueChanges.subscribe(value => this.searchOffres(value));
   }
 
   loadFiliales(): void {
     this.filialeService.getFiliales().subscribe({
       next: (filiales) => {
         this.filiales = filiales;
-        console.log('Filiales chargées :', this.filiales);
       },
       error: (error) => {
         Swal.fire({
@@ -137,24 +76,25 @@ export class OffreListComponent implements OnInit {
           title: 'Erreur de Chargement',
           text: 'Échec du chargement des filiales : ' + error.message,
         });
-        console.error('Erreur lors du chargement des filiales :', error);
       }
     });
   }
 
-  getNomFiliale(idFiliale: string): string {
-    const filiale = this.filiales.find(f => f.idFiliale === idFiliale);
-    return filiale ? filiale.nom : 'Filiale inconnue';
-  }
-
   loadOffres(): void {
-    this.offreService.getAllOffres().subscribe({
+    this.offreService.getAll().subscribe({
       next: (response) => {
-        this.offres = response || [];
-        this.filteredOffres = [...this.offres];
-        this.totalItems = this.filteredOffres.length;
-        this.updatePaginatedOffres();
-        console.log('Offres chargées :', this.offres);
+        if (response.success) {
+          this.offres = response.offresEmploi;
+          this.filteredOffres = [...this.offres];
+          this.totalItems = this.filteredOffres.length;
+          this.updatePaginatedOffres();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur de Chargement',
+            text: response.message,
+          });
+        }
       },
       error: (error) => {
         Swal.fire({
@@ -162,7 +102,6 @@ export class OffreListComponent implements OnInit {
           title: 'Erreur de Chargement',
           text: 'Échec du chargement des offres : ' + error.message,
         });
-        console.error('Erreur lors du chargement des offres', error);
       }
     });
   }
@@ -178,15 +117,20 @@ export class OffreListComponent implements OnInit {
       return;
     }
 
-    console.log('Paramètres de recherche :', { titre, specialite, typeContrat, statut, modeTravail, idFiliale });
-
-    this.offreService.searchOffres(titre, specialite, typeContrat, statut, modeTravail, idFiliale).subscribe({
-      next: (response: any) => {
-        this.filteredOffres = response.offresEmploi || [];
-        this.totalItems = this.filteredOffres.length;
-        this.currentPage = 0;
-        this.updatePaginatedOffres();
-        console.log('Résultats de la recherche :', this.filteredOffres);
+    this.offreService.search(titre, specialite, typeContrat, statut, modeTravail, idFiliale).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.filteredOffres = response.offresEmploi;
+          this.totalItems = this.filteredOffres.length;
+          this.currentPage = 0;
+          this.updatePaginatedOffres();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur de Recherche',
+            text: response.message,
+          });
+        }
       },
       error: (error) => {
         Swal.fire({
@@ -194,7 +138,6 @@ export class OffreListComponent implements OnInit {
           title: 'Erreur de Recherche',
           text: error.error?.message || 'Échec de la recherche des offres.',
         });
-        console.error('Erreur lors de la recherche', error);
         this.filteredOffres = [];
         this.totalItems = 0;
         this.updatePaginatedOffres();
@@ -213,6 +156,23 @@ export class OffreListComponent implements OnInit {
     this.updatePaginatedOffres();
   }
 
+  getNomFiliale(idFiliale: string): string {
+    const filiale = this.filiales.find(f => f.idFiliale === idFiliale);
+    return filiale ? filiale.nom : 'Filiale inconnue';
+  }
+
+  getTitre(offre: OffreEmploi): string {
+    return offre.postes && offre.postes.length > 0 ? offre.postes[0].titrePoste : 'Sans titre';
+  }
+
+  getNombrePostes(offre: OffreEmploi): number {
+    return offre.postes ? offre.postes.reduce((sum, poste) => sum + poste.nombrePostes, 0) : 0;
+  }
+
+  editOffre(id: string): void {
+    this.router.navigate(['/offres/update', id]);
+  }
+
   deleteOffre(id: string): void {
     Swal.fire({
       title: 'Confirmation',
@@ -223,8 +183,9 @@ export class OffreListComponent implements OnInit {
       cancelButtonText: 'Non, annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.offreService.deleteOffre(id).subscribe({
+        this.offreService.delete(id).subscribe({
           next: () => {
+            // No response object is returned, so you can't access any properties
             this.offres = this.offres.filter(o => o.idOffreEmploi !== id);
             this.filteredOffres = this.filteredOffres.filter(o => o.idOffreEmploi !== id);
             this.totalItems = this.filteredOffres.length;
@@ -241,13 +202,16 @@ export class OffreListComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               title: 'Erreur de Suppression',
-              text: 'Échec de la suppression de loffre : ' + error.message,
+              text: 'Échec de la suppression de l\'offre : ' + error.message,
             });
-            console.error('Erreur lors de la suppression', error);
           }
         });
       }
     });
+  }
+
+  viewDetails(id: string): void {
+    this.router.navigate(['/offres/details', id]);
   }
 
   toggleSidebar(): void {
