@@ -1,12 +1,10 @@
 
           <div class="login-main">
             <form class="theme-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-              <!-- Title and Subtitle -->
               <h4>Connexion à Poulina Future Jobs</h4>
               <p>Entrez votre email et mot de passe pour vous connecter</p>
               
 
-              <!-- Email Input -->
               <div class="form-group">
                 <label class="col-form-label">Adresse Email</label>
                 <input class="form-control" type="email" placeholder="test@gmail.com" formControlName="email">
@@ -15,18 +13,16 @@
                 </div>
               </div>
 
-              <!-- Password Input -->
               <div class="form-group">
                 <label class="col-form-label">Mot de passe</label>
                 <div class="form-input position-relative">
                   <input class="form-control" type="password" placeholder="*********" formControlName="password">
-                  <!-- <div class="show-hide"><span class="show"></span></div> -->
+                  <div class="show-hide"><span class="show"></span></div> 
                 </div>
                 <div class="error-feedback" *ngIf="hasDisplayableError('password') && form.controls['password'].hasError('required')">
                   Veuillez entrer votre mot de passe.
                 </div>
               </div>
-<!-- //-----------------------forget password----------------------> 
               <div class="d-flex justify-content-around align-items-center mb-4">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
@@ -35,21 +31,18 @@
                 <a href="#!">Forgot password?</a>
               </div>
 
-              <!-- Submit Button -->
               <div class="form-group mb-0">
                 <button class="btn btn-primary btn-block w-100 mt-3" type="submit">
                   Se connecter
                 </button>
               </div>
 
-              <!-- Signup Link -->
               <p class="mt-4 mb-0 text-center">
                 Pas de compte ? 
                 <a class="ms-2" routerLink="/signup">Créer un compte</a>
               </p>
             </form>
           </div>
-            <!-- Checkbox -->
            
 
-      
+       

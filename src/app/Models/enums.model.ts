@@ -26,6 +26,13 @@ export enum NiveauRequisType {
     Hybride = 1,
     Teletravail = 2
   }
-  
+  export enum Langue {
+    Francais = 'Francais',
+    Anglais = 'Anglais',
+    Espagnol = 'Espagnol',
+    Allemand = 'Allemand',
+    Arabe = 'Arabe',
+    Italien = 'Italien'
+  }
   
  

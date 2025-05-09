@@ -14,7 +14,6 @@
                 <h4 class="card-title">Liste des Offres d'Emploi :</h4>
               </div>
 
-              <!-- Search Form -->
               <div class="card-body">
                 <form [formGroup]="searchForm">
                   <div class="row">
@@ -64,7 +63,7 @@
 
               <div class="text-right">
                 <a routerLink="/offres/create" class="btn btn-primary mt-3">
-                  <i class="fa fa-plus"> Ajouter une nouvelle offre</i>
+                  <i class="fa fa-plus"></i> Ajouter une nouvelle offre
                 </a>
               </div>
 
@@ -89,24 +88,24 @@
                     <tbody>
                       <tr *ngFor="let offre of paginatedOffres; let i = index">
                         <td>{{ i + 1 + (currentPage * pageSize) }}</td>
-                        <td>{{ offre.titre }}</td>
+                        <td>{{ getTitre(offre) }}</td>
                         <td>{{ offre.specialite }}</td>
-                        <td>{{ getTypeContratLabel(offre.typeContrat) }}</td>
+                        <td>{{ offre.typeContrat }}</td>
                         <td>{{ offre.modeTravail }}</td>
-                        <td>{{ offre.nombrePostes }}</td>
+                        <td>{{ getNombrePostes(offre) }}</td>
                         <td>{{ offre.statut }}</td>
                         <td>{{ getNomFiliale(offre.idFiliale) }}</td>
-                        <td>{{ offre.datePublication |  date: 'dd/MM/yyyy HH:mm:ss' : 'UTC'}}</td>
-                        <td>{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC'}}</td>
+                        <td>{{ offre.datePublication | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC' }}</td>
+                        <td>{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC' }}</td>
                         <td>
                           <div class="d-flex">
-                            <a routerLink="/offres/update/{{ offre.idOffreEmploi }}" class="btn btn-primary shadow btn-xs sharp mr-1">
+                            <a *ngIf="offre.idOffreEmploi" routerLink="/offres/update/{{ offre.idOffreEmploi }}" class="btn btn-primary shadow btn-xs sharp mr-1">
                               <i class="fa fa-pencil"></i>
                             </a>
-                            <button (click)="deleteOffre(offre.idOffreEmploi)" class="btn btn-danger shadow btn-xs sharp mr-1">
+                            <button *ngIf="offre.idOffreEmploi" (click)="deleteOffre(offre.idOffreEmploi)" class="btn btn-danger shadow btn-xs sharp mr-1">
                               <i class="fa fa-trash"></i>
                             </button>
-                            <a routerLink="/offres/details/{{ offre.idOffreEmploi }}" class="btn btn-info shadow btn-xs sharp">
+                            <a *ngIf="offre.idOffreEmploi" routerLink="/offres/details/{{ offre.idOffreEmploi }}" class="btn btn-info shadow btn-xs sharp">
                               <i class="fa fa-eye"></i>
                             </a>
                           </div>
@@ -121,7 +120,6 @@
                   </table>
                 </div>
 
-                <!-- Pagination Component -->
                 <app-pagination
                   *ngIf="filteredOffres.length > 0"
                   [totalItems]="totalItems"

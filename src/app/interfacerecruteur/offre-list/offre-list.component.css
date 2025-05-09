@@ -1,0 +1,29 @@
+.page-wrapper {
+    min-height: 100vh;
+  }
+  
+  .page-body-wrapper {
+    display: flex;
+  }
+  
+  .page-body {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .mr-1 {
+    margin-right: 0.25rem;
+  }
