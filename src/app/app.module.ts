@@ -51,6 +51,8 @@ import { CandidateDetailsComponent } from './features/candidate-details/candidat
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
   declarations: [
@@ -91,8 +93,9 @@ import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-de
     JobDetailsComponent,
    CandidateurDetailsComponent,
     
-    CandidateListComponent
+    CandidateListComponent,
     // ApropsComponent
+    ForgotPasswordComponent
    
   
 ],

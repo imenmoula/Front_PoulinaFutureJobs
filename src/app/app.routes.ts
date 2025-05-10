@@ -34,6 +34,7 @@ import { CandidatureListComponent } from './interfacerecruteur/candidature-list/
 import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 
 
 export const routes: Routes = [
@@ -43,7 +44,8 @@ export const routes: Routes = [
     component: UserComponent,
     children: [
       { path: 'signup', component: RegistrationComponent },
-      { path: 'signin', component: LoginComponent }
+      { path: 'signin', component: LoginComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent }
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent },
