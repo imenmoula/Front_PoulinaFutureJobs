@@ -1,207 +1,94 @@
-<!-- 
-<div class="container mt-4">
-  <h2 class="mb-4">{{ isEditMode ? 'Modifier l\'offre d\'emploi' : 'Créer une nouvelle offre d\'emploi' }}</h2>
-
+<div class="offre-form-container">
+  <h2>{{ isEditMode ? 'Modifier Offre' : 'Ajouter Nouvelle Offre' }}</h2>
   <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
-    <!-- Titre -->
-    <div class="form-group mb-3">
-      <label for="titre">Titre <span class="text-danger">*</span></label>
-      <input type="text" id="titre" formControlName="titre" class="form-control" placeholder="Entrez le titre de l'offre" required>
-      <div class="text-danger" *ngIf="getFieldError('titre')">{{ getFieldError('titre') }}</div>
+    <div class="form-group">
+      <label for="specialite">Spécialité:</label>
+      <input id="specialite" type="text" formControlName="specialite" required>
     </div>
 
-    <!-- Spécialité -->
-    <div class="form-group mb-3">
-      <label for="specialite">Spécialité <span class="text-danger">*</span></label>
-      <input type="text" id="specialite" formControlName="specialite" class="form-control" placeholder="Entrez la spécialité" required>
-      <div class="text-danger" *ngIf="getFieldError('specialite')">{{ getFieldError('specialite') }}</div>
+    <div class="form-group">
+      <label for="dateExpiration">Date d'Expiration:</label>
+      <input id="dateExpiration" type="date" formControlName="dateExpiration" required>
     </div>
 
-    <!-- Description -->
-    <div class="form-group mb-3">
-      <label for="description">Description <span class="text-danger">*</span></label>
-      <textarea id="description" formControlName="description" class="form-control" rows="5" placeholder="Entrez la description" required></textarea>
-      <div class="text-danger" *ngIf="getFieldError('description')">{{ getFieldError('description') }}</div>
+    <div class="form-group">
+      <label for="salaireMin">Salaire Minimum:</label>
+      <input id="salaireMin" type="number" formControlName="salaireMin" required>
     </div>
 
-    <!-- Dates -->
-    <div class="row mb-3">
-      <div class="col-md-6 form-group">
-        <label for="datePublication">Date de publication <span class="text-danger">*</span></label>
-        <input type="date" id="datePublication" formControlName="datePublication" class="form-control" required>
-        <div class="text-danger" *ngIf="getFieldError('datePublication')">{{ getFieldError('datePublication') }}</div>
-      </div>
-      <div class="col-md-6 form-group">
-        <label for="dateExpiration">Date d'expiration <span class="text-danger">*</span></label>
-        <input type="date" id="dateExpiration" formControlName="dateExpiration" class="form-control" required>
-        <div class="text-danger" *ngIf="getFieldError('dateExpiration')">{{ getFieldError('dateExpiration') }}</div>
-      </div>
+    <div class="form-group">
+      <label for="salaireMax">Salaire Maximum:</label>
+      <input id="salaireMax" type="number" formControlName="salaireMax" required>
     </div>
 
-    <!-- Salaire Min et Max -->
-    <div class="row mb-3">
-      <div class="col-md-6 form-group">
-        <label for="salaireMin">Salaire minimum</label>
-        <input type="number" id="salaireMin" formControlName="salaireMin" class="form-control" placeholder="Entrez le salaire minimum">
-        <div class="text-danger" *ngIf="getFieldError('salaireMin')">{{ getFieldError('salaireMin') }}</div>
-      </div>
-      <div class="col-md-6 form-group">
-        <label for="salaireMax">Salaire maximum</label>
-        <input type="number" id="salaireMax" formControlName="salaireMax" class="form-control" placeholder="Entrez le salaire maximum">
-        <div class="text-danger" *ngIf="getFieldError('salaireMax')">{{ getFieldError('salaireMax') }}</div>
-      </div>
+    <!-- Dynamic Sections for Related Entities -->
+    <div class="related-entities">
+    <h3>Missions</h3>
+<button type="button" class="add-button" (click)="addMission()">Ajouter Mission</button>
+<div formArrayName="offreMissions">
+  <div *ngFor="let mission of offreMissions.controls; let i=index" [formGroupName]="i" class="entity-row">
+    <div class="form-group">
+      <label>Description Mission:</label>
+      <input type="text" formControlName="descriptionMission">
     </div>
-
-    <!-- Type de contrat -->
-    <div class="form-group mb-3">
-      <label for="typeContrat">Type de contrat <span class="text-danger">*</span></label>
-      <select id="typeContrat" formControlName="typeContrat" class="form-control" required>
-        <option value="">Sélectionnez un type</option>
-        <option *ngFor="let type of typeContrats" [value]="type">{{ type }}</option>
-      </select>
-      <div class="text-danger" *ngIf="getFieldError('typeContrat')">{{ getFieldError('typeContrat') }}</div>
+    <div class="form-group">
+      <label>Priorité:</label>
+      <input type="number" formControlName="priorite">
     </div>
-
-    <!-- Nombre de postes -->
-    <div class="form-group mb-3">
-      <label for="nombrePostes">Nombre de postes <span class="text-danger">*</span></label>
-      <input type="number" id="nombrePostes" formControlName="nombrePostes" class="form-control" required>
-      <div class="text-danger" *ngIf="getFieldError('nombrePostes')">{{ getFieldError('nombrePostes') }}</div>
-    </div>
-
-    <!-- Mode de travail -->
-    <div class="form-group mb-3">
-      <label for="modeTravail">Mode de travail <span class="text-danger">*</span></label>
-      <select id="modeTravail" formControlName="modeTravail" class="form-control" required>
-        <option value="">Sélectionnez un mode</option>
-        <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
-      </select>
-      <div class="text-danger" *ngIf="getFieldError('modeTravail')">{{ getFieldError('modeTravail') }}</div>
-    </div>
-
-    <!-- Avantages -->
-    <div class="form-group mb-3">
-      <label for="avantages">Avantages</label>
-      <textarea id="avantages" formControlName="avantages" class="form-control" rows="3" placeholder="Entrez les avantages"></textarea>
-      <div class="text-danger" *ngIf="getFieldError('avantages')">{{ getFieldError('avantages') }}</div>
-    </div>
-
-    <!-- Statut -->
-    <div class="form-group mb-3">
-      <label for="statut">Statut <span class="text-danger">*</span></label>
-      <select id="statut" formControlName="statut" class="form-control" required>
-        <option value="">Sélectionnez un statut</option>
-        <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
-      </select>
-      <div class="text-danger" *ngIf="getFieldError('statut')">{{ getFieldError('statut') }}</div>
-    </div>
-
-    <!-- Niveau d'expérience requis -->
-    <div class="form-group mb-3">
-      <label for="niveauExperienceRequis">Niveau d'expérience requis <span class="text-danger">*</span></label>
-      <input type="text" id="niveauExperienceRequis" formControlName="niveauExperienceRequis" class="form-control" placeholder="Entrez le niveau requis" required>
-      <div class="text-danger" *ngIf="getFieldError('niveauExperienceRequis')">{{ getFieldError('niveauExperienceRequis') }}</div>
-    </div>
-
-    <!-- Diplôme requis -->
-    <div class="form-group mb-3">
-      <label for="diplomeRequis">Diplôme requis</label>
-      <input type="text" id="diplomeRequis" formControlName="diplomeRequis" class="form-control" placeholder="Entrez le diplôme requis">
-      <div class="text-danger" *ngIf="getFieldError('diplomeRequis')">{{ getFieldError('diplomeRequis') }}</div>
-    </div>
-
-    <!-- Recruteur -->
-    <div class="form-group mb-3">
-      <label for="idRecruteur">Recruteur <span class="text-danger">*</span></label>
-      <select id="idRecruteur" formControlName="idRecruteur" class="form-control" required>
-        <option value="">Sélectionnez un recruteur</option>
-        <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
-      </select>
-      <div class="text-danger" *ngIf="getFieldError('idRecruteur')">{{ getFieldError('idRecruteur') }}</div>
-    </div>
-
-    <!-- Filiale -->
-    <div class="form-group mb-3">
-      <label for="idFiliale">Filiale <span class="text-danger">*</span></label>
-      <select id="idFiliale" formControlName="idFiliale" class="form-control" required>
-        <option value="">Sélectionnez une filiale</option>
-        <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
-      </select>
-      <div class="text-danger" *ngIf="getFieldError('idFiliale')">{{ getFieldError('idFiliale') }}</div>
-    </div>
-
-    <!-- Compétences -->
-    <div formArrayName="offreCompetences">
-      <h4 class="mb-3">Compétences</h4>
-      <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="mb-4 p-3 border rounded">
-        <div class="row">
-          <div class="col-md-4 form-group position-relative">
-            <label [for]="'nom-' + i">Nom de la compétence <span class="text-danger">*</span></label>
-            <input [id]="'nom-' + i" formControlName="nom" class="form-control" placeholder="Rechercher une compétence"
-                   (input)="searchCompetence($event, i)" (keydown)="handleKeyDown($event, i)" required>
-            <div class="text-danger" *ngIf="getCompetenceFieldError(i, 'nom')">{{ getCompetenceFieldError(i, 'nom') }}</div>
-            <!-- Suggestions -->
-            <ul class="list-group position-absolute w-100" *ngIf="showCompetenceSuggestions && i === offreCompetences.controls.length - 1" style="z-index: 1000;">
-              <li *ngFor="let suggestion of competenceSuggestions; let j=index"
-                  class="list-group-item" [class.active]="j === activeSuggestionIndex"
-                  (click)="selectCompetence(suggestion, i)"
-                  [ngClass]="{'text-primary font-weight-bold': suggestion.isNew}">
-                {{ suggestion.nom }}
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-3 form-group">
-            <label [for]="'niveauRequis-' + i">Niveau requis <span class="text-danger">*</span></label>
-            <select [id]="'niveauRequis-' + i" formControlName="niveauRequis" class="form-control" required>
-              <option *ngFor="let niveau of niveauxCompetence" [value]="niveau">{{ niveau }}</option>
-            </select>
-            <div class="text-danger" *ngIf="getCompetenceFieldError(i, 'niveauRequis')">{{ getCompetenceFieldError(i, 'niveauRequis') }}</div>
-          </div>
-          <div class="col-md-3 form-group">
-            <label [for]="'description-' + i">Description</label>
-            <input [id]="'description-' + i" formControlName="description" class="form-control" placeholder="Description">
-          </div>
-          <div class="col-md-2 form-group d-flex align-items-end">
-            <button type="button" class="btn btn-danger" (click)="removeCompetence(i)">
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 form-group">
-            <div class="form-check">
-              <input [id]="'estTechnique-' + i" type="checkbox" formControlName="estTechnique" class="form-check-input">
-              <label [for]="'estTechnique-' + i" class="form-check-label">Compétence technique</label>
-            </div>
-          </div>
-          <div class="col-md-6 form-group">
-            <div class="form-check">
-              <input [id]="'estSoftSkill-' + i" type="checkbox" formControlName="estSoftSkill" class="form-check-input">
-              <label [for]="'estSoftSkill-' + i" class="form-check-label">Soft skill</label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary mb-3" (click)="addCompetence()">
-        <i class="fa fa-plus"></i> Ajouter une compétence
-      </button>
-    </div>
-
-    <!-- Boutons -->
-    <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
-      <button type="submit" class="btn btn-primary" [disabled]="loading">
-        {{ loading ? 'Enregistrement...' : (isEditMode ? 'Mettre à jour' : 'Créer') }}
-      </button>
-    </div>
-  </form>
-
-  <!-- Indicateur de chargement -->
-  <div *ngIf="loading" class="text-center mt-3">
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Chargement...</span>
-    </div>
+    <button type="button" class="remove-button" (click)="removeMission(i)">Supprimer</button>
   </div>
 </div>
 
- -->
+      <h3>Langues</h3>
+      <button type="button" class="add-button" (click)="addLangue()">Ajouter Langue</button>
+      <div formArrayName="offreLangues">
+        <div *ngFor="let langue of offreLangues.controls; let i=index" [formGroupName]="i" class="entity-row">
+          <div class="form-group">
+            <label>Langue:</label>
+            <input type="text" formControlName="langue">
+          </div>
+          <div class="form-group">
+            <label>Niveau Requis:</label>
+            <input type="text" formControlName="niveauRequis">
+          </div>
+          <button type="button" class="remove-button" (click)="removeLangue(i)">Supprimer</button>
+        </div>
+      </div>
+
+      <h3>Compétences</h3>
+      <button type="button" class="add-button" (click)="addCompetence()">Ajouter Compétence</button>
+      <div formArrayName="offreCompetences">
+        <div *ngFor="let competence of offreCompetences.controls; let i=index" [formGroupName]="i" class="entity-row">
+          <div class="form-group">
+            <label>ID Compétence:</label>
+            <input type="text" formControlName="idCompetence">
+          </div>
+          <div class="form-group">
+            <label>Niveau Requis:</label>
+            <input type="text" formControlName="niveauRequis">
+          </div>
+          <button type="button" class="remove-button" (click)="removeCompetence(i)">Supprimer</button>
+        </div>
+      </div>
+
+      <h3>Diplômes</h3>
+      <button type="button" class="add-button" (click)="addDiplome()">Ajouter Diplôme</button>
+      <div formArrayName="diplomeIds">
+        <div *ngFor="let diplome of diplomeIds.controls; let i=index" [formGroupName]="i" class="entity-row">
+          <div class="form-group">
+            <label>ID Diplôme:</label>
+            <input type="text" formControlName="idDiplome">
+          </div>
+          <button type="button" class="remove-button" (click)="removeDiplome(i)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-button" [disabled]="offreForm.invalid">
+      {{ isEditMode ? 'Mettre à Jour' : 'Créer' }}
+    </button>
+    <button type="button" class="cancel-button" (click)="onCancel()" *ngIf="isEditMode">
+      Annuler
+    </button>
+  </form>
+</div>

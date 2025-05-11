@@ -20,25 +20,24 @@ export class DiplomeService {
     });
   }
   
-    getAll(): Observable<Diplome[]> {
-      return this.http.get<Diplome[]>(this.apiUrl, { headers: this.getHeaders() });
-    }
-  
-  
-    getById(id: string): Observable<Diplome> {
-      return this.http.get<Diplome>(`${this.apiUrl}/${id}`);
-    }
-  
-    create(diplome: Diplome): Observable<Diplome> {
-      return this.http.post<Diplome>(this.apiUrl, diplome, { headers: this.getHeaders() });
-    }
-  
-    update(id: string, diplome: Diplome): Observable<void> {
-      return this.http.put<void>(`${this.apiUrl}/${id}`, diplome, { headers: this.getHeaders() });
-    }
-  
-    delete(id: string): Observable<void> {
-      return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
-    }
+   getAll(): Observable<any> {
+    return this.http.get<any>(this.apiUrl, { headers: this.getHeaders() });
+  }
+
+  getById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  }
+
+  create(diplome: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, diplome, { headers: this.getHeaders() });
+  }
+
+  update(id: string, diplome: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, diplome, { headers: this.getHeaders() });
+  }
+
+  delete(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  }
   }
 

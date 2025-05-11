@@ -21,145 +21,142 @@
 
   <!-- Offer Details -->
   <div *ngIf="!loading && !errorMessage && offre" class="offer-details">
-    <!-- Offer and Posts Card -->
+    <!-- Offer Details Card with Posts -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-primary text-white">
-        <h3 class="card-title mb-0">Détails de l'Offre et Postes Associés</h3>
+      <div class="card-header bg-info text-white d-flex align-items-center">
+        <i class="fas fa-briefcase me-2"></i>
+        <h3 class="card-title mb-0">Détails de l'Offre</h3>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="fw-bold">Spécialité</label>
-              <p class="text-muted">{{ offre.specialite || 'Non spécifié' }}</p>
-            </div>
-            <div class="form-group mb-3">
-              <label class="fw-bold">Salaire</label>
-              <p class="text-muted">
-                {{ offre.salaireMin ? offre.salaireMin + ' TND' : 'Non spécifié' }}
-                {{ offre.salaireMax ? ' - ' + offre.salaireMax + ' TND' : '' }}
-              </p>
-            </div>
-            <div class="form-group mb-3">
-              <label class="fw-bold">Diplôme Requis</label>
-              <p class="text-muted">{{ offre.diplomeRequis || 'Non spécifié' }}</p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="fw-bold">Niveau d'Expérience</label>
-              <p class="text-muted">{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
-            </div>
-            <div class="form-group mb-3">
-              <label class="fw-bold">Nombre de Postes</label>
-              <p class="text-muted">{{ offre.nombrePostes || 'Non spécifié' }}</p>
-            </div>
-            <div class="form-group mb-3">
-              <label class="fw-bold">Avantages</label>
-              <p class="text-muted">{{ offre.avantages || 'Non spécifié' }}</p>
-            </div>
-          </div>
+        <!-- Offer Information -->
+        <div class="form-group mb-3">
+          <label class="fw-bold">Spécialité</label>
+          <p class="text-muted">{{ offre.specialite || 'Non spécifié' }}</p>
         </div>
-        <!-- Posts Section -->
-        <div class="posts-section mt-4">
-          <h4 class="fw-bold mb-3">Postes Associés</h4>
-          <div *ngIf="offre.postes?.length > 0; else noPostes">
-            <div class="accordion" id="postsAccordion">
-              <div *ngFor="let poste of offre.postes; let i = index" class="accordion-item">
-                <h2 class="accordion-header" [id]="'heading' + i">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="true" [attr.aria-controls]="'collapse' + i">
-                    Poste {{ i + 1 }}: {{ poste.titrePoste || 'Non spécifié' }}
-                  </button>
-                </h2>
-                <div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{'show': i === 0}" [attr.aria-labelledby]="'heading' + i" data-bs-parent="#postsAccordion">
-                  <div class="accordion-body">
-                    <div class="form-group mb-2">
-                      <label class="fw-bold">Description</label>
-                      <p class="text-muted">{{ poste.description || 'Non spécifié' }}</p>
-                    </div>
-                    <div class="form-group mb-2">
-                      <label class="fw-bold">Nombre de Postes</label>
-                      <p class="text-muted">{{ poste.nombrePostes || 'Non spécifié' }}</p>
-                    </div>
-                    <div class="form-group mb-2">
-                      <label class="fw-bold">Expérience Souhaitée</label>
-                      <p class="text-muted">{{ poste.experienceSouhaitee || 'Non spécifié' }}</p>
-                    </div>
-                    <div class="form-group mb-0">
-                      <label class="fw-bold">Niveau Hiérarchique</label>
-                      <p class="text-muted">{{ poste.niveauHierarchique || 'Non spécifié' }}</p>
-                    </div>
-                  </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Salaire</label>
+          <p class="text-muted">
+            {{ offre.salaireMin ? offre.salaireMin + ' TND' : 'Non spécifié' }}
+            {{ offre.salaireMax ? ' - ' + offre.salaireMax + ' TND' : '' }}
+          </p>
+        </div>
+        
+        <div class="form-group mb-3">
+          <label class="fw-bold">Département</label>
+          <p class="text-muted">{{ offre.nomDepartement || 'Non spécifié' }}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Niveau d'Expérience</label>
+          <p class="text-muted">{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
+        </div>
+       
+        <div class="form-group mb-3">
+          <label class="fw-bold">Avantages</label>
+          <p class="text-muted">{{ offre.avantages || 'Non spécifié' }}</p>
+        </div>
+
+        <!-- Posts Information Integrated -->
+        <div *ngIf="offre.postes?.length > 0">
+          <h4 class="fw-bold mb-3">Informations des Postes</h4>
+          <div class="d-flex flex-column gap-3">
+            <div *ngFor="let poste of offre.postes; let i = index" class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Poste {{ i + 1 }}: {{ poste.titrePoste || 'Non spécifié' }}</h5>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Description</label>
+                  <p class="text-muted">{{ poste.description || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Nombre de Postes</label>
+                  <p class="text-muted">{{ poste.nombrePostes || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Expérience Souhaitée</label>
+                  <p class="text-muted">{{ poste.experienceSouhaitee || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-0">
+                  <label class="fw-bold">Niveau Hiérarchique</label>
+                  <p class="text-muted">{{ poste.niveauHierarchique || 'Non spécifié' }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <ng-template #noPostes>
-            <p class="text-muted text-center">Aucun poste défini pour cette offre.</p>
-          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Information Card -->
+    <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-info-circle me-2"></i>
+        <h4 class="card-title mb-0">Informations Complémentaires</h4>
+      </div>
+      <div class="card-body">
+        <div class="form-group mb-3">
+          <label class="fw-bold">Statut</label>
+          <p class="text-muted">{{ offre.status || 'Non spécifié' }}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Mode de Travail</label>
+          <p class="text-muted">{{ offre.modeDeTravail || 'Non spécifié' }}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Type de Contrat</label>
+          <p class="text-muted">{{ offre.typeContrat || 'Non spécifié' }}</p>
         </div>
       </div>
     </div>
 
     <!-- Dates Card -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-light">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-calendar-alt me-2"></i>
         <h4 class="card-title mb-0">Dates</h4>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="fw-bold">Date de Publication</label>
-              <p class="text-muted">{{ offre.datePublication | date: 'dd/MM/yyyy HH:mm:ss'}}</p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="fw-bold">Date d'Expiration</label>
-              <p class="text-muted">{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
-            </div>
-          </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Date de Publication</label>
+          <p class="text-muted">{{ offre.datePublication | date: 'dd/MM/yyyy HH:mm:ss'}}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Date d'Expiration</label>
+          <p class="text-muted">{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
         </div>
       </div>
     </div>
 
     <!-- Filiale Card -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-light">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-building me-2"></i>
         <h4 class="card-title mb-0">Détails de la Filiale</h4>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="fw-bold">Nom du Recruteur</label>
-              <p class="text-muted">{{ recruiterName }}</p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group mb-3">
-              <label class="fw-bold">Filiale - Nom</label>
-              <p class="text-muted">{{ filiale?.nom || 'Non spécifié' }}</p>
-            </div>
-            <div class="form-group mb-3">
-              <label class="fw-bold">Filiale - Adresse</label>
-              <p class="text-muted">{{ filiale?.adresse || 'Non spécifié' }}</p>
-            </div>
-          </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Nom du Recruteur</label>
+          <p class="text-muted">{{ recruiterName }}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Filiale - Nom</label>
+          <p class="text-muted">{{ filiale?.nom || 'Non spécifié' }}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label class="fw-bold">Filiale - Adresse</label>
+          <p class="text-muted">{{ filiale?.adresse || 'Non spécifié' }}</p>
         </div>
       </div>
     </div>
 
-    <!-- Missions Card -->
+    <!-- Missions Card with Horizontal Layout -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-light">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-tasks me-2"></i>
         <h4 class="card-title mb-0">Missions</h4>
       </div>
       <div class="card-body">
         <div *ngIf="offre.offreMissions?.length > 0; else noMissions">
-          <div *ngFor="let mission of offre.offreMissions; let i = index" class="mb-3">
-            <div class="card shadow-sm">
+          <div class="mission-list">
+            <div *ngFor="let mission of offre.offreMissions; let i = index" class="mission-item card shadow-sm">
               <div class="card-body">
                 <h5 class="card-title">Mission {{ i + 1 }}</h5>
                 <div class="form-group mb-2">
@@ -180,26 +177,25 @@
       </div>
     </div>
 
-    <!-- Languages Card -->
+    <!-- Languages Card with Horizontal Layout -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-light">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-language me-2"></i>
         <h4 class="card-title mb-0">Langues Requises</h4>
       </div>
       <div class="card-body">
         <div *ngIf="offre.offreLangues?.length > 0; else noLangues">
-          <div class="row">
-            <div *ngFor="let langue of offre.offreLangues; let i = index" class="col-md-6 mb-3">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title">Langue {{ i + 1 }}</h5>
-                  <div class="form-group mb-2">
-                    <label class="fw-bold">Langue</label>
-                    <p class="text-muted">{{ langue.langue || 'Non spécifié' }}</p>
-                  </div>
-                  <div class="form-group mb-0">
-                    <label class="fw-bold">Niveau Requis</label>
-                    <p class="text-muted">{{ langue.niveauRequis || 'Non spécifié' }}</p>
-                  </div>
+          <div class="language-list">
+            <div *ngFor="let langue of offre.offreLangues; let i = index" class="language-item card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Langue {{ i + 1 }}</h5>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Langue</label>
+                  <p class="text-muted">{{ langue.langue || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-0">
+                  <label class="fw-bold">Niveau Requis</label>
+                  <p class="text-muted">{{ niveauRequisLabels[langue.niveauRequis] || langue.niveauRequis || 'Non spécifié' }}</p>
                 </div>
               </div>
             </div>
@@ -211,38 +207,37 @@
       </div>
     </div>
 
-    <!-- Competencies Card -->
+    <!-- Competencies Card with Horizontal Layout -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-light">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-tools me-2"></i>
         <h4 class="card-title mb-0">Compétences Requises</h4>
       </div>
       <div class="card-body">
         <div *ngIf="offre.offreCompetences?.length > 0; else noCompetences">
-          <div class="row">
-            <div *ngFor="let oc of offre.offreCompetences; let i = index" class="col-md-6 mb-3">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title">Compétence {{ i + 1 }}</h5>
-                  <div class="form-group mb-2">
-                    <label class="fw-bold">Nom</label>
-                    <p class="text-muted">{{ oc.competence?.nom || 'Non spécifié' }}</p>
-                  </div>
-                  <div class="form-group mb-2">
-                    <label class="fw-bold">Description</label>
-                    <p class="text-muted">{{ oc.competence?.description || 'Non spécifié' }}</p>
-                  </div>
-                  <div class="form-group mb-2">
-                    <label class="fw-bold">Niveau Requis</label>
-                    <p class="text-muted">{{ niveauRequisLabels[oc.niveauRequis] || oc.niveauRequis || 'Non spécifié' }}</p>
-                  </div>
-                  <div class="form-group mb-0">
-                    <label class="fw-bold">Type</label>
-                    <p class="text-muted">
-                      {{ oc.competence?.estTechnique ? 'Compétence technique' : '' }}
-                      {{ oc.competence?.estSoftSkill ? 'Soft Skill' : '' }}
-                      {{ !oc.competence?.estTechnique && !oc.competence?.estSoftSkill ? 'Non spécifié' : '' }}
-                    </p>
-                  </div>
+          <div class="competence-list">
+            <div *ngFor="let oc of offre.offreCompetences; let i = index" class="competence-item card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Compétence {{ i + 1 }}</h5>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Nom</label>
+                  <p class="text-muted">{{ oc.competence?.nom || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Description</label>
+                  <p class="text-muted">{{ oc.competence?.description || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-2">
+                  <label class="fw-bold">Niveau Requis</label>
+                  <p class="text-muted">{{ niveauRequisLabels[oc.niveauRequis] || oc.niveauRequis || 'Non spécifié' }}</p>
+                </div>
+                <div class="form-group mb-0">
+                  <label class="fw-bold">Type</label>
+                  <p class="text-muted">
+                    {{ oc.competence?.estTechnique ? 'Compétence technique' : '' }}
+                    {{ oc.competence?.estSoftSkill ? 'Soft Skill' : '' }}
+                    {{ !oc.competence?.estTechnique && !oc.competence?.estSoftSkill ? 'Non spécifié' : '' }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -256,13 +251,14 @@
 
     <!-- Diplomas Card -->
     <div class="card mb-4 shadow-sm animate__animated animate__fadeIn">
-      <div class="card-header bg-light">
+      <div class="card-header bg-light d-flex align-items-center">
+        <i class="fas fa-graduation-cap me-2"></i>
         <h4 class="card-title mb-0">Diplômes Requis</h4>
       </div>
       <div class="card-body">
         <div *ngIf="diplomes && diplomes.length > 0; else noDiplomes">
-                <div *ngFor="let diplome of diplomes; let i = index" class="mb-3">
-            <div class="card shadow-sm">
+          <div class="d-flex flex-column gap-3">
+            <div *ngFor="let diplome of diplomes; let i = index" class="card shadow-sm">
               <div class="card-body">
                 <h5 class="card-title">Diplôme {{ i + 1 }}</h5>
                 <div class="form-group mb-2">
@@ -286,7 +282,7 @@
           </div>
         </div>
         <ng-template #noDiplomes>
-          <p class="text-muted text-center">Aucun diplôme spécifique requis.</p>
+          <p class="text-muted text-center">Aucun diplôme requis pour cette offre.</p>
         </ng-template>
       </div>
     </div>
@@ -310,6 +306,5 @@
   <!-- Fallback -->
   <div *ngIf="!loading && !errorMessage && !offre" class="alert alert-warning alert-dismissible fade show" role="alert">
     Aucune donnée à afficher. Redirection vers la liste des offres...
-    <!-- <button type="button" class="btn-close" (click)="router.navigate(['/offres'])" aria-label="Close"></button> -->
   </div>
 </div>

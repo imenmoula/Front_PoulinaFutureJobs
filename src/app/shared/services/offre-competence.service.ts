@@ -19,16 +19,16 @@ interface OffreCompetence {
 }
 
 interface ApiResponse<T> {
+  success: boolean;
   message: string;
-  competences?: T[];
-  competence?: T;
+  data: T;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class OffreCompetenceSharedService {
-  private apiUrl = `${environment.apiBaseUrl}/OffreCompetences`;
+  private apiUrl = `${environment.apiBaseUrl}/JobBoard/OffreCompetences`;
 
   constructor(
     private http: HttpClient,
@@ -43,60 +43,25 @@ export class OffreCompetenceSharedService {
     });
   }
 
-  // Récupérer les compétences pour une offre spécifique
-  getCompetencesByOffre(offreId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/offre/${offreId}`);
-  }
-  // getCompetencesByOffre(offreId: string): Observable<OffreCompetence[]> {
-  //   return this.http.get<ApiResponse<OffreCompetence>>(`${this.apiUrl}/offre/${offreId}`, { headers: this.getHeaders() })
-  //     .pipe(
-  //       map(response => response.competences || []),
-  //       catchError(this.handleError)
-  //     );
-  // }
-
-  // Ajouter une compétence à une offre
-  addCompetenceToOffre(dto: any): Observable<OffreCompetence> {
-    return this.http.post<ApiResponse<OffreCompetence>>(this.apiUrl, dto, { headers: this.getHeaders() })
-      .pipe(
-        map(response => response.competence || {} as OffreCompetence),
-        catchError(this.handleError)
-      );
+  getAll(): Observable<any> {
+    return this.http.get<any>(this.apiUrl, { headers: this.getHeaders() });
   }
 
-  // Mettre à jour une compétence associée à une offre
-  updateOffreCompetence(idOffreEmploi: string, idCompetence: string, dto: any): Observable<OffreCompetence> {
-    return this.http.put<ApiResponse<OffreCompetence>>(
-      `${this.apiUrl}/${idOffreEmploi}/${idCompetence}`,
-      dto,
-      { headers: this.getHeaders() }
-    ).pipe(
-      map(response => response.competence || {} as OffreCompetence),
-      catchError(this.handleError)
-    );
+  getById(idOffreEmploi: string, idCompetence: string): Observable<OffreCompetence> {
+    return this.http.get<OffreCompetence>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getHeaders() });
   }
 
-  // Supprimer une compétence d'une offre
-  deleteOffreCompetence(idOffreEmploi: string, idCompetence: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(
-      `${this.apiUrl}/${idOffreEmploi}/${idCompetence}`,
-      { headers: this.getHeaders() }
-    ).pipe(
-      catchError(this.handleError)
-    );
+  create(competence: OffreCompetence): Observable<any> {
+    return this.http.post<any>(this.apiUrl, { headers: this.getHeaders() });
   }
 
-  private handleError(error: any): Observable<never> {
-    let errorMessage = 'Une erreur est survenue';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Erreur client : ${error.error.message}`;
-    } else {
-      errorMessage = `Erreur serveur : Code ${error.status}, Message : ${error.error?.message || error.message}`;
-      if (error.error?.detail) {
-        errorMessage += `, Détails : ${error.error.detail}`;
-      }
-    }
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
+  update(idOffreEmploi: string, idCompetence: string, competence: OffreCompetence): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, competence, { headers: this.getHeaders() });
   }
+
+  delete(idOffreEmploi: string, idCompetence: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getHeaders() });
+  }
+
+  
 }

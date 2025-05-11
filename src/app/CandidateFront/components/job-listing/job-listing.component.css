@@ -1,134 +1,133 @@
 .form-control {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .select-job-items2 {
-    margin-bottom: 20px;
-  }
-  
-  .job-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .job-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .job-title-orange {
-    color: #4169E1; /* Orange color from the image */
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  .job-date {
-    color: #666;
-    font-size: 0.9rem;
-  }
-  
-  .job-card-body {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .filiale-image {
-    flex-shrink: 0;
-  }
-  
-  .filiale-img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-  
-  .job-details {
-    flex-grow: 1;
-  }
-  
-  .job-details h5 {
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .job-info-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .job-info-list li {
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #555;
-  }
-  
-  .job-info-list li i {
-    color: #2e7d32; /* Pastel green for icons */
-    margin-right: 5px;
-  }
-  
-  .contract-type {
-    padding: 2px 8px;
-    border-radius: 3px;
-    color: #fff;
-    font-size: 0.85rem;
-  }
-  
-  .job-actions {
-    flex-shrink: 0;
-  }
-  
-  .voir-detail {
-    background-color: #4169E1; /* Orange color for the button */
-    color: #fff;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  .voir-detail:hover {
-    background-color:#4169E1;
-  }
-  
-  .pagination-area {
-    margin-top: 20px;
-  }
-  
-  .pagination .page-link {
-    color: #4169E1;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    margin: 0 5px;
-  }
-  
-  .pagination .page-link:hover,
-  .pagination .page-link.active {
-    background-color: #2e7d32; /* Pastel green */
-    color: #fff;
-    border-color: #2e7d32;
-  }
-  
-  .pagination .page-item.disabled .page-link {
-    color: #6c757d;
-    background-color: #fff;
-    border-color: #ddd;
-    cursor: not-allowed;
-  }
- 
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.select-job-items2 {
+  margin-bottom: 20px;
+}
+
+.job-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.job-title-orange {
+  color: #4169E1;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.job-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.job-card-body {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filiale-image {
+  flex-shrink: 0;
+}
+
+.filiale-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.job-details {
+  flex-grow: 1;
+}
+
+.job-details h5 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.job-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.job-info-list li {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.job-info-list li i {
+  color: #2e7d32;
+  margin-right: 5px;
+}
+
+.contract-type {
+  padding: 2px 8px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.job-actions {
+  flex-shrink: 0;
+}
+
+.voir-detail {
+  background-color: #4169E1;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.voir-detail:hover {
+  background-color: #3558c1;
+}
+
+.pagination-area {
+  margin-top: 20px;
+}
+
+.pagination .page-link {
+  color: #4169E1;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin: 0 5px;
+}
+
+.pagination .page-link:hover,
+.pagination .page-link.active {
+  background-color: #2e7d32;
+  color: #fff;
+  border-color: #2e7d32;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: #fff;
+  border-color: #ddd;
+  cursor: not-allowed;
+}

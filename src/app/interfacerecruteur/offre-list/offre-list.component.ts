@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
@@ -21,6 +21,7 @@ import { ModeTravail, StatutOffre, TypeContratEnum } from '../../Models/enums.mo
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     ReactiveFormsModule,
     FooterComponent,
     HeaderComponent,
@@ -84,7 +85,7 @@ export class OffreListComponent implements OnInit {
     this.offreService.getAll().subscribe({
       next: (response) => {
         if (response.success) {
-          this.offres = response.offresEmploi;
+          this.offres = response.offresEmploi || [];
           this.filteredOffres = [...this.offres];
           this.totalItems = this.filteredOffres.length;
           this.updatePaginatedOffres();
@@ -92,7 +93,7 @@ export class OffreListComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Erreur de Chargement',
-            text: response.message,
+            text: response.message || 'Échec du chargement des offres.',
           });
         }
       },
@@ -120,7 +121,7 @@ export class OffreListComponent implements OnInit {
     this.offreService.search(titre, specialite, typeContrat, statut, modeTravail, idFiliale).subscribe({
       next: (response) => {
         if (response.success) {
-          this.filteredOffres = response.offresEmploi;
+          this.filteredOffres = response.offresEmploi || [];
           this.totalItems = this.filteredOffres.length;
           this.currentPage = 0;
           this.updatePaginatedOffres();
@@ -128,8 +129,11 @@ export class OffreListComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Erreur de Recherche',
-            text: response.message,
+            text: response.message || 'Échec de la recherche des offres.',
           });
+          this.filteredOffres = [];
+          this.totalItems = 0;
+          this.updatePaginatedOffres();
         }
       },
       error: (error) => {
@@ -183,26 +187,33 @@ export class OffreListComponent implements OnInit {
       cancelButtonText: 'Non, annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.offreService.delete(id).subscribe({
-          next: () => {
-            // No response object is returned, so you can't access any properties
-            this.offres = this.offres.filter(o => o.idOffreEmploi !== id);
-            this.filteredOffres = this.filteredOffres.filter(o => o.idOffreEmploi !== id);
-            this.totalItems = this.filteredOffres.length;
-            this.updatePaginatedOffres();
-            Swal.fire({
-              icon: 'success',
-              title: 'Succès',
-              text: 'Offre supprimée avec succès',
-              timer: 2000,
-              showConfirmButton: false
-            });
+        this.offreService.deleteOffre(id).subscribe({
+          next: (response:any) => {
+            if (response.success) {
+              this.offres = this.offres.filter(o => o.idOffreEmploi !== id);
+              this.filteredOffres = this.filteredOffres.filter(o => o.idOffreEmploi !== id);
+              this.totalItems = this.filteredOffres.length;
+              this.updatePaginatedOffres();
+              Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: response.message || 'Offre supprimée avec succès',
+                timer: 2000,
+                showConfirmButton: false
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Erreur de Suppression',
+                text: response.message || 'Échec de la suppression de l\'offre.',
+              });
+            }
           },
           error: (error) => {
             Swal.fire({
               icon: 'error',
               title: 'Erreur de Suppression',
-              text: 'Échec de la suppression de l\'offre : ' + error.message,
+              text: 'Échec de la suppression de l\'offre : ' + (error.error?.message || error.message),
             });
           }
         });

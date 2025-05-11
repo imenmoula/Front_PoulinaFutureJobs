@@ -75,7 +75,7 @@ export class OffreDetailComponent implements OnInit {
       next: (response) => {
         console.log('Réponse brute getOffreEmploi:', JSON.stringify(response, null, 2));
         const offreData = response?.offreEmploi || response;
-                        if (offreData?.idOffreEmploi) {
+        if (offreData?.idOffreEmploi) {
           this.offre = offreData;
 
           if (this.offre.nombrePostes === 2147483647) {
@@ -88,6 +88,18 @@ export class OffreDetailComponent implements OnInit {
           this.offre.offreCompetences = this.offre.offreCompetences || [];
           this.offre.postes = this.offre.postes || [];
           this.offre.diplomeIds = this.offre.diplomeIds || [];
+
+          // Normalize niveauRequis for competencies
+          this.offre.offreCompetences = this.offre.offreCompetences.map((oc: any) => ({
+            ...oc,
+            niveauRequis: this.normalizeNiveauRequis(oc.niveauRequis)
+          }));
+
+          // Normalize niveauRequis for languages
+          this.offre.offreLangues = this.offre.offreLangues.map((langue: any) => ({
+            ...langue,
+            niveauRequis: this.normalizeNiveauRequis(langue.niveauRequis)
+          }));
 
           console.log('Offre normalisée:', this.offre);
 
@@ -169,6 +181,12 @@ export class OffreDetailComponent implements OnInit {
     });
   }
 
+  private normalizeNiveauRequis(niveau: string): string {
+    if (!niveau) return '';
+    const normalized = niveau.charAt(0).toUpperCase() + niveau.slice(1).toLowerCase();
+    return normalized;
+  }
+
   applyForOffre(): void {
     if (this.offre) {
       Swal.fire({
@@ -192,6 +210,9 @@ export class OffreDetailComponent implements OnInit {
     }
   }
 
+  // Ajoutez cette méthode à votre classe OffreDetailComponent
+
+
   deleteOffre(): void {
     if (this.offre) {
       Swal.fire({
@@ -208,7 +229,7 @@ export class OffreDetailComponent implements OnInit {
         customClass: { popup: 'swal-large' }
       }).then((result) => {
         if (result.isConfirmed) {
-          this.offreService.delete(this.offre.idOffreEmploi).subscribe({
+          this.offreService.deleteOffre(this.offre.idOffreEmploi).subscribe({
             next: () => {
               this.showSuccessToast('Offre supprimée avec succès.');
               this.router.navigate(['/offres']);

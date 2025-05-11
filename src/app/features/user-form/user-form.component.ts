@@ -1,4 +1,5 @@
 
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -10,11 +11,13 @@ import Swal from 'sweetalert2';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
 import { HeaderComponent } from '../../layoutBackend/header/header.component';
 import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
+import { FilialeService } from '../../shared/services/filiale.service';
+import { Filiale } from '../../Models/filiale.model';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule,FooterComponent,HeaderComponent,SidebarComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FooterComponent, HeaderComponent, SidebarComponent],
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.css']
 })
@@ -29,12 +32,14 @@ export class UserFormComponent implements OnInit {
   isAdmin: boolean = false;
   roles: string[] = ['Candidate', 'Recruteur', 'Admin'];
   userType: string | null = null;
-  sidebarOpen:boolean=false;
+  sidebarOpen: boolean = false;
+  filiales: Filiale[] = [];
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
+    private filialeService: FilialeService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -45,9 +50,9 @@ export class UserFormComponent implements OnInit {
       prenom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       fullName: [''],
       phone: [''],
-      entreprise: [''],
       poste: [''],
-      role: ['', Validators.required]
+      role: ['', Validators.required],
+      idFiliale: ['']
     });
   }
 
@@ -59,6 +64,9 @@ export class UserFormComponent implements OnInit {
     if (!this.isAdmin) {
       this.userForm.get('role')?.disable();
     }
+
+    // Charger les filiales
+    this.loadFiliales();
 
     if (this.userId) {
       this.isEditMode = true;
@@ -83,9 +91,13 @@ export class UserFormComponent implements OnInit {
       }
     });
 
+    // Gérer la visibilité de idFiliale en fonction du rôle
     this.userForm.get('role')?.valueChanges.subscribe(role => {
-      if (!this.shouldShowEntreprise(role)) {
-        this.userForm.get('entreprise')?.reset();
+      if (!this.shouldShowFiliale(role)) {
+        this.userForm.get('idFiliale')?.reset();
+        this.userForm.get('idFiliale')?.disable();
+      } else {
+        this.userForm.get('idFiliale')?.enable();
       }
       if (!this.shouldShowPoste(role)) {
         this.userForm.get('poste')?.reset();
@@ -95,10 +107,25 @@ export class UserFormComponent implements OnInit {
       }
     });
 
-    // Désactiver l'email en mode édition dès l'initialisation
+    // Désactiver l'email en mode édition
     if (this.isEditMode) {
       this.userForm.get('email')?.disable();
     }
+  }
+
+  loadFiliales(): void {
+    this.filialeService.getFiliales().subscribe({
+      next: (filiales) => {
+        this.filiales = filiales;
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Impossible de charger les filiales.',
+        });
+      }
+    });
   }
 
   loadUserDetails(id: string): void {
@@ -122,12 +149,16 @@ export class UserFormComponent implements OnInit {
           prenom: user.prenom || '',
           fullName: user.fullName || `${user.prenom || ''} ${user.nom || ''}`.trim(),
           phone: user.phone || '',
-          entreprise: user.entreprise || '',
           poste: user.poste || '',
-          role: typeof user.role === 'object' ? user.role.name : user.role || 'Candidate'
+          role: typeof user.role === 'object' ? user.role.name : user.role || 'Candidate',
+          idFiliale: user.idFiliale || ''
         });
         this.originalEmail = user.email;
-        this.userForm.get('email')?.disable(); // Désactiver l'email après chargement
+        this.userForm.get('email')?.disable();
+        // Gérer la visibilité de idFiliale
+        if (!this.shouldShowFiliale(user.role)) {
+          this.userForm.get('idFiliale')?.disable();
+        }
       },
       error: (error) => {
         console.error('Erreur lors du chargement des détails :', error);
@@ -162,12 +193,12 @@ export class UserFormComponent implements OnInit {
     return role === 'Recruteur';
   }
 
-  shouldShowEntreprise(role: string): boolean {
-    return role === 'Recruteur' || role === 'Admin';
-  }
-
   shouldShowPoste(role: string): boolean {
     return role === 'Recruteur';
+  }
+
+  shouldShowFiliale(role: string): boolean {
+    return role === 'Recruteur' || role === 'Admin';
   }
 
   onSubmit(): void {
@@ -184,14 +215,14 @@ export class UserFormComponent implements OnInit {
 
     const userData = {
       id: this.userId,
-      email: this.isEditMode ? this.originalEmail : this.userForm.value.email, // Conserver l'email original en mode édition
+      email: this.isEditMode ? this.originalEmail : this.userForm.value.email,
       nom: this.userForm.value.nom,
       prenom: this.userForm.value.prenom,
-      fullName: `${this.userForm.value.prenom} ${this.userForm.value.nom}`,
+      fullName: `${this.userForm.value.prenom} ${this.userForm.value.nom}`.trim(),
       phone: this.userForm.value.phone || '',
-      entreprise: this.userForm.value.entreprise || '',
       poste: this.userForm.value.poste || '',
-      role: this.userForm.value.role
+      role: this.userForm.value.role,
+      idFiliale: this.shouldShowFiliale(this.userForm.value.role) ? this.userForm.value.idFiliale || null : null
     };
 
     console.log('Données envoyées :', userData);
@@ -218,7 +249,7 @@ export class UserFormComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Erreur lors de la mise àaché jour :', err);
+          console.error('Erreur lors de la mise à jour :', err);
           Swal.fire({
             icon: 'error',
             title: 'Erreur de Mise à Jour',
@@ -274,7 +305,7 @@ export class UserFormComponent implements OnInit {
     }
   }
 
-   onCancel(): void {
+  onCancel(): void {
     this.router.navigate([`/admins`]);
   }
 

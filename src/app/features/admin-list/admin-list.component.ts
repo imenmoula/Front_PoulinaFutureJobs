@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -11,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../Models/user.model';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { v4 as uuidv4 } from 'uuid';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-list',
@@ -65,13 +63,14 @@ export class AdminListComponent implements OnInit {
             this.admins = response.data.map((admin: any) => ({
               id: admin.id,
               email: admin.email,
-              fullName: admin.fullName || `${admin.firstName || ''} ${admin.lastName || ''}`.trim() || 'N/A',
+              fullName: admin.fullName || `${admin.firstName || admin.nom || ''} ${admin.lastName || admin.prenom || ''}`.trim() || 'N/A',
               nom: admin.lastName || admin.nom || 'N/A',
               prenom: admin.firstName || admin.prenom || 'N/A',
               photo: admin.photo,
-              PhoneNumber: admin.phone,
-              entreprise: admin.entreprise,
+              phone: admin.phoneNumber || admin.phone,
               poste: admin.poste,
+              idFiliale: admin.idFiliale,
+              nomFiliale: admin.nomFiliale,
               role: typeof admin.role === 'string' ? { id: uuidv4(), name: admin.role, normalizedName: admin.role.toUpperCase() } : admin.role,
               UserRoles: admin.UserRoles
             } as User));

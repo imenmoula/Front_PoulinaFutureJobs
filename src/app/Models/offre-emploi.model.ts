@@ -16,6 +16,7 @@ export interface OffreEmploi {
   modeTravail: ModeTravail;
   nombrePostes: number;
   avantages: string;
+  estactif: boolean;
   idRecruteur: string;
   idFiliale: string;
   filiale?: Filiale;
@@ -26,6 +27,7 @@ export interface OffreEmploi {
   offreLangues: OffreLangue[];
   offreCompetences: OffreCompetence[];
   diplomeIds: string[];
+  diplomes?: Diplome[];
 
 }
 export interface Poste {
@@ -39,10 +41,10 @@ export interface Poste {
 }
 
 export interface OffreMission {
-  idOffreMission?: string;
-  idOffreEmploi?: string;
+  idOffreMission: string;
+  idOffreEmploi: string;
   descriptionMission: string;
-  priorite: number;
+  priorite?: number; // Optionnel, selon les besoins
 }
 export interface OffreLangue {
   idOffreLangue?: string;

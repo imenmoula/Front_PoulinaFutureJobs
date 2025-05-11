@@ -24,6 +24,8 @@ export interface User {
   portfolio?: string;
   entreprise?: string;
   poste?: string;
+   idFiliale?: string; // Nouvelle propriété pour la relation avec Filiale
+  nomFiliale?: string; 
 role?: Role;
 index?: number;
   UserRoles?: UserRole[];

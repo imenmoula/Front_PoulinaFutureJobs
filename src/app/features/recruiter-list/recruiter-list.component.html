@@ -60,7 +60,7 @@
                         <th><strong>Prénom</strong></th>
                         <!-- <th><strong>Telephone</strong></th> -->
                         <th><strong>Email</strong></th>
-                        <th><strong>Entreprise</strong></th>
+                        <th><strong>filiale</strong></th>
                         <th><strong>Poste</strong></th>
                         <th><strong>Rôle</strong></th>
                         <th><strong>Actions</strong></th>
@@ -73,7 +73,7 @@
                         <td>{{ recruiter.prenom || 'N/A' }}</td>
                         <!-- <td>{{ recruiter.PhoneNumber || 'N/A' }}</td> Corrigé "phone" en "PhoneNumber" -->
                         <td>{{ recruiter.email }}</td>
-                        <td>{{ recruiter.entreprise || 'N/A' }}</td>
+              <td>{{ recruiter.nomFiliale || 'Aucune' }}</td>
                         <td>{{ recruiter.poste || 'N/A' }}</td>
                         <td>{{ recruiter.role?.name || 'N/A' }}</td>
                         <td>
