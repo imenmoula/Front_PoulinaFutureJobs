@@ -1,18 +1,21 @@
-
-
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { CreateOffreEmploiRequest, OffreEmploi } from '../../Models/offre-emploi.model';
-import { environment } from '../../../environments/environment.development';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AppUser } from '../../Models/Candidature.model';
+import { environment } from '../../../environments/environment.development';
+import { CreateOffreEmploiRequest, OffreEmploi } from '../../Models/offre-emploi.model';
+import { Recruiter } from '../../Models/recruiter.model';
 
 interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: T;
+  offresEmploi?: T[];
+  offreEmploi?: T;
+  data?: T | T[];
+  recruteurs?: AppUser[];
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,99 +23,122 @@ interface ApiResponse<T> {
 export class OffreEmploiService {
   private apiUrl = `${environment.apiBaseUrl}/OffreEmplois`;
 
-  constructor(private http: HttpClient) { }
-// In offre-emploi.service.ts
-private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+  constructor(private http: HttpClient) {}
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': token ? `Bearer ${token}` : ''
     });
   }
-getToken(): string | null {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-  console.log('Token récupéré :', token);
-  return token;
-}
-  getAll(): Observable<{ success: boolean, message: string, offresEmploi: OffreEmploi[] }> {
-    return this.http.get<{ success: boolean, message: string, offresEmploi: OffreEmploi[] }>(this.apiUrl);
+
+  getAll(): Observable<OffreEmploi[]> {
+    return this.http.get<ApiResponse<OffreEmploi>>(this.apiUrl, { headers: this.getHeaders() }).pipe(
+      map(response => response.offresEmploi || []),
+      catchError(this.handleError)
+    );
   }
 
-  getById(id: string): Observable<{ success: boolean, message: string, offreEmploi: OffreEmploi }> {
-    return this.http.get<{ success: boolean, message: string, offreEmploi: OffreEmploi }>(`${this.apiUrl}/${id}`);
+  getById(id: string): Observable<OffreEmploi> {
+    return this.http.get<ApiResponse<OffreEmploi>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+      map(response => response.offreEmploi || {} as OffreEmploi),
+      catchError(this.handleError)
+    );
   }
-
-  getByFiliale(idFiliale: string): Observable<{ success: boolean, message: string, offresEmploi: OffreEmploi[] }> {
-    return this.http.get<{ success: boolean, message: string, offresEmploi: OffreEmploi[] }>(`${this.apiUrl}/by-filiale/${idFiliale}`);
-  }
-
-  search(titrePoste?: string, specialite?: string, typeContrat?: string, statut?: string, modeTravail?: string, idFiliale?: string): Observable<{ success: boolean, message: string, offresEmploi: OffreEmploi[] }> {
-    let params: { [key: string]: string } = {};
-    if (titrePoste) params['titrePoste'] = titrePoste;
-    if (specialite) params['specialite'] = specialite;
-    if (typeContrat) params['typeContrat'] = typeContrat;
-    if (statut) params['statut'] = statut;
-    return this.http.get<{ success: boolean, message: string, offresEmploi: OffreEmploi[] }>(`${this.apiUrl}/search`, { params });
-  }
-
-  getRecruteurs(): Observable<{ success: boolean, message: string, recruteurs: AppUser[] }> {
-    return this.http.get<{ success: boolean, message: string, recruteurs: AppUser[] }>(`${this.apiUrl}/recruteurs`, { headers: this.getHeaders() });
-  }
-
-  addOffre(offre: any): Observable<any> {
-  return this.http.post<any>(this.apiUrl, offre, { headers: this.getHeaders() }).pipe(
-    tap(response => console.log('Offre ajoutée:', response)),
-    catchError(error => {
-      console.error('Erreur lors de l\'ajout de l\'offre:', error);
-      return throwError(() => new Error(error.message || 'Erreur serveur'));
-    })
+// Nouvelle méthode pour récupérer les offres par recruteur
+  getByRecruteur(idRecruteur: string): Observable<OffreEmploi[]> {
+  return this.http.get<ApiResponse<OffreEmploi>>(`${this.apiUrl}/by-recruteur/${idRecruteur}`, { headers: this.getHeaders() }).pipe(
+    map(response => response.offresEmploi || []),
+    catchError(this.handleError)
   );
 }
-
-  update(id: string, offre: OffreEmploi): Observable<{ success: boolean, message: string, data: { id: string } }> {
-    return this.http.put<{ success: boolean, message: string, data: { id: string } }>(`${this.apiUrl}/${id}`, offre, { headers: this.getHeaders() });
+  getByFiliale(idFiliale: string): Observable<OffreEmploi[]> {
+    return this.http.get<ApiResponse<OffreEmploi>>(`${this.apiUrl}/by-filiale/${idFiliale}`, { headers: this.getHeaders() }).pipe(
+      map(response => response.offresEmploi || []),
+      catchError(this.handleError)
+    );
   }
 
-  deleteOffre(id: string) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  getOffresByRecruteurOfFiliale(idFiliale: string): Observable<OffreEmploi[]> {
+    return this.http.get<ApiResponse<OffreEmploi>>(`${this.apiUrl}/by-recruteur-filiale/${idFiliale}`, { headers: this.getHeaders() }).pipe(
+      map(response => response.offresEmploi || []),
+      catchError(this.handleError)
+    );
   }
 
+  search(titrePoste?: string, specialite?: string, typeContrat?: string, statut?: string, niveauExperienceRequis?: string, idFiliale?: string): Observable<OffreEmploi[]> {
+    let params = new HttpParams();
+    if (titrePoste) params = params.set('titrePoste', titrePoste);
+    if (specialite) params = params.set('specialite', specialite);
+    if (typeContrat) params = params.set('typeContrat', typeContrat);
+    if (statut) params = params.set('statut', statut);
+    if (niveauExperienceRequis) params = params.set('niveauExperienceRequis', niveauExperienceRequis);
+    if (idFiliale) params = params.set('idFiliale', idFiliale);
+    return this.http.get<ApiResponse<OffreEmploi>>(`${this.apiUrl}/search`, { headers: this.getHeaders(), params }).pipe(
+      map(response => response.offresEmploi || []),
+      catchError(this.handleError)
+    );
+  }
 
-  // Récupère les statuts depuis l'API .NET Core
+getRecruitersSimple(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/recruteurs`);
+}
+
+
+  addOffre(offre: CreateOffreEmploiRequest): Observable<OffreEmploi> {
+    const token = this.getHeaders().get('Authorization');
+    if (!token) {
+      return throwError(() => new Error('Authentification requise'));
+    }
+    return this.http.post<ApiResponse<OffreEmploi>>(this.apiUrl, offre, { headers: this.getHeaders() }).pipe(
+      map(response => response.data as OffreEmploi),
+      catchError(this.handleError)
+    );
+  }
+
+  update(id: string, offre: OffreEmploi): Observable<{ id: string }> {
+    return this.http.put<ApiResponse<{ id: string }>>(`${this.apiUrl}/${id}`, offre, { headers: this.getHeaders() }).pipe(
+      map(response => response.data as { id: string }),
+      catchError(this.handleError)
+    );
+  }
+
+  deleteOffre(id: string): Observable<void> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+      map(() => undefined),
+      catchError(this.handleError)
+    );
+  }
+
   getStatuts(): Observable<string[]> {
-    return this.http.get<ApiResponse<{ value: number; name: string }[]>>(`${this.apiUrl}/Statuts`, { headers: this.getHeaders() })
-      .pipe(
-        map(response => response.data.map(s => s.name)),
-        catchError(this.handleError)
-      );
+    return this.http.get<ApiResponse<{ value: number; name: string }[]>>(`${this.apiUrl}/Statuts`, { headers: this.getHeaders() }).pipe(
+      map(response => (response.data as { value: number; name: string }[]).map(s => s.name)),
+      catchError(this.handleError)
+    );
   }
 
-  // Récupère les types de contrat depuis l'API .NET Core
   getTypesContrat(): Observable<string[]> {
-    return this.http.get<ApiResponse<{ value: number; name: string }[]>>(`${this.apiUrl}/TypesContrat`, { headers: this.getHeaders() })
-      .pipe(
-        map(response => response.data.map(t => t.name)),
-        catchError(this.handleError)
-      );
+    return this.http.get<ApiResponse<{ value: number; name: string }[]>>(`${this.apiUrl}/TypesContrat`, { headers: this.getHeaders() }).pipe(
+      map(response => (response.data as { value: number; name: string }[]).map(t => t.name)),
+      catchError(this.handleError)
+    );
   }
 
-  // Récupère les modes de travail depuis l'API .NET Core
   getModesTravail(): Observable<string[]> {
-    return this.http.get<ApiResponse<{ value: number; name: string }[]>>(`${this.apiUrl}/ModesTravail`, { headers: this.getHeaders() })
-      .pipe(
-        map(response => response.data.map(m => m.name)),
-        catchError(this.handleError)
-      );
+    return this.http.get<ApiResponse<{ value: number; name: string }[]>>(`${this.apiUrl}/ModesTravail`, { headers: this.getHeaders() }).pipe(
+      map(response => (response.data as { value: number; name: string }[]).map(m => m.name)),
+      catchError(this.handleError)
+    );
   }
 
-  // Récupère les niveaux requis depuis l'API .NET Core
   getNiveauxRequis(): Observable<string[]> {
-    return this.http.get<ApiResponse<string[]>>(`${this.apiUrl}/NiveauxRequis`, { headers: this.getHeaders() })
-      .pipe(
-        map(response => response.data),
-        catchError(this.handleError)
-      );
+    return this.http.get<ApiResponse<string[]>>(`${this.apiUrl}/NiveauxRequis`, { headers: this.getHeaders() }).pipe(
+      map(response => response.data as string[]),
+      catchError(this.handleError)
+    );
   }
+
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Une erreur est survenue';
     if (error.error instanceof ErrorEvent) {

@@ -3,8 +3,12 @@ import { UserRole } from "./user-role.model";
 import { v4 as uuidv4 } from 'uuid';
 
 export interface User {
+
   id: string;
+  Id?: string;      // Compatibilité API
+  FullName?: string; // Compatibilité API
   email: string;
+  Email?: string;    /// Pour la compatibilité
   fullName: string;
   nom: string;
   prenom: string;

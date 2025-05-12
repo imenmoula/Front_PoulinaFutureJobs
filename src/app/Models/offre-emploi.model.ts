@@ -1,22 +1,22 @@
+import { Langue, ModeTravail, NiveauRequisType, StatutOffre, TypeContratEnum } from './enums.model';
 import { Filiale } from './filiale.model';
-import { Langue, ModeTravail, NiveauRequisType, StatutOffre, TypeContratEnum } from "./enums.model";
-import { OffreCompetence } from "./offre-competence.model";
+import { OffreCompetence } from './offre-competence.model';
+
+
 
 export interface OffreEmploi {
-  idOffreEmploi?: string; // Optional, as it may be undefined before creation
+  idOffreEmploi?: string;
   specialite: string;
-  
-  datePublication?: Date|string; // Use string to match ISO date from backend
-  dateExpiration: Date|string;
-  SalaireMax ?: number;
- SalaireMin?: number;
+  datePublication?: string; // ISO string
+  dateExpiration: string; // ISO string
+  salaireMin?: number;
+  salaireMax?: number;
   niveauExperienceRequis: string;
   typeContrat: TypeContratEnum;
   statut: StatutOffre;
   modeTravail: ModeTravail;
-  nombrePostes: number;
   avantages: string;
-  estactif: boolean;
+  estActif: boolean;
   idRecruteur: string;
   idFiliale: string;
   filiale?: Filiale;
@@ -28,8 +28,8 @@ export interface OffreEmploi {
   offreCompetences: OffreCompetence[];
   diplomeIds: string[];
   diplomes?: Diplome[];
-
 }
+
 export interface Poste {
   idPoste?: string;
   titrePoste: string;
@@ -41,16 +41,17 @@ export interface Poste {
 }
 
 export interface OffreMission {
-  idOffreMission: string;
-  idOffreEmploi: string;
+  idOffreMission?: string;
+  idOffreEmploi?: string;
   descriptionMission: string;
-  priorite?: number; // Optionnel, selon les besoins
+  priorite?: number;
 }
+
 export interface OffreLangue {
   idOffreLangue?: string;
   idOffreEmploi?: string;
   langue: Langue;
-  niveauRequis: string;
+  niveauRequis: NiveauRequisType;
 }
 
 
@@ -66,5 +67,24 @@ export interface Diplome {
 }
 
 export interface CreateOffreEmploiRequest {
-  dto: OffreEmploi;
+  dto: {
+    specialite: string;
+    dateExpiration: string; // ISO string
+    salaireMin?: number;
+    salaireMax?: number;
+    niveauExperienceRequis: string;
+    typeContrat: TypeContratEnum;
+    statut: StatutOffre;
+    modeTravail: ModeTravail;
+    avantages: string;
+    estActif: boolean;
+    idRecruteur: string;
+    idFiliale: string;
+    idDepartement: string;
+    postes: Poste[];
+    offreMissions: OffreMission[];
+    offreLangues: OffreLangue[];
+    offreCompetences: OffreCompetence[];
+    diplomeIds: string[];
+  };
 }

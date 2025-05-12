@@ -17,20 +17,13 @@
               <div class="card-body">
                 <form [formGroup]="searchForm">
                   <div class="row">
-                    <div class="col-md-2">
+                 
+                    <div class="col-md-3">
                       <input
                         type="text"
                         class="form-control mb-3"
-                        formControlName="titre"
-                        placeholder="Rechercher par titre..."
-                      >
-                    </div>
-                    <div class="col-md-2">
-                      <input
-                        type="text"
-                        class="form-control mb-3"
-                        formControlName="specialite"
-                        placeholder="Rechercher par spécialité..."
+                        formControlName="query"
+                        placeholder="Rechercher par titre ou spécialité..."
                       >
                     </div>
                     <div class="col-md-2">
@@ -49,12 +42,6 @@
                       <select class="form-control mb-3" formControlName="modeTravail">
                         <option value="">Tous les modes de travail</option>
                         <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
-                      </select>
-                    </div>
-                    <div class="col-md-2">
-                      <select class="form-control mb-3" formControlName="idFiliale">
-                        <option value="">Toutes les filiales</option>
-                        <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">{{ filiale.nom }}</option>
                       </select>
                     </div>
                   </div>
@@ -89,14 +76,14 @@
                       <tr *ngFor="let offre of paginatedOffres; let i = index">
                         <td>{{ i + 1 + (currentPage * pageSize) }}</td>
                         <td>{{ getTitre(offre) }}</td>
-                        <td>{{ offre.specialite }}</td>
-                        <td>{{ offre.typeContrat }}</td>
-                        <td>{{ offre.modeTravail }}</td>
+                        <td>{{ offre.specialite || 'N/A' }}</td>
+                        <td>{{ offre.typeContrat || 'N/A' }}</td>
+                        <td>{{ offre.modeTravail || 'N/A' }}</td>
                         <td>{{ getNombrePostes(offre) }}</td>
-                        <td>{{ offre.statut }}</td>
+                        <td>{{ offre.statut || 'N/A' }}</td>
                         <td>{{ getNomFiliale(offre.idFiliale) }}</td>
-                        <td>{{ offre.datePublication | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC' }}</td>
-                        <td>{{ offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC' }}</td>
+                        <td>{{ offre.datePublication ? (offre.datePublication | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC') : 'N/A' }}</td>
+                        <td>{{ offre.dateExpiration ? (offre.dateExpiration | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC') : 'N/A' }}</td>
                         <td>
                           <div class="d-flex">
                             <a *ngIf="offre.idOffreEmploi" routerLink="/offres/update/{{ offre.idOffreEmploi }}" class="btn btn-primary shadow btn-xs sharp mr-1">
@@ -113,7 +100,7 @@
                       </tr>
                       <tr *ngIf="paginatedOffres.length === 0">
                         <td colspan="11" class="text-center">
-                          {{ offres.length === 0 ? 'Chargement des offres en cours...' : 'Aucune offre trouvée' }}
+                          {{ offres.length === 0 && !filteredOffres.length ? 'Chargement des offres en cours...' : 'Aucune offre trouvée' }}
                         </td>
                       </tr>
                     </tbody>

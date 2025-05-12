@@ -35,8 +35,9 @@ import { CandidatureListComponent } from './interfacerecruteur/candidature-list/
 import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
-import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+// import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
+import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 
 
 export const routes: Routes = [

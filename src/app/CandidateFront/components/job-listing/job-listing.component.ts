@@ -64,19 +64,19 @@ export class JobListingComponent implements OnInit {
   }
 
   loadOffres(): void {
-    this.offreService.getAll().subscribe(
-      (response: { success: boolean, message: string, offresEmploi: OffreEmploi[] }) => {
-        this.offres = response.offresEmploi || [];
-        if (this.offres.length === 0) {
-          this.errorMessage = 'Aucune offre disponible pour le moment.';
-        }
-        this.filterOffres();
-      },
-      (error: any) => {
-        this.errorMessage = 'Erreur lors du chargement des offres : ' + error.message;
-        console.error('Error loading offers:', error);
-      }
-    );
+   this.offreService.getAll().subscribe(
+  (response: OffreEmploi[]) => {
+    this.offres = response || [];
+    if (this.offres.length === 0) {
+      this.errorMessage = 'Aucune offre disponible pour le moment.';
+    }
+    this.filterOffres();
+  },
+  (error: any) => {
+    this.errorMessage = 'Erreur lors du chargement des offres : ' + error.message;
+    console.error('Error loading offers:', error);
+  }
+);
   }
 
   loadFiliales(): void {

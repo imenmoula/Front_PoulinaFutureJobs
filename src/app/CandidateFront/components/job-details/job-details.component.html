@@ -1,1 +1,362 @@
-<!--  -->
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Job board HTML-5 Template </title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
+
+
+</head>
+
+<body>
+
+  <header>
+    <!-- Header Start -->
+   <div class="header-area header-transparrent">
+       <div class="headder-top header-sticky">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-2">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
+                        </div>  
+                    </div>
+                    <div class="col-lg-9 col-md-9">
+                        <div class="menu-wrapper">
+                            <!-- Main-menu -->
+                            <div class="main-menu">
+                                <nav class="d-none d-lg-block">
+                                    <ul id="navigation">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="/job-list">offre Emploi  </a></li>
+                                        <li><a href="/A propos">A propos</a></li>
+                                        <li><a href="#">Page</a>
+                                            <ul class="submenu">
+                                                <li><a (click)="onLogout()">deconnexion</a></li>
+                                                <li><a href="single-blog.html">Blog Dcetails</a></li>
+                                                <li><a href="elements.html">Elements</a></li>
+                                                <li><a href="job_details.html">job Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>          
+                            <!-- Header-btn -->
+                            <div class="header-btn d-none f-right d-lg-block">
+                                <a routerLink="/singup" class="btn head-btn1">Inscription</a>
+                                <a routerLink="/signin" class="btn head-btn2">Connexion</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+       </div>
+   </div>
+    <!-- Header End -->
+</header>
+  <main>
+
+    <!-- Slider Area Start -->
+<div class="slider-area">
+  <div class="single-slider slider-height d-flex align-items-center"
+    [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="hero-cap text-center">
+            <h2>Avec Poulina Groupe Holding vous trouverez, votre futur emploi et vous pouvez postuler
+              gratuitement, et cree votre reve de carriere</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<main>
+  <div class="job-details-container pt-120 pb-120">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-8 col-lg-8">
+          <div class="job-header mb-50">
+            <div class="company-logo">
+              <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
+            </div>
+            <div class="job-info">
+              <!-- <h2>{{ offre?.postes[0].titrePoste || 'Titre non disponible' }}</h2> -->
+              <p><i class="fas fa-map-marker-alt"></i> {{ filiale?.adresse || 'Localisation inconnue' }}</p>
+            </div>
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-file-alt" style="color: #007bff"></i> <strong>Description de l’offre</strong></h4>
+            <!-- <p>{{ offre?.postes[0]?.description || 'Aucune description disponible.' }}</p> -->
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-briefcase" style="color: #28a745"></i> <strong>Poste(s)</strong></h4>
+            <ul class="job-list">
+              <li *ngFor="let poste of offre?.postes">
+                <strong>{{ poste.titrePoste }}</strong> (Nombre de postes: <strong>{{ poste.nombrePostes }}</strong>)<br>
+                Niveau hiérarchique: {{ poste.niveauHierarchique || 'Non spécifié' }}<br>
+                Expérience souhaitée: {{ poste.experienceSouhaitee || 'Non spécifiée' }}
+              </li>
+              <li *ngIf="!offre?.postes?.length">Aucun poste spécifié.</li>
+            </ul>
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-tasks" style="color: #ffc107"></i> <strong>Missions</strong></h4>
+            <ul class="job-list">
+              <li *ngFor="let mission of missions">
+                {{ mission.descriptionMission || 'Mission non spécifiée' }} (Priorité: {{ mission.priorite || 'Non spécifiée' }})
+              </li>
+              <li *ngIf="!missions?.length">Aucune mission spécifiée.</li>
+            </ul>
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-language" style="color: #17a2b8"></i> <strong>Langues requises</strong></h4>
+            <ul class="job-list">
+              <li *ngFor="let langue of langues">
+                <strong>{{ langue.langue }}</strong> (Niveau: {{ langue.niveauRequis || 'Non spécifié' }})
+              </li>
+              <li *ngIf="!langues?.length">Aucune langue spécifiée.</li>
+            </ul>
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-tools" style="color: #dc3545"></i> <strong>Compétences techniques</strong></h4>
+            <ul class="job-list">
+              <li *ngFor="let competence of competences">
+                <strong>{{ competence.competence?.nom || 'Compétence inconnue' }}</strong> (Niveau: {{ competence.niveauRequis || 'Non spécifié' }})
+              </li>
+              <li *ngIf="!competences?.length">Aucune compétence spécifiée.</li>
+            </ul>
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-gift" style="color: #6c757d"></i> <strong>Avantages de l’emploi</strong></h4>
+            <p>{{ offre?.avantages || 'Aucun avantage disponible.' }}</p>
+          </div>
+          <div class="job-section mb-30">
+            <h4><i class="fas fa-user-graduate" style="color: #007bff"></i> <strong>Profil recherché</strong></h4>
+            <ul class="job-list">
+              <li>Expérience: <strong>{{ offre?.niveauExperienceRequis || 'Non spécifié' }}</strong></li>
+              <li>Diplôme: <strong>{{ offre?.diplomes?.[0]?.nomDiplome || 'Non spécifié' }}</strong></li>
+              <li>Spécialité: <strong>{{ offre?.specialite || 'Non spécifiée' }}</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-4">
+          <div class="job-card mb-30">
+            <div class="card-header">
+              <h4><i class="fas fa-info-circle" style="color: #28a745"></i> <strong>Aperçu de l’offre</strong></h4>
+            </div>
+            <div class="card-body">
+              <p><i class="fas fa-calendar"></i> <strong>Date de publication:</strong> {{ formatDate(offre?.datePublication) }} (5 mai 2025)</p>
+              <p><i class="fas fa-map-marker-alt"></i> <strong>Localisation:</strong> {{ filiale?.adresse || 'Inconnue' }}</p>
+              <p><i class="fas fa-clock"></i> <strong>Date limite:</strong> {{ formatDate(offre?.dateExpiration) }} (5 juin 2025)</p>
+              <p><i class="fas fa-money-bill-wave"></i> <strong>Salaire:</strong> {{ offre?.SalaireMin || 'Non spécifié' }} - {{ offre?.SalaireMax || 'Non spécifié' }}</p>
+              <!-- <p><i class="fas fa-briefcase"></i> <strong>Type de contrat:</strong> <span class="badge" [ngStyle]="{'background-color': getContractColor(offre?.typeContrat)}">{{ getTypeContratLabel(offre?.typeContrat) }}</span></p> -->
+              <p><i class="fas fa-user-tie"></i> <strong>Statut:</strong> <span class="badge" [ngStyle]="{'background-color': getStatutOffreColor(offre?.statut)}">{{ getStatutOffreLabel(offre?.statut) }}</span></p>
+              <p><i class="fas fa-desktop"></i> <strong>Mode de travail:</strong> {{ getModeTravailLabel(offre?.modeTravail) }}</p>
+              <p><i class="fas fa-users"></i> <strong>Nombre de postes:</strong> {{ offre?.nombrePostes || 'Non spécifié' }}</p>
+              <button class="btn btn-primary" (click)="navigateToCandidature()">Postuler À Cette Offre</button>
+            </div>
+          </div>
+          <div class="job-card mb-30">
+            <div class="card-header">
+              <h4><i class="fas fa-building" style="color: #007bff"></i> <strong>À propos de l’entreprise</strong></h4>
+            </div>
+            <div class="card-body">
+              <p><strong>{{ filiale?.nom || 'Entreprise inconnue' }}</strong></p>
+              <p>{{ filiale?.description || 'Aucune description disponible.' }}</p>
+              <ul class="job-list">
+                <li><i class="fas fa-globe"></i> <strong>Site web:</strong> <a [href]="filiale?.siteWeb || 'https://www.example.com'" target="_blank">{{ filiale?.siteWeb || 'Non spécifié' }}</a></li>
+                <li><i class="fas fa-envelope"></i> <strong>Email:</strong> {{ filiale?.email || 'Non spécifié' }}</li>
+                <li><i class="fas fa-map-marker-alt"></i> <strong>Adresse:</strong> {{ filiale?.adresse || 'Non spécifié' }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- Hero Area End -->
+
+<footer>
+  <!-- Footer Start-->
+  <div class="footer-area footer-bg footer-padding">
+      <div class="container">
+          <div class="row d-flex justify-content-between">
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                 <div class="single-footer-caption mb-50">
+                   <div class="single-footer-caption mb-30">
+                       <div class="footer-tittle">
+                           <h4>About Us</h4>
+                           <div class="footer-pera">
+                               <p>Heaven frucvitful doesn't cover lesser dvsays appear creeping seasons so behold.</p>
+                          </div>
+                       </div>
+                   </div>
+
+                 </div>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                  <div class="single-footer-caption mb-50">
+                      <div class="footer-tittle">
+                          <h4>Contact Info</h4>
+                          <ul>
+                              <li>
+                              <p>Address :Your address goes
+                                  here, your demo address.</p>
+                              </li>
+                              <li><a href="#">Phone : +8880 44338899</a></li>
+                              <li><a href="#">Email :</a></li>
+                          </ul>
+                      </div>
+
+                  </div>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                  <div class="single-footer-caption mb-50">
+                      <div class="footer-tittle">
+                          <h4>Important Link</h4>
+                          <ul>
+                              <li><a href="#"> View Project</a></li>
+                              <li><a href="#">Contact Us</a></li>
+                              <li><a href="#">Testimonial</a></li>
+                              <li><a href="#">Proparties</a></li>
+                              <li><a href="#">Support</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                  <div class="single-footer-caption mb-50">
+                      <div class="footer-tittle">
+                          <h4>Newsletter</h4>
+                          <div class="footer-pera footer-pera2">
+                           <p>Heaven fruitful doesn't over lesser in days. Appear creeping.</p>
+                       </div>
+                       <!-- Form -->
+                       <div class="footer-form" >
+                           <div id="mc_embed_signup">
+                               <form target="_blank" action="https:/spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                               method="get" class="subscribe_form relative mail_part">
+                                   <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address"
+                                   class="placeholder hide-on-focus" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = ' Email Address '">
+                                   <div class="form-icon">
+                                       <button type="submit" name="submit" id="newsletter-submit"
+                                       class="email_icon newsletter-submit button-contactForm"><img src="../../../assets/User/img/icon/form.png" alt=""></button>
+                                   </div>
+                                   <div class="mt-10 info"></div>
+                               </form>
+                           </div>
+                       </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+         <!--  -->
+         <div class="row footer-wejed justify-content-between">
+                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                    <!-- logo -->
+                    <div class="footer-logo mb-20">
+                      <a href="index.html"><img src="../../.././assets/User/img/logo/logo2_footer.png" alt=""></a>
+                    </div>
+                 </div>
+                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                  <div class="footer-tittle-bottom">
+                      <span>5000+</span>
+                      <p>Talented Hunter</p>
+                  </div>
+                 </div>
+                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                      <div class="footer-tittle-bottom">
+                          <span>451</span>
+                          <p>Talented Hunter</p>
+                      </div>
+                 </div>
+                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                      <!-- Footer Bottom Tittle -->
+                      <div class="footer-tittle-bottom">
+                          <span>568</span>
+                          <p>Talented Hunter</p>
+                      </div>
+                 </div>
+         </div>
+      </div>
+  </div>
+  <!-- footer-bottom area -->
+  <div class="footer-bottom-area footer-bg">
+      <div class="container">
+          <div class="footer-border">
+               <div class="row d-flex justify-content-between align-items-center">
+                   <div class="col-xl-10 col-lg-10 ">
+                       <div class="footer-copy-right">
+                           <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https:/colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                       </div>
+                   </div>
+                   <div class="col-xl-2 col-lg-2">
+                       <div class="footer-social f-right">
+                           <a href="#"><i class="fab fa-facebook-f"></i></a>
+                           <a href="#"><i class="fab fa-twitter"></i></a>
+                           <a href="#"><i class="fas fa-globe"></i></a>
+                           <a href="#"><i class="fab fa-behance"></i></a>
+                       </div>
+                   </div>
+               </div>
+          </div>
+      </div>
+  </div>
+  <!-- Footer End-->
+</footer>
+
+<!-- JS here -->
+
+  <!-- All JS Custom Plugins Link Here here -->
+  <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
+  <!-- Jquery, Popper, Bootstrap -->
+  <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
+  <script src="../../../assets/User/js/popper.min.js"></script>
+  <script src="../../../assets/User/js/bootstrap.min.js"></script>
+  <!-- Jquery Mobile Menu -->
+  <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
+
+  <!-- Jquery Slick , Owl-Carousel Range -->
+  <script src="../../../assets/User/js/owl.carousel.min.js"></script>
+  <script src="../../../assets/User/js/slick.min.js"></script>
+  <script src="../../../assets/User/js/price_rangs.js"></script>
+  <!-- One Page, Animated-HeadLin -->
+  <script src="../../../assets/User/js/wow.min.js"></script>
+  <script src="../../../assets/User/js/animated.headline.js"></script>
+  <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
+
+  <!-- Scrollup, nice-select, sticky -->
+  <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
+  <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
+  <script src="../../../assets/User/js/jquery.sticky.js"></script>
+  
+  <!-- contact js -->
+  <script src="../../../assets/User/js/contact.js"></script>
+  <script src="../../../assets/User/js/jquery.form.js"></script>
+  <script src="../../../assets/User/js/jquery.validate.min.js"></script>
+  <script src="../../../assets/User/js/mail-script.js"></script>
+  <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
+  
+  <!-- Jquery Plugins, main Jquery -->	
+  <script src="../../../assets/User/js/plugins.js"></script>
+  <script src="../../../assets/User/js/main.js"></script>
+  
+</body>
+</html>
