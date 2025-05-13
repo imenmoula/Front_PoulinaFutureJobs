@@ -1,413 +1,243 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="fr">
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Job board HTML-5 Template </title>
+  <title>Poulina Group Holding - Offres d'emploi</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
-
-
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-
   <header>
-    <!-- Header Start -->
-   <div class="header-area header-transparrent">
-       <div class="headder-top header-sticky">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-2">
-                        <!-- Logo -->
-                        <div class="logo">
-                            <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
-                        </div>  
-                    </div>
-                    <div class="col-lg-9 col-md-9">
-                        <div class="menu-wrapper">
-                            <!-- Main-menu -->
-                            <div class="main-menu">
-                                <nav class="d-none d-lg-block">
-                                    <ul id="navigation">
-                                        <li><a href="index.html">Home</a></li>
-                                        <li><a href="/job-list">offre Emploi  </a></li>
-                                        <li><a href="/A propos">A propos</a></li>
-                                        <li><a href="#">Page</a>
-                                            <ul class="submenu">
-                                                <li><a (click)="onLogout()">deconnexion</a></li>
-                                                <li><a href="single-blog.html">Blog Dcetails</a></li>
-                                                <li><a href="elements.html">Elements</a></li>
-                                                <li><a href="job_details.html">job Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                    </ul>
-                                </nav>
-                            </div>          
-                            <!-- Header-btn -->
-                            <div class="header-btn d-none f-right d-lg-block">
-                                <a routerLink="/singup" class="btn head-btn1">Inscription</a>
-                                <a routerLink="/signin" class="btn head-btn2">Connexion</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mobile Menu -->
-                    <div class="col-12">
-                        <div class="mobile_menu d-block d-lg-none"></div>
-                    </div>
-                </div>
-            </div>
-       </div>
-   </div>
-    <!-- Header End -->
-</header>
+    <div class="job-listing-header">
+      <div class="container">
+        <div class="logo">
+          <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a class="active" href="/job-list">Offres d'emploi</a></li>
+            <li><a href="/A propos">À propos</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a routerLink="/singup" class="btn-signup">Inscription</a>
+          <a routerLink="/signin" class="btn-signin">Connexion</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
   <main>
-
-    <!-- Slider Area Start -->
-<div class="slider-area">
-  <div class="single-slider slider-height d-flex align-items-center"
-    [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="hero-cap text-center">
-            <h2>Avec Poulina Groupe Holding vous trouverez, votre futur emploi et vous pouvez postuler
-              gratuitement, et cree votre reve de carriere</h2>
-          </div>
+    <!-- Bannière Hero -->
+    <div class="hero-banner">
+      <div class="container">
+        <h1>Avec Poulina Groupe Holding, trouvez votre futur emploi et construisez votre carrière</h1>
+        <div class="search-bar">
+          <input type="text" [(ngModel)]="titrePoste" (ngModelChange)="onFilterChange()" 
+                 placeholder="Rechercher par titre de poste...">
+          <button (click)="onFilterChange()"><i class="fas fa-search"></i></button>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<!-- Hero Area End -->
 
-<!-- Job Listing Area Start -->
-<div class="job-listing-area pt-120 pb-120">
-  <div class="container">
-    <div class="row">
-      <!-- Left Sidebar (Filters) -->
-      <div class="col-xl-3 col-lg-3 col-md-4">
-        <div class="row">
-          <div class="col-12">
-            <div class="small-section-tittle2 mb-45">
-              <h4>Filtrer les offres d'emploi</h4>
-            </div>
-          </div>
-        </div>
-        <div class="job-category-listing mb-50">
-          <div class="single-listing">
-            <div class="small-section-tittle2">
-              <h4>Titre du poste</h4>
-            </div>
-            <div class="select-job-items2">
-              <input type="text" [(ngModel)]="titrePoste" (ngModelChange)="onFilterChange()"
-                placeholder="Entrez un titre" class="form-control">
-            </div>
-          </div>
-          <div class="single-listing">
-            <div class="small-section-tittle2">
-              <h4>Spécialité</h4>
-            </div>
-            <div class="select-job-items2">
-              <input type="text" [(ngModel)]="specialite" (ngModelChange)="onFilterChange()"
-                placeholder="Entrez une spécialité" class="form-control">
-            </div>
-          </div>
-          <div class="single-listing">
-            <div class="small-section-tittle2">
-              <h4>Niveau d'expérience</h4>
-            </div>
-            <div class="select-job-items2">
-              <input type="text" [(ngModel)]="niveauExperienceRequis" (ngModelChange)="onFilterChange()"
-                placeholder="Entrez le niveau d'expérience" class="form-control">
-            </div>
-          </div>
-          <div class="single-listing">
-            <div class="small-section-tittle2">
-              <h4>Type de contrat</h4>
-            </div>
-            <div class="select-job-items2">
-              <select [(ngModel)]="typeContrat" (ngModelChange)="onFilterChange()" class="form-control">
-                <option value="">--Sélectionnez un type de contrat--</option>
-                <option value="CDI">CDI</option>
-                <option value="CDD">CDD</option>
-                <option value="Freelance">Freelance</option>
-                <option value="Stage">Stage</option>
-                <option value="Alternance">Alternance</option>
-              </select>
-            </div>
-          </div>
-          <div class="single-listing">
-            <div class="small-section-tittle2">
-              <h4>Mode de travail Spacing updated</h4>
-            </div>
-            <div class="select-job-items2">
-              <select [(ngModel)]="modeTravail" (ngModelChange)="onFilterChange()" class="form-control">
-                <option value="">--Sélectionnez un mode de travail--</option>
-                <option value="Presentiel">Présentiel</option>
-                <option value="Hybride">Hybride</option>
-                <option value="Teletravail">Télétravail</option>
-              </select>
-            </div>
-          </div>
-          <div class="single-listing">
-            <div class="small-section-tittle2">
-              <h4>Filiale</h4>
-            </div>
-            <div class="select-job-items2">
-              <select [(ngModel)]="selectedFiliale" (ngModelChange)="onFilterChange()" class="form-control">
-                <option value="">--Sélectionnez une filiale--</option>
-                <option *ngFor="let filiale of filialesList" [value]="filiale.idFiliale">
-                  {{ filiale.nom }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Right Content (Job Listings) -->
-      <div class="col-xl-9 col-lg-9 col-md-8">
-        <section class="featured-job-area">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="count-job mb-35">
-                  <span>{{ filteredOffres.length }} offre(s) d'emploi trouvée(s)</span>
-                </div>
+    <!-- Contenu principal -->
+    <div class="job-listing-main">
+      <div class="container">
+        <div class="job-listing-grid">
+          <!-- Sidebar des filtres -->
+          <aside class="filters-sidebar">
+            <h1>Filtrer les offres</h1>
+            
+            <!-- Filtre par type de contrat -->
+            <div class="filter-group">
+              <h3><i class="fas fa-file-contract"></i> Type de contrat</h3>
+              <div class="checkbox-list">
+                <label *ngFor="let type of typesContrat">
+                  <input type="checkbox" 
+                         [checked]="selectedTypesContrat.includes(type)"
+                         (change)="toggleTypeContrat(type)">
+                  {{ type }}
+                </label>
               </div>
             </div>
-            <div class="job-card mb-30" *ngFor="let offre of getPaginatedOffres()">
-              <div class="job-card-header">
-                <h4 class="job-title-orange">{{ offre.postes[0].titrePoste | uppercase }}</h4>
-                <span class="job-date">
-                  Date de publication: {{ formatDate(offre.datePublication) }} ({{ timeSince(offre.datePublication) }})
-                </span>
-              </div>
-              <div class="job-card-body">
-                <div class="filiale-image">
-                  <img [src]="filiales[offre.idFiliale].photo || 'assets/img/icon/job-listing.png'" 
-                       [alt]="filiales[offre.idFiliale].nom || 'Filiale inconnue'" 
-                       class="filiale-img">
-                </div>
-                <div class="job-details">
-                  <h5>{{ offre.postes[0].titrePoste }}</h5>
-                  <ul class="job-info-list">
-                    <li><i class="fas fa-building"></i>{{ filiales[offre.idFiliale].nom || 'Filiale inconnue' }}</li>
-                    <li><i class="fas fa-briefcase"></i>{{ offre.specialite }}</li>
-                    <li><i class="fas fa-user-graduate"></i>{{ offre.niveauExperienceRequis }}</li>
-                    <li>
-                      <i class="fas fa-tag"></i>
-                      <!-- <span class="contract-type" [ngStyle]="{'background-color': getContractColor(offre.typeContrat)}"> -->
-                        {{ offre.typeContrat }}
-                      <!-- </span> -->
-                    </li>
-                    <li><i class="fas fa-map-marker-alt"></i>{{ offre.modeTravail }}</li>
-                  </ul>
-                </div>
-                <div class="job-actions">
-                  <a [routerLink]="['/job-details', offre.idOffreEmploi]" class="voir-detail">Voir les détails</a>
-                </div>
+
+            <!-- Filtre par mode de travail -->
+            <div class="filter-group">
+              <h3><i class="fas fa-laptop-house"></i> Mode de travail</h3>
+              <div class="checkbox-list">
+                <label *ngFor="let mode of modesTravail">
+                  <input type="checkbox" 
+                         [checked]="selectedModesTravail.includes(mode)"
+                         (change)="toggleModeTravail(mode)">
+                  {{ mode }}
+                </label>
               </div>
             </div>
-            <div class="text-center" *ngIf="filteredOffres.length === 0">
-              <p>Aucune offre d'emploi correspondant à vos critères.</p>
-            </div>
-            <div class="pagination-area pb-115 text-center" *ngIf="totalPages > 1">
-              <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a class="page-link" (click)="prevPage()" href="javascript:void(0)">Précédent</a>
-                  </li>
-                  <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
-                    <a class="page-link" (click)="currentPage = page" href="javascript:void(0)">{{ page }}</a>
-                  </li>
-                  <li class="page-item" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" (click)="nextPage()" href="javascript:void(0)">Suivant</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Job List Area End -->
-    <!-- Job List Area End -->
-    <!-- Job List Area End -->
-  </main>
-  <footer>
-    <!-- Footer Start-->
-    <div class="footer-area footer-bg footer-padding">
-        <div class="container">
-            <div class="row d-flex justify-content-between">
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                   <div class="single-footer-caption mb-50">
-                     <div class="single-footer-caption mb-30">
-                         <div class="footer-tittle">
-                             <h4>About Us</h4>
-                             <div class="footer-pera">
-                                 <p>Heaven frucvitful doesn't cover lesser dvsays appear creeping seasons so behold.</p>
-                            </div>
-                         </div>
-                     </div>
 
-                   </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                    <div class="single-footer-caption mb-50">
-                        <div class="footer-tittle">
-                            <h4>Contact Info</h4>
-                            <ul>
-                                <li>
-                                <p>Address :Your address goes
-                                    here, your demo address.</p>
-                                </li>
-                                <li><a href="#">Phone : +8880 44338899</a></li>
-                                <li><a href="#">Email :</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                    <div class="single-footer-caption mb-50">
-                        <div class="footer-tittle">
-                            <h4>Important Link</h4>
-                            <ul>
-                                <li><a href="#"> View Project</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Testimonial</a></li>
-                                <li><a href="#">Proparties</a></li>
-                                <li><a href="#">Support</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                    <div class="single-footer-caption mb-50">
-                        <div class="footer-tittle">
-                            <h4>Newsletter</h4>
-                            <div class="footer-pera footer-pera2">
-                             <p>Heaven fruitful doesn't over lesser in days. Appear creeping.</p>
-                         </div>
-                         <!-- Form -->
-                         <div class="footer-form" >
-                             <div id="mc_embed_signup">
-                                 <form target="_blank" action="https:/spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                                 method="get" class="subscribe_form relative mail_part">
-                                     <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address"
-                                     class="placeholder hide-on-focus" onfocus="this.placeholder = ''"
-                                     onblur="this.placeholder = ' Email Address '">
-                                     <div class="form-icon">
-                                         <button type="submit" name="submit" id="newsletter-submit"
-                                         class="email_icon newsletter-submit button-contactForm"><img src="../../../assets/User/img/icon/form.png" alt=""></button>
-                                     </div>
-                                     <div class="mt-10 info"></div>
-                                 </form>
-                             </div>
-                         </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Filtre par spécialité -->
+            <div class="filter-group">
+              <h3><i class="fas fa-tag"></i> Spécialité</h3>
+              <div class="checkbox-list">
+                <label *ngFor="let spec of specialites">
+                  <input type="checkbox" 
+                         [checked]="selectedSpecialites.includes(spec)"
+                         (change)="toggleSpecialite(spec)">
+                  {{ spec }}
+                </label>
+              </div>
             </div>
-           <!--  -->
-           <div class="row footer-wejed justify-content-between">
-                   <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                      <!-- logo -->
-                      <div class="footer-logo mb-20">
-                        <a href="index.html"><img src="../../.././assets/User/img/logo/logo2_footer.png" alt=""></a>
+
+            <!-- Filtre par niveau d'expérience -->
+            <div class="filter-group">
+              <h3><i class="fas fa-chart-line"></i> Niveau d'expérience</h3>
+              <div class="checkbox-list">
+                <label *ngFor="let niveau of niveauxExperience">
+                  <input type="checkbox" 
+                         [checked]="selectedNiveauxExperience.includes(niveau)"
+                         (change)="toggleNiveauExperience(niveau)">
+                  {{ niveau }}
+                </label>
+              </div>
+            </div>
+
+            <button class="reset-btn" (click)="resetFilters()">
+              <i class="fas fa-undo"></i> Réinitialiser les filtres
+            </button>
+          </aside>
+
+          <!-- Liste des offres -->
+          <section class="job-listings">
+            <div class="job-listings-header">
+              <h2>Nos offres d'emploi</h2>
+              <span class="job-count">{{ filteredOffres.length }} offres disponibles</span>
+            </div>
+
+            <div *ngIf="filteredOffres.length === 0" class="no-results">
+              <i class="far fa-folder-open"></i>
+              <p>Aucune offre ne correspond à vos critères de recherche.</p>
+            </div>
+
+            <div class="job-cards">
+              <div *ngFor="let offre of getPaginatedOffres()" class="job-card">
+                <div class="job-card-content">
+                  <div class="job-info">
+                    <h3 class="job-title">{{ offre.postes[0].titrePoste }}</h3>
+                    
+                    <div class="company-info">
+                      <img *ngIf="filiales[offre.idFiliale]?.photo" 
+                          [src]="filiales[offre.idFiliale].photo" 
+                          alt="Logo filiale" 
+                          class="company-logo">
+                      <div>
+                        <p class="company-name">
+                          <i class="fas fa-building"></i> {{ filiales[offre.idFiliale].nom || 'Filiale inconnue' }}
+                        </p>
+                        <p class="company-address" *ngIf="filiales[offre.idFiliale]?.adresse">
+                          <i class="fas fa-map-marker-alt"></i> {{ filiales[offre.idFiliale].adresse }}
+                        </p>
                       </div>
-                   </div>
-                   <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                    <div class="footer-tittle-bottom">
-                        <span>5000+</span>
-                        <p>Talented Hunter</p>
                     </div>
-                   </div>
-                   <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                        <div class="footer-tittle-bottom">
-                            <span>451</span>
-                            <p>Talented Hunter</p>
-                        </div>
-                   </div>
-                   <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                        <!-- Footer Bottom Tittle -->
-                        <div class="footer-tittle-bottom">
-                            <span>568</span>
-                            <p>Talented Hunter</p>
-                        </div>
-                   </div>
-           </div>
-        </div>
-    </div>
-    <!-- footer-bottom area -->
-    <div class="footer-bottom-area footer-bg">
-        <div class="container">
-            <div class="footer-border">
-                 <div class="row d-flex justify-content-between align-items-center">
-                     <div class="col-xl-10 col-lg-10 ">
-                         <div class="footer-copy-right">
-                             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https:/colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                         </div>
-                     </div>
-                     <div class="col-xl-2 col-lg-2">
-                         <div class="footer-social f-right">
-                             <a href="#"><i class="fab fa-facebook-f"></i></a>
-                             <a href="#"><i class="fab fa-twitter"></i></a>
-                             <a href="#"><i class="fas fa-globe"></i></a>
-                             <a href="#"><i class="fab fa-behance"></i></a>
-                         </div>
-                     </div>
-                 </div>
+                    
+                    <div class="job-meta">
+                      <div class="job-tags">
+                        <span class="job-tag contract-tag">
+                          <i class="fas fa-file-signature"></i> {{ offre.typeContrat }}
+                        </span>
+                        <span class="job-tag">
+                          <i class="fas fa-tag"></i> {{ offre.specialite }}
+                        </span>
+                        <span class="job-tag">
+                          <i class="fas fa-briefcase"></i> {{ offre.niveauExperienceRequis }}
+                        </span>
+                        <span class="job-tag">
+                          <i class="fas fa-laptop-house"></i> {{ offre.modeTravail }}
+                        </span>
+                      </div>
+                      
+                      <p class="post-date">
+                        <i class="far fa-clock"></i> Publié {{ timeSince(offre.datePublication) }}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div class="job-actions">
+                    <a [routerLink]="['/job-details', offre.idOffreEmploi]" class="view-details-btn">
+                      <i class="fas fa-eye"></i> Voir détails
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- Pagination -->
+            <div *ngIf="totalPages > 1" class="pagination">
+              <button (click)="prevPage()" [disabled]="currentPage === 1">
+                <i class="fas fa-chevron-left"></i> Précédent
+              </button>
+              
+              <span *ngFor="let page of getPages()" 
+                    [class.active]="page === currentPage"
+                    (click)="currentPage = page">
+                {{ page }}
+              </span>
+              
+              <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Suivant <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </section>
         </div>
+      </div>
     </div>
-    <!-- Footer End-->
-</footer>
+  </main>
 
-<!-- JS here -->
-
-    <!-- All JS Custom Plugins Link Here here -->
-    <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="../../../assets/User/js/popper.min.js"></script>
-    <script src="../../../assets/User/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Range -->
-    <script src="../../../assets/User/js/owl.carousel.min.js"></script>
-    <script src="../../../assets/User/js/slick.min.js"></script>
-    <script src="../../../assets/User/js/price_rangs.js"></script>
-    <!-- One Page, Animated-HeadLin -->
-    <script src="../../../assets/User/js/wow.min.js"></script>
-    <script src="../../../assets/User/js/animated.headline.js"></script>
-    <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
-
-    <!-- Scrollup, nice-select, sticky -->
-    <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
-    <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
-    <script src="../../../assets/User/js/jquery.sticky.js"></script>
-    
-    <!-- contact js -->
-    <script src="../../../assets/User/js/contact.js"></script>
-    <script src="../../../assets/User/js/jquery.form.js"></script>
-    <script src="../../../assets/User/js/jquery.validate.min.js"></script>
-    <script src="../../../assets/User/js/mail-script.js"></script>
-    <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
-    
-    <!-- Jquery Plugins, main Jquery -->	
-    <script src="../../../assets/User/js/plugins.js"></script>
-    <script src="../../../assets/User/js/main.js"></script>
-    
+  <footer class="job-listing-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding">
+          <p>Construire ensemble l'avenir professionnel.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Entreprise</h4>
+            <a href="#">À propos</a>
+            <a href="#">Carrières</a>
+            <a href="#">Filiales</a>
+            <a href="#">Actualités</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Ressources</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Conditions d'utilisation</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">Contact</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Contact</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</p>
+            <p><i class="fas fa-phone"></i> +216 70 010 000</p>
+            <p><i class="fas fa-envelope"></i> contactpoulina.com</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="copyright">
+        <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

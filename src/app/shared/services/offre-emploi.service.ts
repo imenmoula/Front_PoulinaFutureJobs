@@ -66,7 +66,19 @@ export class OffreEmploiService {
       catchError(this.handleError)
     );
   }
+// Dans offre-emploi.service.ts
 
+getSpecialites(): Observable<string[]> {
+  return this.http.get<string[]>(`${this.apiUrl}/specialites`, { headers: this.getHeaders() }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+getNiveauxExperience(): Observable<string[]> {
+  return this.http.get<string[]>(`${this.apiUrl}/niveaux-experience`, { headers: this.getHeaders() }).pipe(
+    catchError(this.handleError)
+  );
+}
   search(titrePoste?: string, specialite?: string, typeContrat?: string, statut?: string, niveauExperienceRequis?: string, idFiliale?: string): Observable<OffreEmploi[]> {
     let params = new HttpParams();
     if (titrePoste) params = params.set('titrePoste', titrePoste);

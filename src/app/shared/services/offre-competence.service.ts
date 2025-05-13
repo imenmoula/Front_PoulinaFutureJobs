@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.development';
 import { OffreCompetence } from '../../Models/offre-competence.model';
+import { Competence } from '../../Models/competence.model';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -27,12 +28,9 @@ export class OffreCompetenceService {
     });
   }
 
-  getAll(): Observable<OffreCompetence[]> {
-    return this.http.get<ApiResponse<OffreCompetence[]>>(this.apiUrl, { headers: this.getHeaders() }).pipe(
-      map(response => response.data),
-      catchError(this.handleError)
-    );
-  }
+  getAll(headers?: HttpHeaders): Observable<Competence[]> {
+  return this.http.get<Competence[]>(`${this.apiUrl}`, { headers });
+}
 
   getById(idOffreEmploi: string, idCompetence: string): Observable<OffreCompetence> {
     return this.http.get<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getHeaders() }).pipe(
