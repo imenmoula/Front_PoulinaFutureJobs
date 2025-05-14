@@ -1,53 +1,80 @@
-// import { Component, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
+// import { Component, OnInit } from '@angular/core';
 // import { ActivatedRoute, Router } from '@angular/router';
 // import { OffreEmploiService } from '../../../shared/services/offre-emploi.service';
 // import { FilialeService } from '../../../shared/services/filiale.service';
 // import { OffreMissionService } from '../../../shared/services/offre-mission.service';
 // import { LangueService } from '../../../shared/services/langue.service';
-// import { OffreCompetenceSharedService } from '../../../shared/services/offre-competence.service';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { environment } from '../../../../environments/environment';
 // import { AuthService } from '../../../shared/services/auth.service';
-// import { ModeTravail, StatutOffre, TypeContratEnum, NiveauRequisType } from '../../../Models/enums.model';
-// import { OffreEmploi, OffreLangue, OffreMission } from '../../../Models/offre-emploi.model';
+// import { 
+//   ModeTravail, 
+//   StatutOffre, 
+//   TypeContratEnum, 
+//   NiveauRequisType 
+// } from '../../../Models/enums.model';
+// import { 
+//   OffreEmploi, 
+//   OffreLangue, 
+//   OffreMission,
+//   Poste
+// } from '../../../Models/offre-emploi.model';
 // import { OffreCompetence } from '../../../Models/offre-competence.model';
+// import { OffreCompetenceService } from '../../../shared/services/offre-competence.service';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // @Component({
 //   selector: 'app-job-details',
 //   standalone: true,
-//   imports: [CommonModule, FormsModule],
+//   imports: [CommonModule, FormsModule, ReactiveFormsModule],
 //   templateUrl: './job-details.component.html',
-//   styleUrls: [
-//     './job-details.component.css',
-//     '../../../../assets/User/css/bootstrap.min.css',
-//     '../../../../assets/User/css/owl.carousel.min.css',
-//     '../../../../assets/User/css/flaticon.css',
-//     '../../../../assets/User/css/price_rangs.css',
-//     '../../../../assets/User/css/slicknav.css',
-//     '../../../../assets/User/css/animate.min.css',
-//     '../../../../assets/User/css/magnific-popup.css',
-//     '../../../../assets/User/css/fontawesome-all.min.css',
-//     '../../../../assets/User/css/themify-icons.css',
-//     '../../../../assets/User/css/slick.css',
-//     '../../../../assets/User/css/nice-select.css',
-//     '../../../../assets/User/css/style.css'
-//   ]
+//   styleUrls: ['./job-details.component.css']
 // })
-// export class JobDetailsComponent implements OnInit, AfterViewInit {
-//   offre: OffreEmploi | null = null;
-//   filiale: any = null;
+// export class JobDetailsComponent implements OnInit {
+//   offre: OffreEmploi = {
+//     postes: [{ 
+//       titrePoste: '', 
+//       description: '', 
+//       nombrePostes: 0, 
+//       niveauHierarchique: '' 
+//     }],
+//     salaireMin: 0,
+//     salaireMax: 0,
+//     typeContrat: TypeContratEnum.CDI,
+//     statut: StatutOffre.Ouvert,
+//     specialite: '',
+//     dateExpiration: new Date().toISOString(),
+//     niveauExperienceRequis: '',
+//     modeTravail: ModeTravail.Presentiel,
+//     avantages: '',
+//     estActif: true,
+//     idRecruteur: '',
+//     idFiliale: '',
+//     idDepartement: '',
+//     offreMissions: [],
+//     offreLangues: [],
+//     offreCompetences: [],
+//     diplomeIds: [],
+//     datePublication: new Date().toISOString(),
+//     diplomes: []
+//   };
+  
+//   filiale: any = {};
 //   idOffreEmploi: string | null = null;
-//   loading: boolean = true;
-//   error: string | null = null;
 //   missions: OffreMission[] = [];
 //   langues: OffreLangue[] = [];
 //   competences: OffreCompetence[] = [];
-//   similarOffers: any[] = [
-//     { titrePoste: 'Développeur Frontend React', filiale: 'WebDesign Agency', typeContrat: TypeContratEnum.CDI },
-//     { titrePoste: 'Développeur Backend Node.js', filiale: 'DataTech', typeContrat: TypeContratEnum.CDI },
-//     { titrePoste: 'Lead Developer Full Stack', filiale: 'InnovateTech', typeContrat: TypeContratEnum.CDI }
-//   ];
+//   loading = true;
+//   error: string | null = null;
+
+//   // Couleurs pour les types de contrat
+//   CONTRACT_COLORS = {
+//     [TypeContratEnum.CDI]: '#28a745',
+//     [TypeContratEnum.CDD]: '#007bff',
+//     [TypeContratEnum.Freelance]: '#ffc107',
+//     [TypeContratEnum.Stage]: '#dc3545',
+//     [TypeContratEnum.Alternance]: '#17a2b8',
+//     default: '#6c757d'
+//   };
 
 //   constructor(
 //     private route: ActivatedRoute,
@@ -56,34 +83,170 @@
 //     private filialeService: FilialeService,
 //     private missionService: OffreMissionService,
 //     private langueService: LangueService,
-//     private competenceService: OffreCompetenceSharedService,
-//     private authService: AuthService,
-//     private renderer: Renderer2
+//     private competenceService: OffreCompetenceService,
+//     private authService: AuthService
 //   ) {}
 
 //   ngOnInit(): void {
-//     this.route.paramMap.subscribe(params => {
-//       const routeId = params.get('id');
-//       if (routeId) {
-//         this.idOffreEmploi = routeId;
-//         this.loadJobDetails(this.idOffreEmploi);
-//       } else {
-//         this.error = 'Aucune offre d\'emploi sélectionnée.';
-//         this.loading = false;
-//       }
+//     this.route.paramMap.subscribe({
+//       next: params => {
+//         this.idOffreEmploi = params.get('id');
+//         if (this.idOffreEmploi) {
+//           this.loadJobDetails(this.idOffreEmploi);
+//         } else {
+//           this.handleError('Aucun ID d\'offre spécifié');
+//         }
+//       },
+//       error: err => this.handleError(err.message)
 //     });
 //   }
 
-//   ngAfterViewInit(): void {
-//     if (environment.production) {
-//       const script = this.renderer.createElement('script');
-//       script.text = `
-//         (function(){
-//           function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'931e7e424d24bfae',t:'MTc0NDkxOTg2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d);}}
-//           if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c());}}}
-//         })();
-//       `;
-//       this.renderer.appendChild(document.body, script);
+//   private loadJobDetails(id: string): void {
+//     this.offreService.getById(id).subscribe({
+//       next: (response) => {
+//         this.offre = this.sanitizeOffre(response);
+//         if (this.offre.idFiliale) {
+//           this.loadFilialeDetails(this.offre.idFiliale);
+//           this.loadMissions(id);
+//           this.loadLangues(id);
+//           this.loadCompetences(id);
+//         }
+//         this.loading = false;
+//       },
+//       error: (err) => this.handleError(err.message)
+//     });
+//   }
+
+//   private sanitizeOffre(offre: any): OffreEmploi {
+//     return {
+//       ...offre,
+//       postes: offre.postes?.length ? offre.postes : [{ description: 'Non spécifié' }],
+//       salaireMin: offre.salaireMin || 0,
+//       salaireMax: offre.salaireMax || 0,
+//       typeContrat: offre.typeContrat || TypeContratEnum.CDD,
+//       statut: offre.statut || StatutOffre.Ouvert
+//     };
+//   }
+
+//   private loadFilialeDetails(idFiliale: string): void {
+//     this.filialeService.getFiliale(idFiliale).subscribe({
+//       next: (response) => {
+//         this.filiale = {
+//           ...response,
+//           nom: response.nom ?? 'Nom inconnu',
+//           adresse: response.adresse ?? 'Adresse non disponible',
+//         };
+//       },
+//       error: (err) => console.error('Erreur filiale:', err)
+//     });
+//   }
+
+//   private loadMissions(idOffre: string): void {
+//     this.missionService.getByOffreEmploi(idOffre).subscribe({
+//       next: (missions) => {
+//         this.missions = missions.map(mission => ({
+//           ...mission,
+//           descriptionMission: mission.descriptionMission || 'Mission non décrite'
+//         }));
+//       },
+//       error: (err) => console.error('Erreur missions:', err)
+//     });
+//   }
+
+//   private loadLangues(idOffre: string): void {
+//     this.langueService.getByOffreId(idOffre).subscribe({
+//       next: (langues) => {
+//         this.langues = langues.map(langue => ({
+//           ...langue,
+//           nomLangue: langue.langue || 'Langue non spécifiée',
+//           niveau: langue.niveauRequis || 'Niveau non précisé'
+//         }));
+//       },
+//       error: (err) => console.error('Erreur langues:', err)
+//     });
+//   }
+
+//   private loadCompetences(idOffre: string): void {
+//     this.competenceService.getByOffreId(idOffre).subscribe({
+//       next: (competences) => {
+//         this.competences = competences.map(competence => ({
+//           ...competence,
+//           nomCompetence: competence.competence?.nom || 'Compétence générique',
+//           niveauRequis: competence.niveauRequis || 'Non spécifié'
+//         }));
+//       },
+//       error: (err) => console.error('Erreur compétences:', err)
+//     });
+//   }
+
+//   // Helpers
+//   formatDate(date?: Date | string): string {
+//     if (!date) return 'Non spécifié';
+//     try {
+//       return new Date(date).toLocaleDateString('fr-FR', { 
+//         day: '2-digit', 
+//         month: 'long', 
+//         year: 'numeric' 
+//       });
+//     } catch {
+//       return 'Date invalide';
+//     }
+//   }
+
+//   getTypeContratLabel(type?: TypeContratEnum): string {
+//     if (!type) return 'Non spécifié';
+//     switch(type) {
+//       case TypeContratEnum.CDI: return 'CDI';
+//       case TypeContratEnum.CDD: return 'CDD';
+//       case TypeContratEnum.Freelance: return 'Freelance';
+//       case TypeContratEnum.Stage: return 'Stage';
+//       case TypeContratEnum.Alternance: return 'Alternance';
+//       default: return 'Autre';
+//     }
+//   }
+
+// getModeTravailLabel(mode: ModeTravail | undefined): string {
+//   if (mode === undefined) return 'Non spécifié';
+//   switch(mode) {
+//     case ModeTravail.Presentiel: return 'Présentiel';
+//     case ModeTravail.Hybride: return 'Hybride';
+//     case ModeTravail.Teletravail: return 'Télétravail';
+//     default: 
+//       // You can either return a default value or throw an error
+//       // depending on your application's requirements
+//       return 'Unknown mode';
+//   }
+// }
+
+//   get statutOuvert(): boolean {
+//     return this.offre?.statut === StatutOffre.Ouvert;
+//   }
+  
+//   getContractColor(type?: TypeContratEnum): string {
+//     return type ? this.CONTRACT_COLORS[type] || this.CONTRACT_COLORS.default : this.CONTRACT_COLORS.default;
+//   }
+
+//   getSkillLevelWidth(niveau?: string): string {
+//     const LEVELS: Record<string, string> = {
+//       'débutant': '25%',
+//       'intermédiaire': '50%',
+//       'avancé': '75%',
+//       'expert': '100%'
+//     };
+//     return niveau ? LEVELS[niveau.toLowerCase()] || '50%' : '0%';
+//   }
+
+// getStatutOffreLabel(statut?: StatutOffre): string {
+//   return statut === StatutOffre.Ouvert ? 'Ouverte' : 'colture';
+// }
+
+//   getStatutOffreColor(statut?: StatutOffre): string {
+//     return statut === StatutOffre.Ouvert ? '#28a745' : '#dc3545';
+//   }
+
+//   navigateToCandidature(): void {
+//     if (this.idOffreEmploi) {
+//       this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
 //     }
 //   }
 
@@ -92,137 +255,255 @@
 //     this.router.navigateByUrl('/signin');
 //   }
 
-//   loadJobDetails(idOffreEmploi: string): void {
-//     this.loading = true;
-//     this.offreService.getById(idOffreEmploi).subscribe({
-//       next: (response: { success: boolean; message: string; offreEmploi: OffreEmploi }) => {
-//         this.offre = response.offreEmploi;
-//         if (this.offre && this.offre.idFiliale) {
-//           this.loadFilialeDetails(this.offre.idFiliale);
-//           this.loadMissions(idOffreEmploi);
-//           this.loadLangues(idOffreEmploi);
-//           this.loadCompetences(idOffreEmploi);
-//         } else {
-//           this.error = 'Filiale non associée à cette offre.';
-//           this.loading = false;
-//         }
-//       },
-//       error: (error: any) => {
-//         this.error = `Erreur lors du chargement de l'offre: ${error.message}`;
-//         this.loading = false;
-//       }
-//     });
-//   }
-
-//   loadFilialeDetails(idFiliale: string): void {
-//     this.filialeService.getFiliale(idFiliale).subscribe({
-//       next: (response: any) => {
-//         this.filiale = response.filiale || response.data || response;
-//         this.loading = false;
-//       },
-//       error: (error: any) => {
-//         this.error = `Erreur lors du chargement des informations de l'entreprise: ${error.message}`;
-//         this.loading = false;
-//       }
-//     });
-//   }
-
-//   loadMissions(idOffreEmploi: string): void {
-//     this.missionService.getByOffreEmploi(idOffreEmploi).subscribe({
-//       next: (missions: any[]) => {
-//         const formattedMissions = missions.map(mission => ({
-//           ...mission,
-//           descriptionMission: mission.descriptionMission || '',
-//           priorite: mission.priorite || ''
-//         }));
-//         this.missions = formattedMissions;
-//       },
-//       error: (error: any) => { console.error('Erreur missions:', error); }
-//     });
-//   }
-
-//   loadLangues(idOffreEmploi: string): void {
-//     this.langueService.getLanguesByOffre(idOffreEmploi).subscribe({
-//       next: (langues: OffreLangue[]) => { this.langues = langues; },
-//       error: (error: any) => { console.error('Erreur langues:', error); }
-//     });
-//   }
-
-//   loadCompetences(idOffreEmploi: string): void {
-//     this.competenceService.getCompetencesByOffre(idOffreEmploi).subscribe({
-//       next: (competences: any[]) => { 
-//         this.competences = competences.map((competence: any) => {
-//           return {
-//             ...competence,
-//             niveauRequis: competence.niveauRequis as NiveauRequisType
-//           };
-//         });
-//       },
-//       error: (error: any) => { console.error('Erreur compétences:', error); }
-//     });
-//   }
-
-//   formatDate(date: Date | string | undefined): string {
-//     if (!date) return 'Non spécifié';
-//     try {
-//       return new Date(date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
-//     } catch (e) {
-//       return 'Date invalide';
-//     }
-//   }
-
-//   getTypeContratLabel(type: TypeContratEnum): string {
-//     if (!type) return 'Non spécifié';
-//     return type.toString();
-//   }
-//   getTypeContratEnum(value: string): TypeContratEnum | undefined {
-//     return TypeContratEnum[value as keyof typeof TypeContratEnum];
-//   }
-
-//   getContractColor(type: TypeContratEnum | undefined): string {
-//     if (!type) return '#6c757d';
-//     switch (this.getTypeContratLabel(type)) {
-//       case 'CDI': return '#28a745';
-//       case 'CDD': return '#007bff';
-//       case 'FREELANCE': return '#ffc107';
-//       case 'STAGE': return '#dc3545';
-//       case 'ALTERNANCE': return '#17a2b8';
-//       default: return '#6c757d';
-//     }
-//   }
-
-//   getStatutOffreLabel(statut: StatutOffre | undefined): string {
-//     if (!statut) return 'Non spécifié';
-//     const normalized = statut.toString();
-//     return normalized === 'ouvert' ? 'Ouverte' : (normalized === 'cloture' ? 'Fermée' : 'Non spécifié');
-//   }
-
-//   getStatutOffreColor(statut: StatutOffre | undefined): string {
-//     if (!statut) return '#6c757d';
-//     const normalized = statut.toString().toLowerCase();
-//     return normalized === 'ouvert' ? '#28a745' : (normalized === 'cloture' ? '#dc3545' : '#6c757d');
-//   }
-
-//   getModeTravailLabel(mode: ModeTravail | undefined): string {
-//     if (!mode) return 'Non spécifié';
-//     const normalized = mode.toString();
-//     return normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
-//   }
-
-//   getNiveauRequisLabel(niveau: string | undefined): string {
-//     if (!niveau) return 'Non spécifié';
-//     return NiveauRequisType[niveau as keyof typeof NiveauRequisType] || niveau;
-//   }
-
-//   navigateToCandidature(): void {
-//     if (this.idOffreEmploi) {
-//       this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
-//     } else {
-//       console.error('No idOffreEmploi available');
-//     }
-//   }
-//   onlogout(): void {
-//     localStorage.clear();
-//     this.router.navigate(['/login']);
+//   private handleError(message: string): void {
+//     this.error = message;
+//     this.loading = false;
+//     setTimeout(() => this.router.navigate(['/offres']), 3000);
 //   }
 // }
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OffreEmploiService } from '../../../shared/services/offre-emploi.service';
+import { FilialeService } from '../../../shared/services/filiale.service';
+import { OffreMissionService } from '../../../shared/services/offre-mission.service';
+import { LangueService } from '../../../shared/services/langue.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import { 
+  ModeTravail, 
+  StatutOffre, 
+  TypeContratEnum, 
+  NiveauRequisType 
+} from '../../../Models/enums.model';
+import { 
+  OffreEmploi, 
+  OffreLangue, 
+  OffreMission,
+  Poste
+} from '../../../Models/offre-emploi.model';
+import { OffreCompetence } from '../../../Models/offre-competence.model';
+import { OffreCompetenceService } from '../../../shared/services/offre-competence.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-job-details',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './job-details.component.html',
+  styleUrls: ['./job-details.component.css']
+})
+export class JobDetailsComponent implements OnInit {
+  offre: OffreEmploi = {
+    postes: [{ 
+      titrePoste: '', 
+      description: '', 
+      nombrePostes: 0, 
+      niveauHierarchique: '' 
+    }],
+    salaireMin: 0,
+    salaireMax: 0,
+    typeContrat: TypeContratEnum.CDI,
+    statut: StatutOffre.Ouvert,
+    specialite: '',
+    dateExpiration: new Date().toISOString(),
+    niveauExperienceRequis: '',
+    modeTravail: ModeTravail.Presentiel,
+    avantages: '',
+    estActif: true,
+    idRecruteur: '',
+    idFiliale: '',
+    idDepartement: '',
+    offreMissions: [],
+    offreLangues: [],
+    offreCompetences: [],
+    diplomeIds: [],
+    datePublication: new Date().toISOString(),
+    diplomes: []
+  };
+someIdCompetence: string = '';
+
+  filiale: any = {};
+  idOffreEmploi: string | null = null;
+  missions: OffreMission[] = [];
+  langues: OffreLangue[] = [];
+  competences: OffreCompetence[] = [];
+  loading = true;
+  error: string | null = null;
+
+  CONTRACT_COLORS = {
+    [TypeContratEnum.CDI]: '#28a745',
+    [TypeContratEnum.CDD]: '#007bff',
+    [TypeContratEnum.Freelance]: '#ffc107',
+    [TypeContratEnum.Stage]: '#dc3545',
+    [TypeContratEnum.Alternance]: '#17a2b8',
+    default: '#6c757d'
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private offreService: OffreEmploiService,
+    private filialeService: FilialeService,
+    private missionService: OffreMissionService,
+    private langueService: LangueService,
+    private competenceService: OffreCompetenceService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe({
+      next: params => {
+        this.idOffreEmploi = params.get('id');
+        if (this.idOffreEmploi) {
+          this.loadJobDetails(this.idOffreEmploi);
+        } else {
+          this.handleError('Aucun ID d\'offre spécifié');
+        }
+      },
+      error: err => this.handleError(err.message)
+    });
+  }
+
+  private loadJobDetails(id: string): void {
+    this.offreService.getById(id).subscribe({
+      next: (response) => {
+        this.offre = this.sanitizeOffre(response);
+        if (this.offre.idFiliale) {
+          this.loadFilialeDetails(this.offre.idFiliale);
+          this.loadMissions(id);
+          this.loadLangues(id);
+this.loadCompetences(id, this.someIdCompetence);        }
+        this.loading = false;
+      },
+      error: (err) => this.handleError(err.message)
+    });
+  }
+
+  private sanitizeOffre(offre: any): OffreEmploi {
+    return {
+      ...offre,
+      postes: offre.postes?.length ? offre.postes : [{ description: 'Non spécifié' }],
+      salaireMin: offre.salaireMin || 0,
+      salaireMax: offre.salaireMax || 0,
+      typeContrat: offre.typeContrat || TypeContratEnum.CDD,
+      statut: offre.statut || StatutOffre.Ouvert
+    };
+  }
+
+  private loadFilialeDetails(idFiliale: string): void {
+    this.filialeService.getFiliale(idFiliale).subscribe({
+      next: (response) => {
+        this.filiale = {
+          ...response,
+          nom: response.nom ?? 'Nom inconnu',
+          adresse: response.adresse ?? 'Adresse non disponible',
+        };
+      },
+      error: (err) => console.error('Erreur filiale:', err)
+    });
+  }
+
+  private loadMissions(idOffre: string): void {
+  this.missionService.getById(idOffre).subscribe({
+/*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Sets the list of missions for the job offer.
+     * If a mission has no description, sets a default description.
+     * @param missions The list of missions to set.
+     */
+/*******  be547b50-49f4-407b-b0f6-9d0fa67520f5  *******/
+    next: (missions: OffreMission[]) => {
+      this.missions = missions.map(mission => ({
+        ...mission,
+        descriptionMission: mission.descriptionMission || 'Mission non décrite'
+      }));
+    },
+    error: (err) => console.error('Erreur missions:', err)
+  });
+}
+
+ private loadLangues(idOffre: string): void {
+  this.langueService.getById(idOffre).subscribe({
+    next: (langue) => {
+      this.langues.push({
+        ...langue,
+        langue: langue.langue || 'Langue non spécifiée',
+        niveauRequis: langue.niveauRequis || 'Niveau non précisé'
+      });
+    },
+    error: (err) => console.error('Erreur langues:', err)
+  });
+}
+
+private loadCompetences(idOffre: string, idCompetence: string): void {
+
+this.competenceService.getById(idOffre, idCompetence).subscribe({
+    next: (competence: OffreCompetence) => {
+      this.competences = [competence].map(competence => ({
+        ...competence,
+        competence: competence.competence || {
+          nom: 'Compétence générique',
+          description: '',
+          hardSkills: false, // Assign a default boolean value
+          estTechnique: false,
+          estSoftSkill: false
+        },
+        niveauRequis: competence.niveauRequis || 'Non spécifié'
+      }));
+    },
+    error: (err) => console.error('Erreur compétences:', err)
+  });
+}
+  formatDate(date?: Date | string): string {
+    if (!date) return 'Non spécifié';
+    try {
+      return new Date(date).toLocaleDateString('fr-FR', { 
+        day: '2-digit', 
+        month: 'long', 
+        year: 'numeric' 
+      });
+    } catch {
+      return 'Date invalide';
+    }
+  }
+
+  getModeTravailLabel(mode: ModeTravail | undefined): string {
+    if (mode === undefined) return 'Non spécifié';
+    switch(mode) {
+      case ModeTravail.Presentiel: return 'Présentiel';
+      case ModeTravail.Hybride: return 'Hybride';
+      case ModeTravail.Teletravail: return 'Télétravail';
+      default: return 'Mode inconnu';
+    }
+  }
+
+  getSkillLevelWidth(niveau?: string): string {
+    const LEVELS: Record<string, string> = {
+      'débutant': '25%',
+      'intermédiaire': '50%',
+      'avancé': '75%',
+      'expert': '100%'
+    };
+    return niveau ? LEVELS[niveau.toLowerCase()] || '50%' : '0%';
+  }
+
+  getStatutOffreLabel(statut?: StatutOffre): string {
+    return statut === StatutOffre.Ouvert ? 'Ouverte' : 'Fermée';
+  }
+
+  getStatutOffreColor(statut?: StatutOffre): string {
+    return statut === StatutOffre.Ouvert ? '#28a745' : '#dc3545';
+  }
+
+  navigateToCandidature(): void {
+    if (this.idOffreEmploi) {
+      this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
+    }
+  }
+
+  private handleError(message: string): void {
+    this.error = message;
+    this.loading = false;
+    setTimeout(() => this.router.navigate(['/offres']), 3000);
+  }
+}

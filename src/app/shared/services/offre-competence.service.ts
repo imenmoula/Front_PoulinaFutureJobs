@@ -38,7 +38,15 @@ export class OffreCompetenceService {
       catchError(this.handleError)
     );
   }
-
+// getByOffreId(idOffre: string): Observable<OffreCompetence[]> {
+//   return this.http.get<ApiResponse<OffreCompetence[]>>(
+//     `${this.apiUrl}/by-offre/${idOffre}`,
+//     { headers: this.getHeaders() }
+//   ).pipe(
+//     map(response => response.data || []),
+//     catchError(this.handleError)
+//   );
+// }
   create(competence: OffreCompetence): Observable<OffreCompetence> {
     return this.http.post<ApiResponse<OffreCompetence>>(this.apiUrl, competence, { headers: this.getHeaders() }).pipe(
       map(response => response.data),

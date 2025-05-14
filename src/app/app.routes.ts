@@ -38,6 +38,7 @@ import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-de
 // import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 
 
 export const routes: Routes = [
@@ -135,7 +136,7 @@ export const routes: Routes = [
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
   { path: 'job-list', component: JobListingComponent },
-  // { path: 'job-details/:id', component: JobDetailsComponent },
+  { path: 'job-details/:id', component: JobDetailsComponent },
   // {path:'/about',component:ApropsComponent ,canActivate: [AuthGuard] ,data: { roles: ['Candidate'] } }, 
 
   // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },

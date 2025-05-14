@@ -27,20 +27,26 @@ export class OffreMissionService {
     });
   }
 
-  getByOffreEmploi(idOffreEmploi: string): Observable<OffreMission[]> {
-    const params = new HttpParams().set('IdOffreEmploi', idOffreEmploi);
-    return this.http.get<ApiResponse<OffreMission[]>>(this.apiUrl, { headers: this.getHeaders(), params }).pipe(
-      map(response => response.data),
-      catchError(this.handleError)
-    );
-  }
+  // getByOffreEmploi(idOffreEmploi: string): Observable<OffreMission[]> {
+  //   const params = new HttpParams().set('IdOffreEmploi', idOffreEmploi);
+  //   return this.http.get<ApiResponse<OffreMission[]>>(this.apiUrl, { headers: this.getHeaders(), params }).pipe(
+  //     map(response => response.data),
+  //     catchError(this.handleError)
+  //   );
+  // }
 
-  getById(id: string): Observable<OffreMission> {
-    return this.http.get<ApiResponse<OffreMission>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
-      map(response => response.data),
-      catchError(this.handleError)
-    );
-  }
+  // getById(id: string): Observable<OffreMission> {
+  //   return this.http.get<ApiResponse<OffreMission>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+  //     map(response => response.data),
+  //     catchError(this.handleError)
+  //   );
+  // }
+  getById(id: string): Observable<OffreMission[]> {
+  return this.http.get<ApiResponse<OffreMission[]>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+    map(response => response.data),
+    catchError(this.handleError)
+  );
+}
 
   create(mission: OffreMission): Observable<OffreMission> {
     return this.http.post<ApiResponse<OffreMission>>(this.apiUrl, mission, { headers: this.getHeaders() }).pipe(
