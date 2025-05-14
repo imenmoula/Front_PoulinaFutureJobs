@@ -9,7 +9,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
-  <!-- Font Awesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -38,16 +37,34 @@
 
   <main>
     <!-- Bannière Hero -->
-    <div class="hero-banner">
-      <div class="container">
-        <h1>Avec Poulina Groupe Holding, trouvez votre futur emploi et construisez votre carrière</h1>
+<div class="hero-banner">
+  <div class="container">
+    <div class="job-search-card">
+      <h1>Trouvez votre futur emploi</h1>
+      <p>Recherchez parmi nos offres d'emploi et construisez votre carrière</p>
+      
+   <div class="full-width-search-container">
         <div class="search-bar">
-          <input type="text" [(ngModel)]="titrePoste" (ngModelChange)="onFilterChange()" 
+          <input type="text" [(ngModel)]="titrePoste" 
+                 (ngModelChange)="onFilterChange()"
                  placeholder="Rechercher par titre de poste...">
-          <button (click)="onFilterChange()"><i class="fas fa-search"></i></button>
+          <button (click)="onFilterChange()">Rechercher</button>
+        </div>
+        
+        <div class="quick-filters-section">
+          <span class="filters-label">Filtres rapides:</span>
+          <div class="quick-filter-buttons">
+            <button *ngFor="let filter of quickFilters" 
+                    (click)="applyQuickFilter(filter)"
+                    [class.active]="isFilterActive(filter)">
+              {{filter.label}}
+            </button>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
     <!-- Contenu principal -->
     <div class="job-listing-main">
@@ -109,6 +126,17 @@
               </div>
             </div>
 
+            <!-- Filtre par filiale -->
+            <div class="filter-group" *ngIf="filiales.length > 0">
+              <h3><i class="fas fa-building"></i> Filiale</h3>
+              <select class="form-control" [(ngModel)]="selectedFiliale" (ngModelChange)="onFilterChange()">
+                <option value="">Toutes les filiales</option>
+                <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">
+                  {{ filiale.nom }}
+                </option>
+              </select>
+            </div>
+
             <button class="reset-btn" (click)="resetFilters()">
               <i class="fas fa-undo"></i> Réinitialiser les filtres
             </button>
@@ -121,28 +149,32 @@
               <span class="job-count">{{ filteredOffres.length }} offres disponibles</span>
             </div>
 
-            <div *ngIf="filteredOffres.length === 0" class="no-results">
+            <div *ngIf="isLoading" class="loading-message">
+              <i class="fas fa-spinner fa-spin"></i> Chargement des offres...
+            </div>
+
+            <div *ngIf="!isLoading && filteredOffres.length === 0" class="no-results">
               <i class="far fa-folder-open"></i>
-              <p>Aucune offre ne correspond à vos critères de recherche.</p>
+              <p>{{ errorMessage || 'Aucune offre ne correspond à vos critères de recherche.' }}</p>
             </div>
 
             <div class="job-cards">
               <div *ngFor="let offre of getPaginatedOffres()" class="job-card">
                 <div class="job-card-content">
                   <div class="job-info">
-                    <h3 class="job-title">{{ offre.postes[0].titrePoste }}</h3>
+                    <h3 class="job-title">{{ offre.postes[0].titrePoste || 'Titre non spécifié' }}</h3>
                     
                     <div class="company-info">
-                      <img *ngIf="filiales[offre.idFiliale]?.photo" 
-                          [src]="filiales[offre.idFiliale].photo" 
-                          alt="Logo filiale" 
-                          class="company-logo">
+                      <img *ngIf="getFiliale(offre.idFiliale)?.photo" 
+                           [src]="getFiliale(offre.idFiliale)?.photo" 
+                           alt="Logo filiale" 
+                           class="company-logo">
                       <div>
                         <p class="company-name">
-                          <i class="fas fa-building"></i> {{ filiales[offre.idFiliale].nom || 'Filiale inconnue' }}
+                          <i class="fas fa-building"></i> {{ getFiliale(offre.idFiliale)?.nom || 'Filiale inconnue' }}
                         </p>
-                        <p class="company-address" *ngIf="filiales[offre.idFiliale]?.adresse">
-                          <i class="fas fa-map-marker-alt"></i> {{ filiales[offre.idFiliale].adresse }}
+                        <p class="company-address">
+                          <i class="fas fa-map-marker-alt"></i> {{ getFiliale(offre.idFiliale)?.adresse || 'Adresse non disponible' }}
                         </p>
                       </div>
                     </div>
@@ -150,16 +182,16 @@
                     <div class="job-meta">
                       <div class="job-tags">
                         <span class="job-tag contract-tag">
-                          <i class="fas fa-file-signature"></i> {{ offre.typeContrat }}
+                          <i class="fas fa-file-signature"></i> {{ offre.typeContrat || 'Non spécifié' }}
                         </span>
                         <span class="job-tag">
-                          <i class="fas fa-tag"></i> {{ offre.specialite }}
+                          <i class="fas fa-tag"></i> {{ offre.specialite || 'Non spécifié' }}
                         </span>
                         <span class="job-tag">
-                          <i class="fas fa-briefcase"></i> {{ offre.niveauExperienceRequis }}
+                          <i class="fas fa-clock"></i> {{ offre.niveauExperienceRequis || 'Non spécifié' }}
                         </span>
                         <span class="job-tag">
-                          <i class="fas fa-laptop-house"></i> {{ offre.modeTravail }}
+                          <i class="fas fa-table"></i> {{ offre.modeTravail || 'Non spécifié' }}
                         </span>
                       </div>
                       
