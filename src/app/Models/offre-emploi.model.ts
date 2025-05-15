@@ -88,3 +88,17 @@ export interface CreateOffreEmploiRequest {
     diplomeIds: string[];
   };
 }
+
+
+export interface PosteCreateDto {
+  idOffreEmploi: string;
+  titrePoste: string;
+  description: string;
+  nombrePostes: number;
+  experienceSouhaitee: string;
+  niveauHierarchique: string;
+}
+
+export interface PosteUpdateDto extends PosteCreateDto {
+  idPoste: string;
+}

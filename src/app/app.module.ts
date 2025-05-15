@@ -107,6 +107,7 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
     RouterModule ,
     BrowserAnimationsModule, 
     ToastrModule.forRoot(),
+  
     
     
  

@@ -1,15 +1,38 @@
-.form-control {
-  margin-bottom: 10px;
-}
-
+/* Ajoutez ces styles si nécessaire */
 .card {
-  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.row {
-  margin-bottom: 10px;
+.card-header {
+  background-color: #f8f9fa;
+  font-weight: bold;
 }
 
-.btn-danger, .btn-primary {
-  margin-top: 5px;
+.form-label {
+  font-weight: 500;
+}
+
+.btn-danger {
+  margin-left: auto;
+}
+
+.border {
+  border-radius: 5px;
+}
+
+.text-danger {
+  font-size: 0.875em;
+}
+
+/* Pour les petits écrans */
+@media (max-width: 768px) {
+  .row > div {
+    margin-bottom: 10px;
+  }
+  
+  .btn-danger {
+    margin-top: 10px;
+    margin-left: 0;
+  }
 }

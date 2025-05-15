@@ -58,15 +58,15 @@ export class LangueService {
       catchError(this.handleError)
     );
   }
-// getByOffreId(idOffre: string): Observable<OffreLangue[]> {
-//   return this.http.get<ApiResponse<OffreLangue[]>>(
-//     `${this.apiUrl}/by-offre/${idOffre}`, 
-//     { headers: this.getHeaders() }
-//   ).pipe(
-//     map(response => response.data || []),
-//     catchError(this.handleError)
-//   );
-// }
+getByOffreId(idOffre: string): Observable<OffreLangue[]> {
+  return this.http.get<ApiResponse<OffreLangue[]>>(
+    `${this.apiUrl}/by-offre/${idOffre}`,
+    { headers: this.getHeaders() }
+  ).pipe(
+    map(response => response.data || []),
+    catchError(this.handleError)
+  );
+}
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Une erreur est survenue';
     if (error.error instanceof ErrorEvent) {

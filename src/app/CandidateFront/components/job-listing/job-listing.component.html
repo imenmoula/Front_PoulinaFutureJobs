@@ -73,6 +73,15 @@
           <!-- Sidebar des filtres -->
           <aside class="filters-sidebar">
             <h1>Filtrer les offres</h1>
+             <div class="filter-group" *ngIf="filiales.length > 0">
+              <h3><i class="fas fa-building"></i> Filiale</h3>
+              <select class="form-control" [(ngModel)]="selectedFiliale" (ngModelChange)="onFilterChange()">
+                <option value="">Toutes les filiales</option>
+                <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">
+                  {{ filiale.nom }}
+                </option>
+              </select>
+            </div>
             
             <!-- Filtre par type de contrat -->
             <div class="filter-group">
@@ -127,15 +136,7 @@
             </div>
 
             <!-- Filtre par filiale -->
-            <div class="filter-group" *ngIf="filiales.length > 0">
-              <h3><i class="fas fa-building"></i> Filiale</h3>
-              <select class="form-control" [(ngModel)]="selectedFiliale" (ngModelChange)="onFilterChange()">
-                <option value="">Toutes les filiales</option>
-                <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">
-                  {{ filiale.nom }}
-                </option>
-              </select>
-            </div>
+           
 
             <button class="reset-btn" (click)="resetFilters()">
               <i class="fas fa-undo"></i> Réinitialiser les filtres

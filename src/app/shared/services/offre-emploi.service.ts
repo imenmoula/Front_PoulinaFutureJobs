@@ -66,8 +66,39 @@ export class OffreEmploiService {
       catchError(this.handleError)
     );
   }
-// Dans offre-emploi.service.ts
+// getActives(): Observable<OffreEmploi[]> {
+//   return this.http.get<ApiResponse<OffreEmploi[]>>(`${this.apiUrl}/actives`, { headers: this.getHeaders() }).pipe(
+//     map(response => response.offresEmploi || []),
+//     catchError(this.handleError)
+//   );
+// }
 
+toggleActivation(id: string): Observable<{ isActive: boolean }> {
+  return this.http.patch<ApiResponse<{ isActive: boolean }>>(
+    `${this.apiUrl}/${id}/toggle-activation`,
+    null,
+    { headers: this.getHeaders() }
+  ).pipe(
+    map(response => {
+      if (response.data && typeof response.data === 'object' && 'isActive' in response.data) {
+        return response.data;
+      } else {
+        throw new Error('Invalid response data');
+      }
+    }),
+    catchError(this.handleError)
+  );
+}
+
+getStatistics(): Observable<any> {
+  return this.http.get<ApiResponse<any>>(
+    `${this.apiUrl}/statistiques`,
+    { headers: this.getHeaders() }
+  ).pipe(
+    map(response => response.data),
+    catchError(this.handleError)
+  );
+}
 getSpecialites(): Observable<string[]> {
   return this.http.get<string[]>(`${this.apiUrl}/specialites`, { headers: this.getHeaders() }).pipe(
     catchError(this.handleError)
@@ -92,9 +123,23 @@ getNiveauxExperience(): Observable<string[]> {
       catchError(this.handleError)
     );
   }
-
-getRecruitersSimple(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/recruteurs`);
+getRecruitersSimple(): Observable<Recruiter[]> {
+  return this.http.get<any>(`${this.apiUrl}/recruteurs`, { headers: this.getHeaders() }).pipe(
+    map(response => {
+      if (response.success) {
+        return response.recruteurs.map((r: any) => ({
+          id: r.id,
+          fullName: r.fullName,
+          email: r.email
+        }));
+      }
+      throw new Error(response.message || 'Erreur inconnue');
+    }),
+    catchError(error => {
+      console.error('Error fetching recruiters:', error);
+      return throwError(() => new Error('Failed to load recruiters'));
+    })
+  );
 }
 
 

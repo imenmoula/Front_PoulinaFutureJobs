@@ -35,12 +35,15 @@ export class OffreMissionService {
   //   );
   // }
 
-  // getById(id: string): Observable<OffreMission> {
-  //   return this.http.get<ApiResponse<OffreMission>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
-  //     map(response => response.data),
-  //     catchError(this.handleError)
-  //   );
-  // }
+getByOffreId(idOffre: string): Observable<OffreMission[]> {
+  return this.http.get<ApiResponse<OffreMission[]>>(
+    `${this.apiUrl}/by-offre/${idOffre}`,
+    { headers: this.getHeaders() }
+  ).pipe(
+    map(response => response.data || []),
+    catchError(this.handleError)
+  );
+}
   getById(id: string): Observable<OffreMission[]> {
   return this.http.get<ApiResponse<OffreMission[]>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
     map(response => response.data),
