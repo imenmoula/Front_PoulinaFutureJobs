@@ -157,7 +157,7 @@
         top: 8,
         left: 0,
         blur: 2,
-        color: ["#FFA941", "#7366FF"],
+        color: ["#FFA941", "#4169E1"],
         opacity: 0.1,
       },
     },
@@ -170,7 +170,7 @@
         },
       },
     },
-    colors: ["#FFA941", "#7366FF"],
+    colors: ["#FFA941", "#4169E1"],
     stroke: {
       width: 2,
       curve: "smooth",

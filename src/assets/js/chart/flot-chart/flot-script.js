@@ -615,7 +615,7 @@ $(function () {
       label: "data3",
     },
     {
-      color: "#7366ff",
+      color: "#4169E1",
       bars: { show: true, align: "center", barWidth: 0.25 },
       data: data4,
       label: "data4",

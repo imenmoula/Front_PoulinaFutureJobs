@@ -166,28 +166,28 @@ A VERTICAL event
 .fc .fc-button-primary {
   color: #fff;
   color: var(--fc-button-text-color, #fff);
-  background-color: #7366FF;
-  background-color: var(--fc-button-bg-color, #7366FF);
-  border-color: #7366FF;
-  border-color: var(--fc-button-border-color, #7366FF);
+  background-color: #4169E1;
+  background-color: var(--fc-button-bg-color, #4169E1);
+  border-color: #4169E1;
+  border-color: var(--fc-button-border-color, #4169E1);
 }
 
 .fc .fc-button-primary:hover {
   color: #fff;
   color: var(--fc-button-text-color, #fff);
-  background-color: #7366FF;
-  background-color: var(--fc-button-hover-bg-color, #7366FF);
-  border-color: #7366FF;
-  border-color: var(--fc-button-hover-border-color, #7366FF);
+  background-color: #4169E1;
+  background-color: var(--fc-button-hover-bg-color, #4169E1);
+  border-color: #4169E1;
+  border-color: var(--fc-button-hover-border-color, #4169E1);
 }
 
 .fc .fc-button-primary:disabled {
   color: #fff;
   color: var(--fc-button-text-color, #fff);
-  background-color: #7366FF;
-  background-color: var(--fc-button-bg-color, #7366FF);
-  border-color: #7366FF;
-  border-color: var(--fc-button-border-color, #7366FF);
+  background-color: #4169E1;
+  background-color: var(--fc-button-bg-color, #4169E1);
+  border-color: #4169E1;
+  border-color: var(--fc-button-border-color, #4169E1);
 }
 
 .fc .fc-button-primary:focus {
@@ -197,10 +197,10 @@ A VERTICAL event
 .fc .fc-button-primary:not(:disabled):active {
   color: #fff;
   color: var(--fc-button-text-color, #fff);
-  background-color: #7366FF;
-  background-color: var(--fc-button-active-bg-color, #7366FF);
+  background-color: #4169E1;
+  background-color: var(--fc-button-active-bg-color, #4169E1);
   border-color: #534686;
-  border-color: var(--fc-button-active-border-color, #7366FF);
+  border-color: var(--fc-button-active-border-color, #4169E1);
 }
 
 .fc .fc-button-primary:not(:disabled):active:focus {
@@ -210,10 +210,10 @@ A VERTICAL event
 .fc .fc-button-primary:not(:disabled).fc-button-active {
   color: #fff;
   color: var(--fc-button-text-color, #fff);
-  background-color: #7366FF;
-  background-color: var(--fc-button-active-bg-color, #7366FF);
+  background-color: #4169E1;
+  background-color: var(--fc-button-active-bg-color, #4169E1);
   border-color: #534686;
-  border-color: var(--fc-button-active-border-color, #7366FF);
+  border-color: var(--fc-button-active-border-color, #4169E1);
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active:focus {
@@ -1248,10 +1248,10 @@ a.fc-event:hover {
 
 .fc-h-event {
   display: block;
-  border: 1px solid #7366FF;
-  border: 1px solid var(--fc-event-border-color, #7366FF);
-  background-color: #7366FF;
-  background-color: var(--fc-event-bg-color, #7366FF);
+  border: 1px solid #4169E1;
+  border: 1px solid var(--fc-event-border-color, #4169E1);
+  background-color: #4169E1;
+  background-color: var(--fc-event-bg-color, #4169E1);
 }
 
 .fc-h-event .fc-event-main {

@@ -336,7 +336,7 @@
       type: "gradient",
       gradient: {
         shade: "dark",
-        gradientToColors: ["#7366FF"],
+        gradientToColors: ["#4169E1"],
         shadeIntensity: 1,
         type: "horizontal",
         opacityFrom: 1,
@@ -418,7 +418,7 @@
     dataLabels: {
       enabled: false,
     },
-    colors: ["#7366FF", "#ffb829", "#65c15c"],
+    colors: ["#4169E1", "#ffb829", "#65c15c"],
     fill: {
       type: "solid",
     },
@@ -526,7 +526,7 @@
       },
       offsetY: -20,
     },
-    colors: ["#F1F0FF", "#7366FF", "#AAA2FE", "#E6E7FD"],
+    colors: ["#F1F0FF", "#4169E1", "#AAA2FE", "#E6E7FD"],
     plotOptions: {
       heatmap: {
         shadeIntensity: 0.9,

@@ -698,7 +698,7 @@
     dataLabels: {
       enabled: false,
     },
-    colors: ["#7366FF", "#65c15c", "#ffb829"],
+    colors: ["#4169E1", "#65c15c", "#ffb829"],
     fill: {
       type: "solid",
     },
@@ -1019,11 +1019,11 @@
         top: 10,
         left: 0,
         blur: 12,
-        color: "#7366FF",
+        color: "#4169E1",
         opacity: 0.5,
       },
     },
-    colors: ["#7366FF"],
+    colors: ["#4169E1"],
     stroke: {
       width: 2.5,
       curve: "smooth",
@@ -1088,7 +1088,7 @@
       type: ["gradient", "solid"],
       gradient: {
         shade: "dark",
-        gradientToColors: ["#7366FF"],
+        gradientToColors: ["#4169E1"],
         shadeIntensity: 1,
         type: "horizontal",
         opacityFrom: 0.9,
@@ -1101,7 +1101,7 @@
           },
           {
             offset: 100,
-            color: "#7366FF",
+            color: "#4169E1",
             opacity: 1,
           },
         ],
