@@ -73,7 +73,7 @@ export class JobDetailsComponent implements OnInit {
     [TypeContratEnum.CDI]: '#28a745',
     [TypeContratEnum.CDD]: '#007bff',
     [TypeContratEnum.Freelance]: '#ffc107',
-    [TypeContratEnum.Stage]: '#dc3545',
+    [TypeContratEnum.Stage]: '#4169E1',
     [TypeContratEnum.Alternance]: '#17a2b8',
     default: '#6c757d'
   };
@@ -237,7 +237,7 @@ export class JobDetailsComponent implements OnInit {
   }
 
   getStatutOffreColor(statut?: StatutOffre): string {
-    return statut === StatutOffre.Ouvert ? '#28a745' : '#dc3545';
+    return statut === StatutOffre.Ouvert ? '#28a745' : '#4169E1';
   }
 
   getSalaireDisplay(): string {

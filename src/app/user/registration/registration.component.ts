@@ -27,7 +27,7 @@ import Swal from 'sweetalert2';
       color: #007bff;
     }
     .error-feedback {
-      color: #dc3545;
+      color: #4169E1;
       font-size: 0.875rem;
       margin-top: 0.25rem;
     }

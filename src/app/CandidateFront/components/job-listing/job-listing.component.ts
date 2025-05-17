@@ -178,7 +178,7 @@ import { ModeTravail, TypeContratEnum } from './../../../Models/enums.model';
 //       case TypeContratEnum.Freelance:
 //         return '#ffc107';
 //       case TypeContratEnum.Stage:
-//         return '#dc3545';
+//         return '#4169E1';
 //       case TypeContratEnum.Alternance:
 //         return '#17a2b8';
 //       default:
@@ -566,7 +566,7 @@ modesTravail: ModeTravail[] = Object.values(ModeTravail) as ModeTravail[];
     switch (type) {
       case TypeContratEnum.CDI: return '#28a745';
       case TypeContratEnum.CDD: return '#007bff';
-      case TypeContratEnum.Stage: return '#dc3545';
+      case TypeContratEnum.Stage: return '#4169E1';
       case TypeContratEnum.Alternance: return '#17a2b8';
       default: return '#6c757d';
     }
