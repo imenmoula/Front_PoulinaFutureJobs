@@ -1,21 +1,44 @@
-// 
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './registration.component.html',
-  styles: [],
+  styles: [`
+    .form-input.position-relative {
+      position: relative;
+    }
+    .show-hide {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1rem;
+      color: #6c757d;
+    }
+    .show-hide:hover {
+      color: #007bff;
+    }
+    .error-feedback {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    
+  `]
 })
 export class RegistrationComponent implements OnInit {
   form!: FormGroup;
   isSubmitted: boolean = false;
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -30,7 +53,7 @@ export class RegistrationComponent implements OnInit {
     this.initializeForm();
     Swal.fire({
       title: 'Info',
-      text: 'Welcome to registration!',
+      text: 'Bienvenue dans l\'inscription !',
       icon: 'info',
       timer: 2000,
       showConfirmButton: false
@@ -39,16 +62,16 @@ export class RegistrationComponent implements OnInit {
 
   private initializeForm(): void {
     this.form = this.formBuilder.group({
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [
         Validators.required,
         Validators.minLength(6),
-        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/),
+        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/) // Au moins un caractère spécial
       ]],
-      confirmPassword: ['', Validators.required],
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
     }, { 
       validators: this.passwordMatchValidator 
     });
@@ -64,7 +87,7 @@ export class RegistrationComponent implements OnInit {
     const confirmPassword = control.get('confirmPassword');
 
     if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword?.setErrors({ passwordMismatch: true });
+      confirmPassword?.setErrors({ ...confirmPassword.errors, passwordMismatch: true });
       return { passwordMismatch: true };
     } else if (confirmPassword) {
       const errors = confirmPassword.errors;
@@ -83,13 +106,21 @@ export class RegistrationComponent implements OnInit {
            (this.isSubmitted || control.touched || control.dirty);
   }
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.form.invalid) {
       Swal.fire({
         icon: 'warning',
-        title: 'Invalid Form',
-        text: 'Please correct the form errors before submitting.',
+        title: 'Formulaire Invalide',
+        text: 'Veuillez corriger les erreurs dans le formulaire avant de soumettre.',
       });
       return;
     }
@@ -101,8 +132,8 @@ export class RegistrationComponent implements OnInit {
           this.isSubmitted = false;
           Swal.fire({
             icon: 'success',
-            title: 'Registration Complete',
-            text: 'Account created successfully!',
+            title: 'Inscription Réussie',
+            text: 'Compte créé avec succès !',
             timer: 2000,
             showConfirmButton: false
           }).then(() => {
@@ -111,9 +142,10 @@ export class RegistrationComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Registration Error',
-            text: res.message || 'Registration failed unexpectedly.',
+            title: 'Erreur d\'Inscription',
+            text: res.message || 'L\'inscription a échoué de manière inattendue.',
           });
+          this.isSubmitted = false;
         }
       },
       error: (err) => {
@@ -123,22 +155,22 @@ export class RegistrationComponent implements OnInit {
               case 'DuplicateUserName':
                 Swal.fire({
                   icon: 'error',
-                  title: 'Registration Failed',
-                  text: 'This username is already in use.',
+                  title: 'Inscription Échouée',
+                  text: 'Ce nom d\'utilisateur est déjà utilisé.',
                 });
                 break;
               case 'DuplicateEmail':
                 Swal.fire({
                   icon: 'error',
-                  title: 'Registration Failed',
-                  text: 'This email is already registered.',
+                  title: 'Inscription Échouée',
+                  text: 'Cet email est déjà enregistré.',
                 });
                 break;
               default:
                 Swal.fire({
                   icon: 'error',
-                  title: 'Registration Failed',
-                  text: x.description || 'An error occurred. Please contact support.',
+                  title: 'Inscription Échouée',
+                  text: x.description || 'Une erreur s\'est produite. Veuillez contacter le support.',
                 });
                 break;
             }
@@ -146,11 +178,12 @@ export class RegistrationComponent implements OnInit {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Server Error',
-            text: err.message || 'Unable to register. Please try again later.',
+            title: 'Erreur Serveur',
+            text: err.message || 'Impossible de s\'inscrire. Veuillez réessayer plus tard.',
           });
         }
-      },
+        this.isSubmitted = false;
+      }
     });
   }
 }
