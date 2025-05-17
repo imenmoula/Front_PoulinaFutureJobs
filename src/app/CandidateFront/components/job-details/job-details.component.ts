@@ -68,6 +68,9 @@ export class JobDetailsComponent implements OnInit {
   postes: Poste[] = [];
   loading = true;
   error: string | null = null;
+ StatutOffre = StatutOffre;
+  currentYear: number = new Date().getFullYear();
+
 
   CONTRACT_COLORS = {
     [TypeContratEnum.CDI]: '#28a745',

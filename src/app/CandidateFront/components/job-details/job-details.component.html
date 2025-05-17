@@ -14,9 +14,9 @@
 
 <body>
   <!-- Header -->
-  <header>
-    <div class="job-listing-header">
-      <div class="container">
+  <header class="modern-header">
+    <div class="container">
+      <div class="header-content">
         <div class="logo">
           <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
         </div>
@@ -38,7 +38,7 @@
 
   <main>
     <!-- Hero Banner -->
-    <div class="job-details-hero">
+    <div class="job-hero-banner">
       <div class="container">
         <div class="hero-content">
           <h1>Détails de l'offre</h1>
@@ -56,11 +56,11 @@
     <!-- Job Details -->
     <div class="job-details-container">
       <div class="container">
-        <div class="job-details-grid">
+        <div class="job-details-layout">
           <!-- Main Content -->
           <div class="job-main-content">
             <!-- Job Header -->
-            <div class="job-header">
+            <div class="job-header-card">
               <div class="company-logo">
                 <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
               </div>
@@ -70,53 +70,79 @@
                   <span><i class="fas fa-building"></i> {{ filiale?.nom || 'Entreprise non spécifiée' }}</span>
                   <span><i class="fas fa-map-marker-alt"></i> {{ filiale?.adresse || 'Localisation inconnue' }}</span>
                   <span><i class="fas fa-file-contract"></i> {{ offre.typeContrat || 'Type de contrat non spécifié' }}</span>
-                  <span><i class="fas fa-money-bill-wave"></i> {{ offre.salaireMin || '--' }} - {{ offre.salaireMax || '--' }} €</span>
+                  <span><i class="fas fa-money-bill-wave"></i> {{ getSalaireDisplay() }}</span>
                 </div>
               </div>
             </div>
 
             <!-- Job Description -->
-            <div class="job-section">
+            <div class="job-section-card">
               <h2><i class="fas fa-file-alt"></i> Description de l'offre</h2>
               <p>{{ offre.postes[0].description || 'Aucune description disponible.' }}</p>
             </div>
 
-            <!-- Missions -->
-            <div class="job-section">
-              <h2><i class="fas fa-tasks"></i> Missions</h2>
-              <ul class="job-list">
-                <li *ngFor="let mission of missions">
-                  <strong>{{ mission.descriptionMission || 'Mission non spécifiée' }}</strong>
-                  <span class="priority-badge" [class.high]="mission.priorite == 1"
-                    [class.medium]="mission.priorite == 2">
-                    Priorité: {{ mission.priorite || 'Non spécifiée' }}
-                  </span>
-                </li>
-                <li *ngIf="!missions?.length">Aucune mission spécifiée.</li>
-              </ul>
-            </div>
-
-            <!-- Required Profile -->
-            <div class="job-section">
-              <h2><i class="fas fa-user-graduate"></i> Profil recherché</h2>
-              <div class="profile-grid">
-                <div class="profile-item">
-                  <h3>Expérience</h3>
-                  <p>{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
-                </div>
-                <div class="profile-item">
-                  <h3>Diplôme</h3>
-                  <p>{{ offre.diplomes?.[0]?.nomDiplome || 'Non spécifié' }}</p>
-                </div>
-                <div class="profile-item">
-                  <h3>Spécialité</h3>
-                  <p>{{ offre.specialite || 'Non spécifiée' }}</p>
+            <!-- Postes -->
+            <div class="job-section-card" *ngIf="postes.length > 0">
+              <h2><i class="fas fa-briefcase"></i> Postes disponibles</h2>
+              <div class="postes-grid">
+                <div *ngFor="let poste of postes" class="poste-item">
+                  <h3>{{ poste.titrePoste || 'Poste non spécifié' }}</h3>
+                  <p>{{ poste.description || 'Aucune description' }}</p>
+                  <div class="poste-meta">
+                    <span><i class="fas fa-users"></i> {{ poste.nombrePostes || 1 }} poste(s)</span>
+                    <span><i class="fas fa-star"></i> {{ poste.niveauHierarchique || 'Niveau non spécifié' }}</span>
+                    <span><i class="fas fa-clock"></i> {{ poste.experienceSouhaitee || 'Expérience non spécifiée' }}</span>
+                  </div>
                 </div>
               </div>
             </div>
 
+            <!-- Missions -->
+            <div class="job-section-card">
+              <h2><i class="fas fa-tasks"></i> Missions</h2>
+              <div class="missions-list">
+                <div *ngFor="let mission of missions" class="mission-item">
+                  <p>{{ mission.descriptionMission || 'Mission non spécifiée' }}</p>
+                  <span class="priority-badge" [class.high]="mission.priorite == 1" [class.medium]="mission.priorite == 2">
+                    Priorité: {{ mission.priorite || 'Non spécifiée' }}
+                  </span>
+                </div>
+                <div *ngIf="missions.length === 0" class="no-data">Aucune mission spécifiée.</div>
+              </div>
+            </div>
+
+            <!-- Required Profile -->
+            <div class="job-section-card">
+              <h2><i class="fas fa-user-graduate"></i> Profil recherché</h2>
+              <div class="profile-grid">
+                <div class="profile-item">
+                  <div class="profile-icon"><i class="fas fa-briefcase"></i></div>
+                  <div>
+                    <h3>Expérience</h3>
+                    <p>{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
+                  </div>
+                </div>
+                <div class="profile-item">
+                  <div class="profile-icon"><i class="fas fa-graduation-cap"></i></div>
+                  <div>
+                    <h3>Diplôme</h3>
+                    <p>{{ offre.diplomes?.[0]?.nomDiplome || 'Non spécifié' }}</p>
+                    <p>{{ offre.diplomes?.[0]?.niveau || 'Non spécifié' }}</p>
+                  </div>
+                </div>
+                <div class="profile-item">
+                  <div class="profile-icon"><i class="fas fa-code"></i></div>
+                  <div>
+                    <h3>Spécialité</h3>
+                    <p>{{ offre.specialite || 'Non spécifiée' }}</p>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+
             <!-- Skills -->
-            <div class="job-section">
+            <div class="job-section-card">
               <h2><i class="fas fa-code"></i> Compétences techniques</h2>
               <div class="skills-grid">
                 <div *ngFor="let competence of competences" class="skill-item">
@@ -126,95 +152,117 @@
                     <span class="level-text">{{ competence.niveauRequis || 'Non spécifié' }}</span>
                   </div>
                 </div>
-                <div *ngIf="!competences?.length">Aucune compétence spécifiée.</div>
+                <div *ngIf="competences.length === 0" class="no-data">Aucune compétence spécifiée.</div>
               </div>
             </div>
 
             <!-- Languages -->
-            <div class="job-section">
+            <div class="job-section-card">
               <h2><i class="fas fa-language"></i> Langues requises</h2>
               <div class="languages-grid">
                 <div *ngFor="let langue of langues" class="language-item">
-                  <span class="language-name">{{ langue.langue }}</span>
+                  <span class="language-name">{{ langue.langue || 'Langue non spécifiée' }}</span>
                   <span class="language-level">{{ langue.niveauRequis || 'Non spécifié' }}</span>
                 </div>
-                <div *ngIf="!langues?.length">Aucune langue spécifiée.</div>
+                <div *ngIf="langues.length === 0" class="no-data">Aucune langue spécifiée.</div>
               </div>
             </div>
 
             <!-- Benefits -->
-            <div class="job-section">
+            <div class="job-section-card">
               <h2><i class="fas fa-gift"></i> Avantages</h2>
-              <ul class="benefits-list">
-                <li *ngIf="offre.modeTravail"><i class="fas fa-laptop-house"></i> {{ getModeTravailLabel(offre.modeTravail) }}</li>
-                <li *ngIf="offre.avantages"><i class="fas fa-utensils"></i> Tickets restaurant</li>
-                <li *ngIf="offre.avantages"><i class="fas fa-graduation-cap"></i> Formation continue</li>
-                <li *ngIf="offre.avantages"><i class="fas fa-bus"></i> Transport remboursé à 50%</li>
-                <li *ngIf="!offre.avantages">Aucun avantage spécifié</li>
-              </ul>
+              <div class="benefits-grid">
+                <div *ngIf="offre.modeTravail" class="benefit-item">
+                  <i class="fas fa-laptop-house"></i>
+                  <span>{{ getModeTravailLabel(offre.modeTravail) }}</span>
+                </div>
+                <p>{{ offre.avantages || 'Aucune description' }}</p>
+                <div *ngIf="offre.avantages" class="benefit-item">
+                  <i class="fas fa-utensils"></i>
+                  <span>Alimentation gratuite</span>
+                </div>
+                <div *ngIf="offre.avantages" class="benefit-item">
+                  <i class="fas fa-ticket-alt"></i>
+                  <span>Tickets restaurant</span>
+                </div>
+                <div *ngIf="offre.avantages" class="benefit-item">
+                  <i class="fas fa-graduation-cap"></i>
+                  <span>Formation continue</span>
+                </div>
+                <div *ngIf="offre.avantages" class="benefit-item">
+                  <i class="fas fa-bus"></i>
+                  <span>Transport remboursé à 50%</span>
+                </div>
+                <div *ngIf="!offre.avantages" class="no-data">Aucun avantage spécifié</div>
+              </div>
             </div>
           </div>
 
           <!-- Sidebar -->
           <div class="job-sidebar">
             <div class="sidebar-card">
-              <h3><i class="fas fa-info-circle"></i> Aperçu de l'offre</h3>
-              <div class="overview-item">
-                <i class="fas fa-calendar"></i>
-                <div>
-                  <span>Date de publication</span>
-                  <strong>{{ formatDate(offre.datePublication) }}</strong>
+              <h2><i class="fas fa-info-circle"></i> Aperçu de l'offre</h2>
+              <div class="overview-list">
+                <div class="overview-item">
+                  <i class="fas fa-calendar"></i>
+                  <div>
+                    <span>Date de publication</span>
+                    <strong>{{ formatDate(offre.datePublication) }}</strong>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <i class="fas fa-clock"></i>
+                  <div>
+                    <span>Date limite</span>
+                    <strong>{{ formatDate(offre.dateExpiration) }}</strong>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <i class="fas fa-file-contract"></i>
+                  <div>
+                    <span>Type de contrat</span>
+                    <strong>{{ offre.typeContrat || 'Non spécifié' }}</strong>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <i class="fas fa-user-tie"></i>
+                  <div>
+                    <span>Mode de travail</span>
+                    <strong>{{ getModeTravailLabel(offre.modeTravail) }}</strong>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <i class="fas fa-money-bill-wave"></i>
+                  <div>
+                    <span>Salaire</span>
+                    <strong>{{ getSalaireDisplay() }}</strong>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <i class="fas fa-user-tie"></i>
+                  <div>
+                    <span>Statut</span>
+                    <strong [style.color]="getStatutOffreColor(offre.statut)">
+                      {{ getStatutOffreLabel(offre.statut) }}
+                    </strong>
+                  </div>
                 </div>
               </div>
-              <div class="overview-item">
-                <i class="fas fa-clock"></i>
-                <div>
-                  <span>Date limite</span>
-                  <strong>{{ formatDate(offre.dateExpiration) }}</strong>
-                </div>
+              <button class="apply-btn" (click)="navigateToCandidature()" [disabled]="offre.statut !== StatutOffre.Ouvert">
+                Postuler maintenant
+              </button>
+              <div class="action-buttons">
+                <button class="secondary-btn"><i class="far fa-bookmark"></i> Sauvegarder</button>
+                <button class="secondary-btn"><i class="fas fa-share-alt"></i> Partager</button>
               </div>
-              <div class="overview-item">
-                <i class="fas fa-file-contract"></i>
-                <div>
-                  <span>Type de contrat</span>
-                  <strong>{{ offre.typeContrat || 'Non spécifié' }}</strong>
-                </div>
-
-              </div>
-              <div class="overview-item">
-                <i class="fas fa-user-tie"></i>
-                <div>
-                  <span>Mode de travail</span>
-                  <strong >
-                    {{ getModeTravailLabel(offre.modeTravail) }}
-                  </strong>
-                </div>
-              </div>
-              <div class="overview-item">
-                <i class="fas fa-money-bill-wave"></i>
-                <div>
-                  <span>Salaire</span>
-                  <strong>{{ offre.salaireMin || '--' }} - {{ offre.salaireMax || '--' }} €</strong>
-                </div>
-              </div>
-              <div class="overview-item">
-                <i class="fas fa-user-tie"></i>
-                <div>
-                  <span>Statut</span>
-                  <strong [style.color]="getStatutOffreColor(offre.statut)">
-                    {{ getStatutOffreLabel(offre.statut) }}
-                  </strong>
-                </div>
-              </div>
-              <button class="apply-btn" (click)="navigateToCandidature()">Postuler maintenant</button>
             </div>
 
             <div class="sidebar-card company-info">
-              <h3><i class="fas fa-building"></i> À propos de l'entreprise</h3>
+              <h2><i class="fas fa-building"></i> À propos de l'entreprise</h2>
               <div class="company-logo">
                 <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
               </div>
-              <h4>{{ filiale?.nom || 'Entreprise inconnue' }}</h4>
+              <h3>{{ filiale?.nom || 'Entreprise inconnue' }}</h3>
               <p>{{ filiale?.description || 'Aucune description disponible.' }}</p>
               <div class="company-contact">
                 <div><i class="fas fa-globe"></i> <a [href]="filiale?.siteWeb || '#'" target="_blank">{{ filiale?.siteWeb || 'Site web non spécifié' }}</a></div>
@@ -230,7 +278,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="job-listing-footer">
+  <footer class="modern-footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
@@ -265,7 +313,7 @@
       </div>
       
       <div class="copyright">
-        <!-- <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p> -->
+        <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
       </div>
     </div>
   </footer>
