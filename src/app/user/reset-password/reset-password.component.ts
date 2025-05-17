@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment.development';
 
-
 @Component({
   selector: 'app-reset-password',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './reset-password.component.html',
   styles: ``
 })
-
-
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
   successMessage: string = '';
@@ -27,7 +25,8 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.resetPasswordForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -46,7 +45,6 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
-  // Custom validator to check if passwords match
   passwordMatchValidator(form: FormGroup) {
     return form.get('password')?.value === form.get('confirmPassword')?.value
       ? null
@@ -57,19 +55,25 @@ export class ResetPasswordComponent implements OnInit {
     if (this.resetPasswordForm.valid && this.token && this.email) {
       this.loading = true;
       const newPassword = this.resetPasswordForm.get('password')?.value;
+      // Send email, token, and newPassword to the API
       this.http.post(`${this.apiUrl}/reset-password`, {
         email: this.email,
         token: this.token,
-        newPassword
+        Password: newPassword ,
+        ConfirmPassword : this.resetPasswordForm.get('confirmPassword')?.value
       }).subscribe({
         next: (response: any) => {
           this.loading = false;
           if (response.success) {
-            this.successMessage = response.message ;
+            this.successMessage = 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.';
             this.errorMessage = '';
             this.resetPasswordForm.reset();
+            // Redirect to login after 3 seconds
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 3000);
           } else {
-            this.errorMessage = response.message ;
+            this.errorMessage = response.message || 'Échec de la réinitialisation du mot de passe.';
             this.successMessage = '';
           }
         },
