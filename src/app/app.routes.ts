@@ -40,6 +40,7 @@ import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 
 
 export const routes: Routes = [
@@ -50,7 +51,8 @@ export const routes: Routes = [
     children: [
       { path: 'signup', component: RegistrationComponent },
       { path: 'signin', component: LoginComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent }
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent },
