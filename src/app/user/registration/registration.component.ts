@@ -31,7 +31,6 @@ import Swal from 'sweetalert2';
       font-size: 0.875rem;
       margin-top: 0.25rem;
     }
-    
   `]
 })
 export class RegistrationComponent implements OnInit {
@@ -69,7 +68,7 @@ export class RegistrationComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.minLength(6),
-        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/) // Au moins un caractère spécial
+        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/) // At least one special character
       ]],
       confirmPassword: ['', Validators.required]
     }, { 
@@ -127,61 +126,30 @@ export class RegistrationComponent implements OnInit {
 
     this.service.createUser(this.form.value).subscribe({
       next: (res: any) => {
-        if (res && res.succeeded) {
+        console.log('Response message:', res);
+        console.log('Response message:', res.message);
+        console.log('Response succeeded:', res.succeeded);
           this.form.reset();
           this.isSubmitted = false;
           Swal.fire({
             icon: 'success',
             title: 'Inscription Réussie',
-            text: 'Compte créé avec succès !',
+            text: res.message || 'Compte créé avec succès !',
             timer: 2000,
-            showConfirmButton: false
+            showConfirmButton: true
           }).then(() => {
-            this.router.navigateByUrl('/dashboard');
+            this.router.navigateByUrl('/signin');
           });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur d\'Inscription',
-            text: res.message || 'L\'inscription a échoué de manière inattendue.',
-          });
-          this.isSubmitted = false;
-        }
+       
       },
       error: (err) => {
-        if (err.error?.errors) {
-          err.error.errors.forEach((x: any) => {
-            switch (x.code) {
-              case 'DuplicateUserName':
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Inscription Échouée',
-                  text: 'Ce nom d\'utilisateur est déjà utilisé.',
-                });
-                break;
-              case 'DuplicateEmail':
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Inscription Échouée',
-                  text: 'Cet email est déjà enregistré.',
-                });
-                break;
-              default:
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Inscription Échouée',
-                  text: x.description || 'Une erreur s\'est produite. Veuillez contacter le support.',
-                });
-                break;
-            }
-          });
-        } else {
+        
           Swal.fire({
             icon: 'error',
             title: 'Erreur Serveur',
             text: err.message || 'Impossible de s\'inscrire. Veuillez réessayer plus tard.',
           });
-        }
+        
         this.isSubmitted = false;
       }
     });
