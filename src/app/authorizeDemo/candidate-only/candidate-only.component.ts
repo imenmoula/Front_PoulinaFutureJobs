@@ -85,30 +85,30 @@ export class CandidateOnlyComponent implements OnInit {
   }
 
   loadOffres(): void {
-    this.offreEmploiService.getAll().subscribe({
-      next: (response: { success: boolean; message: string; offresEmploi: OffreEmploi[]; }) => {
-        console.log('Offres fetched:', response.offresEmploi);
-        this.offres = response.offresEmploi || [];
-        // Assurer que chaque offre a les données de la filiale
-        this.offres.forEach((offre) => {
-          if (!offre.filiale && offre.idFiliale) {
-            this.filialeService.getFiliale(offre.idFiliale).subscribe({
-              next: (filiale: Filiale) => {
-                offre.filiale = filiale;
-              },
-              error: (err) => {
-                console.error(`Error fetching filiale for offre ${offre.idOffreEmploi}:`, err);
-              }
-            });
+   this.offreEmploiService.getAll().subscribe({
+  next: (offres: OffreEmploi[]) => {
+    console.log('Offres fetched:', offres);
+    this.offres = offres || [];
+    // Assurer que chaque offre a les données de la filiale
+    this.offres.forEach((offre) => {
+      if (!offre.filiale && offre.idFiliale) {
+        this.filialeService.getFiliale(offre.idFiliale).subscribe({
+          next: (filiale: Filiale) => {
+            offre.filiale = filiale;
+          },
+          error: (err) => {
+            console.error(`Error fetching filiale for offre ${offre.idOffreEmploi}:`, err);
           }
         });
-        this.loadOffresByFiliale(); // Call after offres are loaded
-      },
-      error: (err) => {
-        console.error('Error fetching offres:', err);
-        this.offres = [];
       }
     });
+    this.loadOffresByFiliale(); // Call after offres are loaded
+  },
+  error: (err) => {
+    console.error('Error fetching offres:', err);
+    this.offres = [];
+  }
+});
   }
 
   loadOffresByFiliale(): void {

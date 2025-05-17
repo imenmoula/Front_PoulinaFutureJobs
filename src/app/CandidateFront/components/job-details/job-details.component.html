@@ -1,232 +1,273 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="no-js" lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Offre d'Emploi</title>
+  <title>Poulina Group Holding - Détails de l'offre</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
+  <!-- Header -->
   <header>
-    <div class="header-area header-transparrent">
-      <div class="headder-top header-sticky">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-3 col-md-2">
-              <div class="logo">
-                <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
-              </div>
-            </div>
-            <div class="col-lg-9 col-md-9">
-              <div class="menu-wrapper">
-                <div class="main-menu">
-                  <nav class="d-none d-lg-block">
-                    <ul id="navigation">
-                      <li><a href="index.html">Home</a></li>
-                      <li><a href="/job-list">offre Emploi</a></li>
-                      <li><a href="/A propos">A propos</a></li>
-                      <li><a href="#">Page</a>
-                        <ul class="submenu">
-                          <li><a (click)="onLogout()">deconnexion</a></li>
-                          <li><a href="single-blog.html">Blog Dcetails</a></li>
-                          <li><a href="elements.html">Elements</a></li>
-                          <li><a href="job_details.html">job Details</a></li>
-                        </ul>
-                      </li>
-                      <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                  </nav>
-                </div>
-                <div class="header-btn d-none f-right d-lg-block">
-                  <a routerLink="/singup" class="btn head-btn1">Inscription</a>
-                  <a routerLink="/signin" class="btn head-btn2">Connexion</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="mobile_menu d-block d-lg-none"></div>
-            </div>
-          </div>
+    <div class="job-listing-header">
+      <div class="container">
+        <div class="logo">
+          <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="/job-list">Offres d'emploi</a></li>
+            <li><a href="/A propos">À propos</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a routerLink="/singup" class="btn-signup">Inscription</a>
+          <a routerLink="/signin" class="btn-signin">Connexion</a>
         </div>
       </div>
     </div>
   </header>
+
   <main>
-    <div class="slider-area">
-      <div class="single-slider slider-height d-flex align-items-center"
-           [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/about.jpg)'}">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-12">
-              <div class="hero-cap text-center">
-                <h2>{{ offre?.titre || 'Titre de l’offre' }}</h2>
-                <p>{{ filiale?.nom || 'Entreprise inconnue' }} - {{ filiale?.adresse || 'Localisation inconnue' }}</p>
-              </div>
-            </div>
-          </div>
+    <!-- Hero Banner -->
+    <div class="job-details-hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Détails de l'offre</h1>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+              <li class="breadcrumb-item"><a href="/job-list">Offres d'emploi</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Détails</li>
+            </ol>
+          </nav>
         </div>
       </div>
     </div>
-    <div class="job-post-company pt-120 pb-120">
+
+    <!-- Job Details -->
+    <div class="job-details-container">
       <div class="container">
-        <div class="row justify-content-between">
-          <div class="col-xl-7 col-lg-8">
-            <div class="single-job-items mb-50">
-              <div class="job-items">
-                <div class="company-img company-img-details">
-                  <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
-                </div>
-                <div class="job-tittle">
-                  <h4>{{ offre?.titre }}</h4>
-                  <ul>
-                    <li><i class="fas fa-building"></i>{{ filiale?.nom || 'Entreprise inconnue' }}</li>
-                    <li><i class="fas fa-map-marker-alt"></i>{{ filiale?.adresse || 'Localisation inconnue' }}</li>
-                  </ul>
+        <div class="job-details-grid">
+          <!-- Main Content -->
+          <div class="job-main-content">
+            <!-- Job Header -->
+            <div class="job-header">
+              <div class="company-logo">
+                <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
+              </div>
+              <div class="job-title-info">
+                <h1>{{ offre.postes[0].titrePoste || 'Titre non disponible' }}</h1>
+                <div class="job-meta">
+                  <span><i class="fas fa-building"></i> {{ filiale?.nom || 'Entreprise non spécifiée' }}</span>
+                  <span><i class="fas fa-map-marker-alt"></i> {{ filiale?.adresse || 'Localisation inconnue' }}</span>
+                  <span><i class="fas fa-file-contract"></i> {{ offre.typeContrat || 'Type de contrat non spécifié' }}</span>
+                  <span><i class="fas fa-money-bill-wave"></i> {{ offre.salaireMin || '--' }} - {{ offre.salaireMax || '--' }} €</span>
                 </div>
               </div>
             </div>
-            <div class="job-post-details">
-              <div class="post-details1 mb-50">
-                <div class="small-section-tittle">
-                  <h4>Description de l’offre</h4>
+
+            <!-- Job Description -->
+            <div class="job-section">
+              <h2><i class="fas fa-file-alt"></i> Description de l'offre</h2>
+              <p>{{ offre.postes[0].description || 'Aucune description disponible.' }}</p>
+            </div>
+
+            <!-- Missions -->
+            <div class="job-section">
+              <h2><i class="fas fa-tasks"></i> Missions</h2>
+              <ul class="job-list">
+                <li *ngFor="let mission of missions">
+                  <strong>{{ mission.descriptionMission || 'Mission non spécifiée' }}</strong>
+                  <span class="priority-badge" [class.high]="mission.priorite == 1"
+                    [class.medium]="mission.priorite == 2">
+                    Priorité: {{ mission.priorite || 'Non spécifiée' }}
+                  </span>
+                </li>
+                <li *ngIf="!missions?.length">Aucune mission spécifiée.</li>
+              </ul>
+            </div>
+
+            <!-- Required Profile -->
+            <div class="job-section">
+              <h2><i class="fas fa-user-graduate"></i> Profil recherché</h2>
+              <div class="profile-grid">
+                <div class="profile-item">
+                  <h3>Expérience</h3>
+                  <p>{{ offre.niveauExperienceRequis || 'Non spécifié' }}</p>
                 </div>
-                <p>{{ offre?.description || 'Aucune description disponible.' }}</p>
-              </div>
-              <div class="post-details2 mb-50">
-                <div class="small-section-tittle">
-                  <h4>les avantages de l’emploi</h4>
+                <div class="profile-item">
+                  <h3>Diplôme</h3>
+                  <p>{{ offre.diplomes?.[0]?.nomDiplome || 'Non spécifié' }}</p>
                 </div>
-                <ul>
-                  <p>{{ offre?.avantages || 'Aucun avantages disponibles.' }}</p>
-                </ul>
-              </div>
-              <div class="post-details2 mb-50">
-                <div class="small-section-tittle">
-                  <h4>Compétences techniques</h4>
+                <div class="profile-item">
+                  <h3>Spécialité</h3>
+                  <p>{{ offre.specialite || 'Non spécifiée' }}</p>
                 </div>
-                <ul>
-                  <li *ngFor="let competence of offre?.offreCompetences">
-                    {{ competence.competence?.nom || 'Compétence inconnue' }} (Niveau: {{ competence.niveauRequis || 'Non spécifié' }})
-                  </li>
-                  <li *ngIf="!offre?.offreCompetences?.length">Aucune compétence spécifiée.</li>
-                </ul>
               </div>
-              <div class="post-details2 mb-50">
-                <div class="small-section-tittle">
-                  <h4>Profil recherché</h4>
+            </div>
+
+            <!-- Skills -->
+            <div class="job-section">
+              <h2><i class="fas fa-code"></i> Compétences techniques</h2>
+              <div class="skills-grid">
+                <div *ngFor="let competence of competences" class="skill-item">
+                  <span class="skill-name">{{ competence.competence?.nom || 'Compétence inconnue' }}</span>
+                  <div class="skill-level">
+                    <div class="level-bar" [style.width]="getSkillLevelWidth(competence.niveauRequis)"></div>
+                    <span class="level-text">{{ competence.niveauRequis || 'Non spécifié' }}</span>
+                  </div>
                 </div>
-                <ul>
-                  <li>Expérience: {{ offre?.niveauExperienceRequis || 'Non spécifié' }}</li>
-                  <li>Diplôme: {{ offre?.diplomeRequis || 'Non spécifié' }}</li>
-                </ul>
+                <div *ngIf="!competences?.length">Aucune compétence spécifiée.</div>
               </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="job-section">
+              <h2><i class="fas fa-language"></i> Langues requises</h2>
+              <div class="languages-grid">
+                <div *ngFor="let langue of langues" class="language-item">
+                  <span class="language-name">{{ langue.langue }}</span>
+                  <span class="language-level">{{ langue.niveauRequis || 'Non spécifié' }}</span>
+                </div>
+                <div *ngIf="!langues?.length">Aucune langue spécifiée.</div>
+              </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="job-section">
+              <h2><i class="fas fa-gift"></i> Avantages</h2>
+              <ul class="benefits-list">
+                <li *ngIf="offre.modeTravail"><i class="fas fa-laptop-house"></i> {{ getModeTravailLabel(offre.modeTravail) }}</li>
+                <li *ngIf="offre.avantages"><i class="fas fa-utensils"></i> Tickets restaurant</li>
+                <li *ngIf="offre.avantages"><i class="fas fa-graduation-cap"></i> Formation continue</li>
+                <li *ngIf="offre.avantages"><i class="fas fa-bus"></i> Transport remboursé à 50%</li>
+                <li *ngIf="!offre.avantages">Aucun avantage spécifié</li>
+              </ul>
             </div>
           </div>
-          <div class="col-xl-4 col-lg-4">
-            <div class="post-details3 mb-50">
-              <div class="small-section-tittle">
-                <h4>Aperçu de l’offre</h4>
+
+          <!-- Sidebar -->
+          <div class="job-sidebar">
+            <div class="sidebar-card">
+              <h3><i class="fas fa-info-circle"></i> Aperçu de l'offre</h3>
+              <div class="overview-item">
+                <i class="fas fa-calendar"></i>
+                <div>
+                  <span>Date de publication</span>
+                  <strong>{{ formatDate(offre.datePublication) }}</strong>
+                </div>
               </div>
-              <ul>
-                <li>Statut: <span class="badge" >{{ (offre?.statut) }}</span></li>
-                <li>Date de publication: <span>{{ formatDate(offre?.datePublication) }}</span></li>
-                <li>Localisation: <span>{{ filiale?.adresse || 'Inconnue' }}</span></li>
-                <li>Nombre de postes: <span>{{ offre?.nombrePostes || 'Non spécifié' }}</span></li>
-                <li>Nature du travail: <span>{{ getModeTravailLabel(offre?.modeTravail) }}</span></li>
-                <li>Type de contrat: <span class="badge" [ngStyle]="{'background-color': getContractColor(offre?.typeContrat), 'color': getTypeContratLabel(offre?.typeContrat) === 'Freelance' ? '#212529' : '#fff'}">{{ getTypeContratLabel(offre?.typeContrat) }}</span></li>
-                <li>Date limite: <span>{{ formatDate(offre?.dateExpiration) }}</span></li>
-              </ul>
-              <!-- Remove the apply button -->
-              <button class="btn btn-primary" (click)="navigateToCandidature()">
-                Postuler à cette offre
-              </button>
+              <div class="overview-item">
+                <i class="fas fa-clock"></i>
+                <div>
+                  <span>Date limite</span>
+                  <strong>{{ formatDate(offre.dateExpiration) }}</strong>
+                </div>
+              </div>
+              <div class="overview-item">
+                <i class="fas fa-file-contract"></i>
+                <div>
+                  <span>Type de contrat</span>
+                  <strong>{{ offre.typeContrat || 'Non spécifié' }}</strong>
+                </div>
+
+              </div>
+              <div class="overview-item">
+                <i class="fas fa-user-tie"></i>
+                <div>
+                  <span>Mode de travail</span>
+                  <strong >
+                    {{ getModeTravailLabel(offre.modeTravail) }}
+                  </strong>
+                </div>
+              </div>
+              <div class="overview-item">
+                <i class="fas fa-money-bill-wave"></i>
+                <div>
+                  <span>Salaire</span>
+                  <strong>{{ offre.salaireMin || '--' }} - {{ offre.salaireMax || '--' }} €</strong>
+                </div>
+              </div>
+              <div class="overview-item">
+                <i class="fas fa-user-tie"></i>
+                <div>
+                  <span>Statut</span>
+                  <strong [style.color]="getStatutOffreColor(offre.statut)">
+                    {{ getStatutOffreLabel(offre.statut) }}
+                  </strong>
+                </div>
+              </div>
+              <button class="apply-btn" (click)="navigateToCandidature()">Postuler maintenant</button>
             </div>
-            <div class="post-details4 mb-50">
-              <div class="small-section-tittle">
-                <h4>À propos de l’entreprise</h4>
+
+            <div class="sidebar-card company-info">
+              <h3><i class="fas fa-building"></i> À propos de l'entreprise</h3>
+              <div class="company-logo">
+                <img [src]="filiale?.photo || '../../../assets/User/img/icon/job-list1.png'" alt="{{ filiale?.nom }}">
               </div>
-              <span>{{ filiale?.nom || 'Entreprise inconnue' }}</span>
+              <h4>{{ filiale?.nom || 'Entreprise inconnue' }}</h4>
               <p>{{ filiale?.description || 'Aucune description disponible.' }}</p>
-              <ul>
-                <li>Nom: <span>{{ filiale?.nom || 'Inconnu' }}</span></li>
-                <li>Site web: <span>
-                  <a [href]="filiale?.siteWeb?.includes('@') ? 'https://www.aster.com' : filiale?.siteWeb" target="_blank">
-                    {{ filiale?.siteWeb?.includes('@') ? 'https://www.aster.com' : (filiale?.siteWeb || 'Non spécifié') }}
-                  </a>
-                </span></li>
-                <li>Email: <span>{{ filiale?.siteWeb?.includes('@') ? filiale?.siteWeb : (filiale?.email || 'Non spécifié') }}</span></li>
-                <li>Adresse: <span>{{ filiale?.adresse || 'Non spécifié' }}</span></li>
-              </ul>
+              <div class="company-contact">
+                <div><i class="fas fa-globe"></i> <a [href]="filiale?.siteWeb || '#'" target="_blank">{{ filiale?.siteWeb || 'Site web non spécifié' }}</a></div>
+                <div><i class="fas fa-envelope"></i> {{ filiale?.email || 'Email non spécifié' }}</div>
+                <div><i class="fas fa-phone"></i> {{ filiale?.telephone || 'Téléphone non spécifié' }}</div>
+                <div><i class="fas fa-map-marker-alt"></i> {{ filiale?.adresse || 'Adresse non spécifiée' }}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </main>
-  <footer>
-    <div class="footer-area footer-bg footer-padding">
-      <div class="container">
-        <div class="row d-flex justify-content-between">
-          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-            <div class="single-footer-caption mb-50">
-              <div class="footer-tittle">
-                <h4>À propos de nous</h4>
-                <p>Plateforme dédiée à la mise en relation des talents et des entreprises.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-            <div class="single-footer-caption mb-50">
-              <div class="footer-tittle">
-                <h4>Contact</h4>
-                <ul>
-                  <li><p>Adresse: Votre adresse ici</p></li>
-                  <li><a href="#">Téléphone: +8880 44338899</a></li>
-                  <li><a href="#">Email: </a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+
+  <!-- Footer -->
+  <footer class="job-listing-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding">
+          <p>Construire ensemble l'avenir professionnel.</p>
         </div>
-        <div class="footer-bottom-area footer-bg">
-          <div class="container">
-            <div class="footer-border">
-              <div class="row d-flex justify-content-between align-items-center">
-                <div class="col-xl-10 col-lg-10">
-                  <div class="footer-copy-right">
-                    <!-- <p>© {{ currentYear }} Tous droits réservés.</p> -->
-                  </div>
-                </div>
-              </div>
-            </div>
+        
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Entreprise</h4>
+            <a href="#">À propos</a>
+            <a href="#">Carrières</a>
+            <a href="#">Filiales</a>
+            <a href="#">Actualités</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Ressources</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Conditions d'utilisation</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">Contact</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Contact</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</p>
+            <p><i class="fas fa-phone"></i> +216 70 010 000</p>
+            <p><i class="fas fa-envelope"></i> contactpoulina.com</p>
           </div>
         </div>
       </div>
+      
+      <div class="copyright">
+        <!-- <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p> -->
+      </div>
     </div>
   </footer>
-  <script src="../../../assets/User/js/vendor/modernizr-3.5.0.min.js"></script>
-  <script src="../../../assets/User/js/vendor/jquery-1.12.4.min.js"></script>
-  <script src="../../../assets/User/js/popper.min.js"></script>
-  <script src="../../../assets/User/js/bootstrap.min.js"></script>
-  <script src="../../../assets/User/js/jquery.slicknav.min.js"></script>
-  <script src="../../../assets/User/js/owl.carousel.min.js"></script>
-  <script src="../../../assets/User/js/slick.min.js"></script>
-  <script src="../../../assets/User/js/price_rangs.js"></script>
-  <script src="../../../assets/User/js/wow.min.js"></script>
-  <script src="../../../assets/User/js/animated.headline.js"></script>
-  <script src="../../../assets/User/js/jquery.magnific-popup.js"></script>
-  <script src="../../../assets/User/js/jquery.scrollUp.min.js"></script>
-  <script src="../../../assets/User/js/jquery.nice-select.min.js"></script>
-  <script src="../../../assets/User/js/jquery.sticky.js"></script>
-  <script src="../../../assets/User/js/contact.js"></script>
-  <script src="../../../assets/User/js/jquery.form.js"></script>
-  <script src="../../../assets/User/js/jquery.validate.min.js"></script>
-  <script src="../../../assets/User/js/mail-script.js"></script>
-  <script src="../../../assets/User/js/jquery.ajaxchimp.min.js"></script>
-  <script src="../../../assets/User/js/plugins.js"></script>
-  <script src="../../../assets/User/js/main.js"></script>
-  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9336e50a0f36dd20',t:'MTc0NTE3NTczMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

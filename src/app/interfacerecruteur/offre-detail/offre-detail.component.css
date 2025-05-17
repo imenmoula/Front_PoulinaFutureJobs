@@ -2,67 +2,65 @@
 
 .container {
   max-width: 1200px;
-  padding: 0 15px;
+  padding: 0 20px;
   font-family: 'Poppins', sans-serif;
 }
 
 .card {
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  margin-bottom: 20px;
 }
 
 .card-header {
-  padding: 20px 25px;
-  border-bottom: none;
-  background: linear-gradient(90deg, #007bff, #00d4ff);
+  padding: 15px 20px;
+  border-bottom: 1px solid #dee2e6;
+  background: #17a2b8;
   color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .card-header.bg-light {
-  background: #e9ecef;
+  background: #f8f9fa;
   color: #333;
 }
 
 .card-title {
   margin: 0;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .card-body {
-  padding: 25px;
+  padding: 20px;
 }
 
 .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
   font-weight: 600;
-  font-size: 1.15rem;
-  margin-bottom: 10px;
-  display: block;
-  color: #222;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  color: #333;
 }
 
 .form-group p {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #666;
 }
 
 .alert {
-  font-size: 1.05rem;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 25px;
+  font-size: 1rem;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .alert-danger {
@@ -78,19 +76,18 @@
 }
 
 .text-center {
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .btn {
-  padding: 12px 25px;
-  font-size: 1.05rem;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .btn-primary {
@@ -134,76 +131,122 @@
 }
 
 .btn-lg {
-  padding: 14px 35px;
-  font-size: 1.2rem;
+  padding: 12px 30px;
+  font-size: 1.1rem;
 }
 
 .spinner-border {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3rem;
+  height: 3rem;
 }
 
-/* Accordion for Posts */
-.accordion-button {
-  font-size: 1.1rem;
+/* Vertical Card Layout for General Sections */
+.d-flex.flex-column.gap-3 .card {
+  width: 100%;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+/* Horizontal Layout for Missions, Languages, and Competencies */
+.mission-list,
+.language-list,
+.competence-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.mission-item,
+.language-item,
+.competence-item {
+  flex: 1 1 calc(33.33% - 10px); /* Approximately 3 items per row */
+  max-width: calc(33.33% - 10px);
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
   font-weight: 600;
-  background-color: #f1f3f5;
-  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
-.accordion-button:not(.collapsed) {
-  background-color: #e9ecef;
-  color: #007bff;
-}
-
-.accordion-body {
-  background-color: #fff;
-  border-top: 1px solid #dee2e6;
+/* Icon Styling */
+.card-header .fas {
+  font-size: 1.4rem;
+  margin-right: 10px;
 }
 
 /* SweetAlert2 Styling */
 .swal-large {
-  padding: 25px !important;
-  font-size: 1.25rem !important;
+  padding: 20px !important;
+  font-size: 1.2rem !important;
 }
 
 .swal-large .swal2-title {
-  font-size: 1.9rem !important;
+  font-size: 1.8rem !important;
 }
 
 .swal-large .swal2-content {
-  font-size: 1.15rem !important;
+  font-size: 1.1rem !important;
 }
 
 /* Animations */
 .animate__animated {
-  animation-duration: 0.6s;
+  animation-duration: 0.5s;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 767.98px) {
   .card-title {
+    font-size: 1.2rem;
+  }
+
+  .card-header {
     font-size: 1.3rem;
   }
 
+  .btn {
+    padding: 8px 15px;
+    font-size: 0.95rem;
+  }
+
   .btn-lg {
-    padding: 12px 25px;
-    font-size: 1.1rem;
-  }
-
-  .container {
-    padding: 0 12px;
-  }
-
-  .card {
-    margin-bottom: 20px;
-  }
-
-  .form-group label {
+    padding: 10px 25px;
     font-size: 1rem;
   }
 
+  .container {
+    padding: 0 10px;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
   .form-group p {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+  }
+
+  .card-header .fas {
+    font-size: 1.2rem;
+  }
+
+  .mission-item,
+  .language-item,
+  .competence-item {
+    flex: 1 1 calc(100% - 10px);
+    max-width: calc(100% - 10px);
+  }
+
+  .mission-list,
+  .language-list,
+  .competence-list {
+    flex-direction: column;
   }
 }

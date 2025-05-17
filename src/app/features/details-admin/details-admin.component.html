@@ -30,8 +30,9 @@
                     </div>
                     <div class="col-md-6">
                       <p><strong>Rôle :</strong> {{ admin.role || 'N/A' }}</p>
-                      <!-- <p><strong>Téléphone :</strong> {{ admin.phone || 'N/A' }}</p> -->
-                      <p><strong>Entreprise :</strong> {{ admin.entreprise || 'N/A' }}</p>
+                      <!-- <p *ngIf="admin && (admin.role === 'Admin' || admin.role === 'Recruteur')"> -->
+                        <p><strong>Filiale :</strong> {{ admin.nomFiliale || 'Aucune' }}</p>
+                      
                     </div>
                   </div>
 
@@ -57,4 +58,3 @@
 
     <app-footer></app-footer>
   </div>
-</div>

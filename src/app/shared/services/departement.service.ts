@@ -14,17 +14,18 @@ import { Filiale } from '../../Models/filiale.model';
 export class DepartementService {
   private apiUrl = `${environment.apiBaseUrl}/Departements`; // URL dynamique
   constructor(private http: HttpClient) {}
-  getHttpOptions() {
-    const token = localStorage.getItem('token');
-    console.log("Token récupéré :", token); // Vérifier si le token est bien présent
-    // Récupérer le token
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Ajouter le token dans l'en-tête
-      })
-    };
+getHttpOptions() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.warn('No token found, request may fail');
   }
+  return {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token || ''}`
+    })
+  };
+}
 
 
 addDepartement(departement: any): Observable<any> {
@@ -47,7 +48,11 @@ getDepartements(): Observable<any> {
     catchError(this.handleError)
   );
 }
-
+getToke(): string | null {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  console.log('Token récupéré :', token);
+  return token;
+}
 // Get department by ID
 getDepartementById(id: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/${id}`, this.getHttpOptions()).pipe(
@@ -61,8 +66,11 @@ getDepartementById(id: string): Observable<any> {
 
 // Supprimer un département
 deleteDepartement(id: string): Observable<any> {
-  return this.http.delete<any>(`${this.apiUrl}/${id}`);
-}  
+  return this.http.delete<any>(`${this.apiUrl}/${id}`, this.getHttpOptions()).pipe(
+    tap(response => console.log('Department deleted:', response)),
+    catchError(this.handleError)
+  );
+} 
 getDepartementByName(nom: string): Observable<Departement[]> {
   return this.http.get<Departement[]>(`${this.apiUrl}/search?nom=${nom}`, this.getHttpOptions()).pipe(
     catchError(this.handleError)

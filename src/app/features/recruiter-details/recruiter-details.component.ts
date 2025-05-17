@@ -16,7 +16,7 @@ import { User } from '../../Models/user.model';
   styleUrls: ['./recruiter-details.component.css']
 })
 export class RecruiterDetailsComponent implements OnInit {
-  recruiter: User | null = null;
+  recruteur: User | null = null;
   sidebarOpen: boolean = false;
   loading: boolean = false;
 
@@ -28,20 +28,20 @@ export class RecruiterDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const recruiterId = this.route.snapshot.paramMap.get('id');
-    if (recruiterId) {
-      this.loadRecruiterDetails(recruiterId);
+    const recruteurId = this.route.snapshot.paramMap.get('id');
+    if (recruteurId) {
+      this.loadRecruteurDetails(recruteurId);
     } else {
       this.snackBar.open('ID du recruteur non fourni.', 'Fermer', { duration: 3000 });
       this.router.navigate(['/recruiter']);
     }
   }
 
-  loadRecruiterDetails(id: string): void {
+  loadRecruteurDetails(id: string): void {
     this.loading = true;
     this.userService.getUserById(id).subscribe({
       next: (response) => {
-        this.recruiter = response.data ? response.data : response;
+        this.recruteur = response.data ? response.data : response;
         this.loading = false;
       },
       error: (error) => {
@@ -55,13 +55,5 @@ export class RecruiterDetailsComponent implements OnInit {
 
   toggleSidebar(): void {
     this.sidebarOpen = !this.sidebarOpen;
-  }
-
-  showSnackbar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 3000,
-      verticalPosition: 'top',
-      horizontalPosition: 'right',
-    });
   }
 }

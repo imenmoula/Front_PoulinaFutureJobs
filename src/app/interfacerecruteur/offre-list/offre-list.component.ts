@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
 import { FilialeService } from '../../shared/services/filiale.service';
 import { FooterComponent } from '../../layoutBackend/footer/footer.component';
@@ -21,6 +21,7 @@ import { ModeTravail, StatutOffre, TypeContratEnum } from '../../Models/enums.mo
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     ReactiveFormsModule,
     FooterComponent,
     HeaderComponent,
@@ -50,19 +51,18 @@ export class OffreListComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.searchForm = this.fb.group({
-      titre: [''],
-      specialite: [''],
+      idRecruteur: [''],
+      query: [''],
       typeContrat: [''],
       statut: [''],
-      modeTravail: [''],
-      idFiliale: ['']
+      modeTravail: ['']
     });
   }
 
   ngOnInit(): void {
     this.loadFiliales();
-    this.loadOffres();
-    this.searchForm.valueChanges.subscribe(value => this.searchOffres(value));
+    this.searchForm.valueChanges.subscribe(value => this.loadOffresByRecruteur(value));
+    this.loadOffresByRecruteur({ idRecruteur: '', query: '', typeContrat: '', statut: '', modeTravail: '' }); // Chargement initial
   }
 
   loadFiliales(): void {
@@ -80,19 +80,53 @@ export class OffreListComponent implements OnInit {
     });
   }
 
-  loadOffres(): void {
-    this.offreService.getAll().subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.offres = response.offresEmploi;
-          this.filteredOffres = [...this.offres];
+  loadOffresByRecruteur(searchParams: any): void {
+    const { idRecruteur, query, typeContrat, statut, modeTravail } = searchParams;
+
+    if (!idRecruteur) {
+      // Si aucun recruteur n'est sélectionné, charger toutes les offres
+      this.offreService.getAll().subscribe({
+        next: (offres) => {
+          this.offres = offres;
+          this.filteredOffres = this.applyFilters(offres, query, typeContrat, statut, modeTravail);
           this.totalItems = this.filteredOffres.length;
           this.updatePaginatedOffres();
-        } else {
+          if (offres.length === 0) {
+            Swal.fire({
+              icon: 'info',
+              title: 'Aucun Résultat',
+              text: 'Aucune offre disponible.',
+              showConfirmButton: true
+            });
+          }
+        },
+        error: (error) => {
           Swal.fire({
             icon: 'error',
             title: 'Erreur de Chargement',
-            text: response.message,
+            text: 'Échec du chargement des offres : ' + error.message,
+          });
+          this.filteredOffres = [];
+          this.totalItems = 0;
+          this.updatePaginatedOffres();
+        }
+      });
+      return;
+    }
+
+    // Charger les offres par recruteur et appliquer les filtres
+    this.offreService.getByRecruteur(idRecruteur).subscribe({
+      next: (offres) => {
+        this.offres = offres;
+        this.filteredOffres = this.applyFilters(offres, query, typeContrat, statut, modeTravail);
+        this.totalItems = this.filteredOffres.length;
+        this.updatePaginatedOffres();
+        if (offres.length === 0) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Aucun Résultat',
+            text: 'Aucune offre ne correspond à ce recruteur.',
+            showConfirmButton: true
           });
         }
       },
@@ -100,49 +134,38 @@ export class OffreListComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Erreur de Chargement',
-          text: 'Échec du chargement des offres : ' + error.message,
-        });
-      }
-    });
-  }
-
-  searchOffres(searchParams: any): void {
-    const { titre, specialite, typeContrat, statut, modeTravail, idFiliale } = searchParams;
-
-    if (!titre && !specialite && !typeContrat && !statut && !modeTravail && !idFiliale) {
-      this.filteredOffres = [...this.offres];
-      this.totalItems = this.filteredOffres.length;
-      this.currentPage = 0;
-      this.updatePaginatedOffres();
-      return;
-    }
-
-    this.offreService.search(titre, specialite, typeContrat, statut, modeTravail, idFiliale).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.filteredOffres = response.offresEmploi;
-          this.totalItems = this.filteredOffres.length;
-          this.currentPage = 0;
-          this.updatePaginatedOffres();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur de Recherche',
-            text: response.message,
-          });
-        }
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de Recherche',
-          text: error.error?.message || 'Échec de la recherche des offres.',
+          text: 'Échec du chargement des offres : ' + (error.message || 'Erreur inconnue'),
         });
         this.filteredOffres = [];
         this.totalItems = 0;
         this.updatePaginatedOffres();
       }
     });
+  }
+
+  applyFilters(offres: OffreEmploi[], query: string, typeContrat: string, statut: string, modeTravail: string): OffreEmploi[] {
+    let filtered = [...offres];
+
+    if (query) {
+      const lowerQuery = query.toLowerCase();
+      filtered = filtered.filter(offre =>
+        (this.getTitre(offre)?.toLowerCase().includes(lowerQuery) || offre.specialite?.toLowerCase().includes(lowerQuery))
+      );
+    }
+
+    if (typeContrat) {
+      filtered = filtered.filter(offre => offre.typeContrat.toString() === typeContrat);
+    }
+
+if (statut) {
+  filtered = filtered.filter(offre => offre.statut.toString() === statut);
+}
+
+    if (modeTravail) {
+      filtered = filtered.filter(offre => offre.modeTravail.toString() === modeTravail);
+    }
+
+    return filtered;
   }
 
   updatePaginatedOffres(): void {
@@ -156,21 +179,18 @@ export class OffreListComponent implements OnInit {
     this.updatePaginatedOffres();
   }
 
-  getNomFiliale(idFiliale: string): string {
+  getNomFiliale(idFiliale: string | undefined): string {
+    if (!idFiliale) return 'Filiale inconnue';
     const filiale = this.filiales.find(f => f.idFiliale === idFiliale);
     return filiale ? filiale.nom : 'Filiale inconnue';
   }
 
   getTitre(offre: OffreEmploi): string {
-    return offre.postes && offre.postes.length > 0 ? offre.postes[0].titrePoste : 'Sans titre';
+    return offre.postes && offre.postes.length > 0 ? offre.postes[0].titrePoste || 'Sans titre' : 'Sans titre';
   }
 
   getNombrePostes(offre: OffreEmploi): number {
-    return offre.postes ? offre.postes.reduce((sum, poste) => sum + poste.nombrePostes, 0) : 0;
-  }
-
-  editOffre(id: string): void {
-    this.router.navigate(['/offres/update', id]);
+    return offre.postes ? offre.postes.reduce((sum, poste) => sum + (poste.nombrePostes || 0), 0) : 0;
   }
 
   deleteOffre(id: string): void {
@@ -183,9 +203,8 @@ export class OffreListComponent implements OnInit {
       cancelButtonText: 'Non, annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.offreService.delete(id).subscribe({
+        this.offreService.deleteOffre(id).subscribe({
           next: () => {
-            // No response object is returned, so you can't access any properties
             this.offres = this.offres.filter(o => o.idOffreEmploi !== id);
             this.filteredOffres = this.filteredOffres.filter(o => o.idOffreEmploi !== id);
             this.totalItems = this.filteredOffres.length;
@@ -202,16 +221,12 @@ export class OffreListComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               title: 'Erreur de Suppression',
-              text: 'Échec de la suppression de l\'offre : ' + error.message,
+              text: 'Échec de la suppression de l\'offre : ' + (error.message || 'Erreur inconnue'),
             });
           }
         });
       }
     });
-  }
-
-  viewDetails(id: string): void {
-    this.router.navigate(['/offres/details', id]);
   }
 
   toggleSidebar(): void {

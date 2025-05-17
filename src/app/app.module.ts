@@ -53,6 +53,7 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
 import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 
+// import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
   declarations: [
@@ -91,7 +92,7 @@ import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.
     FooterComponent,
     JobListingComponent,
     JobDetailsComponent,
-   CandidateurDetailsComponent,
+  //  CandidateurDetailsComponent,
     
     CandidateListComponent,
     // ApropsComponent
@@ -110,6 +111,7 @@ import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.
     RouterModule ,
     BrowserAnimationsModule, 
     ToastrModule.forRoot(),
+  
     
     
  

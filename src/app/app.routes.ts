@@ -1,3 +1,4 @@
+// import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 import { DetailsAdminComponent } from './features/details-admin/details-admin.component';
 import { RecruiterDetailsComponent } from './features/recruiter-details/recruiter-details.component';
 import { CandidateListComponent } from './features/candidate-list/candidate-list.component';
@@ -35,6 +36,10 @@ import { ApropsComponent } from './CandidateFront/components/aprops/aprops.compo
 import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate-only.component';
 import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+// import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
+import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 
 
 export const routes: Routes = [
@@ -120,20 +125,20 @@ export const routes: Routes = [
   
   { path: 'offres', component: OffreListComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   { path: 'offres/details/:id', component: OffreDetailComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  // {
-  //   path: 'offres/create',
-  //   component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
-  // },
-  // {
-  //   path: 'offres/update/:id',
-  //   component: OffreFormComponent,
-  //   canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  {
+    path: 'offres/create',
+    component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  },
+  {
+    path: 'offres/update/:id',
+    component: OffreFormComponent,
+    canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
 
-  // },
+  },
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
-  // { path: 'job-list', component: JobListingComponent },
-  // { path: 'job-details/:id', component: JobDetailsComponent },
+  { path: 'job-list', component: JobListingComponent },
+  { path: 'job-details/:id', component: JobDetailsComponent },
   // {path:'/about',component:ApropsComponent ,canActivate: [AuthGuard] ,data: { roles: ['Candidate'] } }, 
 
   // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },

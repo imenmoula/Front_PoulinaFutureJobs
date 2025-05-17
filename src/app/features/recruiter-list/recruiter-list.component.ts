@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -11,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { User } from '../../Models/user.model';
 import { v4 as uuidv4 } from 'uuid';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-recruiter-list',
@@ -66,13 +64,14 @@ export class RecruiterListComponent implements OnInit {
             this.recruiters = response.data.map((recruiter: any) => ({
               id: recruiter.id,
               email: recruiter.email,
-              fullName: recruiter.fullName || `${recruiter.firstName || ''} ${recruiter.lastName || ''}`.trim() || 'N/A',
+              fullName: recruiter.fullName || `${recruiter.firstName || recruiter.nom || ''} ${recruiter.lastName || recruiter.prenom || ''}`.trim() || 'N/A',
               nom: recruiter.lastName || recruiter.nom || 'N/A',
               prenom: recruiter.firstName || recruiter.prenom || 'N/A',
               photo: recruiter.photo,
-              PhoneNumber: recruiter.phone,
-              entreprise: recruiter.entreprise,
+              phone: recruiter.phoneNumber || recruiter.phone,
               poste: recruiter.poste,
+              idFiliale: recruiter.idFiliale,
+              nomFiliale: recruiter.nomFiliale,
               role: typeof recruiter.role === 'string' ? { id: uuidv4(), name: recruiter.role, normalizedName: recruiter.role.toUpperCase() } : recruiter.role,
               UserRoles: recruiter.UserRoles
             } as User));
