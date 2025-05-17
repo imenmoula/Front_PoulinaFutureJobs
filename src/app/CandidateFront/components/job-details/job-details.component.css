@@ -600,7 +600,7 @@ body {
   color: #95a5a6;
   padding: 1rem;
 }
-* Barres de progression sécurisées */
+/* Barres de progression sécurisées */
 .skill-level-bar {
   height: 8px;
   background: #ecf0f1;
