@@ -11,7 +11,27 @@ import { environment } from '../../../environments/environment.development';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './reset-password.component.html',
-  styles: ``
+  styles: [`
+    .position-relative {
+      position: relative;
+    }
+    .show-hide {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1rem;
+      color: #6c757d;
+    }
+    .show-hide:hover {
+      color: #007bff;
+    }
+    .text-danger {
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  `]
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
@@ -20,6 +40,8 @@ export class ResetPasswordComponent implements OnInit {
   loading: boolean = false;
   token: string = '';
   email: string = '';
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
   private apiUrl = environment.apiBaseUrl;
 
   constructor(
@@ -51,16 +73,23 @@ export class ResetPasswordComponent implements OnInit {
       : { mismatch: true };
   }
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   onSubmit() {
     if (this.resetPasswordForm.valid && this.token && this.email) {
       this.loading = true;
       const newPassword = this.resetPasswordForm.get('password')?.value;
-      // Send email, token, and newPassword to the API
       this.http.post(`${this.apiUrl}/reset-password`, {
         email: this.email,
         token: this.token,
-        Password: newPassword ,
-        ConfirmPassword : this.resetPasswordForm.get('confirmPassword')?.value
+        password: newPassword,
+        confirmPassword: this.resetPasswordForm.get('confirmPassword')?.value
       }).subscribe({
         next: (response: any) => {
           this.loading = false;
@@ -68,7 +97,6 @@ export class ResetPasswordComponent implements OnInit {
             this.successMessage = 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.';
             this.errorMessage = '';
             this.resetPasswordForm.reset();
-            // Redirect to login after 3 seconds
             setTimeout(() => {
               this.router.navigate(['/login']);
             }, 3000);
