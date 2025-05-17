@@ -31,18 +31,24 @@ export class ForgotPasswordComponent {
       this.loading = true; // Set loading to true
       const email = this.forgotPasswordForm.get('email')?.value;
       this.http.post(`${this.apiUrl}/request-reset-password`, { email })
-        .subscribe({
-          next: (response: any) => {
-            this.successMessage = 'Un lien de réinitialisation a été envoyé à votre email.';
+      .subscribe({
+        next: (response: any) => {
+          this.loading = false;
+          // Check if the response indicates success
+          if (response.success) {
+            this.successMessage = response.message;
             this.errorMessage = '';
-            this.loading = false; // Reset loading
-          },
-          error: (err) => {
-            this.errorMessage = 'Échec de l\'envoi du lien de réinitialisation. Veuillez réessayer.';
+          } else {
+            this.errorMessage = response.message;
             this.successMessage = '';
-            this.loading = false; // Reset loading
           }
-        });
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorMessage = 'Échec de l\'envoi du lien de réinitialisation. Veuillez réessayer.';
+          this.successMessage = '';
+        }
+      });
     }
   }
 }
