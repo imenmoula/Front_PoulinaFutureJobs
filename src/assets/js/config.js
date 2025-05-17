@@ -1,5 +1,5 @@
 (function () {
-  var primary = localStorage.getItem("primary") || "#7366FF";
+  var primary = localStorage.getItem("primary") || "#4169E1";
   var secondary = localStorage.getItem("secondary") || "#838383";
   var success = localStorage.getItem("success") || "#65c15c";
 

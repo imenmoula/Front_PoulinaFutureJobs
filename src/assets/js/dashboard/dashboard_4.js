@@ -394,7 +394,7 @@
         },
       },
     },
-    colors: ["#54BA4A", "#FFA539", "#7366FF"],
+    colors: ["#54BA4A", "#FFA539", "#4169E1"],
     labels: ["USD", "BTC", "ETH"],
     fill: {
       type: "gradient",

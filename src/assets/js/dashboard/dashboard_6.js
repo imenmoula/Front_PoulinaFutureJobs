@@ -58,7 +58,7 @@
         right: -15,
       },
     },
-    colors: ["#7366ff"],
+    colors: ["#4169E1"],
     fill: {
       gradient: {
         type: "vertical",
@@ -381,7 +381,7 @@
         right: -40,
       },
     },
-    colors: ["#7366ff"],
+    colors: ["#4169E1"],
     fill: {
       gradient: {
         type: "vertical",
