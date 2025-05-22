@@ -10,6 +10,7 @@ import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
 import { OffreEmploi } from '../../Models/offre-emploi.model';
 import { environment } from '../../../environments/environment.development';
 import { Filiale } from '../../Models/filiale.model';
+import { SharedModule } from '../../shared/shared.module';
 
 interface OffresByFiliale {
   filiale: Filiale;
@@ -23,7 +24,7 @@ interface OffresByFiliale {
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule,
+    FormsModule, SharedModule
   ],
   templateUrl: './candidate-only.component.html',
   styleUrls: [

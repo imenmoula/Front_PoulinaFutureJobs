@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-aprops',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './aprops.component.html',
   styleUrls: [
     '../../../../assets/User/css/bootstrap.min.css',
