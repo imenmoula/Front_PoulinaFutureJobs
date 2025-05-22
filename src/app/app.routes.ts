@@ -39,6 +39,11 @@ import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-de
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
+import { QuizFormComponent } from './quiz-form/quiz-form.component';
+// import { FullQuizFormComponent } from './full-quiz-form/full-quiz-form.component';
+import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
+import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
 
 
 export const routes: Routes = [
@@ -141,8 +146,14 @@ export const routes: Routes = [
 
   // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   // { path: 'candidature/edit/:id', component: CandidatureComponent },
-  // { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  // { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'quizzes', component: QuizListComponent },
+  { path: 'quizzes/create', component: QuizFormComponent },
+  // { path: 'quizzes/create-full', component: FullQuizFormComponent },
+  { path: 'quizzes/:id', component: QuizDetailComponent },
+  { path: 'quizzes/:id/edit', component: QuizFormComponent },
+  // { path: 'quizzes/:id/edit-full', component: FullQuizFormComponent },
   // Fixed: Removed space  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];

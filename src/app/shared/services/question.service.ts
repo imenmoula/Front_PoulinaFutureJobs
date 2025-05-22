@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { QuestionDto } from '../../Models/quizze.model';
+import { QuestionCreateDto, QuestionResponseDto, QuestionUpdateDto } from '../../Models/quiz.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +24,33 @@ export class QuestionService {
     return throwError(() => new Error(errorMessage));
   }
 
-  getQuestions(quizId: string): Observable<QuestionDto[]> {
-    return this.http.get<QuestionDto[]>(`${this.apiUrl}/Questions?quizId=${quizId}`).pipe(
-      tap(data => console.log('Questions récupérées:', data)),
-      catchError(this.handleError)
-    );
+ // Récupérer toutes les questions d'un quiz
+  getQuestionsByQuiz(quizId: string): Observable<QuestionResponseDto[]> {
+    return this.http.get<QuestionResponseDto[]>(`${this.apiUrl}/Quiz/${quizId}`);
+  }
+
+  // Récupérer une question par son ID
+  getQuestionById(id: string): Observable<QuestionResponseDto> {
+    return this.http.get<QuestionResponseDto>(`${this.apiUrl}/${id}`);
+  }
+
+  // Créer une nouvelle question
+  createQuestion(question: QuestionCreateDto): Observable<QuestionResponseDto> {
+    return this.http.post<QuestionResponseDto>(this.apiUrl, question);
+  }
+
+  // Mettre à jour une question
+  updateQuestion(id: string, question: QuestionUpdateDto): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, question);
+  }
+
+  // Supprimer une question
+  deleteQuestion(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // Réordonner les questions d'un quiz
+  reorderQuestions(quizId: string, questionIds: string[]): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/Quiz/${quizId}/Reorder`, { questionIds });
   }
 }

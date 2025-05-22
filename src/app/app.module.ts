@@ -50,6 +50,9 @@ import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.c
 import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
+import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
+import { QuizFormComponent } from './quiz-form/quiz-form.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
 // import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
@@ -91,8 +94,11 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
     JobDetailsComponent,
   //  CandidateurDetailsComponent,
     
-    CandidateListComponent
+    CandidateListComponent,
     // ApropsComponent
+    QuizDetailComponent,
+    QuizListComponent,
+    QuizFormComponent
    
   
 ],

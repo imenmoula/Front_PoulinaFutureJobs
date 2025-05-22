@@ -1,0 +1,94 @@
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+  <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+  <div class="page-body-wrapper">
+    <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+
+    <div class="page-body">
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{ quiz?.titre }}</h3>
+          </div>
+
+          <div class="card-body">
+            <div *ngIf="loading" class="text-center py-5">
+              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">
+              {{ error }}
+            </div>
+
+            <div *ngIf="!loading && !error && quiz">
+              <div class="quiz-meta row">
+                <div class="col-md-6">
+                  <p><strong>Description:</strong> {{ quiz.description || 'N/A' }}</p>
+                  <p><strong>Durée:</strong> {{ quiz.duree }} minutes</p>
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Score Minimum:</strong> {{ quiz.scoreMinimum }}%</p>
+                  <p><strong>Statut:</strong> 
+                    <span class="badge" [ngClass]="quiz.estActif ? 'badge-success' : 'badge-secondary'">
+                      {{ quiz.estActif ? 'Actif' : 'Inactif' }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <h4 class="mb-4">Questions ({{ quiz.questions.length }})</h4>
+              
+              <div *ngFor="let question of quiz.questions" class="question-container">
+                <div class="question-header">
+                  <h5 class="question-title">Question {{ question.ordre }}</h5>
+                  <span class="badge badge-info">{{ getQuestionTypeName(question.type) }}</span>
+                </div>
+                
+                <p class="question-meta">
+                  <strong>Points:</strong> {{ question.points }} 
+                  <span *ngIf="question.tempsRecommande"> | 
+                    <strong>Temps Recommandé:</strong> {{ question.tempsRecommande }} secondes
+                  </span>
+                </p>
+                
+                <p class="mb-3"><strong>Texte:</strong> {{ question.texte }}</p>
+
+                <div *ngIf="question.reponses.length > 0" class="answer-list">
+                  <h6>Réponses ({{ question.reponses.length }})</h6>
+                  
+                  <div *ngFor="let reponse of question.reponses" 
+                       class="answer-item" 
+                       [ngClass]="{'correct-answer': reponse.estCorrecte}">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="answer-text">{{ reponse.texte }}</span>
+                      <span *ngIf="reponse.estCorrecte" class="badge badge-success">Correcte</span>
+                    </div>
+                    <div *ngIf="reponse.explication" class="answer-explanation">
+                      <strong>Explication:</strong> {{ reponse.explication }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-group">
+                <button (click)="goToEdit()" class="btn btn-warning">
+                  <i class="fas fa-edit"></i> Modifier
+                </button>
+                <button (click)="deleteQuiz()" class="btn btn-danger">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+                <a routerLink="/quizzes" class="btn btn-secondary">
+                  <i class="fas fa-arrow-left"></i> Retour
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <app-footer></app-footer>
+  </div>
+</div>

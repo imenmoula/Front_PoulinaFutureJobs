@@ -238,6 +238,15 @@
             <span>Liste des candidatures</span>
           </a>
         </li>
+         <!-- Autres éléments du menu -->
+
+<li class="menu-item" *ngIf="authService.hasAccessToQuiz()">
+  <a routerLink="/quizzes" routerLinkActive="active" class="menu-link py-3 px-4 d-flex align-items-center">
+    <i class="fa fa-users me-3"></i>
+    <span>Liste des quiz</span>
+  </a>
+</li>
+
       
         <!-- Autres sections du menu Recruteur -->
       </ul>

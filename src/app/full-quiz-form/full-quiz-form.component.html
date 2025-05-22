@@ -1,0 +1,240 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3>{{ quiz ? 'Modifier le Quiz' : 'Créer un Nouveau Quiz' }}</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+        <!-- Quiz Info Section -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Informations du Quiz</h4>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="titre">Titre*</label>
+              <input type="text" class="form-control" id="titre" formControlName="titre">
+              <div *ngIf="quizForm.get('titre')?.invalid && (quizForm.get('titre')?.dirty || quizForm.get('titre')?.touched || submitted)"
+                   class="text-danger">
+                <small *ngIf="quizForm.get('titre')?.errors?.['required']">Le titre est requis</small>
+                <small *ngIf="quizForm.get('titre')?.errors?.['maxlength']">Maximum 100 caractères</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+              <small *ngIf="quizForm.get('description')?.errors?.['maxlength']" class="text-danger">
+                Maximum 500 caractères
+              </small>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="duree">Durée (minutes)*</label>
+                  <input type="number" class="form-control" id="duree" formControlName="duree" min="1" max="180">
+                  <div *ngIf="quizForm.get('duree')?.invalid && (quizForm.get('duree')?.dirty || quizForm.get('duree')?.touched || submitted)"
+                       class="text-danger">
+                    <small *ngIf="quizForm.get('duree')?.errors?.['required']">La durée est requise</small>
+                    <small *ngIf="quizForm.get('duree')?.errors?.['min']">Minimum 1 minute</small>
+                    <small *ngIf="quizForm.get('duree')?.errors?.['max']">Maximum 180 minutes</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="scoreMinimum">Score Minimum (%)*</label>
+                  <input type="number" class="form-control" id="scoreMinimum" formControlName="scoreMinimum" min="0" max="100">
+                  <div *ngIf="quizForm.get('scoreMinimum')?.invalid && (quizForm.get('scoreMinimum')?.dirty || quizForm.get('scoreMinimum')?.touched || submitted)"
+                       class="text-danger">
+                    <small *ngIf="quizForm.get('scoreMinimum')?.errors?.['required']">Le score minimum est requis</small>
+                    <small *ngIf="quizForm.get('scoreMinimum')?.errors?.['min']">Minimum 0%</small>
+                    <small *ngIf="quizForm.get('scoreMinimum')?.errors?.['max']">Maximum 100%</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Questions Section -->
+        <div class="card mb-4" formArrayName="questions">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Questions</h4>
+            <button type="button" class="btn btn-primary btn-sm" (click)="addQuestion()">
+              <i class="fas fa-plus"></i> Ajouter une Question
+            </button>
+          </div>
+          <div class="card-body">
+            <div *ngFor="let question of questions.controls; let i = index" class="mb-4 question-item">
+              <div [formGroupName]="i" class="question-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h5>Question {{question.get('ordre')?.value}}</h5>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeQuestion(i)" [disabled]="questions.length <= 1">
+                    <i class="fas fa-trash"></i> Supprimer
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label [for]="'texte_' + i">Texte de la Question*</label>
+                  <textarea class="form-control" [id]="'texte_' + i" formControlName="texte" rows="2"></textarea>
+                  <div *ngIf="question.get('texte')?.invalid && (question.get('texte')?.dirty || question.get('texte')?.touched || submitted)"
+                       class="text-danger">
+                    <small *ngIf="question.get('texte')?.errors?.['required']">Le texte de la question est requis</small>
+                    <small *ngIf="question.get('texte')?.errors?.['maxlength']">Maximum 500 caractères</small>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label [for]="'type_' + i">Type de Question*</label>
+                      <select class="form-select" [formControlName]="'type'" (change)="onQuestionTypeChange(i, $event)">
+                        <option *ngFor="let type of typeQuestions" [value]="type.id">{{ type.name }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label [for]="'points_' + i">Points*</label>
+                      <input type="number" class="form-control" [id]="'points_' + i" formControlName="points" min="1" max="100">
+                      <div *ngIf="question.get('points')?.invalid && (question.get('points')?.dirty || question.get('points')?.touched || submitted)"
+                           class="text-danger">
+                        <small *ngIf="question.get('points')?.errors?.['required']">Les points sont requis</small>
+                        <small *ngIf="question.get('points')?.errors?.['min']">Minimum 1 point</small>
+                        <small *ngIf="question.get('points')?.errors?.['max']">Maximum 100 points</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label [for]="'ordre_' + i">Ordre*</label>
+                      <input type="number" class="form-control" [id]="'ordre_' + i" formControlName="ordre" min="1" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label [for]="'tempsRecommande_' + i">Temps Recommandé (sec)</label>
+                      <input type="number" class="form-control" [id]="'tempsRecommande_' + i" formControlName="tempsRecommande" min="0">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Answers Section - Hidden for text answer questions -->
+                <div class="card mt-3" *ngIf="question.get('type')?.value !== vraiFauxId">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6>Réponses</h6>
+                    <button type="button" class="btn btn-primary btn-sm" 
+                            (click)="addResponse(i)" 
+                            *ngIf="question.get('type')?.value !== vraiFauxId">
+                      <i class="fas fa-plus"></i> Ajouter une Réponse
+                    </button>
+                  </div>
+                  <div class="card-body" formArrayName="reponses">
+                    <div *ngFor="let response of getResponses(i).controls; let j = index" class="mb-3 answer-item">
+                      <div [formGroupName]="j" class="answer-group">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6>Réponse {{response.get('ordre')?.value}}</h6>
+                          <button type="button" class="btn btn-danger btn-sm" 
+                                  (click)="removeResponse(i, j)"
+                                  [disabled]="question.get('type')?.value === vraiFauxId && getResponses(i).length <= 2">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+
+                        <div class="form-group">
+                          <label [for]="'texte_' + i + '_' + j">Texte de la Réponse*</label>
+                          <input type="text" class="form-control" [id]="'texte_' + i + '_' + j" formControlName="texte">
+                          <div *ngIf="response.get('texte')?.invalid && (response.get('texte')?.dirty || response.get('texte')?.touched || submitted)"
+                               class="text-danger">
+                            <small *ngIf="response.get('texte')?.errors?.['required']">Le texte de la réponse est requis</small>
+                            <small *ngIf="response.get('texte')?.errors?.['maxlength']">Maximum 500 caractères</small>
+                          </div>
+                        </div>
+
+                        <div class="form-check mb-2">
+                          <input class="form-check-input" type="checkbox" [id]="'estCorrecte_' + i + '_' + j" 
+                                 formControlName="estCorrecte">
+                          <label class="form-check-label" [for]="'estCorrecte_' + i + '_' + j">
+                            Réponse Correcte
+                          </label>
+                        </div>
+
+                        <div class="form-group">
+                          <label [for]="'explication_' + i + '_' + j">Explication</label>
+                          <textarea class="form-control" [id]="'explication_' + i + '_' + j" 
+                                    formControlName="explication" rows="2"></textarea>
+                          <div *ngIf="response.get('explication')?.invalid && (response.get('explication')?.dirty || response.get('explication')?.touched || submitted)"
+                               class="text-danger">
+                            <small *ngIf="response.get('explication')?.errors?.['maxlength']">Maximum 500 caractères</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exemple de données à saisir dans le formulaire pour ajouter un quiz -->
+        <div class="alert alert-info mt-4">
+          <strong>Exemple de quiz à ajouter :</strong>
+          <ul>
+            <li><strong>Titre :</strong> Quiz HTML & CSS Débutant</li>
+            <li><strong>Description :</strong> Testez vos bases en HTML et CSS.</li>
+            <li><strong>Durée :</strong> 15</li>
+            <li><strong>Score minimum :</strong> 50</li>
+            <li><strong>Questions :</strong>
+              <ul>
+                <li>
+                  <strong>Ordre :</strong> 1<br>
+                  <strong>Type :</strong> ChoixUnique<br>
+                  <strong>Texte :</strong> Quelle balise HTML est utilisée pour insérer une image ?<br>
+                  <strong>Points :</strong> 5<br>
+                  <strong>Réponses :</strong>
+                  <ul>
+                    <li>&lt;img&gt; (Correcte)</li>
+                    <li>&lt;image&gt;</li>
+                    <li>&lt;src&gt;</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Ordre :</strong> 2<br>
+                  <strong>Type :</strong> VraiFaux<br>
+                  <strong>Texte :</strong> En CSS, la propriété <code>color</code> permet de changer la couleur du texte.<br>
+                  <strong>Points :</strong> 5<br>
+                  <strong>Réponses :</strong>
+                  <ul>
+                    <li>Vrai (Correcte)</li>
+                    <li>Faux</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Ordre :</strong> 3<br>
+                  <strong>Type :</strong> ReponseTexte<br>
+                  <strong>Texte :</strong> Donnez un exemple de sélecteur CSS.<br>
+                  <strong>Points :</strong> 5<br>
+                  <strong>Réponses :</strong> (Aucune réponse à saisir, l'utilisateur devra écrire sa réponse)
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="error" class="alert alert-danger mb-4">
+          {{ error }}
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary mr-2">
+            {{ quiz ? 'Mettre à jour' : 'Créer' }}
+          </button>
+          <a routerLink="/quizzes" class="btn btn-secondary">Annuler</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

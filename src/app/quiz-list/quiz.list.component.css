@@ -1,0 +1,82 @@
+.page-wrapper {
+    min-height: 100vh;
+  }
+  
+  .page-body-wrapper {
+    display: flex;
+  }
+  
+  .page-body {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .card {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    color: #333;
+    font-size: 1.25rem;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+  }
+  
+  .table th {
+    background-color: #343a40;
+    color: white;
+    vertical-align: middle;
+  }
+  
+  .badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .badge-success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .badge-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .mr-1 {
+    margin-right: 0.25rem;
+  }
+  
+  .pagination {
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .page-link {
+    cursor: pointer;
+  }
