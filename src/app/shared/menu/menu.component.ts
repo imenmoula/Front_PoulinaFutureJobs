@@ -6,6 +6,6 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule], // Include dependencies like RouterModule
   templateUrl: './menu.component.html',
-  styleUrls: []
+  styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent {}
