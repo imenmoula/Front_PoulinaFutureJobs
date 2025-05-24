@@ -41,6 +41,7 @@ import { JobListingComponent } from './CandidateFront/components/job-listing/job
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { ProfileCardComponent } from './components/profile-card/profile-card.component';
 
 
 export const routes: Routes = [
@@ -148,7 +149,8 @@ export const routes: Routes = [
   // { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   // { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   // Fixed: Removed space  /**************************** */
-{path:'',redirectTo:'/signin',pathMatch:'full'}
+  { path: 'profil', component: ProfileCardComponent },
+  {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];
 
 @NgModule({

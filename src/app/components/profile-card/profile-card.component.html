@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Poulina Group Holding - Profil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+   <app-menu></app-menu>
+
+  <!-- Main layout: side menu on left, content on right -->
+  <main>
+    <div class="profile-layout">
+      <!-- Vertical side menu -->
+      <div class="profile-sidemenu">
+        <div class="profile-header">
+          <div class="avatar-wrapper">
+            <img *ngIf="user.avatar" [src]="user.avatar" alt="avatar" class="avatar-img">
+            <div *ngIf="!user.avatar" class="avatar-initials">{{ getInitials() }}</div>
+            <span class="status-dot" [class.available]="user.disponibilite === 'Disponible'"></span>
+          </div>
+          <div class="user-info">
+            <h2>{{ user.prenom }} {{ user.nom }}</h2>
+            <p class="user-title">{{ user.titre }}</p>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a routerLink="/profil/modifier" class="nav-link" >
+              <i class="fas fa-user-edit"></i> Modifier Profil
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a routerLink="/profil" class="nav-link" >
+              <i class="fas fa-info-circle"></i> Informations générales
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a routerLink="/cv" class="nav-link" >
+              <i class="fas fa-file-alt"></i> Mon CV
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a routerLink="/quiz" class="nav-link" >
+              <i class="fas fa-question-circle"></i> Quiz passés
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a routerLink="/mes-candidatures" class="nav-link" >
+              <i class="fas fa-briefcase"></i> Mes candidatures
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dynamic content -->
+      <div class="profile-main">
+        <div class="profile-card">
+          <h3>{{ user.prenom }} {{ user.nom }}</h3>
+          <p class="user-title">{{ user.titre }}</p>
+          <div class="profile-actions">
+            <button class="action-item" >
+              <i class="fas fa-download"></i> Télécharger CV
+            </button>
+            <button class="action-item">
+              <i class="fas fa-envelope"></i> Contacter
+            </button>
+            <button class="action-item" >
+              <i class="fas fa-briefcase"></i> Portfolio
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
