@@ -1,44 +1,133 @@
 <!-- Structure de base pour le formulaire de candidature -->
 <div class="postuler-container">
-  <h2>Postuler pour l'offre : {{ offre.intitule || 'Chargement...' }}</h2>
+  <h2 *ngIf="offre">Postuler pour l'offre : {{ offre.postes?.[0]?.titrePoste || 'Offre d\'emploi' }}</h2>
 
-  <div *ngIf="isLoading" class="loading-spinner">Chargement...</div>
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Chargement...</p>
+  </div>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ errorMessage }}
+  </div>
+  
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="fas fa-check-circle"></i>
+    {{ successMessage }}
+  </div>
 
-  <form [formGroup]="postulerForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading && !successMessage && offre?.statut === statutOuvert">
+  <!-- Affichage des compétences requises -->
+  <div *ngIf="requiredSkills && requiredSkills.length > 0 && !isLoading" class="required-skills-section">
+    <h3>Compétences requises pour cette offre</h3>
+    <div class="skills-grid">
+      <div *ngFor="let skill of requiredSkills" class="skill-chip">
+        <span class="skill-name">{{ skill.nom }}</span>
+        <span class="skill-level level-{{ skill.niveauRequis.toLowerCase() }}">
+          {{ skill.niveauRequis }}
+        </span>
+        <span class="skill-type" [ngClass]="{'technical': skill.estTechnique, 'soft': skill.estSoftSkill}">
+          {{ skill.estTechnique ? 'Technique' : 'Soft Skill' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="postulerForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
     <!-- Informations Générales -->
     <fieldset>
-      <legend>Informations Générales</legend>
+      <legend><i class="fas fa-info-circle"></i> Informations Générales</legend>
+      
       <div class="form-group">
         <label for="messageMotivation">Message de Motivation *</label>
-        <textarea id="messageMotivation" formControlName="messageMotivation" class="form-control"></textarea>
-        <!-- Afficher les erreurs de validation -->
+        <textarea 
+          id="messageMotivation" 
+          formControlName="messageMotivation" 
+          class="form-control"
+          rows="5"
+          placeholder="Expliquez votre motivation pour ce poste (minimum 100 caractères)">
+        </textarea>
+        <div *ngIf="postulerForm.get('messageMotivation')?.invalid && postulerForm.get('messageMotivation')?.touched" 
+             class="error-message">
+          <small *ngIf="postulerForm.get('messageMotivation')?.errors?.['required']">
+            Le message de motivation est obligatoire
+          </small>
+          <small *ngIf="postulerForm.get('messageMotivation')?.errors?.['minlength']">
+            Le message doit contenir au moins 100 caractères
+          </small>
+        </div>
       </div>
+
       <div class="form-group">
         <label for="cv">CV (PDF, DOCX) *</label>
-        <input type="file" id="cv" (change)="onFileChange($event, 'cvFilePath')" accept=".pdf,.doc,.docx">
-        <!-- Afficher le nom du fichier chargé / erreur -->
+        <input 
+          type="file" 
+          id="cv" 
+          (change)="onFileChange($event, 'cvFilePath')" 
+          accept=".pdf,.doc,.docx"
+          class="form-control-file">
+        <div *ngIf="postulerForm.get('cvFilePath')?.value" class="file-uploaded">
+          <i class="fas fa-check-circle text-success"></i>
+          Fichier téléchargé
+        </div>
+        <div *ngIf="postulerForm.get('cvFilePath')?.invalid && postulerForm.get('cvFilePath')?.touched" 
+             class="error-message">
+          <small>Le CV est obligatoire</small>
+        </div>
       </div>
-       <div class="form-group">
+
+      <div class="form-group">
         <label for="lettreMotivation">Lettre de Motivation (Optionnel)</label>
-        <input type="file" id="lettreMotivation" (change)="onFileChange($event, 'lettreMotivation')" accept=".pdf,.doc,.docx">
+        <input 
+          type="file" 
+          id="lettreMotivation" 
+          (change)="onFileChange($event, 'lettreMotivation')" 
+          accept=".pdf,.doc,.docx"
+          class="form-control-file">
       </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="linkedIn">Profil LinkedIn</label>
+          <input 
+            type="url" 
+            id="linkedIn" 
+            formControlName="linkedIn" 
+            class="form-control"
+            placeholder="https://linkedin.com/in/votre-profil">
+          <div *ngIf="postulerForm.get('linkedIn')?.invalid && postulerForm.get('linkedIn')?.touched" 
+               class="error-message">
+            <small>URL LinkedIn invalide</small>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="github">Profil GitHub</label>
+          <input 
+            type="url" 
+            id="github" 
+            formControlName="github" 
+            class="form-control"
+            placeholder="https://github.com/votre-profil">
+          <div *ngIf="postulerForm.get('github')?.invalid && postulerForm.get('github')?.touched" 
+               class="error-message">
+            <small>URL GitHub invalide</small>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="portfolio">Portfolio</label>
+          <input 
+            type="url" 
+            id="portfolio" 
+            formControlName="portfolio" 
+            class="form-control"
+            placeholder="https://votre-portfolio.com">
+        </div>
+      </div>
+
       <div class="form-group">
-        <label for="linkedIn">Profil LinkedIn</label>
-        <input type="url" id="linkedIn" formControlName="linkedIn" class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="github">Profil GitHub</label>
-        <input type="url" id="github" formControlName="github" class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="portfolio">Portfolio</label>
-        <input type="url" id="portfolio" formControlName="portfolio" class="form-control">
-      </div>
-       <div class="form-group">
         <label for="statutCandidate">Statut Candidat *</label>
         <select id="statutCandidate" formControlName="statutCandidate" class="form-control">
           <option value="Debutant">Débutant</option>
@@ -51,118 +140,367 @@
 
     <!-- Informations Personnelles -->
     <fieldset>
-        <legend>Informations Personnelles</legend>
-        <!-- Pré-remplir ces champs depuis le profil utilisateur si possible -->
-        <div class="form-group">
-            <label for="fullName">Nom Complet *</label>
-            <input type="text" id="fullName" formControlName="fullName" class="form-control">
+      <legend><i class="fas fa-user"></i> Informations Personnelles</legend>
+      
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="fullName">Nom Complet *</label>
+          <input 
+            type="text" 
+            id="fullName" 
+            formControlName="fullName" 
+            class="form-control"
+            placeholder="Votre nom complet">
+          <div *ngIf="postulerForm.get('fullName')?.invalid && postulerForm.get('fullName')?.touched" 
+               class="error-message">
+            <small>Le nom complet est obligatoire</small>
+          </div>
         </div>
-         <div class="form-group">
-            <label for="nom">Nom *</label>
-            <input type="text" id="nom" formControlName="nom" class="form-control">
+
+        <div class="form-group col-md-4">
+          <label for="nom">Nom *</label>
+          <input 
+            type="text" 
+            id="nom" 
+            formControlName="nom" 
+            class="form-control"
+            placeholder="Nom de famille">
+          <div *ngIf="postulerForm.get('nom')?.invalid && postulerForm.get('nom')?.touched" 
+               class="error-message">
+            <small>Le nom est obligatoire</small>
+          </div>
         </div>
-         <div class="form-group">
-            <label for="prenom">Prénom *</label>
-            <input type="text" id="prenom" formControlName="prenom" class="form-control">
+
+        <div class="form-group col-md-4">
+          <label for="prenom">Prénom *</label>
+          <input 
+            type="text" 
+            id="prenom" 
+            formControlName="prenom" 
+            class="form-control"
+            placeholder="Prénom">
+          <div *ngIf="postulerForm.get('prenom')?.invalid && postulerForm.get('prenom')?.touched" 
+               class="error-message">
+            <small>Le prénom est obligatoire</small>
+          </div>
         </div>
-        <div class="form-group">
-            <label for="dateNaissance">Date de Naissance</label>
-            <input type="date" id="dateNaissance" formControlName="dateNaissance" class="form-control">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="dateNaissance">Date de Naissance</label>
+          <input 
+            type="date" 
+            id="dateNaissance" 
+            formControlName="dateNaissance" 
+            class="form-control">
         </div>
-        <div class="form-group">
-            <label for="adresse">Adresse *</label>
-            <input type="text" id="adresse" formControlName="adresse" class="form-control">
+
+        <div class="form-group col-md-3">
+          <label for="phone">Téléphone *</label>
+          <input 
+            type="tel" 
+            id="phone" 
+            formControlName="phone" 
+            class="form-control"
+            placeholder="0123456789">
+          <div *ngIf="postulerForm.get('phone')?.invalid && postulerForm.get('phone')?.touched" 
+               class="error-message">
+            <small>Numéro de téléphone invalide (10 chiffres)</small>
+          </div>
         </div>
-        <div class="form-group">
-            <label for="ville">Ville *</label>
-            <input type="text" id="ville" formControlName="ville" class="form-control">
+
+        <div class="form-group col-md-3">
+          <label for="ville">Ville *</label>
+          <input 
+            type="text" 
+            id="ville" 
+            formControlName="ville" 
+            class="form-control"
+            placeholder="Ville">
+          <div *ngIf="postulerForm.get('ville')?.invalid && postulerForm.get('ville')?.touched" 
+               class="error-message">
+            <small>La ville est obligatoire</small>
+          </div>
         </div>
-        <div class="form-group">
-            <label for="pays">Pays *</label>
-            <input type="text" id="pays" formControlName="pays" class="form-control">
+
+        <div class="form-group col-md-3">
+          <label for="pays">Pays *</label>
+          <input 
+            type="text" 
+            id="pays" 
+            formControlName="pays" 
+            class="form-control"
+            placeholder="Pays">
+          <div *ngIf="postulerForm.get('pays')?.invalid && postulerForm.get('pays')?.touched" 
+               class="error-message">
+            <small>Le pays est obligatoire</small>
+          </div>
         </div>
-        <div class="form-group">
-            <label for="phone">Téléphone *</label>
-            <input type="tel" id="phone" formControlName="phone" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="adresse">Adresse *</label>
+        <input 
+          type="text" 
+          id="adresse" 
+          formControlName="adresse" 
+          class="form-control"
+          placeholder="Adresse complète">
+        <div *ngIf="postulerForm.get('adresse')?.invalid && postulerForm.get('adresse')?.touched" 
+             class="error-message">
+          <small>L'adresse est obligatoire</small>
         </div>
-         <!-- Autres champs comme entreprise, poste, photo si nécessaire -->
+      </div>
     </fieldset>
 
     <!-- Diplômes -->
     <fieldset formArrayName="diplomes">
-      <legend>Diplômes</legend>
-      <div *ngFor="let diplome of diplomes.controls; let i=index" [formGroupName]="i" class="form-row">
-        <input type="text" formControlName="nomDiplome" placeholder="Nom du diplôme *" class="form-control">
-        <input type="text" formControlName="institution" placeholder="Institution *" class="form-control">
-        <input type="date" formControlName="dateObtention" placeholder="Date d'obtention *" class="form-control">
-        <input type="text" formControlName="specialite" placeholder="Spécialité" class="form-control">
-        <!-- Input pour upload urlDocument -->
-        <button type="button" (click)="removeDiplome(i)" class="btn btn-danger btn-sm">Supprimer</button>
+      <legend><i class="fas fa-graduation-cap"></i> Diplômes</legend>
+      
+      <div *ngFor="let diplome of diplomes.controls; let i=index" [formGroupName]="i" class="dynamic-form-row">
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <input 
+              type="text" 
+              formControlName="nomDiplome" 
+              placeholder="Nom du diplôme *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-3">
+            <input 
+              type="text" 
+              formControlName="institution" 
+              placeholder="Institution *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-2">
+            <input 
+              type="date" 
+              formControlName="dateObtention" 
+              placeholder="Date d'obtention *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-3">
+            <input 
+              type="text" 
+              formControlName="specialite" 
+              placeholder="Spécialité" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-1">
+            <button 
+              type="button" 
+              (click)="removeDiplome(i)" 
+              class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
       </div>
-      <button type="button" (click)="addDiplome()" class="btn btn-secondary">Ajouter un diplôme</button>
+      
+      <button type="button" (click)="addDiplome()" class="btn btn-secondary">
+        <i class="fas fa-plus"></i> Ajouter un diplôme
+      </button>
     </fieldset>
 
     <!-- Expériences -->
     <fieldset formArrayName="experiences">
-        <legend>Expériences Professionnelles</legend>
-        <div *ngFor="let experience of experiences.controls; let i=index" [formGroupName]="i" class="form-row">
-            <input type="text" formControlName="poste" placeholder="Poste occupé *" class="form-control">
-            <input type="text" formControlName="nomEntreprise" placeholder="Nom de l'entreprise *" class="form-control">
-            <input type="date" formControlName="dateDebut" placeholder="Date de début *" class="form-control">
-            <input type="date" formControlName="dateFin" placeholder="Date de fin" class="form-control">
-            <textarea formControlName="description" placeholder="Description des tâches" class="form-control"></textarea>
-            <input type="text" formControlName="competenceAcquise" placeholder="Compétences acquises" class="form-control">
-            <button type="button" (click)="removeExperience(i)" class="btn btn-danger btn-sm">Supprimer</button>
+      <legend><i class="fas fa-briefcase"></i> Expériences Professionnelles</legend>
+      
+      <div *ngFor="let experience of experiences.controls; let i=index" [formGroupName]="i" class="dynamic-form-row">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <input 
+              type="text" 
+              formControlName="poste" 
+              placeholder="Poste occupé *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-4">
+            <input 
+              type="text" 
+              formControlName="nomEntreprise" 
+              placeholder="Nom de l'entreprise *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-2">
+            <input 
+              type="date" 
+              formControlName="dateDebut" 
+              placeholder="Date de début *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-2">
+            <input 
+              type="date" 
+              formControlName="dateFin" 
+              placeholder="Date de fin" 
+              class="form-control">
+          </div>
         </div>
-        <button type="button" (click)="addExperience()" class="btn btn-secondary">Ajouter une expérience</button>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <textarea 
+              formControlName="description" 
+              placeholder="Description des tâches" 
+              class="form-control" 
+              rows="3">
+            </textarea>
+          </div>
+          <div class="form-group col-md-5">
+            <input 
+              type="text" 
+              formControlName="competenceAcquise" 
+              placeholder="Compétences acquises" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-1">
+            <button 
+              type="button" 
+              (click)="removeExperience(i)" 
+              class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" (click)="addExperience()" class="btn btn-secondary">
+        <i class="fas fa-plus"></i> Ajouter une expérience
+      </button>
     </fieldset>
 
     <!-- Compétences -->
     <fieldset formArrayName="competences">
-      <legend>Compétences *</legend>
-       <div *ngIf="offre?.competences?.length">
-          <p>Compétences requises pour cette offre :</p>
-          <ul>
-              <li *ngFor="let comp of offre?.competences">{{ comp.nom }}</li>
-          </ul>
+      <legend><i class="fas fa-cogs"></i> Compétences *</legend>
+      
+      <!-- Section des compétences requises avec boutons rapides -->
+      <div *ngIf="requiredSkills && requiredSkills.length > 0" class="required-skills-quick-add">
+        <h4>Compétences requises - Ajout rapide</h4>
+        <div class="skills-quick-buttons">
+          <button 
+            *ngFor="let skill of requiredSkills"
+            type="button"
+            class="btn skill-quick-btn"
+            [class.btn-success]="isSkillAdded(skill.id)"
+            [class.btn-outline-primary]="!isSkillAdded(skill.id)"
+            (click)="toggleRequiredSkill(skill)">
+            <i class="fas" [class.fa-check]="isSkillAdded(skill.id)" [class.fa-plus]="!isSkillAdded(skill.id)"></i>
+            {{ skill.nom }}
+            <span class="required-level">({{ skill.niveauRequis }})</span>
+          </button>
+        </div>
       </div>
-      <div *ngFor="let competence of competences.controls; let i=index" [formGroupName]="i" class="form-row">
-        <select formControlName="competenceId" class="form-control">
-          <option value="">Sélectionnez une compétence *</option>
-          <option *ngFor="let comp of availableCompetences" [value]="comp.competenceId">{{ comp.nom }}</option>
-        </select>
-        <select formControlName="niveauPossede" class="form-control">
-          <option [ngValue]="0">Débutant</option>
-          <option [ngValue]="1">Intermédiaire</option>
-          <option [ngValue]="2">Avancé</option>
-          <option [ngValue]="3">Expert</option>
-        </select>
-        <button type="button" (click)="removeCompetence(i)" class="btn btn-danger btn-sm">Supprimer</button>
+
+      <!-- Liste des compétences ajoutées -->
+      <div *ngFor="let competence of competences.controls; let i=index" [formGroupName]="i" class="dynamic-form-row">
+        <div class="form-row align-items-center">
+          <div class="form-group col-md-6">
+            <select formControlName="competenceId" class="form-control">
+              <option value="">Sélectionnez une compétence *</option>
+              <option *ngFor="let comp of availableCompetences" [value]="comp.competenceId">
+                {{ comp.nom }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <select formControlName="niveauPossede" class="form-control">
+              <option [ngValue]="0">Débutant</option>
+              <option [ngValue]="1">Intermédiaire</option>
+              <option [ngValue]="2">Avancé</option>
+              <option [ngValue]="3">Expert</option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <button 
+              type="button" 
+              (click)="removeCompetence(i)" 
+              class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
       </div>
-      <button type="button" (click)="addCompetence()" class="btn btn-secondary">Ajouter une compétence</button>
-       <!-- Afficher les erreurs de validation pour le FormArray -->
+      
+      <button type="button" (click)="addCompetence()" class="btn btn-secondary">
+        <i class="fas fa-plus"></i> Ajouter une compétence
+      </button>
+      
+      <div *ngIf="postulerForm.get('competences')?.invalid && postulerForm.get('competences')?.touched" 
+           class="error-message">
+        <small>Au moins une compétence est requise</small>
+      </div>
     </fieldset>
 
     <!-- Certificats -->
-     <fieldset formArrayName="certificats">
-        <legend>Certificats</legend>
-        <div *ngFor="let certificat of certificats.controls; let i=index" [formGroupName]="i" class="form-row">
-            <input type="text" formControlName="nom" placeholder="Nom du certificat *" class="form-control">
-            <input type="text" formControlName="organisme" placeholder="Organisme de certification *" class="form-control">
-            <input type="date" formControlName="dateObtention" placeholder="Date d'obtention *" class="form-control">
-            <textarea formControlName="description" placeholder="Description" class="form-control"></textarea>
-            <!-- Input pour upload urlDocument -->
-            <button type="button" (click)="removeCertificat(i)" class="btn btn-danger btn-sm">Supprimer</button>
+    <fieldset formArrayName="certificats">
+      <legend><i class="fas fa-certificate"></i> Certificats</legend>
+      
+      <div *ngFor="let certificat of certificats.controls; let i=index" [formGroupName]="i" class="dynamic-form-row">
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <input 
+              type="text" 
+              formControlName="nom" 
+              placeholder="Nom du certificat *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-3">
+            <input 
+              type="text" 
+              formControlName="organisme" 
+              placeholder="Organisme *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-2">
+            <input 
+              type="date" 
+              formControlName="dateObtention" 
+              placeholder="Date d'obtention *" 
+              class="form-control">
+          </div>
+          <div class="form-group col-md-3">
+            <textarea 
+              formControlName="description" 
+              placeholder="Description" 
+              class="form-control" 
+              rows="2">
+            </textarea>
+          </div>
+          <div class="form-group col-md-1">
+            <button 
+              type="button" 
+              (click)="removeCertificat(i)" 
+              class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
-        <button type="button" (click)="addCertificat()" class="btn btn-secondary">Ajouter un certificat</button>
+      </div>
+      
+      <button type="button" (click)="addCertificat()" class="btn btn-secondary">
+        <i class="fas fa-plus"></i> Ajouter un certificat
+      </button>
     </fieldset>
 
-    <button type="submit" [disabled]="postulerForm.invalid || isLoading" class="btn btn-primary">Envoyer ma candidature</button>
+    <!-- Bouton de soumission -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        [disabled]="postulerForm.invalid || isLoading" 
+        class="btn btn-primary btn-lg">
+        <i class="fas fa-paper-plane"></i>
+        <span *ngIf="!isLoading">Envoyer ma candidature</span>
+        <span *ngIf="isLoading">Envoi en cours...</span>
+      </button>
+    </div>
   </form>
 
-   <div *ngIf="offre && offre.statut !== statutOuvert" class="alert alert-warning">
-      Cette offre est actuellement clôturée et n'accepte plus de candidatures.
+  <!-- Message pour offre fermée -->
+  <div *ngIf="offre && offre.statut !== 'Ouvert'" class="alert alert-warning">
+    <i class="fas fa-exclamation-triangle"></i>
+    Cette offre est actuellement clôturée et n'accepte plus de candidatures.
   </div>
 
 </div>
-

@@ -192,42 +192,51 @@ export class CandidatureFormComponent implements OnInit {
     }
   }
 
-  loadInitialData(offreId: string, userId: string): void {
-    this.isLoading = true;
-    
-    forkJoin({
-      offre: this.offreService.getById(offreId),
-      competences: this.competenceService.getAllCompetences(),
-    //   profileData: this.profileService.getProfileById(userId),
-      requiredSkills: this.offreCompetenceService.getByOffreId(offreId)
-    }).subscribe({
-      next: (results) => {
-        this.offre = results.offre;
-        this.availableCompetences = results.competences.map((comp: any) => ({
-          ...comp,
-          competenceId: comp.id,
-          niveauPossede: NiveauCompetence.Debutant
+    loadInitialData(offreId: string, userId: string): void {
+  this.isLoading = true;
+  
+  forkJoin({
+    offre: this.offreService.getById(offreId),
+    competences: this.competenceService.getAllCompetences()
+    // Supprimer cette ligne car les compétences sont déjà dans l'offre
+    // requiredSkills: this.offreCompetenceService.getByOffreId(offreId)
+  }).subscribe({
+    next: (results) => {
+      this.offre = results.offre;
+      this.availableCompetences = results.competences.map((comp: any) => ({
+        ...comp,
+        competenceId: comp.id,
+        niveauPossede: NiveauCompetence.Debutant
+      }));
+      
+      // Extraire les compétences requises directement de l'offre
+      if (this.offre && this.offre.offreCompetences) {
+        this.requiredSkills = this.offre.offreCompetences.map((oc: any) => ({
+          id: oc.idCompetence,
+          nom: oc.competence.nom,
+          description: oc.competence.description,
+          niveauRequis: oc.niveauRequis,
+          estTechnique: oc.competence.estTechnique,
+          estSoftSkill: oc.competence.estSoftSkill
         }));
-        
-        this.requiredSkills = results.requiredSkills;
-        
-        // if (results.profileData) {
-        //   this.prefillForm(results.profileData);
-        // }
-
-        if (this.offre?.statut !== StatutOffre.Ouvert) {
-          this.errorMessage = "Cette offre n'est plus ouverte aux candidatures";
-          this.postulerForm.disable();
-        }
-
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = `Erreur de chargement: ${err.message || err}`;
-        this.isLoading = false;
+      } else {
+        this.requiredSkills = [];
       }
-    });
-  }
+
+      if (this.offre?.statut !== StatutOffre.Ouvert) {
+        this.errorMessage = "Cette offre n'est plus ouverte aux candidatures";
+        this.postulerForm.disable();
+      }
+
+      this.isLoading = false;
+    },
+    error: (err) => {
+      this.errorMessage = `Erreur de chargement: ${err.message || err}`;
+      this.isLoading = false;
+    }
+  });
+}
+
 
   prefillForm(profileData: any): void {
     this.postulerForm.patchValue({
@@ -359,8 +368,23 @@ export class CandidatureFormComponent implements OnInit {
     });
   }
 
-  getSkillName(id: string): string {
-    const skill = this.availableCompetences.find(c => c.competenceId === id);
-    return skill && skill.nom ? skill.nom : 'Compétence inconnue';
+   getSkillName(id: string): string {
+  // Chercher d'abord dans availableCompetences
+  let skill = this.availableCompetences.find(c => c.competenceId === id);
+  if (skill && skill.nom) {
+    return skill.nom;
   }
+  
+  // Si pas trouvé, chercher dans requiredSkills
+  skill = this.requiredSkills.find(s => s.id === id);
+  return skill && skill.nom ? skill.nom : 'Compétence inconnue';
+}
+  getRequiredSkillLevel(skillId: string): string {
+  const skill = this.requiredSkills.find(s => s.id === skillId);
+  return skill ? skill.niveauRequis : '';
+}
+
+isRequiredSkill(skillId: string): boolean {
+  return this.requiredSkills.some(s => s.id === skillId);
+}
 }
