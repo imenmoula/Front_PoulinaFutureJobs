@@ -1,0 +1,168 @@
+<!-- Structure de base pour le formulaire de candidature -->
+<div class="postuler-container">
+  <h2>Postuler pour l'offre : {{ offre.intitule || 'Chargement...' }}</h2>
+
+  <div *ngIf="isLoading" class="loading-spinner">Chargement...</div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <form [formGroup]="postulerForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading && !successMessage && offre?.statut === statutOuvert">
+
+    <!-- Informations Générales -->
+    <fieldset>
+      <legend>Informations Générales</legend>
+      <div class="form-group">
+        <label for="messageMotivation">Message de Motivation *</label>
+        <textarea id="messageMotivation" formControlName="messageMotivation" class="form-control"></textarea>
+        <!-- Afficher les erreurs de validation -->
+      </div>
+      <div class="form-group">
+        <label for="cv">CV (PDF, DOCX) *</label>
+        <input type="file" id="cv" (change)="onFileChange($event, 'cvFilePath')" accept=".pdf,.doc,.docx">
+        <!-- Afficher le nom du fichier chargé / erreur -->
+      </div>
+       <div class="form-group">
+        <label for="lettreMotivation">Lettre de Motivation (Optionnel)</label>
+        <input type="file" id="lettreMotivation" (change)="onFileChange($event, 'lettreMotivation')" accept=".pdf,.doc,.docx">
+      </div>
+      <div class="form-group">
+        <label for="linkedIn">Profil LinkedIn</label>
+        <input type="url" id="linkedIn" formControlName="linkedIn" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="github">Profil GitHub</label>
+        <input type="url" id="github" formControlName="github" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="portfolio">Portfolio</label>
+        <input type="url" id="portfolio" formControlName="portfolio" class="form-control">
+      </div>
+       <div class="form-group">
+        <label for="statutCandidate">Statut Candidat *</label>
+        <select id="statutCandidate" formControlName="statutCandidate" class="form-control">
+          <option value="Debutant">Débutant</option>
+          <option value="Intermediaire">Intermédiaire</option>
+          <option value="Confirme">Confirmé</option>
+          <option value="Expert">Expert</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <!-- Informations Personnelles -->
+    <fieldset>
+        <legend>Informations Personnelles</legend>
+        <!-- Pré-remplir ces champs depuis le profil utilisateur si possible -->
+        <div class="form-group">
+            <label for="fullName">Nom Complet *</label>
+            <input type="text" id="fullName" formControlName="fullName" class="form-control">
+        </div>
+         <div class="form-group">
+            <label for="nom">Nom *</label>
+            <input type="text" id="nom" formControlName="nom" class="form-control">
+        </div>
+         <div class="form-group">
+            <label for="prenom">Prénom *</label>
+            <input type="text" id="prenom" formControlName="prenom" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="dateNaissance">Date de Naissance</label>
+            <input type="date" id="dateNaissance" formControlName="dateNaissance" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="adresse">Adresse *</label>
+            <input type="text" id="adresse" formControlName="adresse" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="ville">Ville *</label>
+            <input type="text" id="ville" formControlName="ville" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="pays">Pays *</label>
+            <input type="text" id="pays" formControlName="pays" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="phone">Téléphone *</label>
+            <input type="tel" id="phone" formControlName="phone" class="form-control">
+        </div>
+         <!-- Autres champs comme entreprise, poste, photo si nécessaire -->
+    </fieldset>
+
+    <!-- Diplômes -->
+    <fieldset formArrayName="diplomes">
+      <legend>Diplômes</legend>
+      <div *ngFor="let diplome of diplomes.controls; let i=index" [formGroupName]="i" class="form-row">
+        <input type="text" formControlName="nomDiplome" placeholder="Nom du diplôme *" class="form-control">
+        <input type="text" formControlName="institution" placeholder="Institution *" class="form-control">
+        <input type="date" formControlName="dateObtention" placeholder="Date d'obtention *" class="form-control">
+        <input type="text" formControlName="specialite" placeholder="Spécialité" class="form-control">
+        <!-- Input pour upload urlDocument -->
+        <button type="button" (click)="removeDiplome(i)" class="btn btn-danger btn-sm">Supprimer</button>
+      </div>
+      <button type="button" (click)="addDiplome()" class="btn btn-secondary">Ajouter un diplôme</button>
+    </fieldset>
+
+    <!-- Expériences -->
+    <fieldset formArrayName="experiences">
+        <legend>Expériences Professionnelles</legend>
+        <div *ngFor="let experience of experiences.controls; let i=index" [formGroupName]="i" class="form-row">
+            <input type="text" formControlName="poste" placeholder="Poste occupé *" class="form-control">
+            <input type="text" formControlName="nomEntreprise" placeholder="Nom de l'entreprise *" class="form-control">
+            <input type="date" formControlName="dateDebut" placeholder="Date de début *" class="form-control">
+            <input type="date" formControlName="dateFin" placeholder="Date de fin" class="form-control">
+            <textarea formControlName="description" placeholder="Description des tâches" class="form-control"></textarea>
+            <input type="text" formControlName="competenceAcquise" placeholder="Compétences acquises" class="form-control">
+            <button type="button" (click)="removeExperience(i)" class="btn btn-danger btn-sm">Supprimer</button>
+        </div>
+        <button type="button" (click)="addExperience()" class="btn btn-secondary">Ajouter une expérience</button>
+    </fieldset>
+
+    <!-- Compétences -->
+    <fieldset formArrayName="competences">
+      <legend>Compétences *</legend>
+       <div *ngIf="offre?.competences?.length">
+          <p>Compétences requises pour cette offre :</p>
+          <ul>
+              <li *ngFor="let comp of offre?.competences">{{ comp.nom }}</li>
+          </ul>
+      </div>
+      <div *ngFor="let competence of competences.controls; let i=index" [formGroupName]="i" class="form-row">
+        <select formControlName="competenceId" class="form-control">
+          <option value="">Sélectionnez une compétence *</option>
+          <option *ngFor="let comp of availableCompetences" [value]="comp.competenceId">{{ comp.nom }}</option>
+        </select>
+        <select formControlName="niveauPossede" class="form-control">
+          <option [ngValue]="0">Débutant</option>
+          <option [ngValue]="1">Intermédiaire</option>
+          <option [ngValue]="2">Avancé</option>
+          <option [ngValue]="3">Expert</option>
+        </select>
+        <button type="button" (click)="removeCompetence(i)" class="btn btn-danger btn-sm">Supprimer</button>
+      </div>
+      <button type="button" (click)="addCompetence()" class="btn btn-secondary">Ajouter une compétence</button>
+       <!-- Afficher les erreurs de validation pour le FormArray -->
+    </fieldset>
+
+    <!-- Certificats -->
+     <fieldset formArrayName="certificats">
+        <legend>Certificats</legend>
+        <div *ngFor="let certificat of certificats.controls; let i=index" [formGroupName]="i" class="form-row">
+            <input type="text" formControlName="nom" placeholder="Nom du certificat *" class="form-control">
+            <input type="text" formControlName="organisme" placeholder="Organisme de certification *" class="form-control">
+            <input type="date" formControlName="dateObtention" placeholder="Date d'obtention *" class="form-control">
+            <textarea formControlName="description" placeholder="Description" class="form-control"></textarea>
+            <!-- Input pour upload urlDocument -->
+            <button type="button" (click)="removeCertificat(i)" class="btn btn-danger btn-sm">Supprimer</button>
+        </div>
+        <button type="button" (click)="addCertificat()" class="btn btn-secondary">Ajouter un certificat</button>
+    </fieldset>
+
+    <button type="submit" [disabled]="postulerForm.invalid || isLoading" class="btn btn-primary">Envoyer ma candidature</button>
+  </form>
+
+   <div *ngIf="offre && offre.statut !== statutOuvert" class="alert alert-warning">
+      Cette offre est actuellement clôturée et n'accepte plus de candidatures.
+  </div>
+
+</div>
+

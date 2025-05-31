@@ -9,8 +9,8 @@ export enum NiveauRequisType {
 
 
   export enum StatutOffre {
-    Ouvert = 0,
-    cloturer = 1
+    Ouvert = 'Ouvert',
+    cloturer = 'cloturer'
   }
   
   export enum TypeContratEnum {

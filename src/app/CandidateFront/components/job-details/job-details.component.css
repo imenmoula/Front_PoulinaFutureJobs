@@ -45,7 +45,9 @@ body {
   top: 0;
   z-index: 1000;
 }
-
+button.apply-btn {
+    color: blue;
+}
 .header-content {
   display: flex;
   justify-content: space-between;
