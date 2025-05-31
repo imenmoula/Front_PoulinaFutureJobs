@@ -26,15 +26,15 @@ export class CompetenceService {
     });
   }
 
-//  getAllCompetences(): Observable<Competence[]> {
-//     return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(
-//       map(response => response.data),
-//       catchError(error => {
-//         console.error('Erreur chargement compétences:', error);
-//         return throwError(() => new Error('Erreur lors du chargement des compétences'));
-//       })
-//     );
-//   }
+ getAllCompetences(): Observable<Competence[]> {
+    return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(
+      map(response => response.data),
+      catchError(error => {
+        console.error('Erreur chargement compétences:', error);
+        return throwError(() => new Error('Erreur lors du chargement des compétences'));
+      })
+    );
+  }
 
 
   getCompetenceById(id: string): Observable<Competence> {
@@ -48,12 +48,12 @@ export class CompetenceService {
   }
 
  // competence.service.ts
-getAllCompetences(): Observable<Competence[]> {
-  return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(
-    map(response => response.data),
-    catchError(this.handleError)
-  );
-}
+// getAllCompetences(): Observable<Competence[]> {
+//   return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(
+//     map(response => response.data),
+//     catchError(this.handleError)
+//   );
+// }
 
 createCompetence(competence: any): Observable<Competence> {
   return this.http.post<{ data: Competence }>(this.apiUrl, competence).pipe(

@@ -135,6 +135,8 @@ export interface CandidatureCompleteDto {
   ville: string;
   pays: string;
   phone: string;
+  dateSoumission: string;
+
   entreprise: string;
   poste: string;
   photoUrl: string;

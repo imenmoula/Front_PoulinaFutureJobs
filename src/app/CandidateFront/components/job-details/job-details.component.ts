@@ -258,7 +258,7 @@ shouldShowApplyButton(): boolean {
 // Modifier la fonction navigateToCandidature
 navigateToCandidature(): void {
   if (this.idOffreEmploi) {
-    this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
+this.router.navigate(['/candidature', this.idOffreEmploi]);
   } else {
     console.error('ID offre manquant pour la candidature');
     // Optionnel: Afficher un message d'erreur à l'utilisateur

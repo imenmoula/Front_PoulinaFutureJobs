@@ -143,7 +143,7 @@ export const routes: Routes = [
   // { path: 'job-details/:id', component: JobDetailsComponent },
   { path: 'job-list', component: JobListingComponent },
   { path: 'job-details/:id', component: JobDetailsComponent },
-  // {path:'/about',component:ApropsComponent ,canActivate: [AuthGuard] ,data: { roles: ['Candidate'] } }, 
+  {path:'about',component:ApropsComponent}, 
 
   { path: 'candidature/:offreId', component: CandidatureFormComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   { path: 'candidature/edit/:id', component: CandidatureFormComponent },

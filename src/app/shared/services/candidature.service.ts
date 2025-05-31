@@ -17,6 +17,7 @@ export class CandidatureService {
       'Authorization': token ? `Bearer ${token}` : ''
     });
   }
+
 // Récupérer toutes les candidatures
   getAllCandidates(): Observable<CandidatureDto[]> {
     const headers = this.getHeaders();

@@ -1,90 +1,109 @@
-<!DOCTYPE html>
-<html class="no-js" lang="fr">
+<!-- candidate-only.component.html -->
+<!doctype html>
+<html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Espace Candidat - Job Board</title>
-    <meta name="description" content="Plateforme de recherche d'emploi et de gestion de candidatures">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../assets/User/img/favicon.ico">
+  <meta charset="utf-8">
+  <title>Espace Candidat Poulina</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-     
-   
-    <header>
-        <!-- Header Start -->
-       <div class="header-area header-transparrent">
-           <div class="headder-top header-sticky">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-3 col-md-2">
-                            <!-- Logo -->
-                            <div class="logo">
-                                <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt=""></a>
-                            </div>  
-                        </div>
-                        <div class="col-lg-9 col-md-9">
-                            <div class="menu-wrapper">
-                                <!-- Main-menu -->
-                                <div class="main-menu">
-                                    <nav class="d-none d-lg-block">
-                                        <ul id="navigation">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="/job-list">offre Emploi  </a></li>
-                                            <li><a href="/about">A propos</a></li>
-                                            <li><a href="#">Page</a>
-                                                <ul class="submenu">
-                                                    <li><a (click)="onLogout()">deconnexion</a></li>
-                                                    <li><a href="single-blog.html">Blog Dcetails</a></li>
-                                                    <li><a href="elements.html">Elements</a></li>
-                                                    <li><a href="job_details.html">job Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>          
-                                <!-- Header-btn -->
-                                <div class="header-btn d-none f-right d-lg-block">
-                                    <a routerLink="/singup" class="btn head-btn1">Inscription</a>
-                                    <a routerLink="/signin" class="btn head-btn2">Connexion</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Mobile Menu -->
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
-                        </div>
-                    </div>
-                </div>
-           </div>
-       </div>
-        <!-- Header End -->
-    </header>
-    
-    
-
-    <main>
-       
-
- <!-- Slider Area Start -->
-<div class="slider-area">
-    <div class="slider-active">
-      <div class="single-slider slider-height d-flex align-items-center"
-           [ngStyle]="{'background-image': 'url(../../../assets/User/img/hero/poulina_group_holding_cover.png)'}">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-6 col-lg-9 col-md-10">
-             
+  <header>
+  <div class="job-listing-header">
+    <div class="container">
+      <div class="logo">
+        <a routerLink="/"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
+      </div>
+      
+      <nav class="main-nav">
+        <ul>
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
+          <li><a routerLink="/job-list" routerLinkActive="active">Offres d'emploi</a></li>
+          <li><a routerLink="/about" routerLinkActive="active">À propos</a></li>
+          <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <!-- Affiché quand l'utilisateur n'est PAS connecté -->
+        <div class="auth-buttons" *ngIf="!isAuthenticated">
+          <a routerLink="/signup" class="btn-signup">Inscription</a>
+          <a routerLink="/signin" class="btn-signin">Connexion</a>
+        </div>
+        
+        <!-- Affiché quand l'utilisateur est connecté -->
+        <div class="user-actions" *ngIf="isAuthenticated">
+          <div class="user-dropdown">
+            <button class="user-btn">
+              <i class="fas fa-user-circle"></i>
+              {{ fullName }}
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu">
+              <a routerLink="/candidate/profile"><i class="fas fa-user"></i> Mon compte</a>
+              <a routerLink="/candidate/settings"><i class="fas fa-cog"></i> Paramètres</a>
+              <a (click)="onLogout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</header>
+
+  <!-- Hero Slider -->
+ <div class="content-wrapper">
+        <div class="slider-title">
+            <h2>Poulina Group Holding</h2>
+            <p>Votre carrière commence ici</p>
+        </div>
+        
+        <div class="slider-container">
+            <section class="hero-slider">
+                <div class="slide active" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ8QzszHfKkHRS-I8IxULeOyRIKx1d2eRLXA&s');">
+                    <div class="slide-content">
+                        <h2>Votre carrière commence ici</h2>
+                        <p>Rejoignez le leader tunisien dans 8 secteurs d'activité</p>
+                        <a href="#" class="btn-slider">Voir les offres</a>
+                    </div>
+                </div>
+                
+                <div class="slide" style="background-image: url('https://cdnfr.africanmanager.com/wp-content/uploads/2021/04/po0.jpg');">
+                    <div class="slide-content">
+                        <h2>Développez votre potentiel</h2>
+                        <p>Des opportunités de croissance dans un environnement dynamique</p>
+                        <a href="#" class="btn-slider">Compléter mon profil</a>
+                    </div>
+                </div>
+
+                <div class="slide" style="background-image: url('https://media.licdn.com/dms/image/v2/C4E1BAQGfNKUh1KiqwQ/company-background_10000/company-background_10000/0/1584970202148/poulina_group_holding_cover?e=2147483647&v=beta&t=rQG1aZ0xbCKsw9ptPFLF_tnY6drIb-iF47WGnEOzV_c');">
+                    <div class="slide-content">
+                        <h2>Innovation et Excellence</h2>
+                        <p>Rejoignez une entreprise tournée vers l'avenir</p>
+                        <a href="#" class="btn-slider">Découvrir notre histoire</a>
+                    </div>
+                </div>
+
+                <div class="slide" style="background-image: url('https://www.keejob.com/media/uploads/2017/04/20/poulina_group_holding_6.png');">
+                    <div class="slide-content">
+                        <h2>Communauté et Collaboration</h2>
+                        <p>Faites partie d'une équipe soudée et passionnée</p>
+                        <a href="#" class="btn-slider">Voir nos équipes</a>
+                    </div>
+                </div>
+                
+                <div class="slider-nav">
+                    <button class="prev-slide"><i class="fas fa-chevron-left"></i></button>
+                    <button class="next-slide"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="slider-dots"></div>
+            </section>
+        </div>
+    </div>
+
+  <!-- Quick Actions -->
   <!-- Our Services Start -->
   <div class="our-services section-pad-t30">
     <div class="container">
@@ -223,111 +242,113 @@
       </div>
     </div>
   </div>
-    </main>
 
-    <!-- Footer -->
-     <footer>
-        <div class="footer-area footer-bg footer-padding">
-            <div class="container">
-                <div class="row d-flex justify-content-between">
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>À propos</h4>
-                                <div class="footer-pera">
-                                    <p>Nous sommes une plateforme dédiée à connecter les talents avec des opportunités au sein du groupe Poulina.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Contact</h4>
-                                <ul>
-                                    <li><p>Adresse : Tunis, Tunisie</p></li>
-                                    <li><a href="#">Téléphone : +216 71 123 456</a></li>
-                                    <li><a href="#">Email : poulina.com</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Liens utiles</h4>
-                                <ul>
-                                    <li><a routerLink="/jobs">Offres d'emploi</a></li>
-                                    <li><a routerLink="/about">À propos</a></li>
-                                    <li><a routerLink="/contact">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Newsletter</h4>
-                                <div class="footer-pera footer-pera2">
-                                    <p>Inscrivez-vous pour recevoir les dernières offres d'emploi.</p>
-                                </div>
-                                <div class="footer-form">
-                                    <form>
-                                        <input type="email" placeholder="Adresse Email" class="placeholder hide-on-focus">
-                                        <button type="submit" class="btn"><i class="fas fa-arrow-right"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom-area footer-bg">
-            <div class="container">
-                <div class="footer-border">
-                    <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-xl-10 col-lg-10">
-                            <div class="footer-copy-right">
-                                <p>
-                                    <!-- Copyright &copy; {{ formatDate(new Date()) | slice:6 }} Tous droits réservés | Développé par Poulina -->
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-lg-2">
-                            <div class="footer-social f-right">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 
-    <!-- Scripts -->
-    <script src="../../../../../assets/UserUser/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/popper.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/bootstrap.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.slicknav.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/owl.carousel.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/slick.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/price_rangs.js"></script>
-    <script src="../../../../../assets/UserUser/js/wow.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/animated.headline.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.magnific-popup.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.scrollUp.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.nice-select.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.sticky.js"></script>
-    <script src="../../../../../assets/UserUser/js/contact.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.form.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.validate.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/mail-script.js"></script>
-    <script src="../../../../../assets/UserUser/js/jquery.ajaxchimp.min.js"></script>
-    <script src="../../../../../assets/UserUser/js/plugins.js"></script>
-    <script src="../../../../../assets/UserUser/js/main.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9315d8332b65e1cd',t:'MTc0NDgyOTE3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ 
+
+ 
+
+  <!-- Footer modernisé -->
+  <footer class="candidate-footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-col">
+          <img src="../../../assets/User/img/logo/poulina-white.png" alt="Poulina" class="footer-logo">
+          <p>Construire ensemble l'avenir professionnel</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a routerLink="/candidate">Accueil</a></li>
+            <li><a routerLink="/job-list">Offres d'emploi</a></li>
+            <li><a routerLink="/about">À propos</a></li>
+            <li><a routerLink="/contact">Contact</a></li>
+          </ul>
+        </div>
+        
+       
+        
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</li>
+            <li><i class="fas fa-phone"></i> +216 70 010 000</li>
+            <li><i class="fas fa-envelope"></i> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
+        <div class="footer-links">
+          <a href="#">Politique de confidentialité</a>
+          <a href="#">Conditions d'utilisation</a>
+          <a href="#">Mentions légales</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 
+  script slider -->
+  <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const dotsContainer = document.querySelector('.slider-dots');
+            let currentSlide = 0;
+            
+            // Créer les dots
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+            
+            // Boutons de navigation
+            document.querySelector('.prev-slide').addEventListener('click', prevSlide);
+            document.querySelector('.next-slide').addEventListener('click', nextSlide);
+            
+            // Auto-play
+            const slideInterval = setInterval(nextSlide, 5000);
+            
+            function goToSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                document.querySelectorAll('.dot')[index].classList.add('active');
+                currentSlide = index;
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                goToSlide(currentSlide);
+            }
+            
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                goToSlide(currentSlide);
+            }
+            
+            // Pause auto-play on hover
+            const slider = document.querySelector('.hero-slider');
+            slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            slider.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+    </script>
+</body>
+
 </html>

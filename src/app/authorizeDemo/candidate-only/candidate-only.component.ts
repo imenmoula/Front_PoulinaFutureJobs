@@ -16,7 +16,7 @@ interface OffresByFiliale {
   offres: OffreEmploi[];
   offreCount: number;
 }
-
+declare function initSlider(): void;
 @Component({
   selector: 'app-candidate-only',
   standalone: true,
@@ -48,6 +48,10 @@ export class CandidateOnlyComponent implements OnInit {
   offres: OffreEmploi[] = [];
   offresByFiliale: OffresByFiliale[] = [];
   searchTerm: string = '';
+    private currentSlide: number = 0; // initialize with 0
+isAuthenticated: boolean = false;
+
+currentYear = new Date().getFullYear();
 
   constructor(
     public authService: AuthService,
@@ -58,17 +62,26 @@ export class CandidateOnlyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Vérifier l'authentification
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigateByUrl('/signin');
-      return;
+    this.isAuthenticated = this.authService.isAuthenticated();
+    if (this.isAuthenticated) {
+      this.fullName = this.authService.getUserFullName();
     }
-    this.fullName = this.authService.getUserFullName();
+    // // Vérifier l'authentification
+    // if (!this.authService.isAuthenticated()) {
+    //   this.router.navigateByUrl('/signin');
+    //   return;
+    // }
+    // this.fullName = this.authService.getUserFullName();
 
     // Charger les filiales et les offres
     this.loadFiliales();
     this.loadOffres();
+     setTimeout(() => {
+      this.initImageSlider();
+    }, 0);
   }
+
+
 
   loadFiliales(): void {
     this.filialeService.getFiliales().subscribe({
@@ -201,5 +214,71 @@ export class CandidateOnlyComponent implements OnInit {
 
   navigateToFilialeOffres(filialeId: string): void {
     this.router.navigate(['/job-list'], { queryParams: { idFiliale: filialeId } });
+  }
+
+  /******************************* */
+  initImageSlider() {
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.slider-dots');
+    let currentSlide = 0;
+    
+    // Créer les dots
+    slides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (index === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => this.goToSlide(index));
+      dotsContainer?.appendChild(dot);
+    });
+    
+    // Boutons de navigation
+    document.querySelector('.next-slide')?.addEventListener('click', () => this.nextSlide());
+    document.querySelector('.prev-slide')?.addEventListener('click', () => this.prevSlide());
+    
+    // Auto-play
+    setInterval(() => this.nextSlide(), 5000);
+  }
+  
+  goToSlide(index: number) {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+  }
+  
+  nextSlide() {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const totalSlides = slides.length;
+    
+    slides[this.currentSlide].classList.remove('active');
+    dots[this.currentSlide].classList.remove('active');
+    
+    this.currentSlide = (this.currentSlide + 1) % totalSlides;
+    
+    slides[this.currentSlide].classList.add('active');
+    dots[this.currentSlide].classList.add('active');
+  }
+  
+  prevSlide() {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const totalSlides = slides.length;
+  
+  slides[this.currentSlide].classList.remove('active');
+  dots[this.currentSlide].classList.remove('active');
+  
+  this.currentSlide = (this.currentSlide - 1 + totalSlides) % totalSlides;
+  
+  slides[this.currentSlide].classList.add('active');
+  dots[this.currentSlide].classList.add('active');
+}
+  
+  getFilialeLocation(filiale: any): string {
+    return filiale.adresse || 'Tunisie';
   }
 }
