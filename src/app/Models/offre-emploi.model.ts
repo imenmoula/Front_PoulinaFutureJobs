@@ -63,7 +63,7 @@ export interface Diplome {
   nomDiplome: string;
   niveau: string;
   domaine: string;
-  institution: string;
+  institution?: string;
 }
 
 export interface CreateOffreEmploiRequest {

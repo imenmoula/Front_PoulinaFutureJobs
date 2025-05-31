@@ -26,9 +26,16 @@ export class CompetenceService {
     });
   }
 
-  getAllCompetences(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
-  }
+//  getAllCompetences(): Observable<Competence[]> {
+//     return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(
+//       map(response => response.data),
+//       catchError(error => {
+//         console.error('Erreur chargement compétences:', error);
+//         return throwError(() => new Error('Erreur lors du chargement des compétences'));
+//       })
+//     );
+//   }
+
 
   getCompetenceById(id: string): Observable<Competence> {
     return this.http.get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
@@ -40,9 +47,20 @@ export class CompetenceService {
     return this.http.put(`${this.apiUrl}/${userId}/competences`, competences);
   }
 
-  createCompetence(competence: any): Observable<any> {
-    return this.http.post(this.apiUrl, competence);
-  }
+ // competence.service.ts
+getAllCompetences(): Observable<Competence[]> {
+  return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(
+    map(response => response.data),
+    catchError(this.handleError)
+  );
+}
+
+createCompetence(competence: any): Observable<Competence> {
+  return this.http.post<{ data: Competence }>(this.apiUrl, competence).pipe(
+    map(response => response.data),
+    catchError(this.handleError)
+  );
+}
 
   updateCompetence(id: string, competence: Competence): Observable<Competence> {
     const payload = { dto: competence };

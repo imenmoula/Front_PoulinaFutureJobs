@@ -1,309 +1,65 @@
 <div class="container mt-4">
   <h2>{{ isEditMode ? 'Modifier' : 'Créer' }} une offre d'emploi</h2>
-  
-  <div *ngIf="isLoading" class="text-center my-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Chargement...</span>
-    </div>
-    <p class="mt-2">Chargement des données en cours...</p>
-  </div>
 
-  <form [formGroup]="offreForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-    <!-- Section Informations de base -->
-    <div class="card mb-4">
-      <div class="card-header">Informations de base</div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="specialite">Spécialité *</label>
-              <input type="text" formControlName="specialite" class="form-control" id="specialite"
-                     [class.is-invalid]="offreForm.get('specialite')?.invalid && offreForm.get('specialite')?.touched">
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="datePublication">Date de publication</label>
-              <input type="date" formControlName="datePublication" class="form-control" id="datePublication" >
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="dateExpiration">Date d'expiration *</label>
-              <input type="date" formControlName="dateExpiration" class="form-control" id="dateExpiration"
-                     [class.is-invalid]="offreForm.get('dateExpiration')?.invalid && offreForm.get('dateExpiration')?.touched">
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="niveauExperienceRequis">Niveau d'expérience requis *</label>
-              <input type="text" formControlName="niveauExperienceRequis" class="form-control" id="niveauExperienceRequis"
-                     [class.is-invalid]="offreForm.get('niveauExperienceRequis')?.invalid && offreForm.get('niveauExperienceRequis')?.touched">
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="salaireMin">Salaire minimum *</label>
-              <input type="number" formControlName="salaireMin" class="form-control" id="salaireMin" min="0"
-                     [class.is-invalid]="offreForm.get('salaireMin')?.invalid && offreForm.get('salaireMin')?.touched">
-              <div class="invalid-feedback">Valeur minimale: 0</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="salaireMax">Salaire maximum *</label>
-              <input type="number" formControlName="salaireMax" class="form-control" id="salaireMax" min="0"
-                     [class.is-invalid]="offreForm.get('salaireMax')?.invalid && offreForm.get('salaireMax')?.touched">
-              <div class="invalid-feedback">Valeur minimale: 0</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="estActif">Statut</label>
-              <select formControlName="estActif" class="form-control" id="estActif">
-                <option [ngValue]="true">Active</option>
-                <option [ngValue]="false">Inactive</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section Type de contrat -->
-    <div class="card mb-4">
-      <div class="card-header">Type de contrat</div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="typeContrat">Type de contrat *</label>
-              <select formControlName="typeContrat" class="form-control" id="typeContrat"
-                      [class.is-invalid]="offreForm.get('typeContrat')?.invalid && offreForm.get('typeContrat')?.touched">
-                <option value="">Sélectionner un type</option>
-                <option *ngFor="let type of typeContrats" [value]="type">{{ type }}</option>
-              </select>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="statut">Statut *</label>
-              <select formControlName="statut" class="form-control" id="statut"
-                      [class.is-invalid]="offreForm.get('statut')?.invalid && offreForm.get('statut')?.touched">
-                <option value="">Sélectionner un statut</option>
-                <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
-              </select>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="modeTravail">Mode de travail *</label>
-              <select formControlName="modeTravail" class="form-control" id="modeTravail"
-                      [class.is-invalid]="offreForm.get('modeTravail')?.invalid && offreForm.get('modeTravail')?.touched">
-                <option value="">Sélectionner un mode</option>
-                <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
-              </select>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section Organisation -->
-    <div class="card mb-4">
-      <div class="card-header">Organisation</div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="idFiliale">Filiale *</label>
-              <select formControlName="idFiliale" class="form-control" id="idFiliale"
-                      [class.is-invalid]="offreForm.get('idFiliale')?.invalid && offreForm.get('idFiliale')?.touched">
-                <option value="">Sélectionner une filiale</option>
-                <option *ngFor="let filiale of filiales" [value]="filiale.idFiliale">
-                  {{ filiale.nom }}
-                </option>
-              </select>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="idDepartement">Département *</label>
-              <select formControlName="idDepartement" class="form-control" id="idDepartement"
-                      [class.is-invalid]="offreForm.get('idDepartement')?.invalid && offreForm.get('idDepartement')?.touched">
-                <option value="">Sélectionner un département</option>
-                <option *ngFor="let departement of departements" [value]="departement.idDepartement">
-                  {{ departement.nom }}
-                </option>
-              </select>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="idRecruteur">Recruteur *</label>
-              <select formControlName="idRecruteur" class="form-control" id="idRecruteur"
-                      [class.is-invalid]="offreForm.get('idRecruteur')?.invalid && offreForm.get('idRecruteur')?.touched">
-                <option value="">Sélectionner un recruteur</option>
-                <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">
-                  {{ recruteur.fullName }} ({{ recruteur.email }})
-                </option>
-              </select>
-              <div *ngIf="recruteurs.length === 0" class="text-warning small">
-                Aucun recruteur disponible
-              </div>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section Avantages -->
-    <div class="card mb-4">
-      <div class="card-header">Avantages</div>
-      <div class="card-body">
-        <div class="form-group">
-          <label for="avantages">Avantages offerts</label>
-          <textarea formControlName="avantages" class="form-control" id="avantages" rows="3"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section Postes -->
-    <div class="card mb-4">
-      <div class="card-header">Postes à pourvoir</div>
-      <div class="card-body">
-        <div formArrayName="postes">
-          <div *ngFor="let poste of postes.controls; let i = index" [formGroupName]="i" class="mb-4 border p-3">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label [for]="'titrePoste'+i">Titre du poste *</label>
-                  <input type="text" formControlName="titrePoste" class="form-control" [id]="'titrePoste'+i"
-                         [class.is-invalid]="poste.get('titrePoste')?.invalid && poste.get('titrePoste')?.touched">
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label [for]="'nombrePostes'+i">Nombre de postes *</label>
-                  <input type="number" formControlName="nombrePostes" class="form-control" [id]="'nombrePostes'+i" min="1"
-                         [class.is-invalid]="poste.get('nombrePostes')?.invalid && poste.get('nombrePostes')?.touched">
-                  <div class="invalid-feedback">Minimum 1</div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label [for]="'niveauHierarchique'+i">Niveau hiérarchique *</label>
-                  <input type="text" formControlName="niveauHierarchique" class="form-control" [id]="'niveauHierarchique'+i"
-                         [class.is-invalid]="poste.get('niveauHierarchique')?.invalid && poste.get('niveauHierarchique')?.touched">
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label [for]="'description'+i">Description *</label>
-              <textarea formControlName="description" class="form-control" [id]="'description'+i" rows="3"
-                        [class.is-invalid]="poste.get('description')?.invalid && poste.get('description')?.touched"></textarea>
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-            
-            <div class="form-group">
-              <label [for]="'experienceSouhaitee'+i">Expérience souhaitée *</label>
-              <input type="text" formControlName="experienceSouhaitee" class="form-control" [id]="'experienceSouhaitee'+i"
-                     [class.is-invalid]="poste.get('experienceSouhaitee')?.invalid && poste.get('experienceSouhaitee')?.touched">
-              <div class="invalid-feedback">Ce champ est requis</div>
-            </div>
-            
-            <button type="button" class="btn btn-danger" (click)="removePoste(i)" *ngIf="postes.length > 1">
-              Supprimer ce poste
-            </button>
-          </div>
-          
-          <button type="button" class="btn btn-secondary mt-2" (click)="addPoste()">
-            Ajouter un poste
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section Missions -->
-    <div class="card mb-4">
-      <div class="card-header">Missions</div>
-      <div class="card-body">
-        <div formArrayName="offreMissions">
-          <div *ngFor="let mission of offreMissions.controls; let i = index" [formGroupName]="i" class="mb-3">
-            <div class="row">
-              <div class="col-md-10">
-                <div class="form-group">
-                  <label [for]="'descriptionMission'+i">Description de la mission *</label>
-                  <textarea formControlName="descriptionMission" class="form-control" [id]="'descriptionMission'+i" rows="2"
-                            [class.is-invalid]="mission.get('descriptionMission')?.invalid && mission.get('descriptionMission')?.touched"></textarea>
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label [for]="'priorite'+i">Priorité *</label>
-                  <input type="number" formControlName="priorite" class="form-control" [id]="'priorite'+i" min="0"
-                          [class.is-invalid]="mission.get('priorite')?.invalid && mission.get('priorite')?.touched">
-                  <div class="invalid-feedback">Minimum 0</div>
-                </div>
-              </div>
-            </div>
-            
-            <button type="button" class="btn btn-danger" (click)="removeMission(i)" *ngIf="offreMissions.length > 1">
-              Supprimer cette mission
-            </button>
-          </div>
-          
-          <button type="button" class="btn btn-secondary mt-2" (click)="addMission()">
-            Ajouter une mission
-          </button>
-        </div>
-      </div>
-    </div>
-
+  <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
     <!-- Section Diplômes requis -->
     <div class="card mb-4">
-      <div class="card-header">Diplômes requis</div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Diplômes requis</span>
+        <button type="button" class="btn btn-outline-primary btn-sm"
+                (click)="ajoutDiplomeEnCours = !ajoutDiplomeEnCours">
+          {{ ajoutDiplomeEnCours ? 'Annuler' : 'Ajouter un diplôme' }}
+        </button>
+      </div>
       <div class="card-body">
+        <div *ngIf="ajoutDiplomeEnCours" class="mb-3 p-3 border">
+          <div class="row">
+            <div class="col-md-4">
+              <input type="text" [(ngModel)]="nouveauDiplome.nomDiplome"
+                     class="form-control mb-2" placeholder="Nom"
+                     [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-md-4">
+              <input type="text" [(ngModel)]="nouveauDiplome.domaine"
+                     class="form-control mb-2" placeholder="Domaine"
+                     [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-md-4">
+              <input type="text" [(ngModel)]="nouveauDiplome.niveau"
+                     class="form-control mb-2" placeholder="Niveau"
+                     [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+          <button type="button" class="btn btn-success btn-sm"
+                  (click)="ajouterNouveauDiplome()"
+                  [disabled]="!nouveauDiplome.nomDiplome || !nouveauDiplome.domaine || !nouveauDiplome.niveau">
+            Enregistrer
+          </button>
+        </div>
         <div formArrayName="diplomeIds">
-          <div *ngFor="let diplome of diplomeIds.controls; let i = index" class="row mb-2">
+          <div *ngFor="let ctrl of diplomeIds.controls; let i = index" class="row align-items-center mb-2">
             <div class="col-md-10">
               <select [formControlName]="i" class="form-control"
-                      [class.is-invalid]="diplome.invalid && diplome.touched">
+                      [class.is-invalid]="ctrl.invalid && (ctrl.touched || ctrl.dirty)">
                 <option value="">Sélectionner un diplôme</option>
                 <option *ngFor="let diplome of diplomes" [value]="diplome.idDiplome">
-                  {{ diplome.nomDiplome }}
+                  {{ diplome.nomDiplome }} - {{ diplome.domaine }} ({{ diplome.niveau }})
                 </option>
               </select>
               <div class="invalid-feedback">Ce champ est requis</div>
             </div>
             <div class="col-md-2">
-              <button type="button" class="btn btn-danger" (click)="removeDiplome(i)" *ngIf="diplomeIds.length > 1">
+              <button type="button" class="btn btn-danger" (click)="removeDiplome(i)">
                 Supprimer
               </button>
             </div>
           </div>
-          
-          <button type="button" class="btn btn-secondary" (click)="addDiplome()">
-            Ajouter un diplôme
+          <div *ngIf="diplomeIds.invalid && (diplomeIds.touched || diplomeIds.dirty)"
+               class="text-danger mb-2">
+            Au moins un diplôme requis
+          </div>
+          <button type="button" class="btn btn-secondary mt-2" (click)="addDiplome()">
+            Ajouter un diplôme existant
           </button>
         </div>
       </div>
@@ -311,106 +67,254 @@
 
     <!-- Section Compétences requises -->
     <div class="card mb-4">
-      <div class="card-header">Compétences requises</div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Compétences requises</span>
+        <button type="button" class="btn btn-outline-primary btn-sm"
+                (click)="ajoutCompetenceEnCours = !ajoutCompetenceEnCours">
+          {{ ajoutCompetenceEnCours ? 'Annuler' : 'Nouvelle compétence' }}
+        </button>
+      </div>
       <div class="card-body">
-        <div formArrayName="offreCompetences">
-          <div *ngFor="let competenceGroup of offreCompetences.controls; let i = index" [formGroupName]="i" class="mb-3 border p-3">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label [for]="'competence'+i">Compétence *</label>
-                  <select formControlName="idCompetence" class="form-control" [id]="'competence'+i"
-                          [class.is-invalid]="competenceGroup.get('idCompetence')?.invalid && competenceGroup.get('idCompetence')?.touched">
-                    <option value="">Sélectionner une compétence</option>
-                    <option *ngFor="let competence of competences" [value]="competence.id">
-                      {{ competence.nom }}
-                    </option>
-                  </select>
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label [for]="'niveauRequis'+i">Niveau requis *</label>
-                  <select formControlName="niveauRequis" class="form-control" [id]="'niveauRequis'+i"
-                                            [class.is-invalid]="competenceGroup.get('niveauRequis')?.invalid && competenceGroup.get('niveauRequis')?.touched">
-                    <option value="">Sélectionner un niveau</option>
-                    <option *ngFor="let niveau of niveauxRequis" [value]="niveau">
-                      {{ niveau }}
-                    </option>
-                  </select>
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
+        <div *ngIf="ajoutCompetenceEnCours" class="mb-3 p-3 border">
+          <div class="row">
+            <div class="col-md-4">
+              <input type="text" [(ngModel)]="nouvelleCompetence.nom"
+                     class="form-control mb-2" placeholder="Nom"
+                     [ngModelOptions]="{standalone: true}">
             </div>
-            
-            <button type="button" class="btn btn-danger" (click)="removeCompetence(i)">
-              Supprimer cette compétence
-            </button>
+            <div class="col-md-8">
+              <input type="text" [(ngModel)]="nouvelleCompetence.description"
+                     class="form-control mb-2" placeholder="Description"
+                     [ngModelOptions]="{standalone: true}">
+            </div>
           </div>
-          
+          <button type="button" class="btn btn-success btn-sm"
+                  (click)="ajouterNouvelleCompetence()"
+                  [disabled]="!nouvelleCompetence.nom || !nouvelleCompetence.description">
+            Enregistrer
+          </button>
+        </div>
+        <div formArrayName="offreCompetences">
+          <div *ngFor="let group of offreCompetences.controls; let i = index"
+               [formGroupName]="i" class="row align-items-center mb-2">
+            <div class="col-md-7">
+              <select formControlName="idCompetence" class="form-control"
+                      [class.is-invalid]="group.get('idCompetence')?.invalid &&
+                      (group.get('idCompetence')?.touched || group.get('idCompetence')?.dirty)">
+                <option value="">Sélectionner une compétence</option>
+                <option *ngFor="let competence of getCompetencesPourSelection()"
+                        [value]="competence.id"
+                        [disabled]="isCompetenceSelected(competence.id)">
+                  {{ competence.nom }} - {{ competence.description }}
+                </option>
+              </select>
+              <div class="invalid-feedback">Ce champ est requis</div>
+            </div>
+            <div class="col-md-3">
+              <select formControlName="niveauRequis" class="form-control"
+                      [class.is-invalid]="group.get('niveauRequis')?.invalid &&
+                      (group.get('niveauRequis')?.touched || group.get('niveauRequis')?.dirty)">
+                <option value="">Niveau requis</option>
+                <option *ngFor="let niveau of niveauxRequis" [value]="niveau">
+                  {{ niveau }}
+                </option>
+              </select>
+              <div class="invalid-feedback">Ce champ est requis</div>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" (click)="removeCompetence(i)">
+                Supprimer
+              </button>
+            </div>
+          </div>
+          <div *ngIf="offreCompetences.invalid && (offreCompetences.touched || offreCompetences.dirty)"
+               class="text-danger mb-2">
+            Au moins une compétence requise
+          </div>
           <button type="button" class="btn btn-secondary mt-2" (click)="addCompetence()">
-            Ajouter une compétence
+            Ajouter une compétence existante
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Section Langues requises -->
+    <!-- Section Postes -->
     <div class="card mb-4">
-      <div class="card-header">Langues requises</div>
+      <div class="card-header">
+        Postes à pourvoir
+        <button type="button" class="btn btn-outline-primary btn-sm float-end" (click)="addPoste()">
+          Ajouter un poste
+        </button>
+      </div>
+      <div class="card-body">
+        <div formArrayName="postes">
+          <div *ngFor="let poste of postes.controls; let i = index" [formGroupName]="i" class="mb-3 border p-2">
+            <div class="row">
+              <div class="col-md-4">
+                <input type="text" formControlName="titrePoste" class="form-control mb-2" placeholder="Titre du poste">
+              </div>
+              <div class="col-md-2">
+                <input type="number" formControlName="nombrePostes" class="form-control mb-2" placeholder="Nombre">
+              </div>
+              <div class="col-md-3">
+                <input type="text" formControlName="niveauHierarchique" class="form-control mb-2" placeholder="Niveau hiérarchique">
+              </div>
+              <div class="col-md-3">
+                <button type="button" class="btn btn-danger" (click)="removePoste(i)" [disabled]="postes.length === 1">
+                  Supprimer
+                </button>
+              </div>
+              <div class="col-12">
+                <input type="text" formControlName="description" class="form-control mb-2" placeholder="Description">
+              </div>
+              <div class="col-12">
+                <input type="text" formControlName="experienceSouhaitee" class="form-control mb-2" placeholder="Expérience souhaitée">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Missions -->
+    <div class="card mb-4">
+      <div class="card-header">
+        Missions principales
+        <button type="button" class="btn btn-outline-primary btn-sm float-end" (click)="offreMissions.push(createMissionGroup())">
+          Ajouter une mission
+        </button>
+      </div>
+      <div class="card-body">
+        <div formArrayName="offreMissions">
+          <div *ngFor="let group of offreMissions.controls; let i = index" [formGroupName]="i" class="row align-items-center mb-2">
+            <div class="col-md-10">
+              <input type="text" formControlName="mission" class="form-control" placeholder="Mission">
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" (click)="offreMissions.removeAt(i)" [disabled]="offreMissions.length === 1">
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Langues -->
+    <div class="card mb-4">
+      <div class="card-header">
+        Langues requises
+        <button type="button" class="btn btn-outline-primary btn-sm float-end" (click)="offreLangues.push(createLangueGroup())">
+          Ajouter une langue
+        </button>
+      </div>
       <div class="card-body">
         <div formArrayName="offreLangues">
-          <div *ngFor="let langueGroup of offreLangues.controls; let i = index" [formGroupName]="i" class="mb-3">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label [for]="'langue'+i">Langue *</label>
-                  <select formControlName="langue" class="form-control" [id]="'langue'+i"
-                          [class.is-invalid]="langueGroup.get('langue')?.invalid && langueGroup.get('langue')?.touched">
-                    <option value="">Sélectionner une langue</option>
-                    <option *ngFor="let langue of languesDisponibles" [value]="langue">
-                      {{ langue }}
-                    </option>
-                  </select>
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label [for]="'niveauRequisLangue'+i">Niveau requis *</label>
-                  <select formControlName="niveauRequis" class="form-control" [id]="'niveauRequisLangue'+i"
-                          [class.is-invalid]="langueGroup.get('niveauRequis')?.invalid && langueGroup.get('niveauRequis')?.touched">
-                    <option value="">Sélectionner un niveau</option>
-                    <option *ngFor="let niveau of niveauxRequis" [value]="niveau">
-                      {{ niveau }}
-                    </option>
-                  </select>
-                  <div class="invalid-feedback">Ce champ est requis</div>
-                </div>
-              </div>
+          <div *ngFor="let group of offreLangues.controls; let i = index" [formGroupName]="i" class="row align-items-center mb-2">
+            <div class="col-md-5">
+              <select formControlName="langue" class="form-control">
+                <option value="">Sélectionner une langue</option>
+                <option *ngFor="let langue of languesDisponibles" [value]="langue">{{ langue }}</option>
+              </select>
             </div>
-            
-            <button type="button" class="btn btn-danger" (click)="removeLangue(i)">
-              Supprimer cette langue
-            </button>
+            <div class="col-md-5">
+              <select formControlName="niveau" class="form-control">
+                <option value="">Niveau</option>
+                <option *ngFor="let niveau of niveauxRequis" [value]="niveau">{{ niveau }}</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" (click)="offreLangues.removeAt(i)" [disabled]="offreLangues.length === 1">
+                Supprimer
+              </button>
+            </div>
           </div>
-          
-          <button type="button" class="btn btn-secondary mt-2" (click)="addLangue()">
-            Ajouter une langue
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- Boutons de soumission -->
-    <div class="d-flex justify-content-between mb-4">
-      <button type="button" class="btn btn-secondary" (click)="cancel()">
-        Annuler
-      </button>
-      <button type="submit" class="btn btn-primary" [disabled]="offreForm.invalid">
-        {{ isEditMode ? 'Mettre à jour' : 'Créer' }} l'offre
-      </button>
+    <!-- Section Informations principales -->
+    <div class="card mb-4">
+      <div class="card-header">Informations principales</div>
+      <div class="card-body">
+        <div class="row mb-2">
+          <div class="col-md-4">
+            <input type="text" formControlName="specialite" class="form-control" placeholder="Spécialité">
+          </div>
+          <div class="col-md-4">
+            <input type="date" formControlName="datePublication" class="form-control" placeholder="Date de publication">
+          </div>
+          <div class="col-md-4">
+            <input type="date" formControlName="dateExpiration" class="form-control" placeholder="Date d'expiration">
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-4">
+            <select formControlName="niveauExperienceRequis" class="form-control">
+              <option value="">Niveau d'expérience requis</option>
+              <option *ngFor="let niveau of niveauxRequis" [value]="niveau">{{ niveau }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <input type="number" formControlName="salaireMin" class="form-control" placeholder="Salaire min">
+          </div>
+          <div class="col-md-4">
+            <input type="number" formControlName="salaireMax" class="form-control" placeholder="Salaire max">
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-3">
+            <select formControlName="typeContrat" class="form-control">
+              <option value="">Type de contrat</option>
+              <option *ngFor="let type of typeContrats" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select formControlName="statut" class="form-control">
+              <option value="">Statut</option>
+              <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select formControlName="modeTravail" class="form-control">
+              <option value="">Mode de travail</option>
+              <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <input type="text" formControlName="avantages" class="form-control" placeholder="Avantages (optionnel)">
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-4">
+            <select formControlName="idFiliale" class="form-control">
+              <option value="">Filiale</option>
+              <option *ngFor="let filiale of filiales" [value]="filiale.id">{{ filiale.nom }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <select formControlName="idDepartement" class="form-control">
+              <option value="">Département</option>
+              <option *ngFor="let departement of departements" [value]="departement.id">{{ departement.nom }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <select formControlName="idRecruteur" class="form-control">
+              <option value="">Recruteur</option>
+              <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.nom }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-check mb-2">
+          <input type="checkbox" formControlName="estActif" class="form-check-input" id="estActif">
+          <label class="form-check-label" for="estActif">Offre active</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Annuler</button>
+      <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Mettre à jour' : 'Créer' }}</button>
     </div>
   </form>
 </div>

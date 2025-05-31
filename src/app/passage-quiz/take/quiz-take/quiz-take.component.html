@@ -1,0 +1,30 @@
+<div *ngIf="!submitted">
+  <h2>{{ quiz.Titre }}</h2>
+  <form (ngSubmit)="submitQuiz()">
+    <div *ngFor="let question of quiz.Questions">
+      <h4>{{ question.Texte }}</h4>
+      <div *ngIf="question.Type === 'ChoixUnique'; else multiChoice">
+        <div *ngFor="let reponse of question.Reponses">
+          <label>
+            <input type="radio" name="q{{ question.QuestionId }}" [value]="reponse.ReponseId"
+                   (change)="onAnswerChange(question.QuestionId, $event.target.value)">
+            {{ reponse.Texte }}
+          </label>
+        </div>
+      </div>
+      <ng-template #multiChoice>
+        <div *ngFor="let reponse of question.Reponses">
+          <label>
+            <input type="checkbox" [value]="reponse.ReponseId"
+                   (change)="onAnswerChange(question.QuestionId, Array.from($event.target.closest('.form-group').querySelectorAll('input:checked')).map(el => el.value))">
+            {{ reponse.Texte }}
+          </label>
+        </div>
+      </ng-template>
+      <div *ngIf="question.Type === 'ReponseTexte'">
+        <textarea (input)="onAnswerChange(question.QuestionId, $event.target.value)"></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success">Submit Quiz</button>
+  </form>
+</div>

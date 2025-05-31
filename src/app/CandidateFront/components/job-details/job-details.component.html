@@ -70,7 +70,7 @@
                   <span><i class="fas fa-building"></i> {{ filiale?.nom || 'Entreprise non spécifiée' }}</span>
                   <span><i class="fas fa-map-marker-alt"></i> {{ filiale?.adresse || 'Localisation inconnue' }}</span>
                   <span><i class="fas fa-file-contract"></i> {{ offre.typeContrat || 'Type de contrat non spécifié' }}</span>
-                  <span><i class="fas fa-money-bill-wave"></i> {{ getSalaireDisplay() }}</span>
+                  <!-- <span><i class="fas fa-money-bill-wave"></i> {{ getSalaireDisplay() }}</span> -->
                 </div>
               </div>
             </div>
@@ -196,6 +196,16 @@
                 <div *ngIf="!offre.avantages" class="no-data">Aucun avantage spécifié</div>
               </div>
             </div>
+
+            <!-- Apply Button -->
+            <div class="job-section-card text-center" style="margin-top: 2rem;" *ngIf="getStatutOffreLabel(offre.statut) === 'Ouvert'">
+              <button
+                class="btn btn-primary btn-lg"
+                (click)="navigateToCandidature()"
+              >
+                <i class="fas fa-paper-plane"></i> Postuler à cette offre
+              </button>
+            </div>
           </div>
 
           <!-- Sidebar -->
@@ -231,13 +241,7 @@
                     <strong>{{ getModeTravailLabel(offre.modeTravail) }}</strong>
                   </div>
                 </div>
-                <div class="overview-item">
-                  <i class="fas fa-money-bill-wave"></i>
-                  <div>
-                    <span>Salaire</span>
-                    <strong>{{ getSalaireDisplay() }}</strong>
-                  </div>
-                </div>
+                
                 <div class="overview-item">
                   <i class="fas fa-user-tie"></i>
                   <div>
@@ -248,9 +252,11 @@
                   </div>
                 </div>
               </div>
-              <button class="apply-btn" (click)="navigateToCandidature()" [disabled]="offre.statut !== StatutOffre.Ouvert">
+              
+              <button class="apply-btn" *ngIf="offre.statut === StatutOffre.Ouvert" (click)="navigateToCandidature()" >  
                 Postuler maintenant
               </button>
+             
               <div class="action-buttons">
                 <button class="secondary-btn"><i class="far fa-bookmark"></i> Sauvegarder</button>
                 <button class="secondary-btn"><i class="fas fa-share-alt"></i> Partager</button>

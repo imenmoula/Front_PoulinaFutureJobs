@@ -236,7 +236,7 @@ export class JobDetailsComponent implements OnInit {
   }
 
   getStatutOffreLabel(statut?: StatutOffre): string {
-    return statut === StatutOffre.Ouvert ? 'Ouverte' : 'Fermée';
+    return statut === StatutOffre.Ouvert ? 'Ouvert' : 'colture';
   }
 
   getStatutOffreColor(statut?: StatutOffre): string {
@@ -250,11 +250,20 @@ export class JobDetailsComponent implements OnInit {
     return `${this.offre.salaireMin} - ${this.offre.salaireMax} €`;
   }
 
-  navigateToCandidature(): void {
-    if (this.idOffreEmploi) {
-      this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
-    }
+ // Ajouter cette fonction pour toujours afficher le bouton
+shouldShowApplyButton(): boolean {
+  return true; // Toujours afficher le bouton
+}
+
+// Modifier la fonction navigateToCandidature
+navigateToCandidature(): void {
+  if (this.idOffreEmploi) {
+    this.router.navigate(['/candidature', this.idOffreEmploi, 'postuler']);
+  } else {
+    console.error('ID offre manquant pour la candidature');
+    // Optionnel: Afficher un message d'erreur à l'utilisateur
   }
+}
 
   private handleError(message: string): void {
     this.error = message;

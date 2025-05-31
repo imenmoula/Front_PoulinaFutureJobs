@@ -1,0 +1,14 @@
+<div *ngIf="result">
+  <h2>Quiz Result</h2>
+  <p>Score: {{ result.Score }}%</p>
+  <p>Status: {{ result.Reussi ? 'Passed' : 'Failed' }}</p>
+
+  <h3>Answers:</h3>
+  <div *ngFor="let detail of result.ReponsesDetail">
+    <p><strong>{{ detail.QuestionTexte }}</strong></p>
+    <p>Your Answer: {{ detail.ReponseTexte || detail.TexteReponse }}</p>
+    <p>Correct: {{ detail.EstCorrecte ? 'Yes' : 'No' }}</p>
+    <p *ngIf="detail.Explication">Explanation: {{ detail.Explication }}</p>
+    <hr>
+  </div>
+</div>

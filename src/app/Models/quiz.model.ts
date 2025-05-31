@@ -342,3 +342,14 @@ export interface ResultatQuizDetailDto extends ResultatQuizDto {
   reponsesUtilisateur: ReponseUtilisateurDetailDto[];
 }
 
+export interface ReponseUtilisateurCreateDto {
+    tentativeId: string;
+    questionId: string;
+    reponseIds?: string[]; // Pour ChoixMultiple, ou un seul ID pour ChoixUnique/VraiFaux
+    texteReponse?: string; // Pour ReponseTexte
+    tempsReponse?: number; // Temps pris pour répondre (en secondes, optionnel)
+}
+
+export interface QuizFullResponseDto extends QuizResponseDto {
+    questions: QuestionResponseDto[];
+}

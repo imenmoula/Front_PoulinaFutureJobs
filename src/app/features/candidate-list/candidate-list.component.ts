@@ -46,8 +46,10 @@ export class CandidateListComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.searchForm = this.fb.group({
-      searchTerm: ['']
-    });
+    fullName: [''],     // Doit correspondre au template
+    offreTitre: [''],   // (erreur de frappe : "offreflire" → "offreTitre")
+    statut: ['']        // dans le HTML
+  });
   }
 
   ngOnInit(): void {

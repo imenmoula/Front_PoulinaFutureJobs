@@ -97,3 +97,237 @@
       </div>
     </div>
   </div>
+
+
+  <div class="container mt-4">
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage && !isLoading" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = null" aria-label="Close"></button>
+  </div>
+
+  <!-- Candidature Details -->
+  <div *ngIf="candidature && !isLoading">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Détails de la Candidature</h3>
+        <!-- Action Buttons -->
+        <div>
+          <button *ngIf="!isEditMode" (click)="enableEditMode()" class="btn btn-warning btn-sm me-2">
+            <i class="fas fa-edit me-1"></i> Modifier
+          </button>
+          <button *ngIf="isEditMode" (click)="saveCandidature()" class="btn btn-success btn-sm me-2" [disabled]="candidatureForm.invalid || isLoading">
+            <i class="fas fa-save me-1"></i> Sauvegarder
+          </button>
+          <button *ngIf="isEditMode" (click)="cancelEdit()" class="btn btn-secondary btn-sm me-2">
+            <i class="fas fa-times me-1"></i> Annuler
+          </button>
+          <button *ngIf="!isEditMode" (click)="deleteCandidature()" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash me-1"></i> Supprimer
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="candidatureForm" (ngSubmit)="saveCandidature()">
+
+          <!-- Candidate Info Section -->
+          <div class="row mb-4">
+            <div class="col-md-3 text-center">
+              <img [src]="getPhotoUrl() || 'assets/images/default-avatar.png'" alt="Photo de profil" class="img-thumbnail rounded-circle mb-2" style="width: 150px; height: 150px; object-fit: cover;">
+              <h5>{{ candidature.userInfo?.fullName }}</h5>
+              <p class="text-muted">{{ candidature.userInfo?.email }}</p>
+            </div>
+            <div class="col-md-9">
+              <h4><i class="fas fa-user me-2"></i> Informations Personnelles</h4>
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                  <strong>Nom:</strong> {{ candidature.userInfo?.nom }}
+                </div>
+                <div class="col-md-6 mb-2">
+                  <strong>Prénom:</strong> {{ candidature.userInfo?.prenom }}
+                </div>
+                <div class="col-md-6 mb-2">
+                  <strong>Date de Naissance:</strong> {{ candidature.userInfo?.dateNaissance | date: 'dd/MM/yyyy' }}
+                </div>
+                <div class="col-md-6 mb-2">
+                  <strong>Téléphone:</strong> {{ candidature.userInfo?.phone }}
+                </div>
+                <div class="col-md-12 mb-2">
+                  <strong>Adresse:</strong> {{ candidature.userInfo?.adresse }}, {{ candidature.userInfo?.ville }}, {{ candidature.userInfo?.pays }}
+                </div>
+                 <div class="col-md-6 mb-2">
+                  <strong>Niveau d'Étude:</strong> {{ candidature.userInfo?.niveauEtude }}
+                </div>
+                 <div class="col-md-6 mb-2">
+                  <strong>Diplôme Principal:</strong> {{ candidature.userInfo?.diplome }} ({{ candidature.userInfo?.universite }})
+                </div>
+                 <div class="col-md-6 mb-2">
+                  <strong>Spécialité:</strong> {{ candidature.userInfo?.specialite }}
+                </div>
+                <div class="col-md-6 mb-2">
+                  <strong>Statut Actuel:</strong> {{ candidature.userInfo?.statut }}
+                </div>
+              </div>
+               <hr>
+               <h4><i class="fas fa-link me-2"></i> Liens Externes</h4>
+               <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <strong>CV:</strong>
+                    <a *ngIf="candidature.cvFilePath && !isEditMode" [href]="candidature.cvFilePath" target="_blank" class="ms-2">Voir le CV</a>
+                    <span *ngIf="!candidature.cvFilePath && !isEditMode" class="ms-2 text-muted">Non fourni</span>
+                     <!-- Note: CV Upload might need a separate component/logic -->
+                     <input *ngIf="isEditMode" type="text" class="form-control form-control-sm" formControlName="cvFilePath" placeholder="Chemin du fichier CV (non éditable ici)" readonly>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <strong>LinkedIn:</strong>
+                    <a *ngIf="candidature.linkedIn && !isEditMode" [href]="candidature.linkedIn" target="_blank" class="ms-2">Profil LinkedIn</a>
+                    <span *ngIf="!candidature.linkedIn && !isEditMode" class="ms-2 text-muted">Non fourni</span>
+                    <input *ngIf="isEditMode" type="url" class="form-control form-control-sm" formControlName="linkedIn" placeholder="https://linkedin.com/in/...">
+                     <div *ngIf="candidatureForm.get('linkedIn')?.invalid && (candidatureForm.get('linkedIn')?.dirty || candidatureForm.get('linkedIn')?.touched)" class="text-danger small mt-1">
+                        URL LinkedIn invalide.
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <strong>GitHub:</strong>
+                    <a *ngIf="candidature.github && !isEditMode" [href]="candidature.github" target="_blank" class="ms-2">Profil GitHub</a>
+                    <span *ngIf="!candidature.github && !isEditMode" class="ms-2 text-muted">Non fourni</span>
+                    <input *ngIf="isEditMode" type="url" class="form-control form-control-sm" formControlName="github" placeholder="https://github.com/...">
+                     <div *ngIf="candidatureForm.get('github')?.invalid && (candidatureForm.get('github')?.dirty || candidatureForm.get('github')?.touched)" class="text-danger small mt-1">
+                        URL GitHub invalide.
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <strong>Portfolio:</strong>
+                    <a *ngIf="candidature.portfolio && !isEditMode" [href]="candidature.portfolio" target="_blank" class="ms-2">Portfolio</a>
+                    <span *ngIf="!candidature.portfolio && !isEditMode" class="ms-2 text-muted">Non fourni</span>
+                    <input *ngIf="isEditMode" type="url" class="form-control form-control-sm" formControlName="portfolio" placeholder="https://...">
+                  </div>
+               </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Offer and Application Status Section -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h4><i class="fas fa-briefcase me-2"></i> Offre d'Emploi</h4>
+              <p><strong>Titre:</strong> {{ offre?.titre || 'N/A' }}</p>
+              <p><strong>Type de Contrat:</strong> {{ getTypeContratString(offre?.typeContrat) }}</p>
+              <p><strong>Mode de Travail:</strong> {{ getModeTravailString(offre?.modeTravail) }}</p>
+              <p><strong>Spécialité:</strong> {{ offre?.specialite || 'N/A' }}</p>
+            </div>
+            <div class="col-md-6">
+              <h4><i class="fas fa-info-circle me-2"></i> Statut de la Candidature</h4>
+              <p><strong>Date de Soumission:</strong> {{ candidature.dateSoumission | date:'dd/MM/yyyy HH:mm' }}</p>
+              <div class="mb-2">
+                <strong>Statut Actuel:</strong>
+                <span *ngIf="!isEditMode" class="badge ms-2" [ngClass]="{'bg-success': candidature.statut === 'Acceptée', 'bg-danger': candidature.statut === 'Rejetée', 'bg-warning text-dark': candidature.statut === 'En revue', 'bg-info text-dark': candidature.statut === 'Soumise'}">
+                  {{ candidature.statut }}
+                </span>
+                 <select *ngIf="isEditMode" class="form-select form-select-sm ms-2 d-inline-block w-auto" formControlName="statut">
+                    <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+                 </select>
+              </div>
+              <div class="mb-2">
+                 <strong>Niveau Candidat (auto-déclaré):</strong>
+                 <span *ngIf="!isEditMode" class="ms-2">{{ candidature.statutCandidate || 'Non spécifié' }}</span>
+                 <select *ngIf="isEditMode" class="form-select form-select-sm ms-2 d-inline-block w-auto" formControlName="statutCandidate">
+                    <option value="">Non spécifié</option>
+                    <option *ngFor="let statutCand of statutCandidateOptions" [value]="statutCand">{{ statutCand }}</option>
+                 </select>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Motivation Section -->
+          <div class="mb-4">
+            <h4><i class="fas fa-comment-dots me-2"></i> Message de Motivation</h4>
+            <p *ngIf="!isEditMode">{{ candidature.messageMotivation || 'Aucun message fourni.' }}</p>
+            <textarea *ngIf="isEditMode" class="form-control" formControlName="messageMotivation" rows="4" placeholder="Message de motivation..."></textarea>
+             <div *ngIf="candidatureForm.get('messageMotivation')?.invalid && (candidatureForm.get('messageMotivation')?.dirty || candidatureForm.get('messageMotivation')?.touched)" class="text-danger small mt-1">
+                Le message ne doit pas dépasser 1000 caractères.
+              </div>
+          </div>
+
+          <hr>
+
+          <!-- Non-Editable Sections (Experiences, Diplomas, Certificats, Competences) -->
+          <!-- Experiences -->
+          <div class="mb-4">
+            <h4><i class="fas fa-history me-2"></i> Expériences Professionnelles</h4>
+            <div *ngIf="getExperiences().length > 0; else noExperiences">
+              <div class="experience mb-3 p-3 border rounded bg-light" *ngFor="let exp of getExperiences()">
+                <h5>{{ exp.poste }} <span class="fw-normal">chez</span> {{ exp.nomEntreprise }}</h5>
+                <p class="text-muted mb-1">{{ exp.dateDebut | date:'MM/yyyy' }} - {{ exp.dateFin ? (exp.dateFin | date:'MM/yyyy') : 'Présent' }}</p>
+                <p class="mb-1">{{ exp.description }}</p>
+                <p *ngIf="exp.competenceAcquise"><strong>Compétences:</strong> {{ exp.competenceAcquise }}</p>
+              </div>
+            </div>
+            <ng-template #noExperiences><p class="text-muted">Aucune expérience renseignée.</p></ng-template>
+          </div>
+
+          <!-- Diplomas -->
+          <div class="mb-4">
+            <h4><i class="fas fa-graduation-cap me-2"></i> Diplômes</h4>
+            <div *ngIf="getDiplomes().length > 0; else noDiplomes">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let dip of getDiplomes()">
+                  <strong>{{ dip.nomDiplome }}</strong> - {{ dip.etablissement }}
+                  <span class="text-muted"> ({{ dip.dateObtention | date:'yyyy' }})</span>
+                  <p class="mb-0 small">{{ dip.description }}</p>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noDiplomes><p class="text-muted">Aucun diplôme renseigné.</p></ng-template>
+          </div>
+
+          <!-- Certificats -->
+          <div class="mb-4">
+            <h4><i class="fas fa-certificate me-2"></i> Certificats</h4>
+            <div *ngIf="getCertificats().length > 0; else noCertificats">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let cert of getCertificats()">
+                  <strong>{{ cert.nom }}</strong> - {{ cert.organisme }}
+                  <span class="text-muted"> ({{ cert.dateObtention | date:'MM/yyyy' }})</span>
+                  <a *ngIf="cert.urlDocument" [href]="cert.urlDocument" target="_blank" class="ms-2 small">Voir document</a>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noCertificats><p class="text-muted">Aucun certificat renseigné.</p></ng-template>
+          </div>
+
+          <!-- Competences -->
+          <div class="mb-4">
+            <h4><i class="fas fa-tools me-2"></i> Compétences</h4>
+            <div *ngIf="candidature.userInfo?.competences?.length > 0; else noCompetences">
+               <span *ngFor="let comp of candidature.userInfo?.competences" class="badge bg-secondary me-1 mb-1 p-2">
+                 {{ comp.competenceNom }} ({{ comp.niveau }})
+               </span>
+            </div>
+             <ng-template #noCompetences><p class="text-muted">Aucune compétence renseignée.</p></ng-template>
+          </div>
+
+          <!-- Form Buttons (only visible in edit mode, handled by header buttons) -->
+          <!-- <div *ngIf="isEditMode" class="mt-4 text-end">
+            <button type="button" (click)="cancelEdit()" class="btn btn-secondary me-2">Annuler</button>
+            <button type="submit" class="btn btn-primary" [disabled]="candidatureForm.invalid || isLoading">Sauvegarder</button>
+          </div> -->
+
+        </form>
+      </div> <!-- End card-body -->
+    </div> <!-- End card -->
+  </div> <!-- End candidature details container -->
+</div> <!-- End main container -->
+

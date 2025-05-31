@@ -1,0 +1,59 @@
+.question-group {
+  background-color: #f8f9fa;
+  margin-bottom: 1rem;
+}
+
+.reponse-item {
+  background-color: #e9ecef;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.loading-text {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mt-4 {
+  margin-top: 1.5rem !important;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+.border {
+  border: 1px solid #dee2e6 !important;
+}

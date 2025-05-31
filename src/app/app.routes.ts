@@ -43,7 +43,7 @@ import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { QuizFormComponent } from './quiz-form/quiz-form.component';
 // import { FullQuizFormComponent } from './full-quiz-form/full-quiz-form.component';
 import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
-import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
+// import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
 
 
 export const routes: Routes = [
@@ -144,10 +144,10 @@ export const routes: Routes = [
   { path: 'job-details/:id', component: JobDetailsComponent },
   // {path:'/about',component:ApropsComponent ,canActivate: [AuthGuard] ,data: { roles: ['Candidate'] } }, 
 
-  // { path: 'candidature/:offreId', component: CandidatureComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
+  // { path: 'candidature/:offreId', component: CandidatureFormComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   // { path: 'candidature/edit/:id', component: CandidatureComponent },
   { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  // { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   { path: 'quizzes', component: QuizListComponent },
   { path: 'quizzes/create', component: QuizFormComponent },
   // { path: 'quizzes/create-full', component: FullQuizFormComponent },

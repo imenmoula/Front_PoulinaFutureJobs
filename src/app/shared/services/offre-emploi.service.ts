@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AppUser } from '../../Models/Candidature.model';
 import { environment } from '../../../environments/environment.development';
 import { CreateOffreEmploiRequest, OffreEmploi } from '../../Models/offre-emploi.model';
 import { Recruiter } from '../../Models/recruiter.model';
@@ -13,7 +12,7 @@ interface ApiResponse<T> {
   offresEmploi?: T[];
   offreEmploi?: T;
   data?: T | T[];
-  recruteurs?: AppUser[];
+  recruteurs?: Recruiter[];
 }
 
 
@@ -196,6 +195,40 @@ getRecruitersSimple(): Observable<Recruiter[]> {
     );
   }
 
+  // Exemple de nouvelle méthode pour activer/désactiver une offre
+  setActiveStatus(id: string, isActive: boolean): Observable<OffreEmploi> {
+    return this.http.patch<ApiResponse<OffreEmploi>>(
+      `${this.apiUrl}/${id}/set-active`,
+      { isActive },
+      { headers: this.getHeaders() }
+    ).pipe(
+      map(response => response.data as OffreEmploi),
+      catchError(this.handleError)
+    );
+  }
+
+  // Exemple de méthode pour filtrer les offres par statut
+  filterByStatut(statut: string): Observable<OffreEmploi[]> {
+    return this.http.get<ApiResponse<OffreEmploi>>(
+      `${this.apiUrl}/filter-by-statut/${statut}`,
+      { headers: this.getHeaders() }
+    ).pipe(
+      map(response => response.offresEmploi || []),
+      catchError(this.handleError)
+    );
+  }
+
+  /************************************** */
+// Ajoutez cette méthode dans le service
+getByConnectedRecruteur(): Observable<OffreEmploi[]> {
+  return this.http.get<ApiResponse<OffreEmploi>>(
+    `${this.apiUrl}/by-connected-recruteur`, 
+    { headers: this.getHeaders() }
+  ).pipe(
+    map(response => response.offresEmploi || []),
+    catchError(this.handleError)
+  );
+}
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Une erreur est survenue';
     if (error.error instanceof ErrorEvent) {

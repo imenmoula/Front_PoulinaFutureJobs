@@ -34,5 +34,12 @@ export enum NiveauRequisType {
     Arabe = 'Arabe',
     Italien = 'Italien'
   }
+
+  export enum NiveauPossedeType {
+  Debutant = 'Debutant',
+  Intermediaire = 'Intermediaire',
+  Avance = 'Avance',
+  Expert = 'Expert'
+}
   
  

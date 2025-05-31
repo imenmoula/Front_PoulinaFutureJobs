@@ -10,13 +10,16 @@ import { catchError, Observable, of, forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { OffreEmploi, Diplome } from '../../Models/offre-emploi.model';
 import { Filiale } from '../../Models/filiale.model';
-import { AppUser } from '../../Models/Candidature.model';
 import { NiveauRequisType } from '../../Models/enums.model';
+import { User } from '../../Models/user.model';
+import { FooterComponent } from '../../layoutBackend/footer/footer.component';
+import { HeaderComponent } from '../../layoutBackend/header/header.component';
+import { SidebarComponent } from '../../layoutBackend/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-offre-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FooterComponent,HeaderComponent,SidebarComponent],
   templateUrl: './offre-detail.component.html',
   styleUrls: ['./offre-detail.component.css']
 })
@@ -29,6 +32,7 @@ export class OffreDetailComponent implements OnInit {
   diplomes: Diplome[] = [];
   userRole: string = '';
   private toastActive: boolean = false;
+  sidebarOpen: boolean = false;
 
   // Map NiveauRequisType enum values to display labels
   niveauRequisLabels: { [key in NiveauRequisType]: string } = {
@@ -113,7 +117,7 @@ export class OffreDetailComponent implements OnInit {
             this.userService.getUserById(this.offre.idRecruteur).pipe(
               catchError(() => {
                 this.setError('Impossible de charger les détails du recruteur.');
-                return of({ fullName: 'Non spécifié' } as AppUser);
+                return of({ fullName: 'Non spécifié' } as User);
               })
             )
           ];
@@ -240,5 +244,8 @@ export class OffreDetailComponent implements OnInit {
     }).then(() => {
       this.toastActive = false;
     });
+  }
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }
