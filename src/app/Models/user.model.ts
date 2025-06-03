@@ -18,14 +18,8 @@ export interface User {
   ville?: string;
   pays?: string;
   phone ?: string; 
-  niveauEtude?: string;
-  diplome?: string;
-  universite?: string;
-  specialite?: string;
-  cv?: string;
-  linkedIn?: string;
-  github?: string;
-  portfolio?: string;
+
+ 
   entreprise?: string;
   poste?: string;
    idFiliale?: string; // Nouvelle propriété pour la relation avec Filiale
