@@ -1,4 +1,4 @@
-/* candidate-only.component.css */
+candidate-only.component.css
 /* Styles globaux */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -740,7 +740,26 @@ body {
   .section-tittle h2 {
     font-size: 2rem;
   }
-  
+   .hero-slider {
+                height: 250px;
+            }
+            
+            .slide-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .slide-content p {
+                font-size: 0.9rem;
+            }
+            
+            .btn-slider {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .slider-nav {
+                display: none;
+            }
   .section-tittle2 h2 {
     font-size: 1.8rem;
   }
@@ -778,3 +797,5 @@ body {
     justify-content: center;
   }
 }
+
+        

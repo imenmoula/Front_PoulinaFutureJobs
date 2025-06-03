@@ -53,6 +53,7 @@ import { JobDetailsComponent } from './CandidateFront/components/job-details/job
 import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
 import { QuizFormComponent } from './quiz-form/quiz-form.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
+import { ProfileCandidateComponent } from './components/profile-candidate/profile-candidate.component';
 // import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
@@ -98,7 +99,9 @@ import { QuizListComponent } from './quiz-list/quiz-list.component';
     // ApropsComponent
     QuizDetailComponent,
     QuizListComponent,
-    QuizFormComponent
+    QuizFormComponent,
+    ProfileCandidateComponent,
+    
    
   
 ],

@@ -227,6 +227,25 @@ export class AuthService {
     console.log('JWT Claims:', claims || 'No claims available');
   }
 
+  getUserRole(): string | null {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        return decoded['role'] || null;
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+        return null;
+      }
+    }
+    return null;
+  }
+
+  isAdminOrRecruteur(): boolean {
+    const role = this.getUserRole();
+    return role === 'Admin' || role === 'Recruteur';
+  }
+
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Une erreur est survenue';
     if (error.error instanceof ErrorEvent) {

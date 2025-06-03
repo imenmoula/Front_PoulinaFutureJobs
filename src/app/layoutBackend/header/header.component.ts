@@ -33,8 +33,7 @@ constructor(public authService: AuthService, private router: Router) {}
   }
 
   goToProfile(): void {
-    // Redirection vers le profil (exemple)
-    console.log('Redirection vers le profil');
+this.router.navigateByUrl('/profile-update');
   }
 
   onLogout(): void {

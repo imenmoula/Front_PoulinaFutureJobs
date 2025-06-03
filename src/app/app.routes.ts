@@ -44,6 +44,8 @@ import { QuizFormComponent } from './quiz-form/quiz-form.component';
 // import { FullQuizFormComponent } from './full-quiz-form/full-quiz-form.component';
 import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
 import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
+import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
+import { ProfileCandidateComponent } from './components/profile-candidate/profile-candidate.component';
 // import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
 
 
@@ -144,11 +146,20 @@ export const routes: Routes = [
   { path: 'job-list', component: JobListingComponent },
   { path: 'job-details/:id', component: JobDetailsComponent },
   {path:'about',component:ApropsComponent}, 
-
-  { path: 'candidature/:offreId', component: CandidatureFormComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
+  { path: 'profile-update', component: ProfileUpdateComponent, canActivate: [AuthGuard] ,data: { roles: ['Candidate','Admin','Recruteur'] } },
+ {
+    path: 'profile',
+    component: ProfileCandidateComponent,
+    canActivate: [AuthGuard],
+    data: { 
+      role: 'candidate',
+      title: 'Mon Profil - Poulina Group Holding'
+    }
+  },  { path: 'candidature/:offreId', component: CandidatureFormComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   { path: 'candidature/edit/:id', component: CandidatureFormComponent },
   { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   // { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+
   { path: 'quizzes', component: QuizListComponent },
   { path: 'quizzes/create', component: QuizFormComponent },
   // { path: 'quizzes/create-full', component: FullQuizFormComponent },

@@ -1,0 +1,234 @@
+<!-- profile-candidate.component.html -->
+<header>
+  <div class="job-listing-header">
+    <div class="container">
+      <div class="logo">
+        <a routerLink="/"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a routerLink="/">Accueil</a></li>
+          <li><a routerLink="/job-list">Offres d'emploi</a></li>
+          <li><a routerLink="/about">À propos</a></li>
+          <li><a routerLink="/contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons">
+        <a (click)="onLogout()" class="btn-signup">Déconnexion</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="candidate-profile">
+  <div class="profile-container">
+    <!-- Sidebar du profil -->
+    <aside class="profile-sidebar">
+      <!-- Photo de profil avec upload -->
+      <label for="profile-photo-upload" class="photo-upload-label">
+        <img [src]="profile?.photoUrl || 'https://via.placeholder.com/150'" 
+             alt="Photo de profil" class="profile-picture">
+        <div class="upload-overlay">
+          <i class="fas fa-camera"></i>
+        </div>
+      </label>
+      <input type="file" id="profile-photo-upload" accept="image/*" 
+             (change)="onFileSelected($event)" style="display: none;">
+
+      <h1 class="profile-name">{{ getFullName() }}</h1>
+      <p class="profile-title" *ngIf="profile?.filiale">
+        <!-- {{ profile.filiale?.nom }} -->
+      </p>
+      
+      <div class="progress-container">
+        <div class="progress-label">
+          <span>Profil complété</span>
+          <span>{{ progress }}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progress"></div>
+        </div>
+      </div>
+      
+      <ul class="profile-nav">
+        <li><a href="/profile-update" class="active"><i class="fas fa-user"></i> Mon Profil</a></li>
+        <li><a href="#"><i class="fas fa-file-alt"></i> Candidatures</a></li>
+        <li><a href="#"><i class="fas fa-question-circle"></i> Quiz & Évaluations</a></li>
+        <li><a href="#"><i class="fas fa-comments"></i> Entretiens</a></li>
+      
+      </ul>
+      
+      <div class="skills-section">
+        <h3>
+          <i class="fas fa-check-circle"></i> Compétences validées
+        </h3>
+        <div class="skill-percentage">
+          {{ skillValidation }}%
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Contenu principal du profil -->
+    <div class="profile-content">
+      <div *ngIf="loading" class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i> Chargement du profil...
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i> {{ error }}
+      </div>
+
+      <div *ngIf="profile && !loading">
+        <!-- Section Informations personnelles -->
+        <section class="section">
+          <h2 class="section-title">
+            <i class="fas fa-info-circle"></i> Informations personnelles
+          </h2>
+          
+          <div class="personal-info-grid">
+            <div class="info-item">
+              <div class="info-label">Nom complet</div>
+              <div class="info-value">{{ getFullName() }}</div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Téléphone</div>
+              <div class="info-value">{{ profile.phoneNumber }}</div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Email</div>
+              <div class="info-value">{{ profile.email }}</div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Localisation</div>
+              <div class="info-value">{{ getLocation() }}</div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Adresse</div>
+              <div class="info-value">{{ profile.adresse }}</div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Date de naissance</div>
+              <div class="info-value">
+                {{ profile.dateNaissance | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Section Expérience professionnelle -->
+        <section class="section">
+          <h2 class="section-title">
+            <i class="fas fa-briefcase"></i> Expérience professionnelle
+          </h2>
+          
+          <div *ngFor="let exp of experiences" class="experience-item">
+            <h3 class="job-title">{{ exp.poste }}</h3>
+            <div class="company-name">
+              <i class="fas fa-building"></i> {{ exp.nomEntreprise }}
+            </div>
+            <div class="job-period">
+              {{ formatDate(exp.dateDebut) }} - {{ exp.dateFin ? formatDate(exp.dateFin) : 'Présent' }}
+            </div>
+            <p *ngIf="exp.description" class="job-description">{{ exp.description }}</p>
+            <div *ngIf="exp.competenceAcquise" class="job-skills">
+              <span class="skill-tag">{{ exp.competenceAcquise }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="experiences.length === 0" class="no-data">
+            {{ experiencesError || 'Aucune expérience professionnelle enregistrée' }}
+          </div>
+        </section>
+        
+        <!-- Section Formation -->
+        <section class="section">
+          <h2 class="section-title">
+            <i class="fas fa-graduation-cap"></i> Formation
+          </h2>
+          
+          <div *ngFor="let diploma of diplomas" class="education-item">
+            <h3 class="degree">{{ diploma.nomDiplome }}</h3>
+            <div class="institution">{{ diploma.institution }}</div>
+            <div class="education-period">
+              {{ formatDate(diploma.dateObtention) }}
+            </div>
+            <p *ngIf="diploma.specialite" class="education-description">
+              Spécialité: {{ diploma.specialite }}
+            </p>
+          </div>
+
+          <div *ngIf="diplomas.length === 0" class="no-data">
+            {{ diplomasError || 'Aucun diplôme enregistré' }}
+          </div>
+        </section>
+
+        <!-- Section Certifications -->
+        <section class="section">
+          <h2 class="section-title">
+            <i class="fas fa-award"></i> Certifications
+          </h2>
+          
+          <div *ngFor="let cert of certificates" class="education-item">
+            <h3 class="degree">{{ cert.nom }}</h3>
+            <div class="institution">{{ cert.organisme }}</div>
+            <div class="education-period">
+              Obtenu le: {{ formatDate(cert.dateObtention) }}
+              <span *ngIf="cert.dateExpiration">
+                | Expire le: {{ formatDate(cert.dateExpiration) }}
+              </span>
+            </div>
+          </div>
+
+          <div *ngIf="certificates.length === 0" class="no-data">
+            {{ certificatesError || 'Aucune certification enregistrée' }}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="job-listing-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding">
+        <p>Construire ensemble l'avenir professionnel.</p>
+      </div>
+      
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>Entreprise</h4>
+          <a href="#">À propos</a>
+          <a href="#">Carrières</a>
+          <a href="#">Filiales</a>
+          <a href="#">Actualités</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Ressources</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Conditions d'utilisation</a>
+          <a href="#">Politique de confidentialité</a>
+          <a href="#">Contact</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <p><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</p>
+          <p><i class="fas fa-phone"></i> +216 70 010 000</p>
+          <p><i class="fas fa-envelope"></i> contactpoulina.com</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>

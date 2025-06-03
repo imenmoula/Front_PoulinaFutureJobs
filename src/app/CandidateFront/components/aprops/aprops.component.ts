@@ -23,6 +23,8 @@ import { Router } from '@angular/router';
   ],
 })
 export class ApropsComponent {
+  currentYear = new Date().getFullYear();
+
   // constructor(public authService: AuthService, private router: Router
 
   // ) {}

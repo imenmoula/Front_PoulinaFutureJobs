@@ -281,4 +281,8 @@ currentYear = new Date().getFullYear();
   getFilialeLocation(filiale: any): string {
     return filiale.adresse || 'Tunisie';
   }
+  
+navigateToProfile() {
+  this.router.navigate(['/profile']);
+}
 }

@@ -198,14 +198,7 @@
             </div>
 
             <!-- Apply Button -->
-            <div class="job-section-card text-center" style="margin-top: 2rem;" *ngIf="getStatutOffreLabel(offre.statut) === 'Ouvert'">
-              <button
-                class="btn btn-primary btn-lg"
-                (click)="navigateToCandidature()"
-              >
-                <i class="fas fa-paper-plane"></i> Postuler à cette offre
-              </button>
-            </div>
+           
           </div>
 
           <!-- Sidebar -->
@@ -253,9 +246,14 @@
                 </div>
               </div>
               
-              <button class="apply-btn" *ngIf="offre.statut === StatutOffre.Ouvert" (click)="navigateToCandidature()" >  
-                Postuler maintenant
+              <div class="job-section-card text-center" style="margin-top: 2rem;" *ngIf="getStatutOffreLabel(offre.statut) === 'Ouvert'">
+              <button
+                class="btn btn-primary btn-lg"
+                (click)="navigateToCandidature()"
+              >
+                <i class="fas fa-paper-plane"></i> Postuler à cette offre
               </button>
+            </div>
              
               <div class="action-buttons">
                 <button class="secondary-btn"><i class="far fa-bookmark"></i> Sauvegarder</button>
