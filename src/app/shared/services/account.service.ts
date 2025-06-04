@@ -29,6 +29,9 @@ export interface EditProfileRequest {
   idFiliale?: string;
   dateNaissance?: string;
   photo?: string;
+  CurrentPassword?: string;  // Majuscule
+  NewPassword?: string;      // Majuscule
+
 }
 
 @Injectable({

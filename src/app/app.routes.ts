@@ -29,7 +29,7 @@ import { RecruiterListComponent } from './features/recruiter-list/recruiter-list
 import { UserFormComponent } from './features/user-form/user-form.component';
 import { FilialeAddComponent } from './features/filiale-add/filiale-add.component';
 import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
-import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
+// import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { ContentComponent } from './layoutBackend/content/content.component';
 import { CandidatureListComponent } from './interfacerecruteur/candidature-list/candidature-list.component';
 import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
@@ -114,7 +114,7 @@ export const routes: Routes = [
   { path: 'candidate', component: CandidateListComponent },
   { path: 'candidate/form', component: UserFormComponent}, // Ajout
   { path: 'candidate/form/:id', component: UserFormComponent},
-  { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
+  // { path: 'candidate/details/:id', component: CandidateDetailsComponent}, // Nouvelle route
   /*gestion des admins*/
   { path: 'admins', component: AdminListComponent},
   { path: 'admins/form', component: UserFormComponent},
