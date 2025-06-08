@@ -22,9 +22,9 @@ export enum NiveauRequisType {
   }
   
   export enum ModeTravail {
-    Presentiel = 0,
-    Hybride = 1,
-    Teletravail = 2
+    Presentiel = 'presentiel',
+    Hybride = 'hybride',
+    Teletravail = 'teletravail'
   }
   export enum Langue {
     Francais = 'Francais',

@@ -7,11 +7,14 @@ import { TypeQuestion } from '../Models/quiz.model';
 import { OffreEmploi } from '../Models/offre-emploi.model';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../layoutBackend/footer/footer.component';
+import { HeaderComponent } from '../layoutBackend/header/header.component';
+import { SidebarComponent } from '../layoutBackend/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-quiz-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,FormsModule,RouterModule],
+  imports: [CommonModule, ReactiveFormsModule,FormsModule,RouterModule,FooterComponent,HeaderComponent,SidebarComponent],
   templateUrl: './quiz-form.component.html',
   styleUrls: ['./quiz-form.component.css']
 })
@@ -25,6 +28,7 @@ export class QuizFormComponent implements OnInit {
   selectedOffre: OffreEmploi | null = null;
   public reponseTexteType = TypeQuestion.ReponseTexte;
   public vraiFauxType = TypeQuestion.VraiFaux;
+  sidebarOpen = false;
 
   constructor(
     private fb: FormBuilder,
@@ -344,5 +348,8 @@ export class QuizFormComponent implements OnInit {
         Swal.fire('Erreur', `Une erreur est survenue lors de ${this.isEditMode ? 'la mise à jour' : 'la création'} du quiz`, 'error');
       }
     });
+  }
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }

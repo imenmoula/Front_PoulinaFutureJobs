@@ -44,6 +44,11 @@
   font-weight: 500;
   padding: 5px 0;
   position: relative;
+  transition: color 0.3s;
+}
+
+.main-nav a:hover {
+  color: #4169E1;
 }
 
 .main-nav a.active {
@@ -181,12 +186,17 @@
 .profile-sidebar {
   background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Ombre plus douce */
   padding: 30px;
   position: sticky;
   top: 100px;
   height: fit-content;
   text-align: center;
+  transition: box-shadow 0.3s;
+}
+
+.profile-sidebar:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* Effet hover */
 }
 
 .photo-upload-label {
@@ -223,12 +233,18 @@
   object-fit: cover;
   border: 5px solid #f0f4ff;
   display: block;
+  transition: transform 0.3s;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05); /* Zoom léger au hover */
 }
 
 .profile-name {
   font-size: 1.8rem;
   margin-bottom: 5px;
   color: #2c3e50;
+  font-weight: 600;
 }
 
 .profile-title {
@@ -287,6 +303,7 @@
   margin-right: 10px;
   width: 20px;
   text-align: center;
+  color: #4169E1; /* Icône fine */
 }
 
 .profile-nav a:hover, .profile-nav a.active {
@@ -326,8 +343,9 @@
 .profile-content {
   background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Ombre plus douce */
   padding: 40px;
+  overflow: hidden; /* Pour gérer les scrolls */
 }
 
 .section {
@@ -351,6 +369,7 @@
 .section-title i {
   margin-right: 10px;
   color: #4169E1;
+  font-weight: 300; /* Icône plus fine */
 }
 
 .personal-info-grid {
@@ -375,10 +394,16 @@
   word-break: break-word;
 }
 
+/* Styles pour les sections défilables */
 .experience-item, .education-item {
   margin-bottom: 25px;
   padding-bottom: 25px;
   border-bottom: 1px solid #eee;
+  transition: transform 0.2s;
+}
+
+.experience-item:hover, .education-item:hover {
+  transform: translateY(-5px); /* Effet de survol */
 }
 
 .experience-item:last-child, 
@@ -404,6 +429,7 @@
 
 .company-name i {
   margin-right: 8px;
+  font-weight: 300; /* Icône fine */
 }
 
 .job-period {
@@ -466,6 +492,32 @@
   border: 1px dashed #ddd;
 }
 
+/* Scroll personnalisé */
+.section-content {
+  max-height: 400px; /* Hauteur maximale avant défilement */
+  overflow-y: auto; /* Défilement vertical */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #4169E1 #e9ecef; /* Couleur de la barre */
+}
+
+.section-content::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre */
+}
+
+.section-content::-webkit-scrollbar-track {
+  background: #e9ecef; /* Couleur de la piste */
+  border-radius: 4px;
+}
+
+.section-content::-webkit-scrollbar-thumb {
+  background: #4169E1; /* Couleur de la poignée */
+  border-radius: 4px;
+}
+
+.section-content::-webkit-scrollbar-thumb:hover {
+  background: #3558c1; /* Couleur au hover */
+}
+
 .loading-spinner {
   display: flex;
   align-items: center;
@@ -477,6 +529,7 @@
 
 .loading-spinner i {
   margin-right: 10px;
+  font-weight: 300; /* Icône fine */
 }
 
 .error-message {
@@ -490,6 +543,7 @@
 
 .error-message i {
   margin-right: 10px;
+  font-weight: 300; /* Icône fine */
 }
 
 /* Responsive */
@@ -567,10 +621,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: background 0.3s;
 }
 
 .btn-add:hover {
   background: #3558c1;
+}
+
+.btn-add i {
+  font-weight: 300; /* Icône fine */
 }
 
 .item-header {
@@ -590,14 +649,27 @@
   cursor: pointer;
   font-size: 16px;
   padding: 5px;
+  transition: color 0.3s;
 }
 
 .btn-edit {
   color: #4169E1;
 }
 
+.btn-edit:hover {
+  color: #3558c1;
+}
+
 .btn-delete {
   color: #e74c3c;
+}
+
+.btn-delete:hover {
+  color: #c0392b;
+}
+
+.btn-edit i, .btn-delete i {
+  font-weight: 300; /* Icône fine */
 }
 
 /* Modals */
@@ -611,15 +683,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modal {
   background: white;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 100%;
   max-width: 600px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Ombre plus douce */
+  z-index: 2001;
+  display: block;
+  animation: fadeIn 0.3s ease; /* Animation d'apparition */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .modal-header {
@@ -633,6 +713,7 @@
 .modal-header h2 {
   margin: 0;
   font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .btn-close {
@@ -641,10 +722,37 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: #777;
+  transition: color 0.3s;
+}
+
+.btn-close:hover {
+  color: #333;
 }
 
 .modal-body {
   padding: 20px;
+  max-height: 70vh; /* Hauteur maximale pour le défilement */
+  overflow-y: auto; /* Défilement si contenu long */
+  scrollbar-width: thin;
+  scrollbar-color: #4169E1 #f0f4ff;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f0f4ff;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #4169E1;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #3558c1;
 }
 
 .form-group {
@@ -655,6 +763,7 @@
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
+  color: #333;
 }
 
 .form-group input,
@@ -662,8 +771,15 @@
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4169E1;
+  outline: none;
 }
 
 .form-group textarea {
@@ -693,6 +809,11 @@
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+  background: #ddd;
 }
 
 .btn-save {
@@ -702,6 +823,7 @@
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .btn-save:hover {
@@ -718,5 +840,37 @@
   .modal {
     width: 95%;
     margin: 0 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-sidebar {
+    position: static;
+    margin-bottom: 30px;
+  }
+  
+  .personal-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .job-listing-header .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .main-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .auth-buttons {
+    width: 100%;
+    justify-content: center;
   }
 }

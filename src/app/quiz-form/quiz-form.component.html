@@ -1,3 +1,11 @@
+
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+  <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+  <br><br><br>
+  <div class="page-body-wrapper">
+    <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+     <div class="page-body">
 <div class="container mt-4">
   <h2>{{ isEditMode ? 'Modifier' : 'Créer' }} un Quiz</h2>
   
@@ -51,7 +59,7 @@
                 <option [value]="null">Aucune offre sélectionnée</option>
                 <ng-container *ngIf="!loadingOffres; else loadingOffresTemplate">
                   <option *ngFor="let offre of offres" [value]="offre.idOffreEmploi">
-                    {{ offre.specialite }} (ID: {{ offre.idOffreEmploi | slice:0:8 }}...)
+                    {{ offre.specialite }}
                   </option>
                 </ng-container>
                 <ng-template #loadingOffresTemplate>
@@ -224,4 +232,10 @@
       </button>
     </div>
   </form>
+</div>
+     </div>
+
+
+ <app-footer></app-footer>
+  </div>
 </div>

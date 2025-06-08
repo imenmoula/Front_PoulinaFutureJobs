@@ -47,7 +47,7 @@ import { RecruiterDetailsComponent } from './features/recruiter-details/recruite
 import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
 import { OffreListComponent } from './interfacerecruteur/offre-list/offre-list.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
-import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
+// import { CandidateDetailsComponent } from './features/candidate-details/candidate-details.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
@@ -82,7 +82,7 @@ import { ProfileCandidateComponent } from './components/profile-candidate/profil
     RoleListComponent,
     AdminListComponent,
     CandidateListComponent,
-    CandidateDetailsComponent,
+    // CandidateDetailsComponent,
     RecruiterListComponent,
     RecruiterDetailsComponent,
     OffreDetailComponent,

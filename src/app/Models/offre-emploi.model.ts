@@ -6,6 +6,8 @@ import { OffreCompetence } from './offre-competence.model';
 
 export interface OffreEmploi {
   idOffreEmploi?: string;
+TitreOffre: string;
+  DescriptionOffre : string;
   specialite: string;
   datePublication?: string; // ISO string
   dateExpiration: string; // ISO string

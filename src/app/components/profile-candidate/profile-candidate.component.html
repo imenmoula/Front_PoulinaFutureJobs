@@ -1,404 +1,321 @@
-<!-- profile-candidate.component.html -->
-<header>
-  <div class="job-listing-header">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- Ajout de SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="job-listing-header">
     <div class="container">
       <div class="logo">
-        <a routerLink="/"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
+        <img src="assets/logo.png" alt="Logo">
       </div>
       <nav class="main-nav">
         <ul>
-          <li><a routerLink="/">Accueil</a></li>
-          <li><a routerLink="/job-list">Offres d'emploi</a></li>
-          <li><a routerLink="/about">À propos</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
+          <li><a href="#" [class.active]="true">Accueil</a></li>
+          <li><a href="#">Offres d'emploi</a></li>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
       </nav>
       <div class="auth-buttons">
-        <a (click)="onLogout()" class="btn-signup">Déconnexion</a>
+       
+        <a href="#" (click)="onLogout()" class="btn-signin">Déconnexion</a>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<main class="candidate-profile">
-  <div class="profile-container">
-    <!-- Sidebar du profil -->
-    <aside class="profile-sidebar">
-      <!-- Photo de profil avec upload -->
-      <label for="profile-photo-upload" class="photo-upload-label">
-        <img [src]="profile?.photoUrl || 'https://via.placeholder.com/150'" 
-             alt="Photo de profil" class="profile-picture">
-        <div class="upload-overlay">
-          <i class="fas fa-camera"></i>
+  <!-- Main Content -->
+  <main class="candidate-profile">
+    <div class="profile-container">
+      <!-- Sidebar -->
+      <aside class="profile-sidebar">
+        <div class="photo-upload-label">
+          <img [src]="profile?.photoUrl || 'assets/default-profile.png'" class="profile-picture" alt="Photo de profil">
+          <div class="upload-overlay"><i class="fas fa-camera"></i></div>
+          <input type="file" (change)="onFileSelected($event)" style="display: none;">
         </div>
-      </label>
-      <input type="file" id="profile-photo-upload" accept="image/*" 
-             (change)="onFileSelected($event)" style="display: none;">
+        <h1 class="profile-name">{{ getFullName() }}</h1>
+        <p class="profile-title">Candidat</p>
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Profil complété</span><span>{{ progress }}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width]="progress + '%'"></div>
+          </div>
+        </div>
+        <ul class="profile-nav">
+          <li><a href="\profile-update"><i class="fas fa-user"></i> Mon Profil</a></li>
+          <li><a href="#"><i class="fas fa-briefcase"></i> Candidatures</a></li>
+          <li><a href="#"><i class="fas fa-question-circle"></i> Quiz & Évaluations</a></li>
+          <li><a href="#"><i class="fas fa-microphone"></i> Entretiens</a></li>
+        </ul>
+        <div class="skills-section">
+          <h3><i class="fas fa-star"></i> Compétences validées</h3>
+          <p class="skill-percentage">{{ skillValidation }}%</p>
+        </div>
+      </aside>
 
-      <h1 class="profile-name">{{ getFullName() }}</h1>
-      <p class="profile-title" *ngIf="profile?.filiale">
-        <!-- {{ profile.filiale?.nom }} -->
-      </p>
-      
-      <div class="progress-container">
-        <div class="progress-label">
-          <span>Profil complété</span>
-          <span>{{ progress }}%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="progress"></div>
-        </div>
-      </div>
-      
-      <ul class="profile-nav">
-        <li><a href="/profile-update" class="active"><i class="fas fa-user"></i> Mon Profil</a></li>
-        <li><a href="#"><i class="fas fa-file-alt"></i> Candidatures</a></li>
-        <li><a href="#"><i class="fas fa-question-circle"></i> Quiz & Évaluations</a></li>
-        <li><a href="#"><i class="fas fa-comments"></i> Entretiens</a></li>
-      </ul>
-      
-      <div class="skills-section">
-        <h3>
-          <i class="fas fa-check-circle"></i> Compétences validées
-        </h3>
-        <div class="skill-percentage">
-          {{ skillValidation }}%
-        </div>
-      </div>
-    </aside>
-    
-    <!-- Contenu principal du profil -->
-    <div class="profile-content">
-      <div *ngIf="loading" class="loading-spinner">
-        <i class="fas fa-spinner fa-spin"></i> Chargement du profil...
-      </div>
+      <!-- Content -->
+      <div class="profile-content">
+        <div *ngIf="loading" class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Chargement du profil...</div>
+        <div *ngIf="error" class="error-message"><i class="fas fa-exclamation-triangle"></i> {{ error }}</div>
 
-      <div *ngIf="error" class="error-message">
-        <i class="fas fa-exclamation-triangle"></i> {{ error }}
-      </div>
-
-      <div *ngIf="profile && !loading">
-        <!-- Section Informations personnelles -->
-        <section class="section">
-          <h2 class="section-title">
-            <i class="fas fa-info-circle"></i> Informations personnelles
-          </h2>
-          
+        <!-- Informations personnelles -->
+        <div class="section">
+          <div class="section-title">
+            <i class="fas fa-user"></i> Informations personnelles
+          </div>
           <div class="personal-info-grid">
-            <div class="info-item">
-              <div class="info-label">Nom complet</div>
-              <div class="info-value">{{ getFullName() }}</div>
-            </div>
-            
-            <div class="info-item">
-              <div class="info-label">Téléphone</div>
-              <div class="info-value">{{ profile.phoneNumber }}</div>
-            </div>
-            
-            <div class="info-item">
-              <div class="info-label">Email</div>
-              <div class="info-value">{{ profile.email }}</div>
-            </div>
-            
-            <div class="info-item">
-              <div class="info-label">Localisation</div>
-              <div class="info-value">{{ getLocation() }}</div>
-            </div>
-            
-            <div class="info-item">
-              <div class="info-label">Adresse</div>
-              <div class="info-value">{{ profile.adresse }}</div>
-            </div>
-            
-            <div class="info-item">
-              <div class="info-label">Date de naissance</div>
-              <div class="info-value">
-                {{ profile.dateNaissance | date: 'dd/MM/yyyy' }}
-              </div>
-            </div>
+            <div class="info-item"><span class="info-label">Nom complet</span><span class="info-value">{{ getFullName() }}</span></div>
+            <div class="info-item"><span class="info-label">Téléphone</span><span class="info-value">{{ profile?.phoneNumber }}</span></div>
+            <div class="info-item"><span class="info-label">Email</span><span class="info-value">{{ profile?.email }}</span></div>
+            <div class="info-item"><span class="info-label">Localisation</span><span class="info-value">{{ getLocation() }}</span></div>
+            <div class="info-item"><span class="info-label">Adresse</span><span class="info-value">{{ profile?.adresse }}</span></div>
+            <div class="info-item"><span class="info-label">Date de naissance</span><span class="info-value">{{ profile?.dateNaissance | date: 'dd/MM/yyyy' }}</span></div>
           </div>
-        </section>
-        
-        <!-- Section Expérience professionnelle -->
-        <section class="section">
-          <div class="section-header">
-            <h2 class="section-title">
-              <i class="fas fa-briefcase"></i> Expérience professionnelle
-            </h2>
-            <button class="btn-add" (click)="openExperienceForm()">
-              <i class="fas fa-plus"></i> Ajouter
-            </button>
-          </div>
-          
-          <div *ngFor="let exp of experiences" class="experience-item">
-            <div class="item-header">
-              <h3 class="job-title">{{ exp.poste }}</h3>
-              <div class="item-actions">
-                <button (click)="openExperienceForm(exp)" class="btn-edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button (click)="deleteExperience(exp.id)" class="btn-delete">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-            <div class="company-name">
-              <i class="fas fa-building"></i> {{ exp.nomEntreprise }}
-            </div>
-            <div class="job-period">
-              {{ formatDate(exp.dateDebut) }} - {{ exp.dateFin ? formatDate(exp.dateFin) : 'Présent' }}
-            </div>
-            <p *ngIf="exp.description" class="job-description">{{ exp.description }}</p>
-            <div *ngIf="exp.competenceAcquise" class="job-skills">
-              <span class="skill-tag">{{ exp.competenceAcquise }}</span>
-            </div>
-          </div>
+        </div>
 
-          <div *ngIf="experiences.length === 0" class="no-data">
-            {{ experiencesError || 'Aucune expérience professionnelle enregistrée' }}
-          </div>
-        </section>
-        
+       <!-- Section Expérience professionnelle -->
+<div class="section">
+  <div class="section-title">
+    <i class="fas fa-briefcase"></i> Expérience professionnelle
+    <button class="btn-add" (click)="openExperienceForm()">Ajouter</button>
+  </div>
+  <div class="section-content">
+    <div *ngFor="let exp of experiences" class="experience-item">
+      <div class="item-header">
+        <div>
+          <h3 class="job-title">{{ exp.poste }}</h3>
+          <p class="company-name">{{ exp.nomEntreprise }}</p>
+          <p class="job-period">{{ formatDate(exp.dateDebut) }} - {{ exp.dateFin ? formatDate(exp.dateFin) : 'Présent' }}</p>
+          <p class="job-description">{{ exp.description }}</p>
+          <p><strong>Compétences acquises :</strong> {{ exp.competenceAcquise }}</p>
+        </div>
+        <div class="item-actions">
+          <button class="btn-edit" (click)="openExperienceForm(exp)">Modifier</button>
+          <button class="btn-delete" (click)="deleteExperience(exp.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+    <div class="no-data" *ngIf="experiences.length === 0">{{ experiencesError || 'Aucune expérience professionnelle enregistrée' }}</div>
+  </div>
+</div>
         <!-- Section Formation -->
-        <section class="section">
-          <div class="section-header">
-            <h2 class="section-title">
-              <i class="fas fa-graduation-cap"></i> Formation
-            </h2>
-            <button class="btn-add" (click)="openDiplomaForm()">
-              <i class="fas fa-plus"></i> Ajouter
-            </button>
-          </div>
-          
-          <div *ngFor="let diploma of diplomas" class="education-item">
-            <div class="item-header">
-              <h3 class="degree">{{ diploma.nomDiplome }}</h3>
-              <div class="item-actions">
-                <button (click)="openDiplomaForm(diploma)" class="btn-edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button (click)="deleteDiploma(diploma.id)" class="btn-delete">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-            <div class="institution">{{ diploma.institution }}</div>
-            <div class="education-period">
-              {{ formatDate(diploma.dateObtention) }}
-            </div>
-            <p *ngIf="diploma.specialite" class="education-description">
-              Spécialité: {{ diploma.specialite }}
-            </p>
-          </div>
+<div class="section">
+  <div class="section-title">
+    <i class="fas fa-graduation-cap"></i> Formation
+    <button class="btn-add" (click)="openDiplomaForm()">Ajouter</button>
+  </div>
+  <div class="section-content">
+    <div *ngFor="let diploma of diplomas" class="education-item">
+      <div class="item-header">
+        <div>
+          <h3 class="degree">{{ diploma.nomDiplome }}</h3>
+          <p class="institution">{{ diploma.institution }}</p>
+          <p class="education-period">{{ formatDate(diploma.dateObtention) }}</p>
+          <p>Spécialité: {{ diploma.specialite }}</p>
+        </div>
+        <div class="item-actions">
+          <button class="btn-edit" (click)="openDiplomaForm(diploma)">Modifier</button>
+          <button class="btn-delete" (click)="deleteDiploma(diploma.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+    <div class="no-data" *ngIf="diplomas.length === 0">{{ diplomasError || 'Aucun diplôme enregistré' }}</div>
+  </div>
+</div>
 
-          <div *ngIf="diplomas.length === 0" class="no-data">
-            {{ diplomasError || 'Aucun diplôme enregistré' }}
-          </div>
-        </section>
-
+        <!-- Certifications -->
         <!-- Section Certifications -->
-        <section class="section">
-          <div class="section-header">
-            <h2 class="section-title">
-              <i class="fas fa-award"></i> Certifications
-            </h2>
-            <button class="btn-add" (click)="openCertificateForm()">
-              <i class="fas fa-plus"></i> Ajouter
-            </button>
-          </div>
-          
-          <div *ngFor="let cert of certificates" class="education-item">
-            <div class="item-header">
-              <h3 class="degree">{{ cert.nom }}</h3>
-              <div class="item-actions">
-                <button (click)="openCertificateForm(cert)" class="btn-edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button (click)="deleteCertificate(cert.id)" class="btn-delete">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-            <div class="institution">{{ cert.organisme }}</div>
-            <div class="education-period">
-              Obtenu le: {{ formatDate(cert.dateObtention) }}
-              <span *ngIf="cert.dateExpiration">
-                | Expire le: {{ formatDate(cert.dateExpiration) }}
-              </span>
-            </div>
-          </div>
-
-          <div *ngIf="certificates.length === 0" class="no-data">
-            {{ certificatesError || 'Aucune certification enregistrée' }}
-          </div>
-        </section>
-      </div>
-    </div>
+<div class="section">
+  <div class="section-title">
+    <i class="fas fa-certificate"></i> Certifications
+    <button class="btn-add" (click)="openCertificateForm()">Ajouter</button>
   </div>
-</main>
-
-<footer class="job-listing-footer">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding">
-        <p>Construire ensemble l'avenir professionnel.</p>
-      </div>
-      
-      <div class="footer-links">
-        <div class="footer-column">
-          <h4>Entreprise</h4>
-          <a href="#">À propos</a>
-          <a href="#">Carrières</a>
-          <a href="#">Filiales</a>
-          <a href="#">Actualités</a>
+  <div class="section-content">
+    <div *ngFor="let cert of certificates" class="experience-item">
+      <div class="item-header">
+        <div>
+          <h3 class="job-title">{{ cert.nom }}</h3>
+          <p class="company-name">{{ cert.organisme }}</p>
+          <p class="job-period">Obtenu le: {{ formatDate(cert.dateObtention) }} | Expire le: {{ formatDate(cert.dateExpiration) }}</p>
         </div>
-        
-        <div class="footer-column">
-          <h4>Ressources</h4>
-          <a href="#">FAQ</a>
-          <a href="#">Conditions d'utilisation</a>
-          <a href="#">Politique de confidentialité</a>
-          <a href="#">Contact</a>
-        </div>
-        
-        <div class="footer-column">
-          <h4>Contact</h4>
-          <p><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</p>
-          <p><i class="fas fa-phone"></i> +216 70 010 000</p>
-          <p><i class="fas fa-envelope"></i> contactpoulina.com</p>
+        <div class="item-actions">
+          <button class="btn-edit" (click)="openCertificateForm(cert)">Modifier</button>
+          <button class="btn-delete" (click)="deleteCertificate(cert.id)">Supprimer</button>
         </div>
       </div>
     </div>
-    
-    <div class="copyright">
-      <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
-    </div>
-  </div>
-</footer>
-
-<!-- Modals pour CRUD -->
-<div *ngIf="showExperienceModal" class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>{{ editingItem ? 'Modifier expérience' : 'Ajouter une expérience' }}</h2>
-      <button (click)="closeModal()" class="btn-close">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form (ngSubmit)="saveExperience()">
-        <div class="form-group">
-          <label for="poste">Poste *</label>
-          <input type="text" id="poste" formControlName="poste">
-        </div>
-        
-        <div class="form-group">
-          <label for="nomEntreprise">Entreprise *</label>
-          <input type="text" id="nomEntreprise" formControlName="nomEntreprise">
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label for="dateDebut">Date de début *</label>
-            <input type="date" id="dateDebut" formControlName="dateDebut">
-          </div>
-          
-          <div class="form-group">
-            <label for="dateFin">Date de fin</label>
-            <input type="date" id="dateFin" formControlName="dateFin">
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea id="description" formControlName="description"></textarea>
-        </div>
-        
-        <div class="form-group">
-          <label for="competenceAcquise">Compétences acquises</label>
-          <input type="text" id="competenceAcquise" formControlName="competenceAcquise">
-        </div>
-        
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
-          <button type="submit" class="btn-save">Enregistrer</button>
-        </div>
-      </form>
-    </div>
+    <div class="no-data" *ngIf="certificates.length === 0">{{ certificatesError || 'Aucune certification enregistrée' }}</div>
   </div>
 </div>
-
-<div *ngIf="showDiplomaModal" class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>{{ editingItem ? 'Modifier diplôme' : 'Ajouter un diplôme' }}</h2>
-      <button (click)="closeModal()" class="btn-close">&times;</button>
+      </div>
     </div>
-    <div class="modal-body">
-      <form (ngSubmit)="saveDiploma()">
-        <div class="form-group">
-          <label for="nomDiplome">Diplôme *</label>
-          <input type="text" id="nomDiplome" formControlName="nomDiplome">
+  </main>
+
+  <!-- Footer -->
+  <footer class="job-listing-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="assets/footer-logo.png" alt="Footer Logo">
+          <p>Construire ensemble l'avenir professionnel.</p>
         </div>
-        
-        <div class="form-group">
-          <label for="institution">Établissement *</label>
-          <input type="text" id="institution" formControlName="institution">
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Entreprise</h4>
+            <a href="#">À propos</a>
+            <a href="#">Carrières</a>
+            <a href="#">Filiales</a>
+            <a href="#">Actualités</a>
+          </div>
+          <div class="footer-column">
+            <h4>Ressources</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Conditions d'utilisation</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">Contact</a>
+          </div>
+          <div class="footer-column">
+            <h4>Contact</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</p>
+            <p><i class="fas fa-phone"></i> +216 70 010 000</p>
+            <p><i class="fas fa-envelope"></i> contactpoulina.com</p>
+          </div>
         </div>
-        
-        <div class="form-group">
-          <label for="dateObtention">Date d'obtention *</label>
-          <input type="date" id="dateObtention" formControlName="dateObtention">
-        </div>
-        
-        <div class="form-group">
-          <label for="specialite">Spécialité</label>
-          <input type="text" id="specialite" formControlName="specialite">
-        </div>
-        
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
-          <button type="submit" class="btn-save">Enregistrer</button>
-        </div>
-      </form>
+      </div>
+      <div class="copyright">© {{ currentYear }} Poulina Group Holding. Tous droits réservés.</div>
+    </div>
+  </footer>
+
+  <!-- Modal Expérience -->
+  <div class="modal-backdrop" *ngIf="showExperienceModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>{{ editingItem ? 'Modifier expérience' : 'Ajouter une expérience' }}</h2>
+        <button class="btn-close" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="experienceForm" (ngSubmit)="saveExperience()">
+          <div class="form-group">
+            <label for="poste">Poste *</label>
+            <input id="poste" formControlName="poste" type="text" placeholder="Ex: Développeur Web">
+          </div>
+          <div class="form-group">
+            <label for="nomEntreprise">Entreprise *</label>
+            <input id="nomEntreprise" formControlName="nomEntreprise" type="text" placeholder="Ex: Poulina Group">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dateDebut">Date de début *</label>
+              <input id="dateDebut" formControlName="dateDebut" type="date" placeholder="Ex: 2023-01-01">
+            </div>
+            <div class="form-group">
+              <label for="dateFin">Date de fin</label>
+              <input id="dateFin" formControlName="dateFin" type="date" placeholder="Ex: 2024-12-31">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" placeholder="Ex: Responsable du développement frontend"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="competenceAcquise">Compétences acquises</label>
+            <input id="competenceAcquise" formControlName="competenceAcquise" type="text" placeholder="Ex: HTML, CSS, JavaScript">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn-save" [disabled]="experienceForm.invalid">Enregistrer</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="showCertificateModal" class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>{{ editingItem ? 'Modifier certificat' : 'Ajouter un certificat' }}</h2>
-      <button (click)="closeModal()" class="btn-close">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form (ngSubmit)="saveCertificate()">
-        <div class="form-group">
-          <label for="nom">Nom du certificat *</label>
-          <input type="text" id="nom" formControlName="nom">
-        </div>
-        
-        <div class="form-group">
-          <label for="organisme">Organisme émetteur *</label>
-          <input type="text" id="organisme" formControlName="organisme">
-        </div>
-        
-        <div class="form-row">
+  <!-- Modal Diplôme -->
+  <div class="modal-backdrop" *ngIf="showDiplomaModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>{{ editingItem ? 'Modifier diplôme' : 'Ajouter un diplôme' }}</h2>
+        <button class="btn-close" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="diplomaForm" (ngSubmit)="saveDiploma()">
+          <div class="form-group">
+            <label for="nomDiplome">Diplôme *</label>
+            <input id="nomDiplome" formControlName="nomDiplome" type="text" placeholder="Ex: Licence en Informatique">
+          </div>
+          <div class="form-group">
+            <label for="institution">Établissement *</label>
+            <input id="institution" formControlName="institution" type="text" placeholder="Ex: Université de Tunis">
+          </div>
           <div class="form-group">
             <label for="dateObtention">Date d'obtention *</label>
-            <input type="date" id="dateObtention" formControlName="dateObtention">
+            <input id="dateObtention" formControlName="dateObtention" type="date" placeholder="Ex: 2022-06-15">
           </div>
-          
           <div class="form-group">
-            <label for="dateExpiration">Date d'expiration</label>
-            <input type="date" id="dateExpiration" formControlName="dateExpiration">
+            <label for="specialite">Spécialité</label>
+            <input id="specialite" formControlName="specialite" type="text" placeholder="Ex: Développement Web">
           </div>
-        </div>
-        
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
-          <button type="submit" class="btn-save">Enregistrer</button>
-        </div>
-      </form>
+          <div class="form-group">
+            <label for="urlDocument">URL Document</label>
+            <input id="urlDocument" formControlName="urlDocument" type="text" placeholder="Ex: https://example.com/diploma.pdf">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn-save" [disabled]="diplomaForm.invalid">Enregistrer</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Modal Certificat -->
+  <div class="modal-backdrop" *ngIf="showCertificateModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>{{ editingItem ? 'Modifier certificat' : 'Ajouter un certificat' }}</h2>
+        <button class="btn-close" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="certificateForm" (ngSubmit)="saveCertificate()">
+          <div class="form-group">
+            <label for="nom">Nom du certificat *</label>
+            <input id="nom" formControlName="nom" type="text" placeholder="Ex: Certification AWS">
+          </div>
+          <div class="form-group">
+            <label for="organisme">Organisme émetteur *</label>
+            <input id="organisme" formControlName="organisme" type="text" placeholder="Ex: Amazon Web Services">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dateObtention">Date d'obtention *</label>
+              <input id="dateObtention" formControlName="dateObtention" type="date" placeholder="Ex: 2023-03-10">
+            </div>
+            <div class="form-group">
+              <label for="dateExpiration">Date d'expiration</label>
+              <input id="dateExpiration" formControlName="dateExpiration" type="date" placeholder="Ex: 2025-03-10">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" placeholder="Ex: Formation sur les services cloud"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="urlDocument">URL Document</label>
+            <input id="urlDocument" formControlName="urlDocument" type="text" placeholder="Ex: https://example.com/certificate.pdf">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn-save" [disabled]="certificateForm.invalid">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
