@@ -37,7 +37,7 @@ import { CandidateOnlyComponent } from './authorizeDemo/candidate-only/candidate
 import { OffreDetailComponent } from './interfacerecruteur/offre-detail/offre-detail.component';
 // import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobListingComponent } from './CandidateFront/components/job-listing/job-listing.component';
-import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+// import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { QuizFormComponent } from './quiz-form/quiz-form.component';
@@ -131,16 +131,16 @@ export const routes: Routes = [
   
   { path: 'offres', component: OffreListComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   { path: 'offres/details/:id', component: OffreDetailComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  {
-    path: 'offres/create',
-    component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
-  },
-  {
-    path: 'offres/update/:id',
-    component: OffreFormComponent,
-    canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  // {
+  //   path: 'offres/create',
+  //   component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  // },
+  // {
+  //   path: 'offres/update/:id',
+  //   component: OffreFormComponent,
+  //   canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
 
-  },
+  // },
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
   { path: 'job-list', component: JobListingComponent },

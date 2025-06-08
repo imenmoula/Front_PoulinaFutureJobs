@@ -13,19 +13,20 @@ export enum NiveauRequisType {
     cloturer = 'cloturer'
   }
   
-  export enum TypeContratEnum {
-    CDI = 1,
-    CDD = 2,
-    Freelance = 3,
-    Stage = 4,
-    Alternance = 5
-  }
+ export enum TypeContratEnum {
+  CDI = 'CDI',
+  CDD = 'CDD',
+  Freelance = 'Freelance',
+  Stage = 'Stage',
+  Alternance = 'Alternance'
+}
+  /**************** */
   
   export enum ModeTravail {
-    Presentiel = 'presentiel',
-    Hybride = 'hybride',
-    Teletravail = 'teletravail'
-  }
+  Presentiel = 'Présentiel',
+  Hybride = 'Hybride',
+  Teletravail = 'Télétravail'
+}
   export enum Langue {
     Francais = 'Francais',
     Anglais = 'Anglais',

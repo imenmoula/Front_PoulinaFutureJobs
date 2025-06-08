@@ -40,7 +40,7 @@ export class JobDetailsComponent implements OnInit {
       niveauHierarchique: '' 
     }],
     TitreOffre: '',
-    DescriptionOffre: '',
+    descriptionOffre: '',
     salaireMin: 0,
     salaireMax: 0,
     typeContrat: TypeContratEnum.CDI,

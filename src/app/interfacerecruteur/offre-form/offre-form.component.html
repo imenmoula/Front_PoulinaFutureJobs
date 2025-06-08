@@ -2,10 +2,32 @@
   <h2>{{ isEditMode ? 'Modifier' : 'Créer' }} une offre d'emploi</h2>
 
   <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
+    <!-- Titre et description -->
+    <div class="card mb-4">
+      <div class="card-header">Informations générales</div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">Titre de l'offre *</label>
+          <input type="text" formControlName="titreOffre" class="form-control" placeholder="Titre de l'offre">
+          <div *ngIf="offreForm.get('titreOffre')?.invalid && offreForm.get('titreOffre')?.touched" class="text-danger">
+            Titre requis
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Description de l'offre *</label>
+          <textarea formControlName="descriptionOffre" class="form-control" placeholder="Description" rows="4"></textarea>
+          <div *ngIf="offreForm.get('descriptionOffre')?.invalid && offreForm.get('descriptionOffre')?.touched" class="text-danger">
+            Description requise
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Section Diplômes requis -->
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Diplômes requis</span>
+        <span>Diplômes requis *</span>
         <button type="button" class="btn btn-outline-primary btn-sm"
                 (click)="ajoutDiplomeEnCours = !ajoutDiplomeEnCours">
           {{ ajoutDiplomeEnCours ? 'Annuler' : 'Ajouter un diplôme' }}
@@ -68,7 +90,7 @@
     <!-- Section Compétences requises -->
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Compétences requises</span>
+        <span>Compétences requises *</span>
         <button type="button" class="btn btn-outline-primary btn-sm"
                 (click)="ajoutCompetenceEnCours = !ajoutCompetenceEnCours">
           {{ ajoutCompetenceEnCours ? 'Annuler' : 'Nouvelle compétence' }}
@@ -141,7 +163,7 @@
     <!-- Section Postes -->
     <div class="card mb-4">
       <div class="card-header">
-        Postes à pourvoir
+        Postes à pourvoir *
         <button type="button" class="btn btn-outline-primary btn-sm float-end" (click)="addPoste()">
           Ajouter un poste
         </button>
@@ -151,13 +173,22 @@
           <div *ngFor="let poste of postes.controls; let i = index" [formGroupName]="i" class="mb-3 border p-2">
             <div class="row">
               <div class="col-md-4">
-                <input type="text" formControlName="titrePoste" class="form-control mb-2" placeholder="Titre du poste">
+                <input type="text" formControlName="titrePoste" class="form-control mb-2" placeholder="Titre du poste *">
+                <div *ngIf="poste.get('titrePoste')?.invalid && poste.get('titrePoste')?.touched" class="text-danger">
+                  Titre requis
+                </div>
               </div>
               <div class="col-md-2">
-                <input type="number" formControlName="nombrePostes" class="form-control mb-2" placeholder="Nombre">
+                <input type="number" formControlName="nombrePostes" class="form-control mb-2" placeholder="Nombre *">
+                <div *ngIf="poste.get('nombrePostes')?.invalid && poste.get('nombrePostes')?.touched" class="text-danger">
+                  Nombre requis
+                </div>
               </div>
               <div class="col-md-3">
-                <input type="text" formControlName="niveauHierarchique" class="form-control mb-2" placeholder="Niveau hiérarchique">
+                <input type="text" formControlName="niveauHierarchique" class="form-control mb-2" placeholder="Niveau hiérarchique *">
+                <div *ngIf="poste.get('niveauHierarchique')?.invalid && poste.get('niveauHierarchique')?.touched" class="text-danger">
+                  Niveau requis
+                </div>
               </div>
               <div class="col-md-3">
                 <button type="button" class="btn btn-danger" (click)="removePoste(i)" [disabled]="postes.length === 1">
@@ -165,10 +196,16 @@
                 </button>
               </div>
               <div class="col-12">
-                <input type="text" formControlName="description" class="form-control mb-2" placeholder="Description">
+                <input type="text" formControlName="description" class="form-control mb-2" placeholder="Description *">
+                <div *ngIf="poste.get('description')?.invalid && poste.get('description')?.touched" class="text-danger">
+                  Description requise
+                </div>
               </div>
               <div class="col-12">
-                <input type="text" formControlName="experienceSouhaitee" class="form-control mb-2" placeholder="Expérience souhaitée">
+                <input type="text" formControlName="experienceSouhaitee" class="form-control mb-2" placeholder="Expérience souhaitée *">
+                <div *ngIf="poste.get('experienceSouhaitee')?.invalid && poste.get('experienceSouhaitee')?.touched" class="text-danger">
+                  Expérience requise
+                </div>
               </div>
             </div>
           </div>
@@ -179,7 +216,7 @@
     <!-- Section Missions -->
     <div class="card mb-4">
       <div class="card-header">
-        Missions principales
+        Missions principales *
         <button type="button" class="btn btn-outline-primary btn-sm float-end" (click)="offreMissions.push(createMissionGroup())">
           Ajouter une mission
         </button>
@@ -188,7 +225,10 @@
         <div formArrayName="offreMissions">
           <div *ngFor="let group of offreMissions.controls; let i = index" [formGroupName]="i" class="row align-items-center mb-2">
             <div class="col-md-10">
-              <input type="text" formControlName="mission" class="form-control" placeholder="Mission">
+              <input type="text" formControlName="mission" class="form-control" placeholder="Mission *">
+              <div *ngIf="group.get('mission')?.invalid && group.get('mission')?.touched" class="text-danger">
+                Mission requise
+              </div>
             </div>
             <div class="col-md-2">
               <button type="button" class="btn btn-danger" (click)="offreMissions.removeAt(i)" [disabled]="offreMissions.length === 1">
@@ -203,7 +243,7 @@
     <!-- Section Langues -->
     <div class="card mb-4">
       <div class="card-header">
-        Langues requises
+        Langues requises *
         <button type="button" class="btn btn-outline-primary btn-sm float-end" (click)="offreLangues.push(createLangueGroup())">
           Ajouter une langue
         </button>
@@ -213,15 +253,21 @@
           <div *ngFor="let group of offreLangues.controls; let i = index" [formGroupName]="i" class="row align-items-center mb-2">
             <div class="col-md-5">
               <select formControlName="langue" class="form-control">
-                <option value="">Sélectionner une langue</option>
+                <option value="">Sélectionner une langue *</option>
                 <option *ngFor="let langue of languesDisponibles" [value]="langue">{{ langue }}</option>
               </select>
+              <div *ngIf="group.get('langue')?.invalid && group.get('langue')?.touched" class="text-danger">
+                Langue requise
+              </div>
             </div>
             <div class="col-md-5">
               <select formControlName="niveau" class="form-control">
-                <option value="">Niveau</option>
+                <option value="">Niveau *</option>
                 <option *ngFor="let niveau of niveauxRequis" [value]="niveau">{{ niveau }}</option>
               </select>
+              <div *ngIf="group.get('niveau')?.invalid && group.get('niveau')?.touched" class="text-danger">
+                Niveau requis
+              </div>
             </div>
             <div class="col-md-2">
               <button type="button" class="btn btn-danger" (click)="offreLangues.removeAt(i)" [disabled]="offreLangues.length === 1">
@@ -235,51 +281,75 @@
 
     <!-- Section Informations principales -->
     <div class="card mb-4">
-      <div class="card-header">Informations principales</div>
+      <div class="card-header">Informations principales *</div>
       <div class="card-body">
         <div class="row mb-2">
           <div class="col-md-4">
-            <input type="text" formControlName="specialite" class="form-control" placeholder="Spécialité">
+            <input type="text" formControlName="specialite" class="form-control" placeholder="Spécialité *">
+            <div *ngIf="offreForm.get('specialite')?.invalid && offreForm.get('specialite')?.touched" class="text-danger">
+              Spécialité requise
+            </div>
           </div>
           <div class="col-md-4">
             <input type="date" formControlName="datePublication" class="form-control" placeholder="Date de publication">
           </div>
           <div class="col-md-4">
-            <input type="date" formControlName="dateExpiration" class="form-control" placeholder="Date d'expiration">
+            <input type="date" formControlName="dateExpiration" class="form-control" placeholder="Date d'expiration *">
+            <div *ngIf="offreForm.get('dateExpiration')?.invalid && offreForm.get('dateExpiration')?.touched" class="text-danger">
+              Date requise
+            </div>
           </div>
         </div>
         <div class="row mb-2">
           <div class="col-md-4">
             <select formControlName="niveauExperienceRequis" class="form-control">
-              <option value="">Niveau d'expérience requis</option>
+              <option value="">Niveau d'expérience requis *</option>
               <option *ngFor="let niveau of niveauxRequis" [value]="niveau">{{ niveau }}</option>
             </select>
+            <div *ngIf="offreForm.get('niveauExperienceRequis')?.invalid && offreForm.get('niveauExperienceRequis')?.touched" class="text-danger">
+              Niveau requis
+            </div>
           </div>
           <div class="col-md-4">
-            <input type="number" formControlName="salaireMin" class="form-control" placeholder="Salaire min">
+            <input type="number" formControlName="salaireMin" class="form-control" placeholder="Salaire min *">
+            <div *ngIf="offreForm.get('salaireMin')?.invalid && offreForm.get('salaireMin')?.touched" class="text-danger">
+              Salaire min requis
+            </div>
           </div>
           <div class="col-md-4">
-            <input type="number" formControlName="salaireMax" class="form-control" placeholder="Salaire max">
+            <input type="number" formControlName="salaireMax" class="form-control" placeholder="Salaire max *">
+            <div *ngIf="offreForm.get('salaireMax')?.invalid && offreForm.get('salaireMax')?.touched" class="text-danger">
+              Salaire max requis
+            </div>
           </div>
         </div>
         <div class="row mb-2">
           <div class="col-md-3">
             <select formControlName="typeContrat" class="form-control">
-              <option value="">Type de contrat</option>
+              <option value="">Type de contrat *</option>
               <option *ngFor="let type of typeContrats" [value]="type">{{ type }}</option>
             </select>
+            <div *ngIf="offreForm.get('typeContrat')?.invalid && offreForm.get('typeContrat')?.touched" class="text-danger">
+              Contrat requis
+            </div>
           </div>
           <div class="col-md-3">
             <select formControlName="statut" class="form-control">
-              <option value="">Statut</option>
+              <option value="">Statut *</option>
               <option *ngFor="let statut of statuts" [value]="statut">{{ statut }}</option>
             </select>
+            <div *ngIf="offreForm.get('statut')?.invalid && offreForm.get('statut')?.touched" class="text-danger">
+              Statut requis
+            </div>
           </div>
           <div class="col-md-3">
             <select formControlName="modeTravail" class="form-control">
-              <option value="">Mode de travail</option>
+              <option value="">Mode de travail *</option>
               <option *ngFor="let mode of modesTravail" [value]="mode">{{ mode }}</option>
             </select>
+            <div *ngIf="offreForm.get('modeTravail')?.invalid && offreForm.get('modeTravail')?.touched" class="text-danger">
+              Mode requis
+            </div>
           </div>
           <div class="col-md-3">
             <input type="text" formControlName="avantages" class="form-control" placeholder="Avantages (optionnel)">
@@ -288,21 +358,30 @@
         <div class="row mb-2">
           <div class="col-md-4">
             <select formControlName="idFiliale" class="form-control">
-              <option value="">Filiale</option>
+              <option value="">Filiale *</option>
               <option *ngFor="let filiale of filiales" [value]="filiale.id">{{ filiale.nom }}</option>
             </select>
+            <div *ngIf="offreForm.get('idFiliale')?.invalid && offreForm.get('idFiliale')?.touched" class="text-danger">
+              Filiale requise
+            </div>
           </div>
           <div class="col-md-4">
             <select formControlName="idDepartement" class="form-control">
-              <option value="">Département</option>
+              <option value="">Département *</option>
               <option *ngFor="let departement of departements" [value]="departement.id">{{ departement.nom }}</option>
             </select>
+            <div *ngIf="offreForm.get('idDepartement')?.invalid && offreForm.get('idDepartement')?.touched" class="text-danger">
+              Département requis
+            </div>
           </div>
           <div class="col-md-4">
             <select formControlName="idRecruteur" class="form-control">
-              <option value="">Recruteur</option>
-              <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.nom }}</option>
+              <option value="">Recruteur *</option>
+              <option *ngFor="let recruteur of recruteurs" [value]="recruteur.id">{{ recruteur.fullName }}</option>
             </select>
+            <div *ngIf="offreForm.get('idRecruteur')?.invalid && offreForm.get('idRecruteur')?.touched" class="text-danger">
+              Recruteur requis
+            </div>
           </div>
         </div>
         <div class="form-check mb-2">
