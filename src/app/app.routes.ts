@@ -43,12 +43,13 @@ import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { QuizFormComponent } from './quiz-form/quiz-form.component';
 // import { FullQuizFormComponent } from './full-quiz-form/full-quiz-form.component';
 import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
-import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
+// import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
 import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 import { ProfileCandidateComponent } from './components/profile-candidate/profile-candidate.component';
-// import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
+import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -134,16 +135,16 @@ export const routes: Routes = [
   
   { path: 'offres', component: OffreListComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
   { path: 'offres/details/:id', component: OffreDetailComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  // {
-  //   path: 'offres/create',
-  //   component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
-  // },
-  // {
-  //   path: 'offres/update/:id',
-  //   component: OffreFormComponent,
-  //   canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  {
+    path: 'offres/create',
+    component: OffreFormComponent,canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
+  },
+  {
+    path: 'offres/update/:id',
+    component: OffreFormComponent,
+    canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] }
 
-  // },
+  },
   /**********inerface Candidate */
   // { path: 'job-details/:id', component: JobDetailsComponent },
   { path: 'job-list', component: JobListingComponent },
