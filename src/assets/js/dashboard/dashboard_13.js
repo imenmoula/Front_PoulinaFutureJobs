@@ -63,13 +63,13 @@
     grid: {
       show: false,
     },
-    colors: ["#7366FF", "#8D83FF"],
+    colors: ["#4169E1", "#8D83FF"],
     fill: {
       type: "gradient",
       gradient: {
         shade: "light",
         type: "vertical",
-        gradientToColors: ["#7366FF", "#8D83FF"],
+        gradientToColors: ["#4169E1", "#8D83FF"],
         opacityFrom: 0.98,
         opacityTo: 0.85,
         stops: [0, 100],
@@ -259,7 +259,7 @@
         top: 13,
         left: 0,
         blur: 6,
-        color: "#7366FF",
+        color: "#4169E1",
         opacity: 0.4,
       },
     },
@@ -275,7 +275,7 @@
         borderRadiusApplication: "end",
       },
     },
-    colors: ["rgba(131, 131, 131, 0.3)", "#7366FF"],
+    colors: ["rgba(131, 131, 131, 0.3)", "#4169E1"],
     fill: {
       type: "solid",
       gradient: {
@@ -311,7 +311,7 @@
         {
           seriesIndex: 1,
           dataPointIndex: 4,
-          fillColor: "#7366FF",
+          fillColor: "#4169E1",
           strokeColor: "var(--white)",
           size: 6,
           sizeOffset: 3,
@@ -721,7 +721,7 @@
         vertical: 0,
       },
     },
-    colors: ["#65c15c", "#ffb829", "#7366FF"],
+    colors: ["#65c15c", "#ffb829", "#4169E1"],
     responsive: [
       {
         breakpoint: 1717,

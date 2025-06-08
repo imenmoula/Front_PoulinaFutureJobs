@@ -508,7 +508,7 @@ function openModel(modelFor) {
     input.setAttribute("type", "text");
     input.setAttribute("placeholder", "Filename");
     let saveButton = document.createElement("button");
-    saveButton.style = "background-color: #7366FF;";
+    saveButton.style = "background-color: #4169E1;";
     saveButton.innerHTML = "Save";
     document.querySelector(".popup form").innerHTML = "";
     document.querySelector(".popup form").appendChild(input);
@@ -524,7 +524,7 @@ function openModel(modelFor) {
     input.setAttribute("type", "text");
     input.setAttribute("placeholder", "Foldername");
     let saveButton = document.createElement("button");
-    saveButton.style = "background-color: #7366FF;";
+    saveButton.style = "background-color: #4169E1;";
     saveButton.innerHTML = "Save";
     document.querySelector(".popup form").innerHTML = "";
     document.querySelector(".popup form").appendChild(input);
@@ -542,7 +542,7 @@ function openModel(modelFor) {
       input.setAttribute("placeholder", (selected_item.item.isDirectory ? "Folder" : "File") + " name (" + selected_item.item.name + ")");
       input.value = selected_item.item.name;
       let saveButton = document.createElement("button");
-      saveButton.style = "background-color: #7366FF;";
+      saveButton.style = "background-color: #4169E1;";
       saveButton.innerHTML = "Save";
       document.querySelector(".popup form").innerHTML = "";
       document.querySelector(".popup form").appendChild(input);
@@ -565,7 +565,7 @@ function openModel(modelFor) {
       document.querySelector(".popup h5").innerHTML = "Please confirm if you would like to delete the file.";
       let saveButton = document.createElement("button");
       let cancelButton = document.createElement("button");
-      saveButton.style = "background-color: #7366FF;";
+      saveButton.style = "background-color: #4169E1;";
       saveButton.innerHTML = "Yes";
       cancelButton.innerHTML = "Cancel";
       document.querySelector(".popup form").innerHTML = "";

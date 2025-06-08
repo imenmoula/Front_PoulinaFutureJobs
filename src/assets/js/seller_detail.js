@@ -216,7 +216,7 @@
       gradient: {
         type: "vertical",
         shadeIntensity: 0.4,
-        gradientToColors: "#7366FF",
+        gradientToColors: "#4169E1",
         opacityFrom: 0.4,
         opacityTo: 0,
         stops: [0, 90, 100],
@@ -228,7 +228,7 @@
       type: "area",
       dropShadow: {
         enabled: true,
-        color: "#7366FF",
+        color: "#4169E1",
         top: 8,
         left: 0,
         blur: 2,
@@ -238,7 +238,7 @@
         show: false,
       },
     },
-    colors: ["#7366FF"],
+    colors: ["#4169E1"],
     dataLabels: {
       enabled: true,
     },
