@@ -1,14 +1,12 @@
-<div class="login-main">
+<div class="login-main container mt-4">
   <form class="theme-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h4>S'inscrire</h4>
+    <h4 class="mb-3">S'inscrire</h4>
     <p>
       Déjà un compte ?
       <a routerLink="/signin" class="text-decoration-none fw-medium d-inline-block">Se connecter</a>
     </p>
-   
 
-
-    <!-- Nom complet -->
+    <!-- Nom -->
     <div class="mb-3">
       <input class="form-control bg-body-secondary" placeholder="Votre nom svp" formControlName="nom">
       <div class="error-feedback" *ngIf="hasDisplayableError('nom')">
@@ -16,14 +14,14 @@
       </div>
     </div>
 
-
-    <!-- Nom complet -->
+    <!-- Prénom -->
     <div class="mb-3">
-      <input class="form-control bg-body-secondary" placeholder="Votre prenom" formControlName="prenom">
+      <input class="form-control bg-body-secondary" placeholder="Votre prénom" formControlName="prenom">
       <div class="error-feedback" *ngIf="hasDisplayableError('prenom')">
-        Veuillez entrer votre prenom .
+        Veuillez entrer votre prénom.
       </div>
     </div>
+
     <!-- Nom complet -->
     <div class="mb-3">
       <input class="form-control bg-body-secondary" placeholder="Nom complet" formControlName="fullName">
@@ -48,8 +46,13 @@
     <!-- Mot de passe -->
     <div class="mb-3">
       <div class="form-input position-relative">
-        <input class="form-control bg-body-secondary" type="password" placeholder="Mot de passe" formControlName="password">
-        <div class="show-hide"><span class="show"></span></div>
+        <input class="form-control bg-body-secondary" 
+               [type]="showPassword ? 'text' : 'password'" 
+               placeholder="Mot de passe" 
+               formControlName="password">
+        <div class="show-hide" (click)="togglePasswordVisibility()">
+          <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+        </div>
       </div>
       <div class="error-feedback" *ngIf="hasDisplayableError('password')">
         <ng-container [ngSwitch]="getFirstError(form.get('password'))">
@@ -62,7 +65,15 @@
 
     <!-- Confirmer le mot de passe -->
     <div class="mb-3">
-      <input class="form-control bg-body-secondary" type="password" placeholder="Confirmer le mot de passe" formControlName="confirmPassword">
+      <div class="form-input position-relative">
+        <input class="form-control bg-body-secondary" 
+               [type]="showConfirmPassword ? 'text' : 'password'" 
+               placeholder="Confirmer le mot de passe" 
+               formControlName="confirmPassword">
+        <div class="show-hide" (click)="toggleConfirmPasswordVisibility()">
+          <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+        </div>
+      </div>
       <div class="error-feedback" *ngIf="hasDisplayableError('confirmPassword')">
         <div *ngIf="form.get('confirmPassword')?.hasError('required')">
           Veuillez confirmer votre mot de passe.
@@ -75,8 +86,8 @@
 
     <!-- Bouton d'inscription -->
     <div class="mt-4">
-      <button type="submit" class="btn btn-primary btn-block w-100 mt-3">
-        S'inscrire
+      <button type="submit" class="btn btn-primary btn-block w-100 mt-3" [disabled]="form.invalid || isSubmitted">
+        {{ isSubmitted ? 'Inscription en cours...' : 'S\'inscrire' }}
       </button>
     </div>
   </form>

@@ -47,7 +47,8 @@ import { CandidatureFormComponent } from './components/candidature-form/candidat
 import { ProfileUpdateComponent } from './components/profile-update/profile-update.component';
 import { ProfileCandidateComponent } from './components/profile-candidate/profile-candidate.component';
 // import { CandidatureFormComponent } from './components/candidature-form/candidature-form.component';
-
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -56,7 +57,9 @@ export const routes: Routes = [
     component: UserComponent,
     children: [
       { path: 'signup', component: RegistrationComponent },
-      { path: 'signin', component: LoginComponent }
+      { path: 'signin', component: LoginComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent },

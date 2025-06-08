@@ -43,13 +43,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Swal.fire({
+   /* Swal.fire({
       title: 'Info',
       text: 'Login page loaded',
       icon: 'info',
       timer: 2000,
       showConfirmButton: false
-    });
+    });*/
 
     if (this.service.isLoggedIn()) {
       this.redirectBasedOnRoles();
