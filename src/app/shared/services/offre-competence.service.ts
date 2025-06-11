@@ -33,7 +33,7 @@
 //   }
 
 //    getAll(): Observable<any> {
-//     return this.http.get(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
+//     return this.http.get(this.apiUrl, { headers: thisgetHeaders()() }).pipe(
 //       catchError(error => {
 //         console.error('Error loading competences:', error);
 //         if (error.status === 401) {
@@ -46,7 +46,7 @@
 //   }
 
 //   getById(idOffreEmploi: string, idCompetence: string): Observable<OffreCompetence> {
-//     return this.http.get<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getAuthHeaders() }).pipe(
+//     return this.http.get<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: thisgetHeaders()() }).pipe(
 //       map(response => response.data),
 //       catchError(this.handleError)
 //     );
@@ -64,7 +64,7 @@
 // getByOffreId(idOffre: string): Observable<OffreCompetence[]> {
 //   return this.http.get<ApiResponse<OffreCompetence[]>>(
 //     `${this.apiUrl}/by-offre/${idOffre}`,
-//     { headers: this.getAuthHeaders() }
+//     { headers: thisgetHeaders()() }
 //   ).pipe(
 //     map(response => response.data || []),
 //     catchError(this.handleError)
@@ -74,28 +74,28 @@
 // getCompetencesDisponibles(): Observable<Competence[]> {
 //   return this.http.get<ApiResponse<Competence[]>>(
 //     `${this.apiUrl}/competences-disponibles`,
-//     { headers: this.getAuthHeaders() }
+//     { headers: thisgetHeaders()() }
 //   ).pipe(
 //     map(response => response.data || []),
 //     catchError(this.handleError)
 //   );
 // }
 //   create(competence: OffreCompetence): Observable<OffreCompetence> {
-//     return this.http.post<ApiResponse<OffreCompetence>>(this.apiUrl, competence, { headers: this.getAuthHeaders() }).pipe(
+//     return this.http.post<ApiResponse<OffreCompetence>>(this.apiUrl, competence, { headers: thisgetHeaders()() }).pipe(
 //       map(response => response.data),
 //       catchError(this.handleError)
 //     );
 //   }
 
 //   update(idOffreEmploi: string, idCompetence: string, competence: OffreCompetence): Observable<OffreCompetence> {
-//     return this.http.put<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, competence, { headers: this.getAuthHeaders() }).pipe(
+//     return this.http.put<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, competence, { headers: thisgetHeaders()() }).pipe(
 //       map(response => response.data),
 //       catchError(this.handleError)
 //     );
 //   }
 
 //   delete(idOffreEmploi: string, idCompetence: string): Observable<void> {
-//     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getAuthHeaders() }).pipe(
+//     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: thisgetHeaders()() }).pipe(
 //       map(() => undefined),
 //       catchError(this.handleError)
 //     );
@@ -140,19 +140,20 @@ export class OffreCompetenceService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('No authentication token available');
+      console.error('No token found in localStorage');
+      return new HttpHeaders();
     }
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     });
   }
 
   getAll(): Observable<OffreCompetence[]> {
-    return this.http.get<ApiResponse<OffreCompetence[]>>(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.get<ApiResponse<OffreCompetence[]>>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       map(response => response.data || []),
       catchError(error => {
         console.error('Error loading competences:', error);
@@ -165,28 +166,28 @@ export class OffreCompetenceService {
   }
 
   getById(idOffreEmploi: string, idCompetence: string): Observable<OffreCompetence> {
-    return this.http.get<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.get<ApiResponse<OffreCompetence>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getHeaders() }).pipe(
       map(response => response.data),
       catchError(this.handleError)
     );
   }
 
   getByOffreId(idOffre: string): Observable<OffreCompetence[]> {
-    return this.http.get<ApiResponse<OffreCompetence[]>>(`${this.apiUrl}/by-offre/${idOffre}`, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.get<ApiResponse<OffreCompetence[]>>(`${this.apiUrl}/by-offre/${idOffre}`, { headers: this.getHeaders() }).pipe(
       map(response => response.data || []),
       catchError(this.handleError)
     );
   }
 
   getCompetencesDisponibles(): Observable<Competence[]> {
-    return this.http.get<ApiResponse<Competence[]>>(`${this.apiUrl}/competences-disponibles`, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.get<ApiResponse<Competence[]>>(`${this.apiUrl}/competences-disponibles`, { headers: this.getHeaders() }).pipe(
       map(response => response.data || []),
       catchError(this.handleError)
     );
   }
 
   create(offreCompetence: OffreCompetence): Observable<OffreCompetence> {
-    return this.http.post<ApiResponse<OffreCompetence>>(this.apiUrl, offreCompetence, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.post<ApiResponse<OffreCompetence>>(this.apiUrl, offreCompetence, { headers: this.getHeaders() }).pipe(
       map(response => response.data),
       catchError(this.handleError)
     );
@@ -196,7 +197,7 @@ export class OffreCompetenceService {
     return this.http.put<ApiResponse<OffreCompetence>>(
       `${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, 
       offreCompetence, 
-      { headers: this.getAuthHeaders() }
+      { headers: this.getHeaders()}
     ).pipe(
       map(response => response.data),
       catchError(this.handleError)
@@ -204,7 +205,7 @@ export class OffreCompetenceService {
   }
 
   delete(idOffreEmploi: string, idCompetence: string): Observable<void> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${idOffreEmploi}/${idCompetence}`, { headers: this.getHeaders() }).pipe(
       map(() => undefined),
       catchError(this.handleError)
     );

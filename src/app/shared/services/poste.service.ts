@@ -22,20 +22,21 @@ export class PosteService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
+private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('No authentication token available');
+      console.error('No token found in localStorage');
+      return new HttpHeaders();
     }
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     });
   }
 
   // Récupérer tous les postes
   getAll(): Observable<Poste[]> {
-    return this.http.get<ApiResponse<Poste[]>>(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.get<ApiResponse<Poste[]>>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       map(response => response.data || []),
       catchError(this.handleError)
     );
@@ -43,7 +44,7 @@ export class PosteService {
 
   // Récupérer un poste par ID
  getById(id: string): Observable<Poste> {
-  return this.http.get<ApiResponse<Poste>>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() }).pipe(
+  return this.http.get<ApiResponse<Poste>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
     map(response => {
       if (!response.data) {
         throw new Error('Poste not found');
@@ -56,7 +57,7 @@ export class PosteService {
 
   // Récupérer les postes par ID d'offre d'emploi
   getByOffreId(idOffre: string): Observable<Poste[]> {
-    return this.http.get<ApiResponse<Poste[]>>(`${this.apiUrl}/by-offre/${idOffre}`, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.get<ApiResponse<Poste[]>>(`${this.apiUrl}/by-offre/${idOffre}`, { headers: this.getHeaders() }).pipe(
       map(response => response.data || []),
       catchError(this.handleError)
     );
@@ -64,14 +65,14 @@ export class PosteService {
 
   // Créer un nouveau poste
   create(poste: PosteCreateDto): Observable<Poste> {
-  return this.http.post<ApiResponse<Poste>>(this.apiUrl, poste, { headers: this.getAuthHeaders() }).pipe(
+  return this.http.post<ApiResponse<Poste>>(this.apiUrl, poste, { headers: this.getHeaders() }).pipe(
     map(response => response.data ?? {} as Poste),
     catchError(this.handleError)
   );
 }
 
 update(id: string, poste: PosteUpdateDto): Observable<Poste> {
-  return this.http.put<ApiResponse<Poste>>(`${this.apiUrl}/${id}`, poste, { headers: this.getAuthHeaders() }).pipe(
+  return this.http.put<ApiResponse<Poste>>(`${this.apiUrl}/${id}`, poste, { headers: this.getHeaders() }).pipe(
     map(response => response.data ?? {} as Poste),
     catchError(this.handleError)
   );
@@ -79,7 +80,7 @@ update(id: string, poste: PosteUpdateDto): Observable<Poste> {
 
   // Supprimer un poste
   delete(id: string): Observable<void> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
       map(() => undefined),
       catchError(this.handleError)
     );

@@ -1,22 +1,19 @@
-// // src/app/interfacerecruteur/candidature/candidature.component.ts
-
 // import { Component, OnInit } from '@angular/core';
 // import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { ActivatedRoute, Router } from '@angular/router';
 // import { OffreEmploiService } from '../../shared/services/offre-emploi.service';
-// import { CandidateurSharedService } from '../../shared/services/candidateur-shared.service';
-// import { OffreCompetenceSharedService } from '../../shared/services/offre-competence.service';
+// import { CandidatureService } from '../../shared/services/candidature.service';
 // import { UserService } from '../../shared/services/user.service';
 // import { AuthService } from '../../shared/services/auth.service';
-// import { AppUserResponse, CandidatureForm } from '../../Models/CandidatureForm.model';
 // import { OffreCompetence } from '../../Models/offre-competence.model';
 // import { OffreEmploi } from '../../Models/offre-emploi.model';
 // import { CommonModule } from '@angular/common';
+// import Swal from 'sweetalert2';
 
 // @Component({
 //   selector: 'app-candidature',
 //   standalone: true,
-//   imports: [FormsModule,CommonModule,ReactiveFormsModule],
+//   imports: [FormsModule, CommonModule, ReactiveFormsModule],
 //   templateUrl: './candidature.component.html',
 //   styleUrls: ['./candidature.component.css']
 // })
@@ -36,7 +33,7 @@
 //     private route: ActivatedRoute,
 //     private router: Router,
 //     private offreService: OffreEmploiService,
-//     private candidatureService: CandidateurSharedService,
+//     private candidatureService: CandidatureService,
 //     private offreCompetenceService: OffreCompetenceSharedService,
 //     private userService: UserService,
 //     private authService: AuthService
@@ -69,7 +66,7 @@
 
 //   loadData(): void {
 //     this.loading = true;
-//     const offreId = this.route.snapshot.paramMap.get('offreId'); // Assume offreId is passed in the route
+//     const offreId = this.route.snapshot.paramMap.get('offreId');
 
 //     if (!offreId) {
 //       this.errorMessage = 'ID de l\'offre non fourni.';
@@ -78,7 +75,7 @@
 //     }
 
 //     // Load user data
-//     const userId = this.getCurrentUserId(); // Replace with actual logic to get authenticated user ID
+//     const userId = this.getCurrentUserId();
 //     if (!userId) {
 //       this.errorMessage = 'Utilisateur non authentifié. Veuillez vous connecter.';
 //       this.loading = false;
@@ -92,7 +89,7 @@
 //         this.prefillForm(userData);
 
 //         // Fetch offer details
-//         this.offreService.getOffreEmploi(offreId).subscribe({
+//         this.offreService.getById(offreId).subscribe({
 //           next: (offreData) => {
 //             this.offreDetails = offreData;
 
@@ -146,15 +143,17 @@
 //       const experienceArray = this.experiences;
 //       user.experiences.forEach(exp => {
 //         const certArray = this.fb.array<FormGroup>([]);
-//         exp.certificats.forEach(cert => {
-//           certArray.push(this.fb.group({
-//             nom: [cert.nom ?? '', Validators.required],
-//             dateObtention: [cert.dateObtention ?? ''],
-//             organisme: [cert.organisme ?? ''],
-//             description: [cert.description ?? ''],
-//             urlDocument: [cert.urlDocument ?? '']
-//           }));
-//         });
+//         if (exp.certificats) {
+//           exp.certificats.forEach(cert => {
+//             certArray.push(this.fb.group({
+//               nom: [cert.nom ?? '', Validators.required],
+//               dateObtention: [cert.dateObtention ?? ''],
+//               organisme: [cert.organisme ?? ''],
+//               description: [cert.description ?? ''],
+//               urlDocument: [cert.urlDocument ?? '']
+//             }));
+//           });
+//         }
 
 //         experienceArray.push(this.fb.group({
 //           poste: [exp.poste || '', Validators.required],
@@ -171,7 +170,7 @@
 //     // Prefill competences if any
 //     if (user.competences && user.competences.length > 0) {
 //       this.selectedCompetences = user.competences.map(comp => ({
-//         competenceNom: comp.competenceId, // Assuming competenceId is the name for simplicity; adjust if needed
+//         competenceNom: comp.competenceId,
 //         niveauPossede: this.mapNiveauToString(comp.niveauPossede)
 //       }));
 //     }
@@ -274,9 +273,7 @@
 //   }
 
 //   getCurrentUserId(): string | null {
-//     // Replace with actual logic to get the authenticated user's ID from the token
-//     // For now, assuming it's stored in the AuthService or decoded from the token
-//     return this.authService.isAuthenticated() ? '5f81f7dd-5cf4-440a-18f4-08dd80df8f55' : null; // Placeholder
+//     return this.authService.isAuthenticated() ? this.authService.getCurrentUserId() : null;
 //   }
 
 //   getSubmitButtonText(): string {
@@ -286,11 +283,13 @@
 //   onSubmit(): void {
 //     if (this.candidatureForm.invalid) {
 //       this.candidatureForm.markAllAsTouched();
+//       Swal.fire('Erreur', 'Veuillez corriger les erreurs dans le formulaire.', 'error');
 //       return;
 //     }
 
 //     if (this.missingCompetences.length > 0) {
 //       this.errorMessage = 'Veuillez sélectionner toutes les compétences requises.';
+//       Swal.fire('Erreur', this.errorMessage, 'error');
 //       return;
 //     }
 
@@ -304,11 +303,12 @@
 //     if (!userId || !offreId) {
 //       this.errorMessage = 'Utilisateur ou offre non valide.';
 //       this.submitting = false;
+//       Swal.fire('Erreur', this.errorMessage, 'error');
 //       return;
 //     }
 
 //     const candidature: CandidatureForm = {
-//       idCandidature: '00000000-0000-0000-0000-000000000000', // Will be generated by backend
+//       idCandidature: '00000000-0000-0000-0000-000000000000',
 //       appUserId: userId,
 //       offreId: offreId,
 //       fullName: `${formValue.prenom} ${formValue.nom}`,
@@ -337,7 +337,7 @@
 //         competenceAcquise: exp.competenceAcquise || null,
 //         dateDebut: exp.dateDebut || null,
 //         dateFin: exp.dateFin || null,
-//         certificats: exp.certificats.map((cert: any) => ({
+//         certificats: (exp.certificats || []).map((cert: any) => ({
 //           nom: cert.nom || null,
 //           dateObtention: cert.dateObtention || null,
 //           organisme: cert.organisme || null,
@@ -357,12 +357,15 @@
 //     this.candidatureService.createCandidature(candidature).subscribe({
 //       next: (response) => {
 //         this.submitting = false;
+//         Swal.fire('Succès', 'Candidature soumise avec succès!', 'success');
 //         this.router.navigate(['/candidatures'], { queryParams: { success: true } });
 //       },
 //       error: (err) => {
 //         this.errorMessage = 'Erreur lors de la soumission de la candidature : ' + (err.error?.message || err.message);
 //         this.submitting = false;
+//         Swal.fire('Erreur', this.errorMessage, 'error');
 //       }
 //     });
 //   }
 // }
+

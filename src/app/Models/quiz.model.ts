@@ -1,3 +1,5 @@
+import { StatutTentative } from "./enums.model";
+
 export interface Quiz {
   quizId: string;
   titre: string;
@@ -195,12 +197,7 @@ export interface ReponseDetailResponse {
   explication?: string;
 }
 
-export enum StatutTentative {
-  EnCours = 0,
-  Terminee = 1,
-  Abandonnee = 2,
-  Expiree = 3
-}
+
 
 export interface TentativeQuiz {
   tentativeId: string;
@@ -352,4 +349,10 @@ export interface ReponseUtilisateurCreateDto {
 
 export interface QuizFullResponseDto extends QuizResponseDto {
     questions: QuestionResponseDto[];
+}
+
+
+export interface TentativeStatusDto {
+  statut: StatutTentative;
+  tempsRestant?: number; // en secondes
 }

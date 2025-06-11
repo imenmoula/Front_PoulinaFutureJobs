@@ -50,6 +50,10 @@ import { CandidatureFormComponent } from './components/candidature-form/candidat
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
+import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
+// import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
+// import { QuizComponent } from './passage-quiz-candidat/quiz/quiz.component';
+// import { ResultatComponent } from './passage-quiz-candidat/resultat/resultat.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -162,7 +166,7 @@ export const routes: Routes = [
   },  { path: 'candidature/:offreId', component: CandidatureFormComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   { path: 'candidature/edit/:id', component: CandidatureFormComponent },
   { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  // { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
 
   { path: 'quizzes', component: QuizListComponent },
   { path: 'quizzes/create', component: QuizFormComponent },
@@ -170,6 +174,9 @@ export const routes: Routes = [
   { path: 'quizzes/:id', component: QuizDetailComponent },
   { path: 'quizzes/:id/edit', component: QuizFormComponent },
   // { path: 'quizzes/:id/edit-full', component: FullQuizFormComponent },
+
+  // { path: 'quiz/:tentativeId', component: QuizComponent }can ,
+  // { path: 'resultat/:resultatId', component: ResultatComponent },
   // Fixed: Removed space  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];

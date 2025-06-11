@@ -252,7 +252,7 @@ export class CandidatureListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCandidatures();
-    this.searchForm.valueChanges.subscribe();
+    this.searchForm.valueChanges.subscribe((value) => this.searchCandidatures(value));
   }
 
   loadCandidatures(): void {
@@ -273,23 +273,33 @@ export class CandidatureListComponent implements OnInit {
     });
   }
 
-  // searchCandidatures(searchParams: any): void {
-  //   const { fullName, offreTitre, statut } = searchParams;
-    
-  //   this.filteredCandidatures = this.candidatures.filter(c => {
-  //     const matchName = fullName ? 
-  //       c.appUser?.fullName?.toLowerCase().includes(fullName.toLowerCase()) : true;
-  //     const matchTitre = offreTitre ? 
-  //       c.offre?.titre?.toLowerCase().includes(offreTitre.toLowerCase()) : true;
-  //     const matchStatut = statut ? c.statut === statut : true;
-      
-  //     return matchName && matchTitre && matchStatut;
-  //   });
-    
-  //   this.totalItems = this.filteredCandidatures.length;
-  //   this.currentPage = 0;
-  //   this.updatePaginatedCandidatures();
-  // }
+  searchCandidatures(searchParams: any): void {
+    const { fullName, offreTitre, statut } = searchParams;
+
+    if (!fullName && !offreTitre && !statut) {
+      this.filteredCandidatures = [...this.candidatures];
+      this.totalItems = this.filteredCandidatures.length;
+      this.currentPage = 0;
+      this.updatePaginatedCandidatures();
+      return;
+    }
+
+    this.filteredCandidatures = this.candidatures.filter(candidature => {
+      const matchesFullName = fullName
+        ? candidature.userInfo?.fullName?.toLowerCase().includes(fullName.toLowerCase())
+        : true;
+      const matchesOffreTitre = offreTitre
+        ? candidature.offre?.TitreOffre?.toLowerCase().includes(offreTitre.toLowerCase())
+        : true;
+      const matchesStatut = statut ? candidature.statut === statut : true;
+
+      return matchesFullName && matchesOffreTitre && matchesStatut;
+    });
+
+    this.totalItems = this.filteredCandidatures.length;
+    this.currentPage = 0;
+    this.updatePaginatedCandidatures();
+  }
 
   updatePaginatedCandidatures(): void {
     const start = this.currentPage * this.pageSize;

@@ -1,16 +1,21 @@
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
   <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
   <br><br><br>
+
   <div class="page-body-wrapper">
     <app-sidebar [sidebarOpen]="sidebarOpen"></app-sidebar>
+
     <div class="page-body">
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
+
+              <!-- Header -->
               <div class="card-header">
-                <h4 class="card-title">Liste des Candidatures :</h4>
+                <h4 class="card-title">Liste des Candidatures</h4>
               </div>
+
               <!-- Search Form -->
               <div class="card-body">
                 <form [formGroup]="searchForm">
@@ -40,6 +45,8 @@
                   </div>
                 </form>
               </div>
+
+              <!-- Table -->
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover">
@@ -47,7 +54,8 @@
                       <tr>
                         <th>N°</th>
                         <th>Nom Complet</th>
-                        <th>Offre</th>
+                        <th>Spécialité de l'offre</th>
+                        <th>Titre de l'offre</th>
                         <th>Date de Soumission</th>
                         <th>Statut</th>
                         <th>Actions</th>
@@ -56,51 +64,76 @@
                     <tbody>
                       <tr *ngFor="let candidature of paginatedCandidatures; let i = index">
                         <td>{{ i + 1 + (currentPage * pageSize) }}</td>
+
+                        <!-- Nom complet + Email -->
                         <td>
-                           {{ candidature.userInfo.fullName || 'N/A' }}
-                          
-                         
-                        </td>
-                        <td>
-                          <!-- {{ candidature.offre?.titre || candidature.offreTitre || 'N/A' }} -->
+                          {{ candidature.userInfo.fullName }}
                           <div class="small text-muted">
-                            <span *ngIf="candidature.offre?.specialite">Spécialité: {{ candidature.offre.specialite }}</span>
+                            <span *ngIf="candidature.userInfo?.email">
+                              Email: {{ candidature.userInfo.email }}
+                            </span>
                           </div>
                         </td>
+
+                        <!-- Spécialité + Poste -->
                         <td>
-                          {{ candidature.dateSoumission | date: 'dd/MM/yyyy HH:mm:ss' : 'UTC' }}
-                        </td>
-                        <td>
-                          
+                          {{ candidature.offre.postes && candidature.offre.postes[0].titrePoste }}
                           <div class="small text-muted">
-                            <span *ngIf="candidature.statutCandidate">Niveau de Candidat: {{ candidature.statutCandidate }}</span>
+                            <span *ngIf="candidature.offre?.specialite">
+                              Spécialité: {{ candidature.offre.specialite }}
+                            </span>
                           </div>
                         </td>
-                        
+
+                        <!-- Titre de l'offre -->
                         <td>
-                          <select [(ngModel)]="candidature.statut" (change)="updateStatus(candidature, candidature.statut)" [ngModelOptions]="{standalone: true}">
-                            <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+                          {{ candidature.offre.TitreOffre || 'N/A' }}||
+                        </td>
+
+                        <!-- Date de soumission -->
+                        <td>
+                          {{ candidature.dateSoumission | date: 'dd/MM/yyyy HH:mm' }}
+                        </td>
+
+                        <!-- Statut + Niveau -->
+                        <td>
+                          <select [(ngModel)]="candidature.statut"
+                                  (change)="updateStatus(candidature, candidature.statut)"
+                                  [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let status of statusOptions" [value]="status">
+                              {{ status }}
+                            </option>
                           </select>
+                          <div class="small text-muted">
+                            <span *ngIf="candidature.statutCandidate">
+                              Niveau: {{ candidature.statutCandidate }}
+                            </span>
+                          </div>
                         </td>
+
+                        <!-- Actions -->
                         <td>
                           <div class="d-flex">
-                            <a (click)="viewDetails(candidature.id || candidature.id)" class="btn btn-info shadow btn-xs sharp">
+                            <a (click)="viewDetails(candidature.id)" class="btn btn-info shadow btn-xs sharp me-2">
                               <i class="fa fa-eye"></i>
                             </a>
-                            <a (click)="deleteCandidature(candidature.id || candidature.id)" class="btn btn-danger shadow btn-xs sharp">
+                            <a (click)="deleteCandidature(candidature.id)" class="btn btn-danger shadow btn-xs sharp">
                               <i class="fa fa-trash"></i>
                             </a>
                           </div>
                         </td>
                       </tr>
+
+                      <!-- No Data -->
                       <tr *ngIf="paginatedCandidatures.length === 0">
-                        <td colspan="8" class="text-center">
-                          {{ candidatures.length === 0 ? 'Chargement des candidatures en cours...' : 'Aucune candidature trouvée' }}
+                        <td colspan="7" class="text-center">
+                          {{ loading ? 'Chargement des candidatures en cours...' : 'Aucune candidature trouvée' }}
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+
                 <!-- Pagination Component -->
                 <app-pagination
                   *ngIf="filteredCandidatures.length > 0"
@@ -110,11 +143,13 @@
                   (pageChange)="onPageChange($event)">
                 </app-pagination>
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <app-footer></app-footer>
   </div>
 </div>

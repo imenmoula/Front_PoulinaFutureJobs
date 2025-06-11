@@ -5,7 +5,12 @@ export enum NiveauRequisType {
   Avance = 'Avance',
   Expert = 'Expert'
 }
-  
+  export enum StatutTentative {
+  EnCours = 0,
+  Terminee = 1,
+  Abandonnee = 2,
+  Expiree = 3
+}
 
 
   export enum StatutOffre {

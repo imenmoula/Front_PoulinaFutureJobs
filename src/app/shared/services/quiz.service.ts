@@ -1,6 +1,6 @@
 import { catchError, Observable, of, throwError } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
-import { ConvocationQuizDto, FullQuizCreateDto, FullQuizResponse, FullQuizResponseDto, QuizCreateDto, QuizResponse, QuizResponseDto, QuizUpdateDto, ReponseUtilisateurCreateDto, ReponseUtilisateurDto, ResultatDetailResponse, ResultatQuizDetailDto, ResultatQuizDto, ResultatQuizResponse, SoumettreQuizDto, TentativeQuizResponseDto } from "../../Models/quiz.model";
+import { ConvocationQuizDto, FullQuizCreateDto, FullQuizResponse, FullQuizResponseDto, QuizCreateDto, QuizResponse, QuizResponseDto, QuizUpdateDto, ReponseUtilisateurCreateDto, ReponseUtilisateurDto, ResultatDetailResponse, ResultatQuizDetailDto, ResultatQuizDto, ResultatQuizResponse, SoumettreQuizDto, TentativeQuizResponseDto, TentativeStatusDto } from "../../Models/quiz.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../../environments/environment.development";
 import { Injectable } from "@angular/core";
@@ -118,6 +118,12 @@ export class QuizService {
                 catchError(this.handleError)
             );
     }
+    // Récupérer le statut de la tentative
+  getTentativeStatus(tentativeId: string): Observable<TentativeStatusDto> {
+    return this.http.get<TentativeStatusDto>(`${this.apiUrl}/TentativeQuiz/Status/${tentativeId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
    
 
     startQuizAttempt(quizId: string): Observable<TentativeQuizResponseDto> {

@@ -37,6 +37,18 @@ export class CandidatureService {
         catchError(this.handleError)
       );
   }
+uploadDocuments(candidatureId: string, files: File[]): Observable<any> {
+  const formData = new FormData();
+  files.forEach(file => {
+    formData.append('files', file, file.name); // "files" doit correspondre au paramètre FromForm côté .NET
+  });
+
+  return this.http.post(`${this.apiUrl}/upload-documents/${candidatureId}`, formData, {
+    headers: new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+    })
+  });
+}
 
   // Méthode pour obtenir les en-têtes avec le token JWT
  

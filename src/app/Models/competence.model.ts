@@ -6,7 +6,7 @@ export interface Competence {
   description: string;
   dateModification?: Date;
   dateAjout?:Date;
-  hardSkills: boolean;
+ 
   estTechnique: boolean;
   estSoftSkill: boolean;
 

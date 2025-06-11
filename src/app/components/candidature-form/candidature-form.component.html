@@ -1,3 +1,41 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Poulina Group Holding - Détails de l'offre</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="shortcut icon" type="image/x-icon" href="../../../assets/User/img/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header -->
+ <header>
+    <div class="job-listing-header">
+      <div class="container">
+        <div class="logo">
+          <a href="index.html"><img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a class="active" href="/job-list">Offres d'emploi</a></li>
+            <li><a href="/about">À propos</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a routerLink="/singup" class="btn-signup">Inscription</a>
+          <a routerLink="/signin" class="btn-signin">Connexion</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
 <div class="postuler-container">
   <h2 *ngIf="offre">Postuler pour l'offre : {{ offre.postes[0].titrePoste || 'Offre d\'emploi' }}</h2>
 
@@ -631,3 +669,45 @@
     </div>
   </form>
 </div>
+
+<footer class="job-listing-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="../../../assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding">
+          <p>Construire ensemble l'avenir professionnel.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Entreprise</h4>
+            <a href="#">À propos</a>
+            <a href="#">Carrières</a>
+            <a href="#">Filiales</a>
+            <a href="#">Actualités</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Ressources</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Conditions d'utilisation</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">Contact</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Contact</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</p>
+            <p><i class="fas fa-phone"></i> +216 70 010 000</p>
+            <p><i class="fas fa-envelope"></i> contactpoulina.com</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="copyright">
+        <p>&copy; {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // 
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -17,7 +17,7 @@ interface ApiResponse<T> {
 }
 
 @Injectable({ providedIn: 'root' })
-export class OffreEmploiService {
+export class OffreEmploiService{
   private apiUrl = `${environment.apiBaseUrl}/OffreEmplois`;
 
   constructor(private http: HttpClient) {}

@@ -1,6 +1,8 @@
 // import { OffreEmploi } from "./offre-emploi.model";
 
-import { OffreEmploi } from "./offre-emploi.model";
+import { ModeTravail, StatutOffre, TypeContratEnum } from "./enums.model";
+import { OffreCompetence } from "./offre-competence.model";
+import { OffreEmploi, OffreLangue, OffreMission, Poste } from "./offre-emploi.model";
 
 export interface Candidature {
   idCandidature: string;
@@ -147,9 +149,18 @@ export interface CandidatureDto {
 export interface UserInfoDto {
   id: string;
   fullName: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: Date;
+  adresse: string;
+  ville: string;
+  pays: string;
+  entreprise: string;
+  poste: string;
   email: string;
   phone: string;
   photoUrl: string;
+  
   experiences: CandidatureExperienceDto[];
   diplomes: CandidatureDiplomeDto[];
   competences: CompetenceInputDto[];
@@ -157,12 +168,46 @@ export interface UserInfoDto {
 }
 
 export interface OffreDto {
-  idOffreEmploi: string;
-  specialite: string;
-  typeContrat: string;
-  statut: string;
+   idOffreEmploi?: string;
+      TitreOffre: string;
+      descriptionOffre: string;
+      specialite: string;
+      datePublication?: string; // ISO string
+    dateExpiration: string; // ISO string
+      salaireMin?: number;
+      salaireMax?: number;
+      niveauExperienceRequis: string;
+      typeContrat: TypeContratEnum;
+      statut: StatutOffre;
+      modeTravail: ModeTravail;
+      avantages: string;
+      estActif: boolean;
+      idRecruteur: string;
+      idFiliale: string;
+      idDepartement: string;
+      postes: Poste[];
+
+      offreMissions: OffreMission[];
+      offreLangues: OffreLangue[];
+
+      offreCompetences: OffreCompetence[];
+      diplomeIds: string[];
 }
 
 export interface StatutUpdateRequest {
   statut: string;
+}
+
+interface CandidatureForm {
+  messageMotivation?: string;
+  cvFilePath?: string;
+  linkedIn?: string;
+  github?: string;
+  portfolio?: string;
+  statutCandidate?: string;
+  statut?: string;
+  experiences?: any[];
+  diplomes?: any[];
+  certificats?: any[];
+  competences?: any[];
 }

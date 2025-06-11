@@ -18,13 +18,18 @@ export class CompetenceService {
     private authService: AuthService
   ) { }
 
-  private getHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
+   private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      return new HttpHeaders();
+    }
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
   }
+
 
  getAllCompetences(): Observable<Competence[]> {
     return this.http.get<{ data: Competence[] }>(this.apiUrl).pipe(

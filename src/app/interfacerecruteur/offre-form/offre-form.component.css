@@ -1,68 +1,39 @@
 .card {
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
 }
 
 .card-header {
   background-color: #f8f9fa;
   font-weight: bold;
-  padding: 0.75rem 1.25rem;
 }
 
 .form-label {
   font-weight: 500;
-  margin-bottom: 0.5rem;
 }
 
-.btn-danger {
-  margin-left: auto;
-}
-
-.border {
-  border-radius: 5px;
-  border: 1px solid #dee2e6;
-  padding: 15px;
+.is-invalid {
+  border-color: #dc3545;
 }
 
 .text-danger {
   font-size: 0.875em;
-  margin-top: 0.25rem;
 }
 
-.invalid-feedback {
-  display: block;
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
 }
 
-/* Pour les petits écrans */
-@media (max-width: 768px) {
-  .row > div {
-    margin-bottom: 10px;
-  }
-  
-  .btn-danger {
-    margin-top: 10px;
-    margin-left: 0;
-  }
-
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .card-header button {
-    margin-top: 10px;
-  }
-}
-
-/* Améliorations visuelles */
-.form-control.is-invalid {
+.btn-outline-danger {
+  color: #dc3545;
   border-color: #dc3545;
 }
 
-.btn-outline-primary {
-  border-width: 1px;
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #dc3545;
 }
 
-.mb-3 {
-  margin-bottom: 1rem !important;
+.border-rounded {
+  border-radius: 0.3rem;
 }

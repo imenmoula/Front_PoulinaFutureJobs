@@ -65,13 +65,16 @@ export interface Diplome {
   nomDiplome: string;
   niveau: string;
   domaine: string;
-  institution?: string;
 }
 
 export interface CreateOffreEmploiRequest {
   dto: {
+    idOffreEmploi?: string;
+    TitreOffre: string;
+    descriptionOffre: string;
     specialite: string;
-    dateExpiration: string; // ISO string
+    datePublication?: string; // ISO string
+  dateExpiration: string; // ISO string
     salaireMin?: number;
     salaireMax?: number;
     niveauExperienceRequis: string;

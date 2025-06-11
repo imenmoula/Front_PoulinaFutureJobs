@@ -63,6 +63,7 @@ interface ProfileCertificat {
   styleUrls: ['./candidature-form.component.css']
 })
 export class CandidatureFormComponent implements OnInit {
+  currentYear = new Date().getFullYear();
 
   @Input() offreId: string | null = null;
   postulerForm!: FormGroup;

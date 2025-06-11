@@ -19,11 +19,15 @@ export class OffreMissionService {
 
   constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+ private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      return new HttpHeaders();
+    }
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
+      'Authorization': `Bearer ${token}`
     });
   }
 

@@ -1,0 +1,23 @@
+<div *ngIf="currentQuestion">
+  <h3>{{ currentQuestion.texte }}</h3>
+  <p>Temps restant: {{ timeRemaining | timeConverter }}</p>
+
+  <!-- QCM -->
+  <div *ngIf="currentQuestion.type === 'ChoixMultiple'">
+    <div *ngFor="let reponse of currentQuestion.reponses">
+      <label>
+        <input type="checkbox" 
+               [checked]="selectedResponses.has(reponse.reponseId)"
+               (change)="toggleSelection(reponse.reponseId)">
+        {{ reponse.texte }}
+      </label>
+    </div>
+  </div>
+
+  <!-- Réponse libre -->
+  <div *ngIf="currentQuestion.type === 'ReponseTexte'">
+    <textarea [(ngModel)]="textResponse"></textarea>
+  </div>
+
+  <button (click)="saveResponse()">Enregistrer réponse</button>
+</div>
