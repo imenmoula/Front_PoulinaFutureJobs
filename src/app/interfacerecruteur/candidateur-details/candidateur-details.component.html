@@ -143,8 +143,9 @@
       <!-- Personal Information -->
       <div class="section">
         <h4><i class="fas fa-user"></i> Informations Personnelles</h4>
-        <p><strong>Nom complet:</strong> {{ candidature.userInfo.fullName || 'Non disponible' }}</p>
-<p><strong>Email:</strong> {{ (candidature ?? {}).userInfo?.email || 'Non disponible' }}</p>
+        <!-- <p><strong>Nom complet:</strong> {{ candidature.userInfo.nom || 'Non disponible' }} {{ candidature.userInfo.prenom || 'Non disponible' }}</p> -->
+        <p><strong>Email:</strong> {{ (candidature ?? {}).userInfo?.email || 'Non disponible' }}</p>
+      </div> <!-- Added missing closing div -->
 
       <!-- External Links -->
       <div class="section">
@@ -317,6 +318,6 @@
         </div>
         <button type="button" class="btn btn-primary" (click)="addCompetence()">Ajouter une compétence</button>
       </div>
-</form> <!-- Fermeture supplémentaire -->
+    </form>
   </div>
 </div>

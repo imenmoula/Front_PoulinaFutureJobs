@@ -9,11 +9,13 @@ import { FilialeService } from '../../shared/services/filiale.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
+import { CandidateFooterComponent } from '../../CandidateFront/components/candidate-footer/candidate-footer.component';
+import { CandidateHeaderComponent } from '../../CandidateFront/components/candidate-header/candidate-header.component';
 
 @Component({
   selector: 'app-profile-update',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,CandidateFooterComponent,CandidateHeaderComponent],
   templateUrl: './profile-update.component.html',
   styleUrls: ['./profile-update.component.css']
 })

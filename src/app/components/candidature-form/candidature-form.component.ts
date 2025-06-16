@@ -14,6 +14,8 @@ import { OffreCompetenceService } from '../../shared/services/offre-competence.s
 import { StatutOffre } from '../../Models/enums.model';
 import { FileUploadService, UploadResponse } from '../../shared/services/file-upload.service';
 import { CommonModule } from '@angular/common';
+import { CandidateFooterComponent } from '../../CandidateFront/components/candidate-footer/candidate-footer.component';
+import { CandidateHeaderComponent } from '../../CandidateFront/components/candidate-header/candidate-header.component';
 
 interface RequiredSkill {
   id: string;
@@ -57,7 +59,7 @@ interface ProfileCertificat {
   standalone: true,
   imports: [FormsModule,
     ReactiveFormsModule,
-    CommonModule],
+    CommonModule,CandidateFooterComponent,CandidateHeaderComponent],
 
   templateUrl: './candidature-form.component.html',
   styleUrls: ['./candidature-form.component.css']

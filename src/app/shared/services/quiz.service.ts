@@ -1,7 +1,7 @@
 import { catchError, Observable, of, throwError } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { ConvocationQuizDto, FullQuizCreateDto, FullQuizResponse, FullQuizResponseDto, QuizCreateDto, QuizResponse, QuizResponseDto, QuizUpdateDto, ReponseUtilisateurCreateDto, ReponseUtilisateurDto, ResultatDetailResponse, ResultatQuizDetailDto, ResultatQuizDto, ResultatQuizResponse, SoumettreQuizDto, TentativeQuizResponseDto, TentativeStatusDto } from "../../Models/quiz.model";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { environment } from "../../../environments/environment.development";
 import { Injectable } from "@angular/core";
 export interface ApiResponse<T> {
@@ -39,6 +39,17 @@ export class QuizService {
 
   getQuizById(id: string): Observable<QuizResponseDto> {
     return this.http.get<QuizResponseDto>(`${this.apiUrl}/${id}`);
+  }
+  getResultatByQuizIdAndToken(quizId: string, token: string): Observable<any> {
+    const params = new HttpParams().set('token', token);
+    return this.http.get(`${this.apiUrl}/Quiz/ResultatsByQuizAndToken/${quizId}`, { params });
+  }
+  submitQuiz(tentativeId: string, responses: any[]): Observable<any> {
+    const payload = {
+      tentativeId,
+      reponses: responses
+    };
+    return this.http.post(`${this.apiUrl}/Quiz/Soumettre`, payload);
   }
 
   getFullQuizById(id: string): Observable<FullQuizResponseDto> {

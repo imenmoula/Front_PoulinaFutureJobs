@@ -51,6 +51,11 @@ import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { OffreFormComponent } from './interfacerecruteur/offre-form/offre-form.component';
 import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
+// import { QuizRunnerComponent } from './passage-quiz/quiz-runner/quiz-runner.component';
+import { QuizSubmitComponent } from './passage-quiz/quiz-submit/quiz-submit.component';
+// import { QuizResultComponent } from './passage-quiz/quiz-result/quiz-result.component';
+import { QuizStartComponent } from './passage-quiz/quiz-start/quiz-start.component';
+import { QuizResultComponent } from './passage-quiz/quiz-result/quiz-result.component';
 // import { CandidateurDetailsComponent } from './interfacerecruteur/candidateur-details/candidateur-details.component';
 // import { QuizComponent } from './passage-quiz-candidat/quiz/quiz.component';
 // import { ResultatComponent } from './passage-quiz-candidat/resultat/resultat.component';
@@ -166,7 +171,7 @@ export const routes: Routes = [
   },  { path: 'candidature/:offreId', component: CandidatureFormComponent }, // Ensure :offreId is part of the path  { path: 'candidature/:id', component: CandidateDetailsComponent },
   { path: 'candidature/edit/:id', component: CandidatureFormComponent },
   { path: 'candidatures', component: CandidatureListComponent , canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
-  { path: 'candidature/:id', component: CandidateurDetailsComponent, canActivate: [AuthGuard] ,data: { roles: ['Recruteur'] } },
+  { path: 'candidature/:offreId', component: CandidateurDetailsComponent},
 
   { path: 'quizzes', component: QuizListComponent },
   { path: 'quizzes/create', component: QuizFormComponent },
@@ -175,8 +180,56 @@ export const routes: Routes = [
   { path: 'quizzes/:id/edit', component: QuizFormComponent },
   // { path: 'quizzes/:id/edit-full', component: FullQuizFormComponent },
 
-  // { path: 'quiz/:tentativeId', component: QuizComponent }can ,
-  // { path: 'resultat/:resultatId', component: ResultatComponent },
+// Quiz start route: Initial page to start a quiz with tentativeId and token
+  {
+    path: 'quizzes/start',
+    component: QuizStartComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Candidate'] },
+    },
+
+
+ 
+  // Quiz start route: Initial page to start a quiz with tentativeId and token
+  {
+    path: 'quizzes/start/:tentativeId',
+    component: QuizStartComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Candidate'] },
+
+  },
+  // Quiz run route: Loads and manages the active quiz
+  // {
+  //   path: 'quizzes/:tentativeId',
+  //   // component: QuizRunnerComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { roles: ['Candidate'] },
+
+  // },
+  {
+  path: 'quizzes/results/:quizId/:token',
+  component: QuizResultComponent,
+  canActivate: [AuthGuard],
+  data: { roles: ['Candidate'] },
+},
+
+ 
+  // Quiz submission route: Confirms and finalizes quiz submission
+  {
+    path: 'quizzes/submit/:tentativeId',
+    component: QuizSubmitComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Candidate'] },
+
+  },
+  {
+    path: 'quizzes/results/:quizId',
+    component: QuizResultComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Candidate'] },
+
+
+  },
   // Fixed: Removed space  /**************************** */
 {path:'',redirectTo:'/signin',pathMatch:'full'}
 ];

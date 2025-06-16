@@ -1,40 +1,6 @@
-<header class="job-listing-header">
-  <div class="container">
-    <div class="logo">
-      <a routerLink="/"><img src="assets/User/img/logo/poulina.jpg" alt="Poulina Group Holding"></a>
-    </div>
-    <nav class="main-nav">
-      <ul>
-        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
-        <li><a routerLink="/job-list" routerLinkActive="active">Offres d'emploi</a></li>
-        <li><a routerLink="/about" routerLinkActive="active">À propos</a></li>
-        <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="header-actions">
-      <div class="auth-buttons" *ngIf="!isAuthenticated">
-        <a routerLink="/signup" class="btn-signup">Inscription</a>
-        <a routerLink="/signin" class="btn-signin">Connexion</a>
-      </div>
-      <div class="user-actions" *ngIf="isAuthenticated">
-        <div class="user-dropdown">
-          <button class="user-btn">
-            <i class="fas fa-user-circle"></i>
-            {{ fullName }}
-            <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-menu">
-            <a (click)="navigateToProfile()" routerLink="/profile"><i class="fas fa-user"></i> Profil</a>
-            <a (click)="onLogout()" routerLink="/signin"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+<app-candidate-header></app-candidate-header>
 
 <div class="content-wrapper">
-  <!-- Hero Slider -->
   <div class="slider-container">
     <section class="hero-slider">
       <div class="slide active" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ8QzszHfKkHRS-I8IxULeOyRIKx1d2eRLXA&s');">
@@ -51,45 +17,40 @@
           <a routerLink="/profile" class="btn-slider">Compléter mon profil</a>
         </div>
       </div>
-      <div class="slide" style="background-image: url('https://media.licdn.com/dms/image/v2/C4E1BAQGfNKUh1KiqwQ/company-background_10000/company-background_10000/0/1584970202148/poulina_group_holding_cover?e=2147483647&v=beta&t=rQG1aZ0xbCKsw9ptPFLF_tnY6drIb-iF47WGnEOzV_c');">
+      <div class="slide" style="background-image: url('https://media.licdn.com/dms/image/v2/C4E1BAQGfNKUh1KiqwQ/company-background_10000/company-background_10000/0...');">
         <div class="slide-content">
-          <h2>Innovation et Excellence</h2>
-          <p>Rejoignez une entreprise tournée vers l'avenir</p>
-          <a routerLink="/about" class="btn-slider">Découvrir notre histoire</a>
-        </div>
-      </div>
-      <div class="slide" style="background-image: url('https://www.keejob.com/media/uploads/2017/04/20/poulina_group_holding_6.png');">
-        <div class="slide-content">
-          <h2>Communauté et Collaboration</h2>
-          <p>Faites partie d'une équipe soudée et passionnée</p>
-          <a routerLink="/about#teams" class="btn-slider">Voir nos équipes</a>
+          <h2>Innovation et Impact</h2>
+          <p>Contribuez à des projets qui transforment l'avenir</p>
+          <a routerLink="/about" class="btn-slider">En savoir plus</a>
         </div>
       </div>
       <div class="slider-nav">
-        <button class="prev-slide"><i class="fas fa-chevron-left"></i></button>
-        <button class="next-slide"><i class="fas fa-chevron-right"></i></button>
+        <button class="nav-button prev" (click)="prevSlide()">&#10094;</button>
+        <div class="dot-navigation">
+          <span class="dot active" (click)="goToSlide(0)"></span>
+          <span class="dot" (click)="goToSlide(1)"></span>
+          <span class="dot" (click)="goToSlide(2)"></span>
+        </div>
+        <button class="nav-button next" (click)="nextSlide()">&#10095;</button>
       </div>
-      <div class="slider-dots"></div>
     </section>
   </div>
 
-  <!-- Testimonials Section -->
- 
-
-  <!-- Subsidiaries Section -->
-  <section class="our-services">
-    <div class="section-tittle text-center">
-      <span>Découvrez nos filiales</span>
-      <h2>Explorez la diversité des entreprises du Groupe Poulina</h2>
-    </div>
-    <div class="row d-flex justify-content-center">
-      <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" *ngFor="let item of filiales">
-        <div class="single-services text-center mb-30">
-          <div class="services-ion">
-            <img [src]="getImageUrl(item.photo)" [alt]="item.nom" class="filiale-photo" (click)="navigateToFilialeOffres(item.idFiliale)" />
+  <section class="filiales-carousel-section section-padding">
+    <div class="container">
+      <div class="section-tittle text-center">
+        <span>Découvrez nos filiales</span>
+        <h2>Explorez la diversité des entreprises du Groupe Poulina</h2>
+      </div>
+      <div class="filiales-carousel owl-carousel">
+        <div class="filiale-card" *ngFor="let item of filiales" (click)="navigateToFilialeOffres(item.idFiliale)">
+          <div class="filiale-card-header">
+            <img [src]="getImageUrl(item.photo)" [alt]="item.nom" class="filiale-card-img" />
           </div>
-          <div class="services-cap">
-            <h5><a (click)="navigateToFilialeOffres(item.idFiliale)">{{ item.nom }}</a></h5>
+          <div class="filiale-card-body">
+            <h3>{{ item.nom }}</h3>
+            <p>{{ item.description || 'Description non disponible.' }}</p>
+            <a class="filiale-card-link">Découvrir cette filiale <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
       </div>
@@ -103,39 +64,167 @@
     </div>
   </section>
 
-  <!-- Why Join Us Section -->
-  <section class="support-company-area support-padding fix">
+  <section class="filiales-section section-padding">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-xl-6 col-lg-6">
-          <div class="right-caption">
-            <div class="section-tittle section-tittle2">
-              <span class="highlight-text">Pourquoi nous rejoindre ?</span>
-              <h2>Avantages de travailler chez Poulina Group Holding</h2>
+      <div class="section-tittle text-center">
+        <span>Opportunités par Filiale</span>
+        <h2>Les offres par filiale</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4" *ngFor="let offresByFiliale of offresGroupedByFiliale">
+          <div class="filiale-card" (click)="navigateToFilialeOffres(offresByFiliale.filiale.idFiliale)">
+            <div class="filiale-card-header">
+              <img [src]="getImageUrl(offresByFiliale.filiale.photo)" [alt]="offresByFiliale.filiale.nomFiliale" class="filiale-card-img" />
             </div>
-            <div class="support-caption">
-              <p class="pera-top"><strong>Poulina Future Dream Jobs</strong></p>
-              <p>Poulina Group Holding, créé en <strong>1967</strong>, est le premier groupe à capitaux privés de Tunisie.</p>
-              <ul class="metiers-list">
-                <li>L’intégration avicole</li>
-                <li>Les produits de grande consommation</li>
-                <li>La transformation de l’acier</li>
-                <li>L’emballage</li>
-                <li>L’immobilier</li>
-                <li>Le bois et les biens d’équipement</li>
-                <li>Les matériaux de construction</li>
-                <li>Le commerce et les services</li>
-              </ul>
-              <a routerLink="/about" class="btn post-btn">Post a Job</a>
+            <div class="filiale-card-body">
+              <h3>{{ offresByFiliale.filiale.nomFiliale }}</h3>
+              <p class="offre-count">{{ offresByFiliale.offreCount }} Offre(s) disponible(s)</p>
+              <a class="filiale-card-link">Voir les offres <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
         </div>
-        <div class="col-xl-6 col-lg-6">
-          <div class="support-location-img">
-            <div class="logo-background" [ngStyle]="{'background-image': 'url(assets/User/img/service/po0.jpg)'}">
-              <div class="support-img-cap text-center">
-                <p>Créé en</p>
-                <span class="year-highlight">1967</span>
+        <div *ngIf="offresGroupedByFiliale.length === 0" class="col-12 text-center">
+          <p>Aucune offre trouvée par filiale pour le moment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectors-area section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-tittle text-center">
+            <span>Nos Domaines d'Expertise</span>
+            <h2>Secteurs d'Activité du Groupe Poulina</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let sector of sectors">
+          <div class="single-sector-card text-center mb-30">
+            <div class="sector-icon">
+              <i [class]="sector.icon"></i>
+            </div>
+            <div class="sector-cap">
+              <h4><a href="#">{{ sector.name }}</a></h4>
+              <p>{{ sector.jobCount }} Offres d'emploi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="statistics-area section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-tittle text-center">
+            <span>Nos Chiffres Clés</span>
+            <h2>Le Groupe Poulina en quelques données</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+          <div class="single-statistic-card text-center">
+            <div class="statistic-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="statistic-cap">
+              <h3 class="counter-up">{{ totalFiliales }}</h3>
+              <p>Filiales à travers le monde</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+          <div class="single-statistic-card text-center">
+            <div class="statistic-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="statistic-cap">
+              <h3 class="counter-up">{{ totalCollaborateurs }}</h3>
+              <p>Collaborateurs engagés</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+          <div class="single-statistic-card text-center">
+            <div class="statistic-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="statistic-cap">
+              <h3 class="counter-up">{{ totalEmployees }}</h3>
+              <p>Employés satisfaits</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-area section-padding">
+    <div class="container">
+      <div class="section-tittle text-center">
+        <span>Nos Valeurs</span>
+        <h2>Ce qui nous anime au quotidien</h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30" *ngFor="let value of companyValues">
+          <div class="single-value-card text-center">
+            <div class="value-icon">
+              <i [class]="value.icon"></i>
+            </div>
+            <div class="value-cap">
+              <h4>{{ value.title }}</h4>
+              <p>{{ value.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="advantages-area section-padding">
+    <div class="container">
+      <div class="section-tittle text-center">
+        <span>Pourquoi Nous Rejoindre ?</span>
+        <h2>Vos Avantages Carrière chez Poulina</h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30" *ngFor="let advantage of careerAdvantages">
+          <div class="single-advantage-card text-center">
+            <div class="advantage-icon">
+              <i [class]="advantage.icon"></i>
+            </div>
+            <div class="advantage-cap">
+              <h4>{{ advantage.title }}</h4>
+              <p>{{ advantage.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials-area section-padding">
+    <div class="container">
+      <div class="section-tittle text-center">
+        <span>Ce qu'ils disent de nous</span>
+        <h2>Témoignages de nos collaborateurs</h2>
+      </div>
+      <div class="row testimonial-carousel owl-carousel">
+        <div class="col-lg-12" *ngFor="let testimonial of testimonials">
+          <div class="single-testimonial-card">
+            <div class="testimonial-body">
+              <p>"{{ testimonial.quote }}"</p>
+            </div>
+            <div class="testimonial-author">
+              <img [src]="testimonial.avatar" [alt]="testimonial.author" class="author-avatar" />
+              <div class="author-info">
+                <h4>{{ testimonial.author }}</h4>
+                <span>{{ testimonial.title }}</span>
               </div>
             </div>
           </div>
@@ -144,129 +233,6 @@
     </div>
   </section>
 
- 
 </div>
- <section class="our-services testimonials-section">
-    <div class="section-tittle text-center">
-      <span>Témoignages</span>
-      <h2>Découvrez ce que nos employés disent de leur expérience chez Poulina</h2>
-    </div>
-    <div class="row testimonials-scroll">
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="single-services text-center">
-          <div class="services-icon"><span>SM</span></div>
-          <div class="services-cap">
-            <h5><strong>Sarah Mansour</strong> - Responsable Marketing - 4 ans</h5>
-            <p>"Rejoindre Poulina a été une excellente décision pour ma carrière."</p>
-            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="single-services text-center">
-          <div class="services-icon"><span>AB</span></div>
-          <div class="services-cap">
-            <h5><strong>Ahmed Ben Ali</strong> - Ingénieur Production - 6 ans</h5>
-            <p>"Une culture d'innovation et un esprit d'équipe exceptionnel."</p>
-            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="single-services text-center">
-          <div class="services-icon"><span>LK</span></div>
-          <div class="services-cap">
-            <h5><strong>Leila Karoui</strong> - Analyste Financier - 3 ans</h5>
-            <p>"Des projets internationaux et un développement personnel valorisé."</p>
-            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Recruitment Process Section -->
-  <section class="apply-process-area apply-bg pt-150 pb-150" data-background="assets/User/img/gallery/how-applybg.png">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-tittle white-text text-center">
-            <span>Processus de candidature</span>
-            <h2>Comment ça marche</h2>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6">
-          <div class="single-process text-center mb-30">
-            <div class="process-ion"><span>1</span></div>
-            <div class="process-cap">
-              <h5>Rechercher un emploi</h5>
-              <p>Parcourez les offres d'emploi disponibles.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="single-process text-center mb-30">
-            <div class="process-ion"><span>2</span></div>
-            <div class="process-cap">
-              <h5>Postuler</h5>
-              <p>Soumettez votre candidature avec votre CV.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="single-process text-center mb-30">
-            <div class="process-ion"><span>3</span></div>
-            <div class="process-cap">
-              <h5>Obtenir le poste</h5>
-              <p>Soyez contacté pour la suite du processus.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<footer class="candidate-footer">
-  <div class="footer-top">
-    <div class="container">
-      <div class="footer-col">
-        <img src="assets/User/img/logo/poulina-white.png" alt="Poulina" class="footer-logo">
-        <p>Construire ensemble l'avenir professionnel</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a routerLink="/candidate">Accueil</a></li>
-          <li><a routerLink="/job-list">Offres d'emploi</a></li>
-          <li><a routerLink="/about">À propos</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <ul class="contact-info">
-          <li><i class="fas fa-map-marker-alt"></i> Tunisie, 1082</li>
-          <li><i class="fas fa-phone"></i> +216 70 010 000</li>
-          <li><i class="fas fa-envelope"></i> infopoulina.com</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="container">
-      <p>© {{ currentYear }} Poulina Group Holding. Tous droits réservés.</p>
-      <div class="footer-links">
-        <a href="#">Politique de confidentialité</a>
-        <a href="#">Conditions d'utilisation</a>
-        <a href="#">Mentions légales</a>
-      </div>
-    </div>
-  </div>
-</footer>
+<app-candidate-footer></app-candidate-footer>

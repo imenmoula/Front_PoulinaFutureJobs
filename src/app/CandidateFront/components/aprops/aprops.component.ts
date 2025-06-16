@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { CandidateFooterComponent } from '../candidate-footer/candidate-footer.component';
+import { CandidateHeaderComponent } from '../candidate-header/candidate-header.component';
 
 @Component({
   selector: 'app-aprops',
-  imports: [],
+  imports: [CandidateFooterComponent,CandidateHeaderComponent],
   templateUrl: './aprops.component.html',
   styleUrls: [
     './aprops.component.css',

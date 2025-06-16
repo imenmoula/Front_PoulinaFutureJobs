@@ -54,6 +54,12 @@ import { QuizDetailComponent } from './quiz-detail/quiz-detail.component';
 import { QuizFormComponent } from './quiz-form/quiz-form.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { ProfileCandidateComponent } from './components/profile-candidate/profile-candidate.component';
+import { QuizStartComponent } from './passage-quiz/quiz-start/quiz-start.component';
+// import { QuizResultComponent } from './passage-quiz/quiz-result/quiz-result.component';
+import { QuizRunnerComponent } from './passage-quiz/quiz-runner/quiz-runner.component';
+import { QuizSubmitComponent } from './passage-quiz/quiz-submit/quiz-submit.component';
+import { CandidateHeaderComponent } from './CandidateFront/components/candidate-header/candidate-header.component';
+import { CandidateFooterComponent } from './CandidateFront/components/candidate-footer/candidate-footer.component';
 // import { JobDetailsComponent } from './CandidateFront/components/job-details/job-details.component';
 // import { ApropsComponent } from './CandidateFront/components/aprops/aprops.component';
 @NgModule({
@@ -101,6 +107,12 @@ import { ProfileCandidateComponent } from './components/profile-candidate/profil
     QuizListComponent,
     QuizFormComponent,
     ProfileCandidateComponent,
+    QuizStartComponent,
+    // QuizResultComponent,
+    QuizRunnerComponent,
+    QuizSubmitComponent,
+    CandidateHeaderComponent,
+    CandidateFooterComponent
     
    
   

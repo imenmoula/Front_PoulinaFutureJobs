@@ -1,23 +1,98 @@
-<div *ngIf="currentQuestion">
-  <h3>{{ currentQuestion.texte }}</h3>
-  <p>Temps restant: {{ timeRemaining | timeConverter }}</p>
-
-  <!-- QCM -->
-  <div *ngIf="currentQuestion.type === 'ChoixMultiple'">
-    <div *ngFor="let reponse of currentQuestion.reponses">
-      <label>
-        <input type="checkbox" 
-               [checked]="selectedResponses.has(reponse.reponseId)"
-               (change)="toggleSelection(reponse.reponseId)">
-        {{ reponse.texte }}
-      </label>
+<div *ngIf="quiz && currentQuestion" class="quiz-runner-container">
+  <div class="quiz-header">
+    <h2>{{ quiz.titre }}</h2>
+    <div class="quiz-progress">
+      <div class="progress-bar-container">
+        <div class="progress-bar" [style.width]="(currentQuestionIndex / questions.length) * 100 + '%'"></div>
+      </div>
+      <span class="question-count">Question {{ currentQuestionIndex + 1 }}/{{ questions.length }}</span>
     </div>
   </div>
 
-  <!-- Réponse libre -->
-  <div *ngIf="currentQuestion.type === 'ReponseTexte'">
-    <textarea [(ngModel)]="textResponse"></textarea>
-  </div>
+  <div class="quiz-card">
+    <div class="timer">Temps restant: {{ timeRemaining | timeConverter }}</div>
 
-  <button (click)="saveResponse()">Enregistrer réponse</button>
+    <div class="question-content">
+      <h3>{{ currentQuestion.texte }}</h3>
+      <div class="question-meta">
+        <span>Type: <strong>{{ currentQuestion.type }}</strong></span>
+        <span>Points: <strong>{{ currentQuestion.points }}</strong></span>
+      </div>
+
+      <div class="responses">
+        <ng-container *ngIf="currentQuestion.type === 'ReponseTexte'; else multipleChoice">
+          <textarea
+            [(ngModel)]="textResponse"
+            placeholder="Entrez votre réponse ici..."
+            rows="6"
+            class="form-control text-response-area"
+          ></textarea>
+        </ng-container>
+
+        <ng-template #multipleChoice>
+          <div *ngFor="let reponse of currentQuestion.reponses" class="response-option">
+            <label class="custom-checkbox-radio">
+              <input
+                *ngIf="currentQuestion.type === 'ChoixUnique' || currentQuestion.type === 'VraiFaux'"
+                type="radio"
+                [value]="reponse.reponseId"
+                [checked]="selectedResponses.has(reponse.reponseId)"
+                (change)="toggleSelection(reponse.reponseId)"
+                name="response"
+              />
+              <input
+                *ngIf="currentQuestion.type === 'ChoixMultiple'"
+                type="checkbox"
+                [value]="reponse.reponseId"
+                [checked]="selectedResponses.has(reponse.reponseId)"
+                (change)="toggleSelection(reponse.reponseId)"
+              />
+              <span class="checkmark"></span>
+              {{ reponse.texte }}
+            </label>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="quiz-navigation">
+      <button
+        (click)="saveResponse()"
+        [disabled]="!isResponseValid() || isSavingResponse"
+        class="btn btn-primary"
+      >
+        <span *ngIf="!isSavingResponse">Enregistrer réponse</span>
+        <span *ngIf="isSavingResponse">Enregistrement... <i class="fas fa-spinner fa-spin"></i></span>
+      </button>
+
+      <button
+        *ngIf="currentQuestionIndex < questions.length - 1"
+        (click)="loadNextQuestion()"
+        class="btn btn-secondary"
+      >
+        Question suivante <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <button
+        *ngIf="currentQuestionIndex === questions.length - 1"
+        (click)="confirmAndSubmitQuiz()"
+        class="btn btn-success"
+        [disabled]="isSubmitting"
+      >
+        <span *ngIf="!isSubmitting">Terminer le Quiz <i class="fas fa-check-circle"></i></span>
+        <span *ngIf="isSubmitting">Finalisation... <i class="fas fa-spinner fa-spin"></i></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!quiz && !currentQuestion" class="loading-quiz-message">
+  <i class="fas fa-spinner fa-spin fa-3x"></i>
+  <p>Chargement du quiz...</p>
+</div>
+
+<div *ngIf="quizLoadedError" class="quiz-error-message">
+  <i class="fas fa-exclamation-triangle fa-3x"></i>
+  <p>Impossible de charger le quiz. Veuillez vérifier l'ID de tentative ou réessayer plus tard.</p>
+  <button class="btn btn-primary" routerLink="/">Retour à l'accueil</button>
 </div>

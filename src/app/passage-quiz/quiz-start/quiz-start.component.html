@@ -1,1 +1,30 @@
-<p>quiz-start works!</p>
+<div class="quiz-start-container">
+  <div class="quiz-card">
+    <div class="quiz-icon">
+      <i class="fas fa-question-circle"></i>
+    </div>
+    <h2>Démarrez votre Évaluation</h2>
+    <p class="description">
+      Pour commencer votre quiz, veuillez entrer l'ID de tentative unique que vous avez reçu.
+      Cet ID vous permettra d'accéder à votre évaluation personnalisée.
+    </p>
+
+    <div class="input-group">
+      <input
+        type="text"
+        placeholder="Entrez votre ID de tentative"
+        [(ngModel)]="tentativeId"
+        [class.is-invalid]="showError && !tentativeId"
+        (input)="clearError()"
+      />
+      <div *ngIf="showError && !tentativeId" class="invalid-feedback">
+        Veuillez entrer un ID de tentative.
+      </div>
+    </div>
+
+    <button (click)="startQuiz()" [disabled]="isLoading" class="start-button">
+      <span *ngIf="!isLoading">Démarrer le Quiz</span>
+      <span *ngIf="isLoading">Chargement... <i class="fas fa-spinner fa-spin"></i></span>
+    </button>
+  </div>
+</div>

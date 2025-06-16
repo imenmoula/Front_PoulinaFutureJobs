@@ -263,6 +263,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
+import { CandidateFooterComponent } from '../candidate-footer/candidate-footer.component';
+import { CandidateHeaderComponent } from '../candidate-header/candidate-header.component';
 
 interface QuickFilter {
   label: string;
@@ -275,7 +277,7 @@ interface QuickFilter {
 @Component({
   selector: 'app-job-listing',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule,CandidateFooterComponent,CandidateHeaderComponent],
   templateUrl: './job-listing.component.html',
   styleUrls: ['./job-listing.component.css']
 })

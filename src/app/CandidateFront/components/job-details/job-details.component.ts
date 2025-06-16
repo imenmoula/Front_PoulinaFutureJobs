@@ -23,11 +23,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DiplomeService } from '../../../shared/services/diplome.service';
 import { PosteService } from '../../../shared/services/poste.service';
+import { CandidateFooterComponent } from '../candidate-footer/candidate-footer.component';
+import { CandidateHeaderComponent } from '../candidate-header/candidate-header.component';
 
 @Component({
   selector: 'app-job-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,CandidateFooterComponent,CandidateHeaderComponent],
   templateUrl: './job-details.component.html',
   styleUrls: ['./job-details.component.css']
 })

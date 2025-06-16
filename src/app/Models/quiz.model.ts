@@ -356,3 +356,28 @@ export interface TentativeStatusDto {
   statut: StatutTentative;
   tempsRestant?: number; // en secondes
 }
+export interface QuizPourCandidatDto {
+  quizId: string;
+  titre: string;
+  description: string;
+  duree: number;
+  questions: QuestionPourCandidatDto[];
+}
+
+export interface QuestionPourCandidatDto {
+  questionId: string;
+  texte: string;
+  type: string;
+  points: number;
+  ordre: number;
+  tempsRecommande: number;
+  reponses: ReponsePourCandidatDto[];
+}
+
+export interface ReponsePourCandidatDto {
+  reponseId: string;
+  texte: string;
+  ordre: number;
+  explication: string | null;
+}
+

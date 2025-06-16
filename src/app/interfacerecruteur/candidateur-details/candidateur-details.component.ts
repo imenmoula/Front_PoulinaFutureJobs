@@ -259,10 +259,10 @@ github: new FormControl('', [Validators.pattern(/^https:\/\/(www\.)?github\.com\
           console.warn('Offre ID not found in candidature data.');
         }
       },
-      error: (error) => {
-        this.errorMessage = `Erreur lors du chargement de la candidature: ${error.message || 'Erreur inconnue'}`;
-        Swal.fire('Erreur', this.errorMessage, 'error');
-      },
+     error: (error) => {
+  this.errorMessage = `Erreur lors du chargement de l'offre: ${error.message || 'Offre non trouvée'}`;
+  console.error('Error loading offre details:', error);
+},
       complete: () => {
         this.isLoading = false;
       }

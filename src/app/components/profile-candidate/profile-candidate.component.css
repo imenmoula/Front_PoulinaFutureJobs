@@ -8,6 +8,21 @@
   top: 0;
   z-index: 1000;
 }
+/* profile-candidate.component.css */
+/* ... (le reste du CSS reste inchangé) ... */
+
+/* Modifications pour les nouvelles icônes */
+.section-title i {
+  margin-right: 10px;
+  color: #4169E1;
+  font-size: 1.2rem; /* Taille légèrement augmentée */
+}
+
+/* Icônes spécifiques */
+.fa-user:before { content: "\f007"; } /* Icône profil */
+.fa-briefcase:before { content: "\f0b1"; } /* Icône mallette */
+.fa-graduation-cap:before { content: "\f19d"; } /* Icône chapeau diplôme */
+.fa-certificate:before { content: "\f0a3"; } /* Icône certificat (nouvelle) */
 
 .container {
   width: 100%;
@@ -366,11 +381,7 @@
   align-items: center;
 }
 
-.section-title i {
-  margin-right: 10px;
-  color: #4169E1;
-  font-weight: 300; /* Icône plus fine */
-}
+
 
 .personal-info-grid {
   display: grid;

@@ -1,12 +1,22 @@
-<div *ngIf="resultat">
-  <h2>Résultats du Quiz</h2>
+<div class="result-container" *ngIf="resultat; else noResult">
+  <h2>Résultats du Quiz: {{ resultat.quizTitre }}</h2>
+
   <p>Score: {{ resultat.score }}%</p>
+
   <p>Statut: {{ resultat.reussi ? 'Réussi' : 'Échoué' }}</p>
 
-  <div *ngFor="let detail of resultat.reponsesDetail" class="response-detail">
+  <p>Score : {{ resultat.questionsCorrectes }} / {{ resultat.nombreQuestions }}</p>
+
+  <p>Temps total: {{ resultat.tempsTotal | timeConverter }}</p>
+
+  <div class="response-detail" *ngFor="let detail of resultat.reponsesDetail">
     <h3>{{ detail.questionTexte }}</h3>
-    <p>Votre réponse: {{ detail.reponseTexte || detail.texteReponse }}</p>
+    <p>Votre réponse: {{ detail.reponseTexte || detail.texteReponse || 'Aucune réponse' }}</p>
     <p>Correct: {{ detail.estCorrecte ? '✔️' : '❌' }}</p>
-    <p *ngIf="detail.explication">{{ detail.explication }}</p>
+    <p>Explication: {{ detail.explication }}</p>
   </div>
 </div>
+
+<ng-template #noResult>
+  <p class="no-result">Aucun résultat disponible.</p>
+</ng-template>

@@ -18,7 +18,7 @@ body {
 .job-listing-header {
   background: white;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  padding: 45px 0;
+  padding: 15px 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -1033,21 +1033,15 @@ body {
     justify-content: center;
   }
 
-form.circle .logo-circle {
-  width: 150px; /* Ajuste selon la taille désirée */
-  height: 150px;
+  .logo-circle {
+  width: 100px; /* Ajuste selon la taille désirée */
+  height: 100px;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  object-fit: cover;
-  border: 2px solid #007bff; /* Contour bleu (optionnel) */
-  display: block;
-  margin: 0 auto; /* Centrer l'image si nécessaire */
-}
-.logo-circle:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease-in-out;
-}
 
+  object-fit: cover;
+  border: 2px solid #007bff; /* optionnel : contour */
+}
 
 }
 

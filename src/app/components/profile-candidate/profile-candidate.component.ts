@@ -11,6 +11,9 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CandidatureDiplomeDto } from '../../Models/Candidature.model';
 import Swal from 'sweetalert2';
+import { CandidateFooterComponent } from '../../CandidateFront/components/candidate-footer/candidate-footer.component';
+import { CandidateContentComponent } from '../../CandidateFront/components/candidate-content/candidate-content.component';
+import { CandidateHeaderComponent } from '../../CandidateFront/components/candidate-header/candidate-header.component';
 
 // Interfaces pour les données
 export interface Diploma {
@@ -45,7 +48,7 @@ export interface Certificate {
 @Component({
   selector: 'app-candidate-profile',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule,CandidateFooterComponent,CandidateHeaderComponent],
   templateUrl: './profile-candidate.component.html',
   styleUrls: ['./profile-candidate.component.css']
 })
