@@ -71,19 +71,19 @@
         <h2>Les offres par filiale</h2>
       </div>
       <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-4" *ngFor="let offresByFiliale of offresGroupedByFiliale">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4" *ngFor="let offresByFiliale of offresByFiliale">
           <div class="filiale-card" (click)="navigateToFilialeOffres(offresByFiliale.filiale.idFiliale)">
             <div class="filiale-card-header">
-              <img [src]="getImageUrl(offresByFiliale.filiale.photo)" [alt]="offresByFiliale.filiale.nomFiliale" class="filiale-card-img" />
+              <img [src]="getImageUrl(offresByFiliale.filiale.photo)" [alt]="offresByFiliale.filiale.nom" class="filiale-card-img" />
             </div>
             <div class="filiale-card-body">
-              <h3>{{ offresByFiliale.filiale.nomFiliale }}</h3>
+              <h3>{{ offresByFiliale.filiale.nom }}</h3>
               <p class="offre-count">{{ offresByFiliale.offreCount }} Offre(s) disponible(s)</p>
               <a class="filiale-card-link">Voir les offres <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
         </div>
-        <div *ngIf="offresGroupedByFiliale.length === 0" class="col-12 text-center">
+        <div *ngIf="offresByFiliale.length === 0"class="col-12 text-center">
           <p>Aucune offre trouvée par filiale pour le moment.</p>
         </div>
       </div>

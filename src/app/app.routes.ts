@@ -198,14 +198,13 @@ export const routes: Routes = [
     data: { roles: ['Candidate'] },
 
   },
-  // Quiz run route: Loads and manages the active quiz
-  // {
-  //   path: 'quizzes/:tentativeId',
-  //   // component: QuizRunnerComponent,
-  //   canActivate: [AuthGuard],
-  //   data: { roles: ['Candidate'] },
+  {
+    path: 'quizzes/:tentativeId',
+    // component: QuizRunnerComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Candidate'] },
 
-  // },
+  },
   {
   path: 'quizzes/results/:quizId/:token',
   component: QuizResultComponent,

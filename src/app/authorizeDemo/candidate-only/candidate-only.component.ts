@@ -349,6 +349,7 @@ export class CandidateOnlyComponent implements OnInit { // Ensure the class is e
   private currentSlide: number = 0;
   isAuthenticated: boolean = false;
 
+
   currentYear = new Date().getFullYear();
 
   // New properties for statistics
@@ -511,8 +512,8 @@ export class CandidateOnlyComponent implements OnInit { // Ensure the class is e
     }
     const term = this.searchTerm.toLowerCase();
     return this.offres.filter(offre =>
-      (offre.Titreoffre?.toLowerCase().includes(term) || false) ||
-      (offre.descriptionoffre?.toLowerCase().includes(term) || false) ||
+      (offre.TitreOffre?.toLowerCase().includes(term) || false) ||
+      (offre.descriptionOffre?.toLowerCase().includes(term) || false) ||
       (offre.filiale?.nom?.toLowerCase().includes(term) || false)
     );
   }
